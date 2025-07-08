@@ -1,0 +1,354 @@
+@import url('https://fonts.googleapis.com/css?family=Arimo&subset=hebrew');
+
+h2 {
+    margin-top: 3em
+}
+
+
+
+
+/* Default: Dark theme (as built from _config.yml) */
+:root {
+    --line-height: 1.2em;
+    --page-col: #121212;
+    --text-col: #E0E0E0;
+    --link-col: #82AAFF;
+    --hover-col: #A0C8FF;
+    --navbar-col: #1F1F1F;
+    --navbar-text-col: #E0E0E0;
+    --navbar-border-col: #333333;
+    --footer-col: #1F1F1F;
+    --footer-text-col: #CCCCCC;
+    --footer-link-col: #82AAFF;
+    --footer-hover-col: #A0C8FF;
+
+    --backs-col: #325232;
+    --backn-col: #424242;
+    --backw-col: #545146;
+    --backe-col: #521212;
+
+    --code-col: #5696D6;
+    --code-back-col: #353535;
+    
+    /* Dark theme gradient colors */
+    --pre-bg-1: rgba(255,255,255, 0.08);
+    --pre-bg-2: rgba(255,255,255, 0.02);
+
+    --code-img: repeating-linear-gradient(
+        var(--pre-bg-1) 0,
+        var(--pre-bg-1) var(--line-height),
+        var(--pre-bg-2) var(--line-height),
+        var(--pre-bg-2) calc(var(--line-height) * 2.2)
+    );
+
+    --code-met-col: #DCDCAA;
+    --code-keyw-col: #D8A0DF;
+    --code-bracets-col: #EEEEDD;
+    --code-vars-col: #9CDCFE;
+    --code-comments-col: #85CC85;
+    --code-numbers-col: #B5CEA8;
+    --code-types-col: #5696D6;
+    --tab-nth-child: #222222;
+}
+
+
+/* Overrides for Light theme */
+.light-theme {
+    --page-col: #FFFFFF;
+    --text-col: #404040;
+    --link-col: #008AFF;
+    --hover-col: #0085A1;
+    --navbar-col: #EAEAEA;
+    --navbar-text-col: #404040;
+    --navbar-border-col: #DDDDDD;
+    --footer-col: #EAEAEA;
+    --footer-text-col: #777777;
+    --footer-link-col: #404040;
+    --footer-hover-col: #0085A1;
+
+    --backs-col: #98FB98;
+    --backn-col: #eee;
+    --backw-col: #fdf5d4;
+    --backe-col: #f4dddb;
+
+    --code-col: #2666c6;
+    --code-back-col: #FFFFFF;
+    
+    /* Light theme gradient colors */
+    --pre-bg-1: rgba(0,0,0, 0.04);
+    --pre-bg-2: rgba(0,0,0, 0.02);
+
+    --code-img: repeating-linear-gradient(
+        var(--pre-bg-1) 0,
+        var(--pre-bg-1) var(--line-height),
+        var(--pre-bg-2) var(--line-height),
+        var(--pre-bg-2) calc(var(--line-height) * 2.2)
+    );
+
+    --code-met-col: #74531F;
+    --code-keyw-col: #9108C4;
+    --code-bracets-col: #040404;
+    --code-vars-col: #1F377F;
+    --code-comments-col: #008000;
+    --code-numbers-col: #000;
+    --code-types-col: #0000FF;
+    --tab-nth-child: #f8f8f8;
+}
+
+.large-theme {
+    font-size: 1.8em;
+
+    pre {
+        font-size: 1.0em; 
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+    h2,
+    h3 {
+        margin-top: 7em;
+    }
+
+    .container-md {
+        transform: scale(1.5);
+        transform-origin: top right;
+        max-width: 100% !important;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    .beautiful-jekyll-footer {
+        display: none;
+    }
+
+    /* push the first note down */
+    .box-note:first-of-type {
+        margin-top: 4em;
+    }
+
+    @media (max-width: 1400px) {
+        font-size: 0.9em;
+
+        pre {
+            font-size: 1em;
+        }
+
+        .container-md {
+            transform: scale(1.4);
+        }
+    }
+}
+
+pre {
+    direction: ltr !important;
+    text-align: left !important;
+    line-height: calc(var(--line-height)*1.25);
+}
+
+/* Rest of your CSS remains the same... */
+html {
+    direction: rtl;
+}
+
+body {
+    text-align: right;
+    font-family: 'Arimo', sans-serif;
+}
+
+ul, ol {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6em;
+}
+
+.subq {
+    margin-inline-start: 2em;
+    text-indent: -1.5em;
+    padding-inline-start: 1.5em;
+}
+
+.hebrew-list {
+    list-style-type: hebrew;
+    margin-inline-start: 2em;
+    list-style-position: inside;
+}
+
+#canvas-container {
+    position: relative;
+    border: none;
+    background-color: var(--page-col);
+}
+
+canvas {
+    display: block;
+}
+
+#answer-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3px;
+    box-sizing: border-box;
+    padding: 25px;
+}
+
+#status-message {
+    font-size: 3em;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    height: 60px;
+    color: #daa;
+    background-color: transparent;
+}
+
+#results {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: var(--page-col);
+    max-width: 380px;
+    width: 90%;
+    display: flex;
+}
+
+.results-head {
+    white-space: pre-line;
+    color: var(--code-comments-col);
+    font-size: 1.3em;
+}
+
+#result-text {
+    white-space: pre-line;
+    color: var(--code-comments-col);
+    font-size: 1.3em;
+}
+
+.device-toggle {
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+#name-input {
+    margin: 20px 0;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 250px;
+}
+
+button {
+    padding: 15px 8px;
+    font-size: 18px;
+    background-color: var(--backn-col);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #36648B;
+}
+
+.math-button {
+    display: inline-block;
+    margin: 0;
+}
+
+.MathJax {
+    font-weight: bold;
+    font-size: 120% !important;
+    padding-top: 0em;
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+    padding-bottom: 0em;
+}
+
+.box-note, .box-warning, .box-error, .box-success {
+    margin-right: 0.3125em;
+    padding-right: 1.3em;
+}
+
+.box-success {
+    background-color: var(--backs-col);
+}
+
+.box-note {
+    background-color: var(--backn-col);
+}
+
+.box-warning {
+    background-color: var(--backw-col);
+}
+
+.box-error {
+    background-color: var(--backe-col);
+}
+
+.navbar-custom .avatar-container .avatar-img {
+    border-radius: 0;
+}
+
+.table-en {
+    direction: ltr;
+}
+
+.table-he {
+    direction: rtl;
+    text-align: right;
+}
+
+table {
+    border-color: #444444 !important;
+}
+
+table td,
+th {
+    border-color: #333333 !important;
+    border-bottom-color: #775555 !important;
+}
+
+table tr:nth-child(2n) {
+    background-color: var(--tab-nth-child);
+}
+
+.highlight>pre {
+    background-image: var(--code-img);
+}
+
+code {
+    color: var(--code-col) !important;
+    font-size: 110%;
+    background-color: var(--codeback-col) !important;
+}
+
+/* JavaScript Code formatting */
+pre code span.kd { color: #5696D6; }
+pre code span.nx { color: #9CDCFE; }
+pre code span.o { color: #B4B4B4; }
+pre code span.p { color: var(--code-bracets-col) !important; }
+pre code span.k { color: var(--code-keyw-col) !important; }
+pre code span.mi { color: #88FF88 !important; }
+pre code span.dl { color: #F4BBA3 !important; }
+pre code span.s2 { color: #D69D85 !important; }
+pre code span.kc { color: #569CD6 !important; }
+pre .lineno { color: #666666 !important; }
+
+/* CSharp Code formatting */
+pre code span.nf { color: var(--code-met-col) !important; }
+pre code span.n { color: var(--code-vars-col) !important; }
+pre code span.kt { color: var(--code-types-col) !important; }
+pre code span.m { color: var(--code-numbers-col) !important; }
+pre code span.s { color: #D69D85 !important; }
+pre code span.c1 { 
+    color: var(--code-comments-col) !important;
+    font-family: 'Arimo';
+    font-weight: bold;
+}
