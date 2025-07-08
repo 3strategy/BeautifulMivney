@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "ex1.4 רקורסיה void"
-subtitle: "רקורסיה void"
+title: "ex1.5 רקורסיה מתקדמת"
+subtitle: "רקורסיה מתקדמת"
 tags: []
 lang: he
 ---
