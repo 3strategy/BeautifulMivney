@@ -7,7 +7,7 @@ lang: he
 ---
 
 
-## 3a1.1 CreateChain3
+## 3a0.1 CreateChain3
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-pKoeMVE31zVF0SW) -->
 
 במשימה זו, עליכם לממש את הפונקציה `CreateChain3` כך שתבנה שרשרת של שלושה חרוזים (Bead) ותחזיר את החרוז הראשון בשרשרת. השרשרת צריכה להיות עם הצבעים הבאים ובסדר זה: "Red" -> "Blue" -> "Green".
@@ -61,7 +61,7 @@ public static Bead CreateChain3()
 
 
 
-## 3a1.2 יצירת חרוזים ממערך
+## 3a0.2 יצירת חרוזים ממערך
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-JUThDPqyBCaNsqM) -->
 
@@ -89,7 +89,7 @@ return null;
 
 
 
-## 3a1.3 יצירה מהסוף להתחלה
+## 3a0.3 יצירה מהסוף להתחלה
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-Lbm3LOFqvfsIs1k) -->
 
 בתרגיל זה, עליכם לממש פונקציה סטטית בשם `CreateChainFromEnd` במחלקת `Solution`. פונקציה זו תקבל מערך של מחרוזות צבע (`string[] colors`) ותבנה מהן שרשרת חרוזים מקושרת (Linked List) באמצעות המחלקה `Bead`.
@@ -120,7 +120,7 @@ public static class Solution
 
 
 
-## 3a1.4 הדפסת שרשרת
+## 3a0.4 הדפסת שרשרת
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-IehsbvFDySAAhgi) -->
 
@@ -147,7 +147,7 @@ public static void PrintChain(Bead head)
 
 
 
-## 3a1.5 ספירת חרוזים
+## 3a0.5 ספירת חרוזים
 
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-v1lTlX75HoxF1nT) -->
@@ -170,7 +170,7 @@ public static int CountBeads(Bead head)
 
 
 
-## 3a1.6  חיפוש חרוז
+## 3a0.6  חיפוש חרוז
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-eLMtuaM29EDwik0) -->
 
@@ -208,7 +208,7 @@ public static Bead FindBead(Bead head, string targetColor)
 
 
 
-## 3a1.7 הוספת חרוז לסוף:
+## 3a0.7 הוספת חרוז לסוף:
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-GNLcEJp6gJaUFdf) -->
 
@@ -247,7 +247,7 @@ return head;
 
 
 
-## 3a1.8 שרשור שרשראות
+## 3a0.8 שרשור שרשראות
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-nsRkVrTjDBwdz0Y) -->
 
@@ -283,7 +283,7 @@ return first;
 
 
 
-## 3a1.9 היפוך שרשרת
+## 3a0.9 היפוך שרשרת
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-DnstvfE7FiiNZRp) -->
 
@@ -311,7 +311,7 @@ return null;
 
 
 
-## 3a1.10 הסרת חרוזים משרשרת
+## 3a0.10 הסרת חרוזים משרשרת
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-F9XxLUo2VUxg5OV) -->
 
@@ -340,7 +340,7 @@ return head;
 
 
 
-## 3a1.11 הסרת חרוזים לפי מיקום זוגי/אי-זוגי
+## 3a0.11 הסרת חרוזים לפי מיקום זוגי/אי-זוגי
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-65Ycf01GtRIn9uF) -->
 
@@ -376,7 +376,7 @@ return head;
 
 
 
-## 3a1.12 הסרת כל החרוזים העונים על תנאי
+## 3a0.12 הסרת כל החרוזים העונים על תנאי
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-nZSdv8jbzyyVHKj) -->
 
@@ -406,7 +406,7 @@ public static Bead RemoveAll(Bead head, string colorToRemove)
 
 
 
-## 3a1.13 מציאת תבנית
+## 3a0.13 מציאת תבנית
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-syokFfWjqFABP40) -->
 
