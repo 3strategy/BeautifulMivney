@@ -6,38 +6,7 @@ tags: []
 lang: he
 ---
 
-
-
-## 3a3.111 שרשור שתי שרשראות union
-
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-a6ByQuCrdOTjrEq)
-
-בתרגיל זה, עליכם לממש פעולה בשם `ListsUnion` שתקבל שתי רשימות מקושרות ותחזיר רשימה מקושרת חדשה המהווה את איחוד האיברים משתי הרשימות המקוריות.
-
-דרישות:
-
-הפעולה צריכה להחזיר רשימה מקושרת חדשה המכילה את כל האיברים הייחודיים (ללא כפילויות) משתי הרשימות המקוריות.
-אין חשיבות לסדר האיברים ברשימה המוחזרת.
-אין למיין את הרשימות המקוריות או את רשימת האיחוד.
-
-קלט:
-
-1. list1: ראש הרשימה המקושרת הראשונה יכולה להיות null אם הרשימה ריקה.
-2. list2: ראש הרשימה המקושרת השנייה יכולה להיות null אם הרשימה ריקה.
-
-פלט:
-
-1. ראש רשימה מקושרת חדשה המכילה את איחוד האיברים הייחודיים משתי הרשימות המקוריות. אם שתי הרשימות המקוריות ריקות, הפלט יהיה null.
-
-```csharp
-    public static Node<int> ListsUnion(Node<int> list1, Node<int> list2)
-    {
-        // Implement your solution here
-        return null;
-    }
-```
-
-## 3a3.111 שרשרת המוכלת בשרשרת אחרת
+## 3a3.1 שרשרת המוכלת בשרשרת אחרת
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-tmB9bz2hUKxHMlS)
 
@@ -72,8 +41,42 @@ lang: he
     }
 ```
 
-## 3a3.111 הסרת כפילויות
 
+## 3a3.2 הפיכת רצפים זהים למופע יחיד
+[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-zVdf8d9DlcLN3LI)
+
+בתרגיל זה, עליכם לממש פעולה סטטית בשם `RemoveSequencesOfIdenticalNumbers` בתוך מחלקה בשם `Solution`. הפעולה תקבל כפרמטר ראש של רשימה מקושרת של מספרים שלמים ותשנה את הרשימה כך שכל רצף של איברים זהים יוחלף במופע בודד של האיבר. כלומר, אם יש רצף של מספרים זהים (לדוגמה, `1, 1, 1`), הוא יהפוך לאיבר בודד (`1`).
+
+### הנחיות:
+
+שם הפעולה: `RemoveSequencesOfIdenticalNumbers`
+
+חתימת הפעולה: הפעולה  לא צריכה להחזיר ערך (void), אלא לשנות את הרשימה המקושרת במקום.
+
+
+
+התנהגות:
+
+אם הרשימה ריקה או מכילה איבר בודד, אין לבצע שינוי.
+הפעולה צריכה לעבור על הרשימה ולזהות רצפים של איברים זהים.
+עבור כל רצף כזה, יש להשאיר רק את האיבר הראשון ברצף ולהסיר את כל האיברים הבאים הזהים לו.
+
+### דוגמה לשינוי רשימה:
+
+קלט: `1 -> 1 -> 2 -> 3 -> 3 -> 3 -> 4 -> 5 -> 5 -> null`
+
+פלט: `1 -> 2 -> 3 -> 4 -> 5 -> null`
+
+```csharp
+    public static void RemoveSequencesOfIdenticalNumbers(Node<int> head)
+    {
+        // Implement your solution here
+    }
+```
+
+
+## 3a3.3 הסרת כפילויות גנרי
+ניתן לפתור קודם את 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-28EmugQGYHcTtHK)
 
 בתרגיל זה, עליכם לממש פעולה בשם `noDuply` שתקבל רשימה מקושרת ותסיר ממנה את כל האיברים הכפולים. כלומר, אם איבר מסוים מופיע מספר פעמים ברשימה, הוא יופיע פעם אחת בלבד לאחר הפעלת הפעולה. סדר האיברים שאינם כפולים צריך להישמר.
@@ -97,43 +100,40 @@ lang: he
 ```
 
 
+## 3a3.4 שרשור שתי שרשראות union
 
-## 3a3.111 הפיכת רצפים זהים למופע יחיד
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-zVdf8d9DlcLN3LI)
+[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-a6ByQuCrdOTjrEq)
 
-בתרגיל זה, עליכם לממש פעולה סטטית בשם `RemoveSequencesOfIdenticalNumbers` בתוך מחלקה בשם `Solution`. הפעולה תקבל כפרמטר ראש של רשימה מקושרת של מספרים שלמים ותשנה את הרשימה כך שכל רצף של איברים זהים יוחלף במופע בודד של האיבר. כלומר, אם יש רצף של מספרים זהים (לדוגמה, `1, 1, 1`), הוא יהפוך לאיבר בודד (`1`).
+בתרגיל זה, עליכם לממש פעולה בשם `ListsUnion` שתקבל שתי רשימות מקושרות ותחזיר רשימה מקושרת חדשה המהווה את איחוד האיברים משתי הרשימות המקוריות.
 
-### הנחיות:
+דרישות:
 
-שם הפעולה: `RemoveSequencesOfIdenticalNumbers`
+הפעולה צריכה להחזיר רשימה מקושרת חדשה המכילה את כל האיברים הייחודיים (ללא כפילויות) משתי הרשימות המקוריות.
+אין חשיבות לסדר האיברים ברשימה המוחזרת.
+אין למיין את הרשימות המקוריות או את רשימת האיחוד.
 
-חתימת הפעולה: הפעולה  לא צריכה להחזיר ערך (void), אלא לשנות את הרשימה המקושרת במקום.
+קלט:
 
+1. list1: ראש הרשימה המקושרת הראשונה יכולה להיות null אם הרשימה ריקה.
+2. list2: ראש הרשימה המקושרת השנייה יכולה להיות null אם הרשימה ריקה.
 
+פלט:
 
-התנהגות:
-
-אם הרשימה ריקה או מכילה איבר בודד, אין לבצע שינוי.
-
-הפעולה צריכה לעבור על הרשימה ולזהות רצפים של איברים זהים.
-
-עבור כל רצף כזה, יש להשאיר רק את האיבר הראשון ברצף ולהסיר את כל האיברים הבאים הזהים לו.
-
-### דוגמה לשינוי רשימה:
-
-קלט: `1 -> 1 -> 2 -> 3 -> 3 -> 3 -> 4 -> 5 -> 5 -> null`
-
-פלט: `1 -> 2 -> 3 -> 4 -> 5 -> null`
+1. ראש רשימה מקושרת חדשה המכילה את איחוד האיברים הייחודיים משתי הרשימות המקוריות. אם שתי הרשימות המקוריות ריקות, הפלט יהיה null.
 
 ```csharp
-    public static void RemoveSequencesOfIdenticalNumbers(Node<int> head)
+    public static Node<int> ListsUnion(Node<int> list1, Node<int> list2)
     {
         // Implement your solution here
+        return null;
     }
 ```
 
 
-## 3a3.111 intersect חיתוך שרשראות (במשמעות המתמטית) 
+
+
+
+## 3a3.5 intersect חיתוך שרשראות (במשמעות המתמטית) 
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-uiULM09uJ8WuaXA)
 
