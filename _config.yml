@@ -44,7 +44,7 @@ navbar-links:
 
   אנדרואייד:
     - תיקון גרסאות: "/android/versionUpdates"
-
+    - הוספתי Acvity: "/android/projectSteps/addingActivities"
 
   חיצוני מדמח:
     - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing

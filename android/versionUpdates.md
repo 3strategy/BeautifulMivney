@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "תיקון בעיית גרסאות כמתבססים על פרוייקט ישן"
-subtitle: "עדכון גרסאות אנדרואיד"
+title: "תיקון בעיית גרסאות"
+subtitle: "עדכון גרסאות אנדרואיד. פתרון בעיות אם מתבססים על פרוייקט ישן"
 tags: [אנדרואיד, SDK, build errors, verions mismatch]
 lang: en
 ---
@@ -74,7 +74,8 @@ Follow these steps in order:
    The lines that should be changed are higlighted, and the Studio's assitant will propose to do the change for you:
    ![assistant proposed change](image-2.png)
 3. Save and click **Sync Now**.
-4. You will be getting a worrying message, (red Error):![alt text](image-3.png)
+4. If you try to udpate the targetSdk as well, **you will be getting a worrying message**, (red Error):![alt text](image-3.png). we respect that and will not change target without overhauling the app.
+
 ---
 
 
