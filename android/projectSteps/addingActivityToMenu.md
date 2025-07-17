@@ -6,6 +6,8 @@ tags: [אנדרואיד, Menu, dots Menu, Updating Menu, Activity, Activities]
 lang: en
 ---
 
+ההנחיות בעמוד זה ***בונות על גבי פרוייטק שלד Starter Project*** קיים, אותו אתם מעדכנים לצרכי הפרוייקט שלכם
+{: .box-note}
 
 
 ## הוספת כל ה‑Activities לתפריט Overflow (⋮)
@@ -13,15 +15,7 @@ lang: en
 
 כדי להוסיף את כל ה‑Activities שיצרנו לתפריט ⋮ בפינה העליונה של האפליקציה, יש לבצע את השלבים הבאים:
 
-1. נפתח את ה-AndroidManifest.xml
-    ![alt text](image-4.png)
-
-1. ה-Activities שלנו כבר שם, אבל עדיין לא בתפריט. זה נראה כך:
-    ![alt text](image-5.png)
-
----
-
-### 1. יצירת קובץ תפריט (menu XML)
+### 1. יצירת קובץ תפריט (menu XML) אם עדיין לא קיים
 
 1. בתיקיית **res/menu** (אם לא קיימת, צרו אותה).
 2. ודאו שבתקייה קיים קובץ בשם `main.xml`.
