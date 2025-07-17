@@ -163,6 +163,7 @@ public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 ![alt text](image-11.png)
 
 ונותר רק לרחף מעל ההערה באדום **ולבחור import class**
+![alt text](image-12.png)
 
 
 ### 3. התאמות נוספות (אופציונלי)
