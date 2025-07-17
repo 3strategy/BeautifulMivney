@@ -2,12 +2,23 @@
 layout: page
 title: "עבודה על FBref משופר"
 subtitle: "הפניות לדאטאבייס"
-tags: [אנדרואיד, Activity, Adding Activities]
+tags: [אנדרואיד, Database, FBref, refernces, queries]
 author: "Guy Siedes"
 lang: en
 ---
 
 <!-- https://chatgpt.com/g/g-p-6877d64a7b30819184c2b08610fe6be3-guyfirebasefinal/c/6878cad2-5d50-800e-8499-6db3a8fb9d88 -->
+
+
+<style>
+html {
+  direction: ltr !important;
+}
+body {
+  text-align: left !important;
+}
+</style>
+
 
 # FBRef Usage Guidelines
 
