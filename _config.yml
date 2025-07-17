@@ -46,7 +46,8 @@ navbar-links:
     - תיקון גרסאות: "/android/versionUpdates"
     - הוספת Activity: "/android/projectSteps/addingActivities"
     - הוספת Activity לתפריט: "/android/projectSteps/addingActivityToMenu"
-
+    - תיקון קיצור לפירמוט: "/android/androidCodeFormatting"
+    
   חיצוני מדמח:
     - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
     - קמפוס יסודות: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceA_HE+2023_1/course/"
