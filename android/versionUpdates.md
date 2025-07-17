@@ -30,12 +30,14 @@ Follow these steps in order:
 ---
 
 ## 1. Run the AGP Upgrade Assistant (Recommended)
-
-1. In Android Studio, click the popup **Android Gradle plugin version 8.2.2 has an upgrade available** → **Start the AGP Upgrade Assistant**.
+![AGP Plugin update](image.png)
+1. If you see a popup as show above, Click the popup **Android Gradle plugin version 8... has an upgrade available** → **Start the AGP Upgrade Assistant**.
 2. In the assistant:
 
-   * Select a stable AGP version that supports API 35 (e.g., **8.3.0**).
+   * Select a stable AGP version that is proposed (click **Run selected steps**). 
+   * This will take a few minutes to complete
    * Let it update your `build.gradle` files and suggest the Gradle wrapper changes.
+   ![click Run selected steps](image-1.png)
 3. Click **Apply Changes** and then **Sync Now**.
 
 *This automates updating the Android Gradle Plugin and wrapper. If you prefer manual control or encounter issues, proceed to Step 3.*
@@ -58,57 +60,35 @@ Follow these steps in order:
 2. In the `android` block, change:
 
    ```groovy
-   compileSdkVersion 34
-   targetSdkVersion 34
+   compileSdk 34
+   targetSdk 34
    ```
 
    to:
 
    ```groovy
-   compileSdkVersion 35
-   targetSdkVersion 35
+   compileSdk 35
+   // targetSdkVersion remains at 34 unless you’re ready for full migration
+   targetSdk 34
    ```
+   The lines that should be changed are higlighted, and the Studio's assitant will propose to do the change for you:
+   ![assistant proposed change](image-2.png)
 3. Save and click **Sync Now**.
+4. You will be getting a worrying message, (red Error):![alt text](image-3.png)
+---
+
+
+
+## 4. Clean & Rebuild
+1. First try simply clicking **Build** <span style="color:green">⏵</span> button.
+1. If it's not working you may also **Build > Clean Project**
+1. Followed by **Build > Rebuild Project**
+
+### The AAR metadata error should now be resolved.
 
 ---
 
-## 4. Update the Gradle Wrapper (If Not Already Updated)
-
-AGP 8.3.0 requires Gradle 8.1 or later:
-
-1. Open `gradle/wrapper/gradle-wrapper.properties`.
-2. Set:
-
-   ```properties
-   distributionUrl=https\://services.gradle.org/distributions/gradle-8.1.1-bin.zip
-   ```
-3. Save and **Sync**.
-
----
-
-## 5. Clean & Rebuild
-
-1. **Build > Clean Project**
-2. **Build > Rebuild Project**
-3. Confirm the AAR metadata error is resolved.
-
----
-
-## 6. Register the New Activity (If Needed)
-
-If you manually created `ReportsActivity`, ensure your `AndroidManifest.xml` contains:
-
-```xml
-<application>
-  <activity android:name=".ReportsActivity" />
-</application>
-```
-
-(Android Studio’s wizard usually does this automatically.)
-
----
-
-## 7. Address Remaining Warnings
+## 5. Address Remaining Warnings
 
 Typical fixes for nine warnings include:
 
@@ -120,16 +100,4 @@ Review each warning in the **Build** window and apply or suppress as appropriate
 
 ---
 
-## 8. Commit Your Changes
-
-```bash
-git add app/build.gradle build.gradle gradle/wrapper/gradle-wrapper.properties AndroidManifest.xml
-git commit -m "Upgrade AGP, ensure API 35, bump compileSdk to 35"
-```
-
-> {: .box-success}
-> **Tip:** If you must remain on compileSdk 34, use an older `androidx.activity:activity:1.6.1`:
->
-> ```groovy
-> implementation 'androidx.activity:activity:1.6.1'
-> ```
+## 6. Commit and push Your Changes
