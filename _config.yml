@@ -42,9 +42,10 @@ navbar-links:
 
   תמ"ע:
 
-  אנדרואייד:
+  אנדרואיד:
     - תיקון גרסאות: "/android/versionUpdates"
-    - הוספתי Acvity: "/android/projectSteps/addingActivities"
+    - הוספת Activity: "/android/projectSteps/addingActivities"
+    - הוספת Activity לתפריט: "/android/projectSteps/addingActivityToMenu"
 
   חיצוני מדמח:
     - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
@@ -131,7 +132,7 @@ share-links-active:
 
 # How to display the link to your website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "יסודות.שלי.com"
+url-pretty: "מבני.שלי.com"
 url-parent: "מתמטיקה.com"
 
 # Add the website title to the title of every page
