@@ -3,9 +3,19 @@ layout: page
 title: "תיקון בעיית גרסאות כמתבססים על פרוייקט ישן"
 subtitle: "עדכון גרסאות אנדרואיד"
 tags: [אנדרואיד, SDK, build errors, verions mismatch]
-lang: he
+lang: en
 ---
 
+
+
+<style>
+html {
+  direction: ltr !important;
+}
+body {
+  text-align: left !important;
+}
+</style>
 
 # Resolving AAR Metadata Errors When Adding a New Activity
 
