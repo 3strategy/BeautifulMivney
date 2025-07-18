@@ -20,11 +20,14 @@ body {
 </style>
 
 
-# FBRef Usage Guidelines
+
 
 The `FBRef` utility class centralizes all your Firebase Realtime Database references for the current user, including per-year branches for Tasks, Done\_Tasks, Years, Students, Presence, and Maakav.
+{: .box-note}
 
-## 1. Initialize without year {: .box-note}
+# FBRef Usage Guidelines
+
+## 1. Initialize without year 
 
 In activities where you do **not yet** know `activeYear` (e.g. `LoginActivity`), call:
 
