@@ -48,6 +48,7 @@ navbar-links:
     - הוספת Activity לתפריט: "/android/projectSteps/addingActivityToMenu"
     - תיקון קיצור לפירמוט: "/android/androidCodeFormatting"
     - FBref reloaded: "/android/projectSteps/newFBref"
+    - שינוי שם: "/android/projectSteps/renameProject"
 
   חיצוני מדמח:
     - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
