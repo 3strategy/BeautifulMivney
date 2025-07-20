@@ -6,7 +6,7 @@ tags: [אנדרואיד, rename project, שינוי שם]
 lang: en
 ---
 
-
+[קישור פרטי לצ'אט](https://chatgpt.com/c/687b787c-603c-800e-9549-e85606b8768e)
 
 # Rename project from `Tasks` to `Presence` and update related configurations
 
