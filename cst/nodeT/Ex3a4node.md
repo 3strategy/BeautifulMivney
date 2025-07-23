@@ -8,7 +8,7 @@ lang: he
 
 
 
-## 3a4.111 איחוד ממוין של רשימות מקושרות ללא כפילויות
+## 3a4.1 איחוד ממוין של רשימות מקושרות ללא כפילויות
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-mTGoXrYRti2COsa)
 
 במשימה זו, עליכם לממש פעולה סטטית בשם `SortedUnionNew` . פעולה זו תקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה, ממוינת וללא כפילויות, המכילה את כל האיברים משתי הרשימות המקוריות.
@@ -39,7 +39,7 @@ lang: he
 ```
 
 
-## 3a4.111 איחוד ממוין של רשימות מקושרות עם חזרות
+## 3a4.2 איחוד ממוין של רשימות מקושרות עם חזרות
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-hlM9yH2XyXDd9Y1)
 

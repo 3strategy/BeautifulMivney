@@ -49,6 +49,7 @@ navbar-links:
     - תיקון קיצור לפירמוט: "/android/androidCodeFormatting"
     - FBref reloaded: "/android/projectSteps/newFBref"
     - שינוי שם: "/android/projectSteps/renameProject"
+    - התחברות ל-Firebase: "/android/projectSteps/connectDatabase"
 
   חיצוני מדמח:
     - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
