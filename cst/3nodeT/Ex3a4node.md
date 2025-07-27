@@ -69,8 +69,8 @@ lang: he
 
 
 
-## 3a4.111 איחוד (union) רשימות ממויינות ללא כפילויות
-
+## 3a4.XX (כפילות עם SortedUnionNew 3a4.1) איחוד (union) רשימות ממויינות ללא כפילויות
+## למחוק את זה!
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-1KWmWC0LO6mI6og)
 
 בתרגיל זה, עליכם לממש פעולה בשם `SortedUnionToList` אשר מקבלת שתי רשימות מקושרות ממויינות ומאחדת את האיברים מהרשימה השנייה לתוך הרשימה הראשונה. הפעולה צריכה להבטיח שהרשימה הראשונה תישאר ממויינת וכי לא יהיו בה כפילויות של ערכים.
@@ -85,9 +85,11 @@ lang: he
 
 
 
-## 3a4.111 הכנסת איבר לרשימה ממוינת
+## 3a4.4 הכנסת שלם לרשימה ממוינת
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-SSsiyyCHsLe6Zce)
+
+**רצוי לתת את השאלה גם בגרסה של הכנסת Node, ולקראת בגרות אפילו לדבר שם על Node<T> with Comparator**
 
 בתרגיל זה, עליכם לכתוב פעולה בשם `InsertIntoSortedList` שתקבל רשימה מקושרת ממוינת (עולה) ומספר שלם. מטרת הפעולה היא להכניס את המספר לרשימה כך שהיא תישאר ממוינת.
 
@@ -120,21 +122,21 @@ lang: he
 
 ### תיאור המשימה
 
-עליכם לממש פעולה סטטית בשם `ListsIntersection` במחלקה `Solution` שתקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה המייצגת את חיתוך האיברים בין שתי הרשימות המקוריות. רשימת החיתוך צריכה להכיל כל איבר משותף פעם אחת בלבד (ללא חזרות), גם אם הוא מופיע מספר פעמים באחת או בשתי רשימות הקלט.
+עליכם לממש פעולה סטטית בשם `SortedListsIntersection` במחלקה `Solution` שתקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה המייצגת את חיתוך האיברים בין שתי הרשימות המקוריות. רשימת החיתוך צריכה להכיל כל איבר משותף פעם אחת בלבד (ללא חזרות), גם אם הוא מופיע מספר פעמים באחת או בשתי רשימות הקלט.
 
 ### דרישות:
 
 1. מעבר יחיד: הפתרון חייב לעבור על כל אחת מהרשימות המקוריות לכל היותר פעם אחת. כלומר, אסור לכם להשתמש בלולאות מקוננות שגורמות למעבר חוזר על רשימה שכבר נסרקה.
 2. ללא חזרות: ודאו שרשימת החיתוך הסופית לא מכילה איברים כפולים, גם אם הם הופיעו מספר פעמים ברשימות הקלט.
 
-    public static Node<int> listsIntersection(Node<int> list1, Node<int> list2)
+    public static Node<int> SortedListsIntersection(Node<int> list1, Node<int> list2)
     {
         // Implement your solution here
         return null;
     }
 
 
-## 3a4.111 מיון הכנסה לשרשרת חדשה
+## 3a4.5 מיון הכנסה לשרשרת חדשה
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-v9pbgok59FrnKTA)
 
