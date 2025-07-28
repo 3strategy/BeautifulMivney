@@ -2,7 +2,7 @@
 layout: page
 title: "עץ בינארי"
 subtitle: "מושגים שונים והבהרות "
-tags: []
+tags: [מושלם, כמעט מושלם, מלא, full, complete, perfect, binary tree, binnode]
 lang: he
 ---
 
