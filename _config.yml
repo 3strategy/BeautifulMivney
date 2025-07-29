@@ -32,14 +32,23 @@ navbar-links:
     - בגרויות משרד החינוך: "https://meyda.education.gov.il/bagmgr/default.html#/"
 
   רקורסיה ויעילות:
-    - תרגול חיצוי: "/mivney/recursionAndComplexity/cstacksLinksRecursion"
+    - תרגול: "/mivney/1recursionAndComplexity/Links"
 
-  שרשרת ועצים:
-    - תרגול חיצוי: "/mivney/recursionAndComplexity/cstacksLinksNode"
+  שרשרת חוליות:
+    - תרגול: "/mivney/3node/Links"
 
-  מחסנית ותור:
-    - אנימציית תור: "/mivney/queue/QueueAnimation.html"
+  מחסנית:
+    - תרגול: "/mivney/4stack/Links"
 
+  תור:
+    - אנימציית תור: "/mivney/5queue/QueueAnimation.html"
+    - תרגול: "/mivney/5queue/Links"
+
+  עץ בינארי:
+    - תרגול: "/mivney/6binnode/Links"
+    - סוגי עצים: "/mivney/6binnode/binary_tree_full_complete_perfect"
+    - עץ בינארי לעומת עץ חיפוש: "/mivney/6binnode/binnode1"
+    
   תמ"ע:
 
   אנדרואיד:
