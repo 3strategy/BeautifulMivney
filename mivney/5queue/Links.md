@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "תרגילים בתורים Ex5a"
-subtitle: "לצורך ייחוס בלבד"
+subtitle: "תרגילים בתורים Ex5a"
 tags: []
 lang: he
 ---

@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "תרגילים לסטאקס"
-subtitle: "לצורך ייחוס בלבד רקורסיה ויעילות"
+title: "תרגול Ex1a 2a"
+subtitle: "תרגול Ex1a 2a"
 tags: []
 lang: he
 ---

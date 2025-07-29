@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "תרגול Ex4a"
-subtitle: "לצורך ייחוס בלבד. ומחסנית פשוטה"
+subtitle: "תרגול Ex4a"
 tags: []
 lang: he
 ---

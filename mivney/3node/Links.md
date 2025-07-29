@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "תרגילים לסטאקס"
-subtitle: "לצורך ייחוס בלבד. חרוזים ושרשרת חוליות פשוטה"
+title: "תרגול Ex3a"
+subtitle: "תרגול Ex3a"
 tags: []
 lang: he
 ---
