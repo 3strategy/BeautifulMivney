@@ -11,14 +11,14 @@ lang: he
 
 [⬅ עברו לתרגול Ex3a0 - שרשרת חרוזים](/cst/nodeNbead/Ex3a0beads)
 
-[⬅ עברו לתרגול Ex3a1 - שרשרת חוליות Node](/cst/nodeNbead/Ex3a1node)
+[⬅ עברו לתרגול Ex3a1 - שרשרת חוליות \>Node\<T](/cst/3nodeT/Ex3a1node)
 
-[⬅ עברו לתרגול Ex3a2 - שרשרת חוליות Node\<T\>](/cst/nodeNbead/Ex3a2node)
+[⬅ עברו לתרגול Ex3a2 - שרשרת חוליות \>Node\<T](/cst/3nodeT/Ex3a2node)
 
-[⬅ עברו לתרגול Ex3a3 - שרשרת חוליות Node\<T\>](/cst/nodeNbead/Ex3a3node)
+[⬅ עברו לתרגול Ex3a3 - שרשרת חוליות \>Node\<T](/cst/3nodeT/Ex3a3node)
 
-[⬅ עברו לתרגול Ex3a4 - שרשרת חוליות Node\<T\>](/cst/nodeNbead/Ex3a4node)
+[⬅ עברו לתרגול Ex3a4 - שרשרת חוליות Node\<T\>](/cst/3nodeT/Ex3a4node)
 
-[⬅ עברו לתרגול Ex3b - שרשרת חוליות Node\<T\>](/cst/nodeNbead/Ex3b)
+[⬅ עברו לתרגול Ex3b - שרשרת חוליות Node\<T\>](/cst/3nodeT/Ex3b)
 
 
