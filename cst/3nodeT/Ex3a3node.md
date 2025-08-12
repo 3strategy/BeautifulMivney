@@ -160,9 +160,9 @@ lang: he
 
 
 
-## 3a3.6 ספירת רצפים ממוינים
+## 3a3.6 ספירת רצפים מונוטוניים
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-wdnyKQcJPolD3EV)
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-wdnyKQcJPolD3EV) -->
 
 בתרגיל זה, עליכם לממש פעולה בשם `CountSequences` שתקבל רשימת מספרים ותחזיר את מספר הרצפים המונוטוניים ברשימה.
 
@@ -187,7 +187,6 @@ lang: he
         return 0;
     }
 ```
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-wdnyKQcJPolD3EV)
 
 ### דוגמאות
 
