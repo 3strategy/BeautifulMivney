@@ -352,3 +352,49 @@ pre code span.c1 {
     font-family: 'Arimo';
     font-weight: bold;
 }
+
+
+
+/* --- Leaf bullets: opt-in per list via .leafify --- */
+.leafify{ list-style: none; padding-left: 0; }
+.leafify > li{ position: relative; padding-left: 1.4em; }
+.leafify > li::before{
+  content: "";
+  position: absolute; left: 0; top: .25em;
+  width: 1em; height: 1em;
+  background: no-repeat center/contain;
+  /* Jekyll-friendly path (works with baseurl) */
+  background-image: url('{{ "/assets/img/simple_leaf_half.svg" | relative_url }}');
+}
+
+/* Optional: color-inherit variant (uncomment to try)
+.leafify > li::before{
+  -webkit-mask: url('{{ "/assets/img/simple_leaf_half.svg" | relative_url }}') no-repeat center / contain;
+  mask: url('{{ "/assets/img/simple_leaf_half.svg" | relative_url }}') no-repeat center / contain;
+  background-color: currentColor;  background: none;
+}
+*/
+
+
+/* --- Leaf bullets: global styling within content area --- */
+main ul, article ul, .markdown-body ul, .post-content ul{
+  list-style: none; padding-left: 0;
+}
+main ul > li, article ul > li, .markdown-body ul > li, .post-content ul > li{
+  position: relative; padding-left: 1.4em;
+}
+main ul > li::before, article ul > li::before,
+.markdown-body ul > li::before, .post-content ul > li::before{
+  content: "";
+  position: absolute; left: 0; top: .25em;
+  width: 1em; height: 1em;
+  background: no-repeat center/contain;
+  /* Jekyll-friendly path (works with baseurl) */
+  background-image: url('{{ "/assets/img/simple_leaf_half.svg" | relative_url }}');
+}
+
+/* Optional: per-list opt-out
+.no-leaves{ list-style: disc; padding-left: 1.25em; }
+.no-leaves > li{ position: static; padding-left: 0; }
+.no-leaves > li::before{ content: none; }
+*/

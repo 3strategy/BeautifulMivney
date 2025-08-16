@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20">
+  <defs>
+    <linearGradient id="gB" x1="0" y1="1.3" x2="0" y2="19" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#9bd989"/>
+      <stop offset="1" stop-color="#2c6f3d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- short connector stem -->
+  <path d="M10 0V2" stroke="#2c6f3d" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+
+  <!-- leaf body (all numbers halved) -->
+  <path d="M9.85 3
+           C8.5 0, 6.9 0.25, 4.75 1.7
+           C1.0 3.5, 0.0 6.6, 1.8 10.1
+           C3.5 14.6, 7.25 17.5, 11 20
+           C12.75 17.5, 16.5 14.6, 17.7 10.5
+           C19.0 6.6, 17.0 3.7, 14.1 1.7
+           C12.6 0.7, 11.0 0.6, 10 1.8 Z"
+        fill="url(#gB)" stroke="#1e5631" stroke-width="0.7" stroke-linejoin="round"/>
+
+  <!-- midrib + veins (halved) -->
+  <path d="M10 1.3
+           C9.5 5, 9.5 12.5, 11 20
+           M9.0 3.8  C6.9 4.8, 5.5 6.4, 5.0 8.2
+           M11.1 5.6 C13.3 6.6, 14.8 8.1, 15.2 9.9"
+        fill="none" stroke="#1e5631" stroke-width="0.8" stroke-linecap="round"/>
+</svg>
