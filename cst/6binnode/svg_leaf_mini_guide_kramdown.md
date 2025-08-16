@@ -23,8 +23,11 @@ body {
 ## 1) The stage: `viewBox="0 0 40 40"`
 
 ![my leaf in kramdown shortcut](simple_leaf_half.svg) Think of a **40×40** square grid.
+
 ![my leaf in kramdown shortcut](simple_leaf_half.svg) **(0,0)** is the **top‑left**.
+
 ![my leaf in kramdown shortcut](simple_leaf_half.svg) **x** grows to the **right**, **y** grows **down**.
+
 ![my leaf in kramdown shortcut](simple_leaf_half.svg) **Mid‑top** point is **(20,0)** (great for connecting stems in a tree diagram).
 
 ```
@@ -158,8 +161,11 @@ Finally, `Z` **closes** the shape.
 
 ![my leaf in kramdown shortcut](simple_leaf_half.svg)**Notch depth (heart look):** raise/lower the first `M20 y`.\
   Smaller `y` (e.g., `M20 2.2`) → **shallower** notch. Bigger `y` (e.g., `M20 4`) → **deeper** notch.
+
 ![my leaf in kramdown shortcut](simple_leaf_half.svg)**Leaf width:** push the far left/right x values outward/inward (e.g., change **7 → 5** and **33 → 35** to get **wider**).
+
 ![my leaf in kramdown shortcut](simple_leaf_half.svg)**Bottom point:** change the bottom y (like `... 20 38`) to something like `20 37` for a slightly **flatter** tip.
+
 ![my leaf in kramdown shortcut](simple_leaf_half.svg)**Stem length:** change `V1.8` to `V3` for a longer connector, `V1` for a shorter one.
 
 ---
