@@ -3,6 +3,16 @@ title: "Leaf Bullets — Approach A (.leafify per list)"
 layout: default
 ---
 
+
+<style>
+html {
+  direction: ltr !important;
+}
+body {
+  text-align: left !important;
+}
+</style>
+
 Use this page to **test the per-list approach** that keeps your Markdown clean and avoids HTML `<ul class="…">` wrappers. The idea: add a one-line Kramdown attribute (`{: .leafify}`) before a list to opt-in.
 
 ## 1) Put the SVG in your assets

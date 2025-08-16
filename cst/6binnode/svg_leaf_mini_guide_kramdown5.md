@@ -1,7 +1,18 @@
 ---
 title: "Leaf Bullets — Approach B (style all content lists)"
-layout: default
+layout: page
 ---
+
+
+<style>
+html {
+  direction: ltr !important;
+}
+body {
+  text-align: left !important;
+}
+</style>
+
 
 Use this page to **test the global approach** that automatically styles *all* Markdown `<ul>` lists inside your content container (no per-list markers). You can still opt-out per list when needed.
 
@@ -38,6 +49,9 @@ main ul > li::before, article ul > li::before,
 .no-leaves > li::before{ content: none; }
 */
 ```
+
+
+
 
 > Tip: If your theme wraps Markdown inside a different class (e.g., `.content`, `.page-content`), replace or add it in the selectors above.
 
