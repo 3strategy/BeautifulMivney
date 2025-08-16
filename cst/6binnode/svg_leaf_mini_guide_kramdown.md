@@ -205,4 +205,4 @@ Finally, `Z` **closes** the shape.
 
 Happy drawing! 🌿
 
-<img src="simple_leaf_svg.svg" alt="full size" width="5em"><img src="simple_leaf_half.svg" alt="half size" width="5em">
+<img src="./simple_leaf_svg.svg" alt="full size" width="5em"><img src="./simple_leaf_half.svg" alt="half size" width="5em">
