@@ -8,27 +8,21 @@ lang: en
 
 # SVG Leaf Mini‑Guide
 <style>
-html {
-  direction: ltr !important;
-}
 body {
+   direction: ltr !important;
   text-align: left !important;
 }
 </style>
-
-
 
 *A tiny, kid‑friendly intro using our leaf as the example.*
 
 ## 1) The stage: `viewBox="0 0 40 40"`
 
-![my leaf in kramdown shortcut](simple_leaf_half.svg) Think of a **40×40** square grid.
-
-![my leaf in kramdown shortcut](simple_leaf_half.svg) **(0,0)** is the **top‑left**.
-
-![my leaf in kramdown shortcut](simple_leaf_half.svg) **x** grows to the **right**, **y** grows **down**.
-
-![my leaf in kramdown shortcut](simple_leaf_half.svg) **Mid‑top** point is **(20,0)** (great for connecting stems in a tree diagram).
+{: .leafify}
+- Think of a **40×40** square grid.
+- **(0,0)** is the **top‑left**.
+- **x** grows to the **right**, **y** grows **down**.
+- **Mid‑top** point is **(20,0)** (great for connecting stems in a tree diagram).
 
 ```
 (0,0)        x→
@@ -43,11 +37,12 @@ body {
 
 ## 2) Three path commands you need
 
+{: .leafify}
 - **M x y** → **Move to** (no drawing yet)
 - **V y** → **Vertical line to** this y (keep the same x)
 - **C x1 y1, x2 y2, x y** → **Cubic curve**: draw from current point to (x,y), pulled by two control handles at (x1,y1) and (x2,y2)
 
-> ![my leaf in kramdown shortcut](simple_leaf_svg.svg) Memory trick: **C** has **two** control points.
+> <span class="leaf-bullet-full"></span>Memory trick: **C** has **two** control points.
 
 ---
 
@@ -86,7 +81,7 @@ This one keeps it simple: a short top‑center stem, a heart‑like leaf using c
 </svg>
 ```
 
-> ![my leaf in kramdown shortcut](simple_leaf_svg.svg) Copy‑paste safe: no comments **inside** the `d` attribute.
+> <span class="leaf-bullet-full"></span>Copy‑paste safe: no comments **inside** the `d` attribute.
 
 ### 3b) Same leaf in a 20×20 viewBox (all coordinates halved)
 
@@ -125,16 +120,16 @@ This one keeps it simple: a short top‑center stem, a heart‑like leaf using c
 
 Multiplying **every coordinate** (and gradient points if you use `userSpaceOnUse`) by a scalar **keeps the shape the same** – just bigger or smaller. Two common ways to scale:
 
+{: .leafify}
 - **Change only the viewBox** (e.g., keep the 40×40 paths but set `width/height` to display size) — the browser scales everything uniformly, including strokes.
 - **Numerically scale the coordinates** (like we did for 20×20) — the geometry scales, but **stroke-widths are not coordinates**, so you may want to scale those too for the same visual thickness.
 
 ### 3d) Using SVG in Markdown
 
 Most Markdown renderers (including kramdown) accept **inline SVG**. You can simply paste the `<svg>...</svg>` block in your document.
-
-- Inline example (this should render right here as the bullet icon):&#x20;
-
-If your platform sanitizes raw SVG, use an `<img>` tag pointing to an `.svg` file or a data URI as a fallback.
+{: .leafify}
+- Inline example (this should render right here as the bullet icon)
+- If your platform sanitizes raw SVG, use an `<img>` tag pointing to an `.svg` file or a data URI as a fallback.
 
 ---
 
@@ -142,31 +137,31 @@ If your platform sanitizes raw SVG, use an `<img>` tag pointing to an `.svg` fil
 
 Starting point is `M19.7 6` (a bit below the top edge), creating a **heart‑shaped notch** where the stem meets the blade.
 
-We then draw **cubic **``** curves** around the outline:
+We then draw **cubic curves** around the outline:
 
-1. `C17 1.5, 12 2, 7 8` → from (20,3) toward the **left lobe**, ending at **(7,8)**.
-2. `C3 13, 3 21, 12 30` → down the **left side**, ending at **(12,30)**.
-3. `C15 33, 18 36, 20 38` → to the **bottom tip** at **(20,38)**.
-4. `C22 36, 25 33, 28 30` → up the **right side**, ending at **(28,30)**.
-5. `C37 21, 37 13, 33 8` → up to the **right lobe**, ending at **(33,8)**.
-6. `C28 2, 23 1.5, 20 3` → back to the **top notch**.
+{: .leafify}
+- `C17 1.5, 12 2, 7 8` → from (20,3) toward the **left lobe**, ending at **(7,8)**.
+- `C3 13, 3 21, 12 30` → down the **left side**, ending at **(12,30)**.
+- `C15 33, 18 36, 20 38` → to the **bottom tip** at **(20,38)**.
+- `C22 36, 25 33, 28 30` → up the **right side**, ending at **(28,30)**.
+- `C37 21, 37 13, 33 8` → up to the **right lobe**, ending at **(33,8)**.
+- `C28 2, 23 1.5, 20 3` → back to the **top notch**.
 
 Finally, `Z` **closes** the shape.
 
-![my leaf in kramdown shortcut](simple_leaf_svg.svg) Tip: The left side and right side are roughly **mirror images** across x=20. That’s why the leaf looks balanced.
+<img src="simple_leaf_svg.svg" class="leaf-bullet" alt="">Tip: The left side and right side are roughly **mirror images** across x=20. That's why the leaf looks balanced.
 
 ---
 
-## 5) The “knobs” you can turn
+## 5) The "knobs" you can turn
 
-![my leaf in kramdown shortcut](simple_leaf_half.svg)**Notch depth (heart look):** raise/lower the first `M20 y`.\
-  Smaller `y` (e.g., `M20 2.2`) → **shallower** notch. Bigger `y` (e.g., `M20 4`) → **deeper** notch.
-
-![my leaf in kramdown shortcut](simple_leaf_half.svg)**Leaf width:** push the far left/right x values outward/inward (e.g., change **7 → 5** and **33 → 35** to get **wider**).
-
-![my leaf in kramdown shortcut](simple_leaf_half.svg)**Bottom point:** change the bottom y (like `... 20 38`) to something like `20 37` for a slightly **flatter** tip.
-
-![my leaf in kramdown shortcut](simple_leaf_half.svg)**Stem length:** change `V1.8` to `V3` for a longer connector, `V1` for a shorter one.
+{: .leafify}
+- **Notch depth (heart look):** raise/lower the first `M20 y`.
+    - Smaller `y` (e.g., `M20 2.2`) → **shallower** notch. 
+    - Bigger `y` (e.g., `M20 4`) → **deeper** notch.
+- **Leaf width:** push the far left/right x values outward/inward (e.g., change **7 → 5** and **33 → 35** to get **wider**).
+- **Bottom point:** change the bottom y (like `... 20 38`) to something like `20 37` for a slightly **flatter** tip.
+- **Stem length:** change `V1.8` to `V3` for a longer connector, `V1` for a shorter one.
 
 ---
 
@@ -188,7 +183,7 @@ Finally, `Z` **closes** the shape.
 </svg>
 ```
 
-![my leaf in kramdown shortcut](simple_leaf_svg.svg) `gradientUnits="userSpaceOnUse"` lets you specify gradient points **in the same 0–40 coords** as the drawing.
+<img src="simple_leaf_svg.svg" class="leaf-bullet" alt="">`gradientUnits="userSpaceOnUse"` lets you specify gradient points **in the same 0–40 coords** as the drawing.
 
 ---
 
@@ -199,14 +194,14 @@ Finally, `Z` **closes** the shape.
 3. **Shorten the stem:** change `V1.8` to `V1.0`.
 4. **Change color:** replace `fill="#8fd08a"` with your favorite hex.
 
-![my leaf in kramdown shortcut](simple_leaf_half.svg) Extra: Add little side veins by drawing short `C` curves starting from the midrib (`M20 10 ...`, `M20 16 ...`).
+<img src="simple_leaf_half.svg" class="leaf-bullet" alt="">Extra: Add little side veins by drawing short `C` curves starting from the midrib (`M20 10 ...`, `M20 16 ...`).
 
 ---
 
 ## 8) Cheat‑sheet
 
+{: .leafify}
 - **M** = Move, **L** = Line, **H/V** = Horizontal/Vertical line, **C** = Cubic curve, **Z** = Close path
 - Axes: **x→ right**, **y→ down**
 - Keep numbers small: our whole world is **0..40**
-
-![my leaf in kramdown shortcut](simple_leaf_svg.svg) Happy drawing! ![my leaf in kramdown shortcut](simple_leaf_half.svg)
+- Happy drawing! <img src="simple_leaf_half.svg" class="leaf-bullet" alt="">

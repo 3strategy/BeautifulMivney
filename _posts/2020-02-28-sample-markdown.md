@@ -12,10 +12,8 @@ lang: en
 ---
 
 <style>
-html {
-  direction: ltr !important;
-}
 body {
+  direction: ltr !important;
   text-align: left !important;
 }
 </style>

@@ -404,6 +404,8 @@ pre code span.c1 {
 .leafify {
     list-style: none;
     padding-left: 0;
+    padding-right: 0 ;
+    padding-inline-start: 1.4em;
 }
 
 .leafify>li {

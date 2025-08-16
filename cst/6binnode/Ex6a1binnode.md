@@ -538,8 +538,5 @@ lang: he
 
 
 
-- [בואו נצייר עלה (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown)
-- [בואו נצייר עלה (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown2)
-- [בואו נצייר עלה (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown3)
-- [בואו נצייר עלה (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown4)
-- [בואו נצייר עלה (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown5)
+- [בואו נצייר עלה. עבודה על SVG (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown)
+- [בואו נצייר עלה - אינטגרציה באתר מבוסס markdown (ונכון גם זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown2)
