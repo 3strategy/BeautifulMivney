@@ -21,7 +21,7 @@ body {
   margin-left: -2px;
   width: 16px;
   height: 16px;
-  background-image: url('simple_leaf_half.svg');
+  background-image: url('../simple_leaf_half.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -33,7 +33,7 @@ body {
   margin-left: -2px;
   width: 16px;
   height: 16px;
-  background-image: url('simple_leaf_svg.svg');
+  background-image: url('../simple_leaf_svg.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
