@@ -1,4 +1,22 @@
+---
+layout: page
+title: "ציור עלים"
+subtitle: "מושגים שונים והבהרות "
+tags: [ציור עלים, svg]
+lang: en
+---
+
 # SVG Leaf Mini‑Guide
+<style>
+html {
+  direction: ltr !important;
+}
+body {
+  text-align: left !important;
+}
+</style>
+
+
 
 *A tiny, kid‑friendly intro using our leaf as the example.*
 
@@ -187,3 +205,19 @@ Finally, `Z` **closes** the shape.
 
 Happy drawing! 🌿
 
+<img src="image.svg" alt="Description" width="100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <defs>
+    <linearGradient id="leafGrad" x1="0" y1="2" x2="0" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#9bd989"/>
+      <stop offset="1" stop-color="#2c6f3d"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M20 0V1.8" stroke="#2c6f3d" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+  <path d="M20 3 C17 1.5, 12 2, 7 8 C3 13, 3 21, 12 30 C15 33, 18 36, 20 38 C22 36, 25 33, 28 30 C37 21, 37 13, 33 8 C28 2, 23 1.5, 20 3 Z"
+        fill="url(#leafGrad)" stroke="#1e5631" stroke-width="1.2"/>
+  <path d="M20 3V38" fill="none" stroke="#1e5631" stroke-width="0.8"/>
+</svg>
+
+</img>
