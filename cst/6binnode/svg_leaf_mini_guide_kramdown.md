@@ -206,18 +206,33 @@ Finally, `Z` **closes** the shape.
 Happy drawing! 🌿
 
 <img src="image.svg" alt="Description" width="100">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40">
   <defs>
-    <linearGradient id="leafGrad" x1="0" y1="2" x2="0" y2="38" gradientUnits="userSpaceOnUse">
+    <linearGradient id="gB" x1="0" y1="2.6" x2="0" y2="38" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#9bd989"/>
       <stop offset="1" stop-color="#2c6f3d"/>
     </linearGradient>
   </defs>
 
-  <path d="M20 0V1.8" stroke="#2c6f3d" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-  <path d="M20 3 C17 1.5, 12 2, 7 8 C3 13, 3 21, 12 30 C15 33, 18 36, 20 38 C22 36, 25 33, 28 30 C37 21, 37 13, 33 8 C28 2, 23 1.5, 20 3 Z"
-        fill="url(#leafGrad)" stroke="#1e5631" stroke-width="1.2"/>
-  <path d="M20 3V38" fill="none" stroke="#1e5631" stroke-width="0.8"/>
+  <!-- short connector stem -->
+  <path d="M20 0V4" stroke="#2c6f3d" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+
+  <!-- wider, cordate top (pronounced notch) -->
+  <path d="M19.7 6
+           C17.0 0, 13.8 0.5, 9.5 3.4
+           C2.0 7, 0.0 13.2, 3.6 20.2
+           C7.0 29.2, 14.5 35.0, 22 40
+           C25.5 35.0, 33.0 29.2, 35.4 21
+           C38.0 13.2, 34.0 7.4, 28.2 3.4
+           C25.2 1.4, 22.0 1.2, 20 3.6 Z"
+        fill="url(#gB)" stroke="#1e5631" stroke-width="0.7" stroke-linejoin="round"/>
+
+  <!-- midrib + veins -->
+  <path d="M20 2.6
+           C19 10, 19 25, 22 40
+           M18.0 7.6  C13.8 9.6, 11.0 12.8, 10.0 16.4
+           M22.2 11.2 C26.6 13.2, 29.6 16.2, 30.4 19.8"
+        fill="none" stroke="#1e5631" stroke-width="0.8" stroke-linecap="round"/>
 </svg>
 
 </img>
