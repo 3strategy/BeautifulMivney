@@ -29,17 +29,15 @@ h2 {
 
     --code-col: #5696D6;
     --code-back-col: #353535;
-    
-    /* Dark theme gradient colors */
-    --pre-bg-1: rgba(255,255,255, 0.08);
-    --pre-bg-2: rgba(255,255,255, 0.02);
 
-    --code-img: repeating-linear-gradient(
-        var(--pre-bg-1) 0,
-        var(--pre-bg-1) var(--line-height),
-        var(--pre-bg-2) var(--line-height),
-        var(--pre-bg-2) calc(var(--line-height) * 2.2)
-    );
+    /* Dark theme gradient colors */
+    --pre-bg-1: rgba(255, 255, 255, 0.08);
+    --pre-bg-2: rgba(255, 255, 255, 0.02);
+
+    --code-img: repeating-linear-gradient(var(--pre-bg-1) 0,
+            var(--pre-bg-1) var(--line-height),
+            var(--pre-bg-2) var(--line-height),
+            var(--pre-bg-2) calc(var(--line-height) * 2.2));
 
     --code-met-col: #DCDCAA;
     --code-keyw-col: #D8A0DF;
@@ -73,17 +71,15 @@ h2 {
 
     --code-col: #2666c6;
     --code-back-col: #FFFFFF;
-    
-    /* Light theme gradient colors */
-    --pre-bg-1: rgba(0,0,0, 0.04);
-    --pre-bg-2: rgba(0,0,0, 0.02);
 
-    --code-img: repeating-linear-gradient(
-        var(--pre-bg-1) 0,
-        var(--pre-bg-1) var(--line-height),
-        var(--pre-bg-2) var(--line-height),
-        var(--pre-bg-2) calc(var(--line-height) * 2.2)
-    );
+    /* Light theme gradient colors */
+    --pre-bg-1: rgba(0, 0, 0, 0.04);
+    --pre-bg-2: rgba(0, 0, 0, 0.02);
+
+    --code-img: repeating-linear-gradient(var(--pre-bg-1) 0,
+            var(--pre-bg-1) var(--line-height),
+            var(--pre-bg-2) var(--line-height),
+            var(--pre-bg-2) calc(var(--line-height) * 2.2));
 
     --code-met-col: #74531F;
     --code-keyw-col: #9108C4;
@@ -99,12 +95,13 @@ h2 {
     font-size: 1.8em;
 
     pre {
-        font-size: 1.0em; 
+        font-size: 1.0em;
     }
 
     h1 {
         font-size: 2em;
     }
+
     h2,
     h3 {
         margin-top: 7em;
@@ -156,7 +153,8 @@ body {
     font-family: 'Arimo', sans-serif;
 }
 
-ul, ol {
+ul,
+ol {
     display: flex;
     flex-direction: column;
     gap: 0.6em;
@@ -271,7 +269,10 @@ button:hover {
     padding-bottom: 0em;
 }
 
-.box-note, .box-warning, .box-error, .box-success {
+.box-note,
+.box-warning,
+.box-error,
+.box-success {
     margin-right: 0.3125em;
     padding-right: 1.3em;
 }
@@ -330,24 +331,68 @@ code {
 }
 
 /* JavaScript Code formatting */
-pre code span.kd { color: #5696D6; }
-pre code span.nx { color: #9CDCFE; }
-pre code span.o { color: #B4B4B4; }
-pre code span.p { color: var(--code-bracets-col) !important; }
-pre code span.k { color: var(--code-keyw-col) !important; }
-pre code span.mi { color: #88FF88 !important; }
-pre code span.dl { color: #F4BBA3 !important; }
-pre code span.s2 { color: #D69D85 !important; }
-pre code span.kc { color: #569CD6 !important; }
-pre .lineno { color: #666666 !important; }
+pre code span.kd {
+    color: #5696D6;
+}
+
+pre code span.nx {
+    color: #9CDCFE;
+}
+
+pre code span.o {
+    color: #B4B4B4;
+}
+
+pre code span.p {
+    color: var(--code-bracets-col) !important;
+}
+
+pre code span.k {
+    color: var(--code-keyw-col) !important;
+}
+
+pre code span.mi {
+    color: #88FF88 !important;
+}
+
+pre code span.dl {
+    color: #F4BBA3 !important;
+}
+
+pre code span.s2 {
+    color: #D69D85 !important;
+}
+
+pre code span.kc {
+    color: #569CD6 !important;
+}
+
+pre .lineno {
+    color: #666666 !important;
+}
 
 /* CSharp Code formatting */
-pre code span.nf { color: var(--code-met-col) !important; }
-pre code span.n { color: var(--code-vars-col) !important; }
-pre code span.kt { color: var(--code-types-col) !important; }
-pre code span.m { color: var(--code-numbers-col) !important; }
-pre code span.s { color: #D69D85 !important; }
-pre code span.c1 { 
+pre code span.nf {
+    color: var(--code-met-col) !important;
+}
+
+pre code span.n {
+    color: var(--code-vars-col) !important;
+}
+
+pre code span.kt {
+    color: var(--code-types-col) !important;
+}
+
+pre code span.m {
+    color: var(--code-numbers-col) !important;
+}
+
+pre code span.s {
+    color: #D69D85 !important;
+}
+
+pre code span.c1 {
     color: var(--code-comments-col) !important;
     font-family: 'Arimo';
     font-weight: bold;
@@ -356,45 +401,56 @@ pre code span.c1 {
 
 
 /* --- Leaf bullets: opt-in per list via .leafify --- */
-.leafify{ list-style: none; padding-left: 0; }
-.leafify > li{ position: relative; padding-left: 1.4em; }
-.leafify > li::before{
-  content: "";
-  position: absolute; left: 0; top: .25em;
-  width: 1em; height: 1em;
-  background: no-repeat center/contain;
-  /* Jekyll-friendly path (works with baseurl) */
-  background-image: url('{{ "/assets/img/simple_leaf_half.svg" | relative_url }}');
+.leafify {
+    list-style: none;
+    padding-left: 0;
 }
 
-/* Optional: color-inherit variant (uncomment to try)
-.leafify > li::before{
-  -webkit-mask: url('{{ "/assets/img/simple_leaf_half.svg" | relative_url }}') no-repeat center / contain;
-  mask: url('{{ "/assets/img/simple_leaf_half.svg" | relative_url }}') no-repeat center / contain;
-  background-color: currentColor;  background: none;
+.leafify>li {
+    position: relative;
+    padding-left: 1.4em;
 }
-*/
+
+.leafify>li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .25em;
+    width: 1em;
+    height: 1em;
+    background: no-repeat center/contain;
+    background-image: url('/assets/img/simple_leaf_half.svg');
+}
+
 
 
 /* --- Leaf bullets: global styling within content area --- */
-main ul, article ul, .markdown-body ul, .post-content ul{
-  list-style: none; padding-left: 0;
-}
-main ul > li, article ul > li, .markdown-body ul > li, .post-content ul > li{
-  position: relative; padding-left: 1.4em;
-}
-main ul > li::before, article ul > li::before,
-.markdown-body ul > li::before, .post-content ul > li::before{
-  content: "";
-  position: absolute; left: 0; top: .25em;
-  width: 1em; height: 1em;
-  background: no-repeat center/contain;
-  /* Jekyll-friendly path (works with baseurl) */
-  background-image: url('{{ "/assets/img/simple_leaf_half.svg" | relative_url }}');
+main ul,
+article ul,
+.markdown-body ul,
+.post-content ul {
+    list-style: none;
+    padding-left: 0;
 }
 
-/* Optional: per-list opt-out
-.no-leaves{ list-style: disc; padding-left: 1.25em; }
-.no-leaves > li{ position: static; padding-left: 0; }
-.no-leaves > li::before{ content: none; }
-*/
+main ul>li,
+article ul>li,
+.markdown-body ul>li,
+.post-content ul>li {
+    position: relative;
+    padding-left: 1.4em;
+}
+
+main ul>li::before,
+article ul>li::before,
+.markdown-body ul>li::before,
+.post-content ul>li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .25em;
+    width: 1em;
+    height: 1em;
+    background: no-repeat center/contain;
+    background-image: url('/assets/img/simple_leaf_half.svg');
+}
