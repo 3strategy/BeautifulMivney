@@ -22,10 +22,10 @@ body {
 
 ## 1) The stage: `viewBox="0 0 40 40"`
 
-- Think of a **40×40** square grid.
-- **(0,0)** is the **top‑left**.
-- **x** grows to the **right**, **y** grows **down**.
-- **Mid‑top** point is **(20,0)** (great for connecting stems in a tree diagram).
+![my leaf in kramdown shortcut](simple_leaf_half.svg) Think of a **40×40** square grid.
+![my leaf in kramdown shortcut](simple_leaf_half.svg) **(0,0)** is the **top‑left**.
+![my leaf in kramdown shortcut](simple_leaf_half.svg) **x** grows to the **right**, **y** grows **down**.
+![my leaf in kramdown shortcut](simple_leaf_half.svg) **Mid‑top** point is **(20,0)** (great for connecting stems in a tree diagram).
 
 ```
 (0,0)        x→
@@ -44,7 +44,7 @@ body {
 - **V y** → **Vertical line to** this y (keep the same x)
 - **C x1 y1, x2 y2, x y** → **Cubic curve**: draw from current point to (x,y), pulled by two control handles at (x1,y1) and (x2,y2)
 
-> Memory trick: **C** has **two** control points.
+> ![my leaf in kramdown shortcut](simple_leaf_svg.svg) Memory trick: **C** has **two** control points.
 
 ---
 
@@ -83,7 +83,7 @@ This one keeps it simple: a short top‑center stem, a heart‑like leaf using c
 </svg>
 ```
 
-> ✅ Copy‑paste safe: no comments **inside** the `d` attribute.
+> ![my leaf in kramdown shortcut](simple_leaf_svg.svg) Copy‑paste safe: no comments **inside** the `d` attribute.
 
 ### 3b) Same leaf in a 20×20 viewBox (all coordinates halved)
 
@@ -150,17 +150,17 @@ We then draw **cubic **``** curves** around the outline:
 
 Finally, `Z` **closes** the shape.
 
-> Tip: The left side and right side are roughly **mirror images** across x=20. That’s why the leaf looks balanced.
+![my leaf in kramdown shortcut](simple_leaf_svg.svg) Tip: The left side and right side are roughly **mirror images** across x=20. That’s why the leaf looks balanced.
 
 ---
 
 ## 5) The “knobs” you can turn
 
-- **Notch depth (heart look):** raise/lower the first `M20 y`.\
+![my leaf in kramdown shortcut](simple_leaf_half.svg)**Notch depth (heart look):** raise/lower the first `M20 y`.\
   Smaller `y` (e.g., `M20 2.2`) → **shallower** notch. Bigger `y` (e.g., `M20 4`) → **deeper** notch.
-- **Leaf width:** push the far left/right x values outward/inward (e.g., change **7 → 5** and **33 → 35** to get **wider**).
-- **Bottom point:** change the bottom y (like `... 20 38`) to something like `20 37` for a slightly **flatter** tip.
-- **Stem length:** change `V1.8` to `V3` for a longer connector, `V1` for a shorter one.
+![my leaf in kramdown shortcut](simple_leaf_half.svg)**Leaf width:** push the far left/right x values outward/inward (e.g., change **7 → 5** and **33 → 35** to get **wider**).
+![my leaf in kramdown shortcut](simple_leaf_half.svg)**Bottom point:** change the bottom y (like `... 20 38`) to something like `20 37` for a slightly **flatter** tip.
+![my leaf in kramdown shortcut](simple_leaf_half.svg)**Stem length:** change `V1.8` to `V3` for a longer connector, `V1` for a shorter one.
 
 ---
 
@@ -182,7 +182,7 @@ Finally, `Z` **closes** the shape.
 </svg>
 ```
 
-> `gradientUnits="userSpaceOnUse"` lets you specify gradient points **in the same 0–40 coords** as the drawing.
+![my leaf in kramdown shortcut](simple_leaf_svg.svg) `gradientUnits="userSpaceOnUse"` lets you specify gradient points **in the same 0–40 coords** as the drawing.
 
 ---
 
@@ -193,7 +193,7 @@ Finally, `Z` **closes** the shape.
 3. **Shorten the stem:** change `V1.8` to `V1.0`.
 4. **Change color:** replace `fill="#8fd08a"` with your favorite hex.
 
-> Extra: Add little side veins by drawing short `C` curves starting from the midrib (`M20 10 ...`, `M20 16 ...`).
+![my leaf in kramdown shortcut](simple_leaf_half.svg) Extra: Add little side veins by drawing short `C` curves starting from the midrib (`M20 10 ...`, `M20 16 ...`).
 
 ---
 
@@ -203,9 +203,4 @@ Finally, `Z` **closes** the shape.
 - Axes: **x→ right**, **y→ down**
 - Keep numbers small: our whole world is **0..40**
 
-Happy drawing! 🌿
-
-<img src="./simple_leaf_svg.svg" alt="full size" width="5em"><img src="./simple_leaf_half.svg" alt="half size" width="5em">
-
-![alt text](image.png)
-![my leaf in kramdown shortcut](simple_leaf_svg.svg)
+![my leaf in kramdown shortcut](simple_leaf_svg.svg) Happy drawing! ![my leaf in kramdown shortcut](simple_leaf_half.svg)
