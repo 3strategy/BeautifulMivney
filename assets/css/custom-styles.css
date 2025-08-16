@@ -408,46 +408,14 @@ pre code span.c1 {
 
 .leafify>li {
     position: relative;
-    padding-left: 1.4em;
+    padding-inline-start: 1.4em;
+    /* replaces padding-left for LTR, padding-right for RTL */
 }
 
 .leafify>li::before {
     content: "";
     position: absolute;
-    left: 0;
-    top: .25em;
-    width: 1em;
-    height: 1em;
-    background: no-repeat center/contain;
-    background-image: url('/assets/img/simple_leaf_half.svg');
-}
-
-
-
-/* --- Leaf bullets: global styling within content area --- */
-main ul,
-article ul,
-.markdown-body ul,
-.post-content ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-main ul>li,
-article ul>li,
-.markdown-body ul>li,
-.post-content ul>li {
-    position: relative;
-    padding-left: 1.4em;
-}
-
-main ul>li::before,
-article ul>li::before,
-.markdown-body ul>li::before,
-.post-content ul>li::before {
-    content: "";
-    position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     top: .25em;
     width: 1em;
     height: 1em;
