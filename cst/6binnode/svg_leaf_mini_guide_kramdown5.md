@@ -53,12 +53,12 @@ In your main layout (e.g., `_layouts/default.html` or a shared head include), ad
 
 All lists in the content container will automatically get leaf bullets:
 
-```md
+
 - Add the SVG under `/assets/img/`
 - Add the CSS to `/assets/css/custom-styles.css`
 - Link the stylesheet in your layout
 - Enjoy automatic leaf bullets in regular lists
-```
+
 
 ### Opt-out for a particular list (still pure Markdown)
 
@@ -67,6 +67,11 @@ All lists in the content container will automatically get leaf bullets:
 - This list uses the default bullets again
 - Because we opted out with `.no-leaves`
 ```
+⟶result:
+
+{: .no-leaves}
+- This list uses the default bullets again
+- Because we opted out with `.no-leaves`
 
 ## 5) Troubleshooting
 

@@ -7,10 +7,10 @@ Use this page to **test the per-list approach** that keeps your Markdown clean a
 
 ## 1) Put the SVG in your assets
 
+{: .leafify}
 - Place your bullet icon at:  
   **`/assets/img/simple_leaf_half.svg`**
-
-> If your repo builds with a `baseurl` (e.g., GitHub Pages project site), we'll use Liquid's `relative_url` filter so paths resolve correctly.
+- If your repo builds with a `baseurl` (e.g., GitHub Pages project site), we'll use Liquid's `relative_url` filter so paths resolve correctly.
 
 ## 2) Create/Update your stylesheet
 
@@ -40,35 +40,34 @@ Create (or open) **`/assets/css/custom-styles.css`** and add:
 
 ## 3) Ensure the stylesheet is loaded
 
-In your main layout (e.g., `_layouts/default.html` or a shared head include), add **one** of these:
-
-```html
-<link rel="stylesheet" href="{{ '/assets/css/custom-styles.css' | relative_url }}">
-```
-
-If you already have a bundle pipeline, just ensure `custom-styles.css` is included.
+{: .leafify}
+- In your main layout (e.g., `_layouts/default.html` or a shared head include), add **one** of these:
+    ```html
+    <link rel="stylesheet" href="{{ '/assets/css/custom-styles.css' | relative_url }}">
+    ```
+- If you already have a bundle pipeline, just ensure `custom-styles.css` is included.
 
 ## 4) Use it in pure Markdown (no HTML)
 
-```md
+
 {: .leafify}
 - Add `/assets/img/simple_leaf_half.svg`
 - Add rules to `/assets/css/custom-styles.css`
 - Link the stylesheet in your layout
 - Opt-in per list using `{: .leafify}`
-```
+
 
 Another example list (also opt-in):
 
-```md
 {: .leafify}
 - Works in posts and pages
 - Safe with Kramdown/GitHub Pages
 - No `<ul class="…">` needed
-```
+
 
 ## 5) Troubleshooting
 
+{: .leafify}
 - **404 on the SVG** → path is wrong; check DevTools → Network for `/assets/img/simple_leaf_half.svg` (status **200** expected).
 - **Icon too small/misaligned** → tweak `width/height/top` in the CSS.
 - **Self-host, not Jekyll** → replace Liquid path with `/assets/img/simple_leaf_half.svg` (absolute URL from web root).
