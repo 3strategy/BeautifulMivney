@@ -538,4 +538,4 @@ lang: he
 
 
 
-[בואו נצייר עלה](/cst/6binnode/svg_leaf_mini_guide_kramdown.md)
+[בואו נצייר עלה (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown)

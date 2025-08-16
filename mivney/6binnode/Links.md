@@ -17,5 +17,5 @@ lang: he
 
 [⬅ עברו לתרגול Ex6a4 - עץ בינארי \<BinNode\<T](/cst/6binnode/Ex6a4binnode)
 
-[בואו נצייר עלה (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown.md)
+[בואו נצייר עלה (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown)
 
