@@ -9,7 +9,7 @@ lang: he
 {: .box-note}
 התרגילים שבקישורים עברו עיבוד מסיבי שעיקר מטרתו הנגשה. הם אינם מדמים שאלות בגרות.
 
-[⬅ עברו לתרגול Ex3a0 - שרשרת חרוזים Bead](/cst/nodeNbead/Ex3a0beads)
+[⬅ עברו לתרגול Ex3a0 - שרשרת חרוזים Bead](/cst/3nodeNbead/Ex3a0beads)
 
 [⬅ עברו לתרגול Ex3a1 - שרשרת חוליות \<Node\<T](/cst/3nodeT/Ex3a1node)
 

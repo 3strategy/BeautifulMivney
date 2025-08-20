@@ -8,7 +8,7 @@ lang: he
 
 
 
-## 6a1.111 סכום צמתים בעץ בינארי
+## 6a1.1 סכום צמתים בעץ בינארי
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-BxPk17cBVOPb2eO) -->
 
 עליכם לממש פונקציה בשם `SumBinaryTreeNodes` אשר מקבלת פרמטר אחד:

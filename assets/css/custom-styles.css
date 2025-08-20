@@ -4,7 +4,9 @@ h2 {
     margin-top: 3em
 }
 
-
+strong {
+    color: var(--footer-text-col)
+}
 
 
 /* Default: Dark theme (as built from _config.yml) */
@@ -18,7 +20,7 @@ h2 {
     --navbar-text-col: #E0E0E0;
     --navbar-border-col: #333333;
     --footer-col: #1F1F1F;
-    --footer-text-col: #CCCCCC;
+    --footer-text-col: #E9E9CC;
     --footer-link-col: #82AAFF;
     --footer-hover-col: #A0C8FF;
 
@@ -29,15 +31,17 @@ h2 {
 
     --code-col: #5696D6;
     --code-back-col: #353535;
-
+    
     /* Dark theme gradient colors */
     --pre-bg-1: rgba(255, 255, 255, 0.08);
     --pre-bg-2: rgba(255, 255, 255, 0.02);
 
-    --code-img: repeating-linear-gradient(var(--pre-bg-1) 0,
+    --code-img: repeating-linear-gradient(
+        var(--pre-bg-1) 0,
             var(--pre-bg-1) var(--line-height),
             var(--pre-bg-2) var(--line-height),
-            var(--pre-bg-2) calc(var(--line-height) * 2.2));
+        var(--pre-bg-2) calc(var(--line-height) * 2.2)
+    );
 
     --code-met-col: #DCDCAA;
     --code-keyw-col: #D8A0DF;
@@ -53,7 +57,7 @@ h2 {
 /* Overrides for Light theme */
 .light-theme {
     --page-col: #FFFFFF;
-    --text-col: #404040;
+    --text-col: #101010;
     --link-col: #008AFF;
     --hover-col: #0085A1;
     --navbar-col: #EAEAEA;
@@ -71,15 +75,17 @@ h2 {
 
     --code-col: #2666c6;
     --code-back-col: #FFFFFF;
-
+    
     /* Light theme gradient colors */
     --pre-bg-1: rgba(0, 0, 0, 0.04);
     --pre-bg-2: rgba(0, 0, 0, 0.02);
 
-    --code-img: repeating-linear-gradient(var(--pre-bg-1) 0,
+    --code-img: repeating-linear-gradient(
+        var(--pre-bg-1) 0,
             var(--pre-bg-1) var(--line-height),
             var(--pre-bg-2) var(--line-height),
-            var(--pre-bg-2) calc(var(--line-height) * 2.2));
+        var(--pre-bg-2) calc(var(--line-height) * 2.2)
+    );
 
     --code-met-col: #74531F;
     --code-keyw-col: #9108C4;
@@ -137,6 +143,10 @@ h2 {
     }
 }
 
+details {
+    margin-top:1.5em;
+}
+
 pre {
     direction: ltr !important;
     text-align: left !important;
@@ -153,8 +163,7 @@ body {
     font-family: 'Arimo', sans-serif;
 }
 
-ul,
-ol {
+ul, ol {
     display: flex;
     flex-direction: column;
     gap: 0.6em;
@@ -243,8 +252,8 @@ canvas {
 }
 
 button {
-    padding: 15px 8px;
-    font-size: 18px;
+    padding: 0.3em 0.6em;
+    font-size: 1em;
     background-color: var(--backn-col);
     border: none;
     border-radius: 5px;
@@ -269,10 +278,7 @@ button:hover {
     padding-bottom: 0em;
 }
 
-.box-note,
-.box-warning,
-.box-error,
-.box-success {
+.box-note, .box-warning, .box-error, .box-success {
     margin-right: 0.3125em;
     padding-right: 1.3em;
 }
@@ -297,8 +303,25 @@ button:hover {
     border-radius: 0;
 }
 
+.page-break-after { page-break-after: always; }
+
+.page-break-before {
+  break-before: page;
+  page-break-before: always;
+}
+
 .table-en {
     direction: ltr;
+}
+
+.table-rl td:first-child,
+.table-rl th:first-child {
+  text-align: right;
+}
+
+.table-rl td:nth-child(2),
+.table-rl th:nth-child(2) {
+  text-align: left;
 }
 
 .table-he {
@@ -331,68 +354,24 @@ code {
 }
 
 /* JavaScript Code formatting */
-pre code span.kd {
-    color: #5696D6;
-}
-
-pre code span.nx {
-    color: #9CDCFE;
-}
-
-pre code span.o {
-    color: #B4B4B4;
-}
-
-pre code span.p {
-    color: var(--code-bracets-col) !important;
-}
-
-pre code span.k {
-    color: var(--code-keyw-col) !important;
-}
-
-pre code span.mi {
-    color: #88FF88 !important;
-}
-
-pre code span.dl {
-    color: #F4BBA3 !important;
-}
-
-pre code span.s2 {
-    color: #D69D85 !important;
-}
-
-pre code span.kc {
-    color: #569CD6 !important;
-}
-
-pre .lineno {
-    color: #666666 !important;
-}
+pre code span.kd { color: #5696D6; }
+pre code span.nx { color: #9CDCFE; }
+pre code span.o { color: #B4B4B4; }
+pre code span.p { color: var(--code-bracets-col) !important; }
+pre code span.k { color: var(--code-keyw-col) !important; }
+pre code span.mi { color: #88FF88 !important; }
+pre code span.dl { color: #F4BBA3 !important; }
+pre code span.s2 { color: #D69D85 !important; }
+pre code span.kc { color: #569CD6 !important; }
+pre .lineno { color: #666666 !important; }
 
 /* CSharp Code formatting */
-pre code span.nf {
-    color: var(--code-met-col) !important;
-}
-
-pre code span.n {
-    color: var(--code-vars-col) !important;
-}
-
-pre code span.kt {
-    color: var(--code-types-col) !important;
-}
-
-pre code span.m {
-    color: var(--code-numbers-col) !important;
-}
-
-pre code span.s {
-    color: #D69D85 !important;
-}
-
-pre code span.c1 {
+pre code span.nf { color: var(--code-met-col) !important; }
+pre code span.n { color: var(--code-vars-col) !important; }
+pre code span.kt { color: var(--code-types-col) !important; }
+pre code span.m { color: var(--code-numbers-col) !important; }
+pre code span.s { color: #D69D85 !important; }
+pre code span.c1 { 
     color: var(--code-comments-col) !important;
     font-family: 'Arimo';
     font-weight: bold;

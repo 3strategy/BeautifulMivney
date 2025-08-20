@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "ex3a.1 שרשרת חרוזים"
+title: "ex3a.0 שרשרת חרוזים"
 subtitle: "שרשרת חוליות ראשונה"
 tags: []
 lang: he
