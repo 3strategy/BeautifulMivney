@@ -7,7 +7,7 @@ lang: he
 ---
 
 
-## בדיקת פלינדרום ברקורסיה
+## 1a2.1 בדיקת פלינדרום ברקורסיה
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-icMXxw231EF0zDp)
 
 עליכם לממש פונקציה רקורסיבית בשם `IsPalindromeString` אשר מקבלת פרמטר אחד:
@@ -30,7 +30,7 @@ lang: he
 3. יש לטפל במקרי בסיס ובמקרה הרקורסיבי
 
 
-## הסרת תו מחרוזת באמצעות רקורסיה
+## 1a2.2 הסרת תו מחרוזת באמצעות רקורסיה
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-Je7bESS9RG1tAxJ)
 
 עליכם לממש פעולה רקורסיבית בשם `RemoveChar` אשר מקבלת שני פרמטרים:
@@ -54,7 +54,7 @@ lang: he
 3. השתמשו במתודות של מחרוזת כמו Substring() ו-Length
 
 
-## ספירת הופעות תו במחרוזת באמצעות רקורסיה
+## 1a2.3 ספירת הופעות תו במחרוזת באמצעות רקורסיה
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-h2BLL1187mR7Zjf)
 
 עליכם לממש פונקציה רקורסיבית בשם `CountOccurrences` אשר מקבלת שני פרמטרים:
@@ -77,7 +77,7 @@ lang: he
 
 
 
-## היפוך מחרוזת באמצעות רקורסיה
+## 1a2.4 היפוך מחרוזת באמצעות רקורסיה
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-PjQHeGNrPo2cXmr)
 
 עליכם לממש פונקציה בשם `ReverseString` אשר מקבלת פרמטר אחד:
@@ -98,7 +98,7 @@ lang: he
 2. אחרת - החזירו את המחרוזת ההפוכה של כל התווים מהשני ואילך, בתוספת התו הראשון בסוף
 
 
-## ספירת תנועות במחרוזת במאצעות רקורסיה
+## 1a2.5 ספירת תנועות במחרוזת במאצעות רקורסיה
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-YXNHwiL9PHma4Yu)
 
 עליכם לממש פונקציה רקורסיבית בשם `CountVowels` אשר מקבלת פרמטר אחד:

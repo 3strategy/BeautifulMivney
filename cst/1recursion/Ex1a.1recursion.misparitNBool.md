@@ -175,7 +175,7 @@ lang: he
 2. המספר 2 הוא המספר הראשוני הזוגי היחיד.
 
 
-## חישוב עצרת באמצעות רקורסיה
+## 1a1.1 חישוב עצרת באמצעות רקורסיה
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-cMEoCWtAE1N2tkA)
 
 עליכם לממש פונקציה בשם `Factorial` אשר מקבלת פרמטר אחד:
@@ -197,7 +197,7 @@ lang: he
 3. הפונקציה צריכה להחזיר תוצאה נכונה עבור מספרים אי-שליליים
 
 
-## סכום ספרות מספר באמצעות רקורסיה
+## 1a1.2 סכום ספרות מספר באמצעות רקורסיה
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-BA8I4OG33wyPjHn)
 
 עליכם לממש פונקציה רקורסיבית בשם `SumDigits` אשר מקבלת פרמטר אחד:
@@ -222,7 +222,7 @@ lang: he
 המשיכו באופן דומה עד להגיע למקרה הבסיס.
 
 
-## בדיקת זוגיות מספר באמצעות רקורסיה
+## 1a1.3 בדיקת זוגיות מספר באמצעות רקורסיה
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-x1LcqrIF1KRb4jy)
 
 עליכם לממש פונקציה רקורסיבית בשם `IsEven` אשר מקבלת פרמטר אחד:

@@ -7,7 +7,7 @@ lang: he
 ---
 
 
-## מגדלי האנוי רקורסיבי כולל תיאור מעברים
+## 1a5.1 מגדלי האנוי רקורסיבי כולל תיאור מעברים
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-hD9dvJkE23yD/csharp-Jq0PUNPjVhTyCT5)
 
 עליכם לממש פונקציה רקורסיבית בשם `TowerOfHanoi` עם החתימה הבאה:
@@ -31,7 +31,7 @@ public static int TowerOfHanoi(int n, char from, char to, char aux)
 
 
 
-## מגדלי האנוי רקורסיבי
+## 1a5.2 מגדלי האנוי רקורסיבי
 
 
 עליכם לממש פונקציה רקורסיבית בשם `TowerOfHanoi` עם החתימה הבאה:
@@ -57,7 +57,7 @@ public static int TowerOfHanoi(int n)
 
 ---
 
-## שאלה 2: פתרון האנוי באמצעות נוסחה מפורשת (Closed-Form)
+## 1a5.3 שאלה 2: פתרון האנוי באמצעות נוסחה מפורשת (Closed-Form)
 
 במקום פתרון רקורסיבי, מצאו את הנוסחה המפורשת למספר הצעדים הנדרש להעברת `n` טבעות במגדל האנוי.
 
@@ -73,7 +73,7 @@ public static int TowerOfHanoi(int n)
 
 
 
-## בדיקת חוקיות סודוקו
+## 1a5.4 בדיקת חוקיות סודוקו
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-hD9dvJkE23yD/csharp-eUoVCqROV9viXj9)
 
 עליכם לממש פונקציה רקורסיבית בשם `IsValidSudoku` עם החתימה הבאה:
@@ -101,7 +101,7 @@ static bool IsValidSudoku(int[,] board, int row, int col, int num)
 
 
 
-## ספירת מסלולים במטריצה
+## 1a5.5 ספירת מסלולים במטריצה
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-hD9dvJkE23yD/csharp-vgAh4kT0JvCSHdb)
 
 עליכם לממש פונקציה רקורסיבית בשם `CountPaths` עם החתימה הבאה:
@@ -130,7 +130,7 @@ static int CountPaths(int[,] matrix, int row, int col)
 
 
 
-## פתרון מבוך רקורסיבי
+## 1a5.6 פתרון מבוך רקורסיבי
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-hD9dvJkE23yD/csharp-lacWcpXFXURnsr1)
 
