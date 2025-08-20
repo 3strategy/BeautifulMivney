@@ -10,7 +10,7 @@ lang: he
 
 
 
-## 3a1.1 בנייה רקורסיבית של שרשרת מ-n עד 1 
+## 3a1.1 בנייה רקורסיבית של שרשרת מ-n עד 1  {#3a1.1}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-neOnRcUKk8JTV60) -->
 
@@ -51,7 +51,7 @@ node1.SetNext(new Node<int>(30));
 
 
 
-## 3a1.2 בניית ללא רקורסיה של שרשרת מ-1 עד n
+## 3a1.2 בניית ללא רקורסיה של שרשרת מ-1 עד n {#3a1.2}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-8KFSM1V4tSgtEAc) -->
 
 עליכם לממש פונקציה בשם `Build1ToNList` אשר מקבלת פרמטר אחד:
@@ -68,7 +68,7 @@ node1.SetNext(new Node<int>(30));
 
 
 
-## 3a1.3 בניית שרשרת מרשימת מספרים מופרדים בפסיק
+## 3a1.3 בניית שרשרת מרשימת מספרים מופרדים בפסיק {#3a1.3}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-L8F4783Y1jnw5ps) -->
 
@@ -88,7 +88,7 @@ node1.SetNext(new Node<int>(30));
 
 
 
-## 3a1.4 הדפסת הגדולים מהעוקב
+## 3a1.4 הדפסת הגדולים מהעוקב {#3a1.4}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-bSzpuEMKCLvk1xo) -->
 
@@ -105,7 +105,7 @@ node1.SetNext(new Node<int>(30));
 
 
 
-## 3a1.5 חישוב ממוצע
+## 3a1.5 חישוב ממוצע {#3a1.5}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-DuCHAoilz7s4Bb0) -->
 
@@ -123,7 +123,7 @@ node1.SetNext(new Node<int>(30));
 ###
 
 
-## 3a1.6 חישוב מרחק
+## 3a1.6 חישוב מרחק {#3a1.6}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-REfj5hOJJ8P6Y9C) -->
 

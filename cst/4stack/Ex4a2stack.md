@@ -8,7 +8,7 @@ lang: he
 
 
 
-## 4a2.111 בדיקת מחסנית עולה יורדת
+## 4a2.111 בדיקת מחסנית עולה יורדת {#4a2.111}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-DytFoPpnAqfGYmV)
 
 עליכם לממש פונקציה בשם `IsMountainStack` אשר מקבלת פרמטר אחד:
@@ -42,7 +42,7 @@ lang: he
 
 
 
-## 4a2.111 בדיקת מיון מחסנית איטרטיבית
+## 4a2.111 בדיקת מיון מחסנית איטרטיבית {#4a2.111}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-Ihn17uL5phOpTxz)
 
 עליכם לממש פונקציה איטרטיבית בשם `IsStackSorted` אשר מקבלת פרמטר אחד:
@@ -80,7 +80,7 @@ lang: he
 
 
 
-## 4a2.111 בדיקת מיון מחסנית רקורסיבית
+## 4a2.111 בדיקת מיון מחסנית רקורסיבית {#4a2.111}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-6m01NxEitsp4RTj)
 
 עליכם לממש פונקציה רקורסיבית בשם `IsStackSorted` אשר מקבלת מחסנית של מספרים שלמים (מסוג `Stack`).
@@ -127,7 +127,7 @@ public static bool IsStackSorted(Stack)
 
 
 
-## 4a2.111 בדיקת קיום איבר במחסנית רקורסיבי
+## 4a2.111 בדיקת קיום איבר במחסנית רקורסיבי {#4a2.111}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-bpIkHY24KZupaTr)
 
 עליכם לממש פונקציה רקורסיבית בשם `IsElementInStack` אשר מקבלת שני פרמטרים:
@@ -167,7 +167,7 @@ public static bool IsStackSorted(Stack)
 
 
 
-## 4a2.111 בדיקת רצף ספרות במחסנית
+## 4a2.111 בדיקת רצף ספרות במחסנית {#4a2.111}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-6JdniYxfBp6FIIS)
 
 עליכם לממש פונקציה בשם `CheckSequenceInStack` אשר מקבלת שני פרמטרים:
@@ -219,7 +219,7 @@ public static bool CheckSequenceInStack(int number, Stack)
 
 
 
-## 4a2.111 בדיקת שוויון בין מחסניות, רקורסיבי
+## 4a2.111 בדיקת שוויון בין מחסניות, רקורסיבי {#4a2.111}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-BBucoFS7pWlrQFP)
 
 עליכם לממש פונקציה רקורסיבית בשם `AreStacksEqual` אשר מקבלת שני פרמטרים:
@@ -256,7 +256,7 @@ public static bool CheckSequenceInStack(int number, Stack)
 
 
 
-## 4a2.111 הזזה מעגלית במחסנית
+## 4a2.111 הזזה מעגלית במחסנית {#4a2.111}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-UUGgtQTsXIiLQ7M)
 
 עליכם לממש פעולה בשם `CircularShift` אשר מקבלת שני פרמטרים:
@@ -301,7 +301,7 @@ public static bool CheckSequenceInStack(int number, Stack)
 
 
 
-## 4a2.111 פיענוח מחסנית מקודדת
+## 4a2.111 פיענוח מחסנית מקודדת {#4a2.111}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-rQK3bmdBIt082Oa)
 
 עליכם לממש פונקציה בשם `DecodeStack` אשר מקבלת מחסנית מקודדת של מספרים שלמים ומחזירה מחסנית חדשה מפוענחת.
@@ -348,7 +348,7 @@ public static bool CheckSequenceInStack(int number, Stack)
 
 
 
-## 4a2.111 קידוד מחסנית בשיטת אורך-רצף (RLE)
+## 4a2.111 קידוד מחסנית בשיטת אורך-רצף (RLE) {#4a2.111}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-NxRrJSaJtOwsHlt)
 
 עליכם לממש פונקציה בשם `EncodeStackRLE` אשר מקבלת מחסנית של מספרים שלמים (`Stack`) כפרמטר.

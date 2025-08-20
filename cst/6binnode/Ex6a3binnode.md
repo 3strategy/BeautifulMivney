@@ -7,7 +7,7 @@ lang: he
 ---
 
 
-## 6a3.1. גובה עץ בינארי
+## 6a3.1. גובה עץ בינארי {#6a3.1.}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-ILjSkHAEzbXXBzk) -->
 
@@ -46,7 +46,7 @@ lang: he
 
 
 
-## 6a3.2. הדפסת צמתי עץ בינארי בסדר סופי
+## 6a3.2. הדפסת צמתי עץ בינארי בסדר סופי {#6a3.2.}
 
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-z1DNeWwfQrcIEGt) -->
@@ -98,7 +98,7 @@ lang: he
 
 
 
-## 6a3.3. הדפסת בנים ימניים בעץ בינארי
+## 6a3.3. הדפסת בנים ימניים בעץ בינארי {#6a3.3.}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-tW6MEIRAgZ6yVUY) -->
 
 עליכם לממש פונקציה חיצונית בשם `PrintRightChildren` אשר מקבלת פרמטר אחד:
@@ -148,7 +148,7 @@ lang: he
 
 
 
-## 6a3.4. הדפסת עלי עץ בינארי משמאל לימין
+## 6a3.4. הדפסת עלי עץ בינארי משמאל לימין {#6a3.4.}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-6ccZKqWqMNVlRTu) -->
 
 עליכם לממש פונקציה חיצונית בשם `PrintLeavesLeftToRight` אשר מקבלת פרמטר אחד:
@@ -200,7 +200,7 @@ lang: he
 
 
 
-## 6a3.5. הדפסת צמתים קטנים מאביהם בעץ בינארי
+## 6a3.5. הדפסת צמתים קטנים מאביהם בעץ בינארי {#6a3.5.}
 
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-aFePHQKy9NOg3h8) -->
@@ -249,7 +249,7 @@ lang: he
 
 
 
-## 6a3.6. הדפסת צמתים בעלי 2 בנים וערך גדול מאחד מהם
+## 6a3.6. הדפסת צמתים בעלי 2 בנים וערך גדול מאחד מהם {#6a3.6.}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-WtA1lOeMRr0GID3) -->
 

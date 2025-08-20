@@ -6,7 +6,7 @@ tags: []
 lang: he
 ---
 
-## 3a3.1 שרשרת המוכלת בשרשרת אחרת
+## 3a3.1 שרשרת המוכלת בשרשרת אחרת {#3a3.1}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-tmB9bz2hUKxHMlS)
 
@@ -42,7 +42,7 @@ lang: he
 ```
 
 
-## 3a3.2 הפיכת רצפים זהים למופע יחיד
+## 3a3.2 הפיכת רצפים זהים למופע יחיד {#3a3.2}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-zVdf8d9DlcLN3LI)
 
 בתרגיל זה, עליכם לממש פעולה סטטית בשם `RemoveSequencesOfIdenticalNumbers` בתוך מחלקה בשם `Solution`. הפעולה תקבל כפרמטר ראש של רשימה מקושרת של מספרים שלמים ותשנה את הרשימה כך שכל רצף של איברים זהים יוחלף במופע בודד של האיבר. כלומר, אם יש רצף של מספרים זהים (לדוגמה, `1, 1, 1`), הוא יהפוך לאיבר בודד (`1`).
@@ -75,7 +75,7 @@ lang: he
 ```
 
 
-## 3a3.3 הסרת כפילויות גנרי
+## 3a3.3 הסרת כפילויות גנרי {#3a3.3}
 ניתן לפתור קודם את 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-28EmugQGYHcTtHK)
 
@@ -100,7 +100,7 @@ lang: he
 ```
 
 
-## 3a3.4 שרשור שתי שרשראות union
+## 3a3.4 שרשור שתי שרשראות union {#3a3.4}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-a6ByQuCrdOTjrEq)
 
@@ -133,7 +133,7 @@ lang: he
 
 
 
-## 3a3.5 intersect חיתוך שרשראות (במשמעות המתמטית) 
+## 3a3.5 intersect חיתוך שרשראות (במשמעות המתמטית)  {#3a3.5}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-uiULM09uJ8WuaXA)
 
@@ -160,7 +160,7 @@ lang: he
 
 
 
-## 3a3.6 ספירת רצפים מונוטוניים
+## 3a3.6 ספירת רצפים מונוטוניים {#3a3.6}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-wdnyKQcJPolD3EV) -->
 
@@ -225,7 +225,7 @@ lang: he
 
 
 
-## 3a3.7 פלינדרום ברשימה מקושרת
+## 3a3.7 פלינדרום ברשימה מקושרת {#3a3.7}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-i8VpkQKd5hAq4nq)
 
@@ -249,7 +249,7 @@ lang: he
 
 
 
-## 3a3.8 מיון לפי זוגיות בשרשרת
+## 3a3.8 מיון לפי זוגיות בשרשרת {#3a3.8}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-6EleMpsVJc0iTzQ)
 
 בתרגיל זה, עליכם לממש פעולה בשם `ParityPartition` במחלקה Solution שתקבל רשימה מקושרת של מספרים שלמים ותשנה את סדר איבריה בהתאם לזוגיות.

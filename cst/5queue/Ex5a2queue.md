@@ -12,7 +12,7 @@ lang: he
 
 
 
-## 5a2.1 סידור תור: שליליים תחילה, חיוביים אחריהם
+## 5a2.1 סידור תור: שליליים תחילה, חיוביים אחריהם {#5a2.1}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-ET4CEri79iylFzY)
 
 עליכם לממש פונקציה בשם `RearrangeQueue` אשר מקבלת פרמטר אחד:
@@ -49,7 +49,7 @@ lang: he
 
 
 
-## 5a2.2 הפיכת סדר איברים בתור
+## 5a2.2 הפיכת סדר איברים בתור {#5a2.2}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-KugxY68FipeA2WN)
 
 עליכם לממש פעולה סטטית בשם `ReverseQueue` במחלקה `Solution`.
@@ -87,7 +87,7 @@ lang: he
 
 
 
-## 5a2.3 בדיקת פלינדרום בתור
+## 5a2.3 בדיקת פלינדרום בתור {#5a2.3}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-OcP16w5kWlxBUR1)
 
 עליכם לממש פונקציה בשם `IsPalindromeQueue` אשר מקבלת פרמטר אחד:
@@ -132,7 +132,7 @@ using Unit4.CollectionsLib;
 
 
 
-## 5a2.4 ספירת איברים באופן רקורסיבי
+## 5a2.4 ספירת איברים באופן רקורסיבי {#5a2.4}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-QefFrPxTEQS6BXI)
 
@@ -162,7 +162,7 @@ using Unit4.CollectionsLib;
 
 
 
-## 5a2.5 בדיקת קיום איבר באופן רקורסיבי
+## 5a2.5 בדיקת קיום איבר באופן רקורסיבי {#5a2.5}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-YFWGrtWYpUwQZsy)
 
 עליכם לממש פונקציה רקורסיבית בשם `IsElementInQueue` אשר מקבלת שני פרמטרים:
@@ -196,7 +196,7 @@ using Unit4.CollectionsLib;
 
 
 
-## 5a2.6 מיזוג תורים: Q1 לתוך Q2
+## 5a2.6 מיזוג תורים: Q1 לתוך Q2 {#5a2.6}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-0GqEALeOCEPlcdV)
 
@@ -249,7 +249,7 @@ public static Queue
 
 
 
-## 5a2.7 פיענות הודעת רדיו סודית
+## 5a2.7 פיענות הודעת רדיו סודית {#5a2.7}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-s6uSi8jAyZcX1SD)
 
 עליכם לממש פונקציה בשם `DecodeSecretMessage` אשר מקבלת שני פרמטרים:

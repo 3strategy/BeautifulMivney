@@ -8,7 +8,7 @@ lang: he
 
 
 
-## 3a4.1 איחוד ממוין של רשימות מקושרות ללא כפילויות
+## 3a4.1 איחוד ממוין של רשימות מקושרות ללא כפילויות {#3a4.1}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-mTGoXrYRti2COsa)
 
 במשימה זו, עליכם לממש פעולה סטטית בשם `SortedUnionNew` . פעולה זו תקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה, ממוינת וללא כפילויות, המכילה את כל האיברים משתי הרשימות המקוריות.
@@ -39,7 +39,7 @@ lang: he
 ```
 
 
-## 3a4.2 איחוד ממוין של רשימות מקושרות עם חזרות
+## 3a4.2 איחוד ממוין של רשימות מקושרות עם חזרות {#3a4.2}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-hlM9yH2XyXDd9Y1)
 
@@ -69,7 +69,7 @@ lang: he
 
 
 
-## 3a4.XX (כפילות עם SortedUnionNew 3a4.1) איחוד (union) רשימות ממויינות ללא כפילויות
+## 3a4.XX (כפילות עם SortedUnionNew 3a4.1) איחוד (union) רשימות ממויינות ללא כפילויות {#3a4.XX}
 ## למחוק את זה!
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-1KWmWC0LO6mI6og)
 
@@ -85,7 +85,7 @@ lang: he
 
 
 
-## 3a4.4 הכנסת שלם לרשימה ממוינת
+## 3a4.4 הכנסת שלם לרשימה ממוינת {#3a4.4}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-SSsiyyCHsLe6Zce)
 
@@ -114,7 +114,7 @@ lang: he
 
 
 
-## 3a4.111 חיתוך (intersect) רשימות מקושרות ניטרול כפילויות. מעבר יחיד
+## 3a4.111 חיתוך (intersect) רשימות מקושרות ניטרול כפילויות. מעבר יחיד {#3a4.111}
 
 **כנראה קשוח**
 
@@ -136,7 +136,7 @@ lang: he
     }
 
 
-## 3a4.5 מיון הכנסה לשרשרת חדשה
+## 3a4.5 מיון הכנסה לשרשרת חדשה {#3a4.5}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-v9pbgok59FrnKTA)
 
@@ -182,7 +182,7 @@ lang: he
 
 
 
-## 3a4.111 מיון הכנסה (in-place) לשרשרת
+## 3a4.111 מיון הכנסה (in-place) לשרשרת {#3a4.111}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-n2EjDyE6ZlPDvEu)
 

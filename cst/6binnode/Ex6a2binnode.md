@@ -8,7 +8,7 @@ lang: he
 
 
 
-## 6a2.1 בדיקת ערכים אי-זוגיים בעץ בינארי
+## 6a2.1 בדיקת ערכים אי-זוגיים בעץ בינארי {#6a2.1}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wgK2uTCNPYfO/csharp-opSDqpbMbX4ecqE) -->
 
 עליכם לממש פונקציה חיצונית בשם `AllValuesAreOdd` אשר מקבלת פרמטר אחד:
@@ -57,7 +57,7 @@ lang: he
 
 
 
-## 6a2.2. בדיקת זוגות אחים בעץ בינארי	
+## 6a2.2. בדיקת זוגות אחים בעץ בינארי	 {#6a2.2.}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wgK2uTCNPYfO/csharp-eVVnYndq1Vk8XGS) -->
 
 דמיינו שאתם מנהלים בסיס נתונים של עץ בינארי, כמו למשל היררכיה של קבצים במערכת הפעלה או מבנה נתונים של אובייקטים במשחק מחשב. לעיתים קרובות, אתם רוצים לוודא שאין כפילויות לא רצויות או חריגות מסוימות בנתונים. מציאת אחים עם ערכים זהים יכולה להצביע על שגיאה, כפילות מידע, או צורך באופטימיזציה. תרגיל זה מדמה מצב כזה, ומאפשר לכם לזהות בעיות פוטנציאליות במבני נתונים היררכיים.
@@ -128,7 +128,7 @@ lang: he
 
 
 
-## 6a2.3. בדיקת ערך עלים מול ערך אב בעץ בינארי
+## 6a2.3. בדיקת ערך עלים מול ערך אב בעץ בינארי {#6a2.3.}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wgK2uTCNPYfO/csharp-JGKciO7Ij4LYysO) -->
 
 עליכם לממש פונקציה חיצונית בשם `AreLeavesEqualToParent` אשר מקבלת פרמטר אחד:
@@ -202,7 +202,7 @@ null
 
 
 
-## 6a2.4. עץ אריאל
+## 6a2.4. עץ אריאל {#6a2.4.}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-WoFCEFq1C7aevN4) -->
 
@@ -239,7 +239,7 @@ using Unit4.CollectionsLib;
 
 
 
-## 6a2.5 בדיקת צומת עם בנים שונים בעץ בינארי
+## 6a2.5 בדיקת צומת עם בנים שונים בעץ בינארי {#6a2.5}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-WoFCEFq1C7aevN4) -->
 
@@ -276,7 +276,7 @@ using Unit4.CollectionsLib;
 
 
 
-## 6a2.6  עץ יחיאל
+## 6a2.6  עץ יחיאל {#6a2.6}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-UqQHxFmkQGkXPIw) -->
 
 עליכם לממש פונקציה חיצונית בשם `IsYechielTree` אשר מקבלת פרמטר אחד:
@@ -304,7 +304,7 @@ using Unit4.CollectionsLib;
 
 
 
-## 6a2.7. עץ צחי
+## 6a2.7. עץ צחי {#6a2.7.}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-7mp27ju08jCjY63) -->
 
 עליכם לממש פונקציה חיצונית בשם `IsTzachiTree` אשר מקבלת פרמטר אחד:
@@ -332,7 +332,7 @@ using Unit4.CollectionsLib;
 
 
 
-## 6a2.8. בדיקת עץ בינארי מיוחד
+## 6a2.8. בדיקת עץ בינארי מיוחד {#6a2.8.}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-mlFFyZmsz8ljFt9) -->
 
 עליכם לממש פונקציה חיצונית בשם `CheckSpecialBinaryTree` אשר מקבלת פרמטר אחד:
@@ -360,7 +360,7 @@ using Unit4.CollectionsLib;
 
 
 
-## 6a2.9. בדיקת עץ מעיין
+## 6a2.9. בדיקת עץ מעיין {#6a2.9.}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-4sMnzqKPvtRtGPF) -->
 
 עליכם לממש פעולה חיצונית (פונקציה סטטית) בשם `IsMaayanTree` אשר מקבלת פרמטר אחד:
@@ -392,7 +392,7 @@ using Unit4.CollectionsLib;
 
 
 
-## 6a2.111
+## 6a2.111 {#6a2.111}
 
 
 
