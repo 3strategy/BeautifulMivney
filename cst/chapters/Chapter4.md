@@ -85,6 +85,8 @@ public class Stack<T>
 
 לתרגול הוספה והסרה במחסנית תוכלו לגשת לקישורים הבאים:
 
-- [⬅ עברו לתרגיל Push ו‑Pop]({% link cst/4stack/Ex4a1stack.md %}#4a1)
-- [⬅ עברו לתרגיל מחסנית לביטויים]({% link cst/4stack/Ex4a2stack.md %}#4a2)
-- [⬅ עברו לתרגיל שיווי משקל של סוגריים]({% link cst/4stack/Ex4a3stack.md %}#4a3)
+- [⬅ עברו לתרגיל Push ו‑Pop]({% link cst/4stack/Ex4a1stack.md %}#4a1.2)
+- [⬅ עברו לתרגיל מחסנית לביטויים]({% link cst/4stack/Ex4a2stack.md %}#4a2.1)
+**לעדכן את הקישור**
+
+- [⬅ עברו לתרגיל שיווי משקל של סוגריים] כרגע חסר
