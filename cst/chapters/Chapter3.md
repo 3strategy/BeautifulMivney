@@ -18,7 +18,7 @@ lang: he
 <details markdown="1">
 <summary>מהי חוליה (Node)?</summary>
 
-בגרסה הפשוטה ביותר, חוליה ברשימה מקושרת מכיל שני דברים: נתון (data) ומצביע (next) לחוליה הבא. כאשר החוליה האחרון ברשימה מסמן שהמשך הרשימה הוא **null**, הרשימה מסתיימת. כך ניתן להוסיף או להסיר חוליות מבלי להזיז את שאר האיברים כמו במערך.
+בגרסה הפשוטה ביותר, חוליה ברשימה מקושרת מכיל שני דברים: נתון (data) ומצביע (next) לחוליה הבא. כאשר החוליה האחרונה ברשימה מסמן שהמשך הרשימה הוא **null**, הרשימה מסתיימת. כך ניתן להוסיף או להסיר חוליות מבלי להזיז את שאר האיברים כמו במערך.
 
 </details>
 
@@ -38,7 +38,7 @@ lang: he
 | מחזירה מחרוזת המייצגת את שרשרת החוליות מתחילת הרשימה | `override string ToString()` |
 {: .table-rl}
 
-בחוליה מטיפוס **Bead** ניתן לשנות את הקישור לחוליה הבא באמצעות `SetNext`, להוסיף חוליה חדש בראש הרשימה על ידי יצירת חוליה חדש שהמצביע שלו מצביע לראש הקודם, או להסיר חוליה על ידי דילוג עליו בהגדרת המצביע. בגלל שאין לנו גישה ישירה לאינדקסים, יש לשמור מצביע לראש הרשימה בכל זמן.
+בחוליה מטיפוס **Bead** ניתן לשנות את הקישור לחוליה הבא באמצעות `SetNext`, להוסיף חוליה חדשה בראש הרשימה על ידי יצירת חוליה חדשה שהמצביע שלו מצביע לראש הקודם, או להסיר חוליה על ידי דילוג עליו בהגדרת המצביע. בגלל שאין לנו גישה ישירה לאינדקסים, יש לשמור מצביעה לראש הרשימה בכל זמן.
 
 </details>
 
@@ -57,7 +57,7 @@ lang: he
 | מחזירה מחרוזת המייצגת את שרשרת החוליות מתחילת הרשימה | `()override string ToString` |
 {: .table-rl}
 
-בחוליה מטיפוס **NodeInt** ניתן לשנות את הקישור לחוליה הבא באמצעות `SetNext`, להוסיף חוליה חדש בראש הרשימה על ידי יצירת חוליה חדש שהמצביע שלו מצביע לראש הקודם, או להסיר חוליה על ידי דילוג עליו בהגדרת המצביע. בגלל שאין לנו גישה ישירה לאינדקסים, יש לשמור מצביע לראש הרשימה בכל זמן.
+בחוליה מטיפוס **NodeInt** ניתן לשנות את הקישור לחוליה הבא באמצעות `SetNext`, להוסיף חוליה חדשה בראש הרשימה על ידי יצירת חוליה חדשה שהמצביע שלו מצביעה לראש הקודם, או להסיר חוליה על ידי דילוג עליו בהגדרת המצביע. בגלל שאין לנו גישה ישירה לאינדקסים, יש לשמור מצביעה לראש הרשימה בכל זמן.
 
 </details>
 
@@ -136,7 +136,7 @@ graph LR
     D --> E([null])
 </div>
 
-הדיאגרמה מתארת רשימה מקושרת שבה כל חוליה מצביע לחוליה הבא, והחוליה האחרון מצביע ל‑null.
+הדיאגרמה מתארת רשימה מקושרת שבה כל חוליה מצביעה לחוליה הבא, והחוליה האחרונה מצביעה ל‑null.
 
 
 <details markdown="1">
@@ -147,12 +147,12 @@ graph LR
 
 | Methods we DO NOT have <br/>but could write😀 | תפקיד |
 | --- | --- |
-| מוסיפה חוליה עם ערך חדש לסוף הרשימה | `Append(Node<T> head, T value)` |
-|מוסיפה חוליה חדש לראש הרשימה ומעדכן את הראש | `Prepend(ref Node<T> head, T value)` | 
+| מוסיפה חוליה עם ערך חדשה לסוף הרשימה | `Append(Node<T> head, T value)` |
+|מוסיפה חוליה חדשה לראש הרשימה ומעדכן את הראש | `Prepend(ref Node<T> head, T value)` | 
 | מחזירה את מספר החוליות ברשימה | `int Count(Node<T> head)` |
 | בודקת אם ערך קיים ברשימה | `bool Contains(Node<T> head, T value)` |
 |מסירה את החוליה הראשונה בעלת ערך נתון ומחזירה את הראש המעודכן | `Node<T> Remove(Node<T> head, T value)` | 
-|מוסיפה חוליה חדש לאחר חוליה נתון | `void InsertAfter(Node<T> node, T value)` | 
+|מוסיפה חוליה חדשה לאחר חוליה נתון | `void InsertAfter(Node<T> node, T value)` | 
 {: .table-rl}
 
 </details>
