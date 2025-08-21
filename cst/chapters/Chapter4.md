@@ -1,6 +1,6 @@
 ---
 layout: page 
-title: פרק 4 – מחלקת `>Stack<T`
+title: פרק 4 – מחלקת Stack⟨T⟩
 subtitle: "עבודה עם מחסנית – LIFO, Push ו‑Pop"
 tags: [Stack, מחסנית, Push, Pop, Top, מחסנית גנרית, C#]
 mathjax: true
@@ -8,7 +8,7 @@ lang: he
 ---
 
 {: .box-note}
-מחסנית (Stack) היא מבנה נתונים המתנהג לפי עיקרון **Last‑In‑First‑Out**: הפריט האחרון שנכנס הוא הראשון שיוצא. בפרק זה נלמד כיצד לעבוד עם מחסנית גנרית `>Stack<T` ב‑C# ונעמוד על יתרונותיה וחסרונותיה.
+מחסנית (Stack) היא מבנה נתונים המתנהג לפי עיקרון **Last‑In‑First‑Out**: הפריט האחרון שנכנס הוא הראשון שיוצא. בפרק זה נלמד כיצד לעבוד עם מחסנית גנרית `<Stack<T` ב‑C# ונעמוד על יתרונותיה וחסרונותיה.
 
 <!-- Source: University of Wisconsin – Notes on Stacks -->
 
