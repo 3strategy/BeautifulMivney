@@ -10,7 +10,7 @@ lang: he
 בתרגילי סיבוכיות תידרשו לקבוע את הסיבוכיות ברישום bigO. להגדיר מיהו הקלט n, ולהסביר מדוע זו הסיבוכיות.
 
 
-## 2a1.1 אינדקס שיווי משקל במערך {#2a1.1}
+## 2a1.1 אינדקס שיווי משקל במערך {#id2a1.1}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-Zl2ZHWkxU2Tk/csharp-4xrcxhCo3R9Pjdx)
 
 עליכם לממש פונקציה בשם `FindEquilibriumIndex` אשר מקבלת פרמטר אחד:
@@ -33,7 +33,7 @@ lang: he
 
 
 
-## 2a1.2 בדיקת סכום זוג במערך ממוין {#2a1.2}
+## 2a1.2 בדיקת סכום זוג במערך ממוין {#id2a1.2}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-Zl2ZHWkxU2Tk/csharp-IhiOgFWqCs7T3tM)
 
 עליכם לממש פונקציה בשם `HasPairWithSum` אשר מקבלת שני פרמטרים:

@@ -12,8 +12,9 @@ lang: he
 
 
 
-## 2a2.1 הדפסת איברים כפולים במערך {#2a2.1}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-gf43iOt4Orku/csharp-rlPsZVJFbmjoTWd)
+## 2a2.1 הדפסת איברים כפולים במערך {#id2a2.1}
+
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-gf43iOt4Orku/csharp-rlPsZVJFbmjoTWd) -->
 
 עליכם לממש פונקציה בשם `PrintDuplicates` אשר מקבלת פרמטר אחד:
 
@@ -44,8 +45,9 @@ Solution.PrintDuplicates(numbers);
 ```
 
 
-## 2a2.2 מציאת איבר הרוב במערך {#2a2.2}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-gf43iOt4Orku/csharp-Kugio0y1OR9d9J2)
+## 2a2.2 מציאת איבר הרוב במערך {#id2a2.2}
+
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-gf43iOt4Orku/csharp-Kugio0y1OR9d9J2) -->
 
 
 עליכם לממש פונקציה בשם `FindMajorityElement` אשר מקבלת פרמטר אחד:
@@ -69,8 +71,9 @@ Solution.PrintDuplicates(numbers);
 
 
 
-## 2a2.3 מציאת סכום תת-מערך רציף מקסימלי {#2a2.3}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-gf43iOt4Orku/csharp-7faKgxthRqLKFrC)
+## 2a2.3 מציאת סכום תת-מערך רציף מקסימלי {#id2a2.3}
+
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-gf43iOt4Orku/csharp-7faKgxthRqLKFrC) -->
 
 עליכם לממש פונקציה בשם `MaxSubArraySum` אשר מקבלת פרמטר אחד:
 
@@ -86,7 +89,7 @@ Solution.PrintDuplicates(numbers);
 
 
 
-## 2a2.4 סכום שני האיברים החיוביים והשונים הקטן ביותר {#2a2.4}
+## 2a2.4 סכום שני האיברים החיוביים והשונים הקטן ביותר {#id2a24}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-gf43iOt4Orku/csharp-rrGy2ya7SpkGaLP)
 
 עליכם לממש פונקציה בשם `FindSmallestSumOfTwoDistinctPositives` אשר מקבלת פרמטר אחד:

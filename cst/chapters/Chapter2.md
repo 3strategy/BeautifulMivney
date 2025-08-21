@@ -98,8 +98,8 @@ public static int SumArray(int[] row)
 
 כדי לתרגל ניתוח סיבוכיות, נסו לדרג את הסיבוכיות של פונקציות שאתם כותבים. תוכלו למצוא תרגילים נוספים בעמודי התרגול:
 
-* [⬅ עברו לתרגיל סיבוכיות פשוטה]({% link cst/2complexity/Ex2.1complexity.easy.md %}#2a1)
-* [⬅ עברו לתרגיל סיבוכיות בינונית]({% link cst/2complexity/Ex2.2complexity.lessEasy.md %}#2a2)
+* [⬅ עברו לתרגיל סיבוכיות פשוטה]({% link cst/2complexity/Ex2.1complexity.easy.md %}#id2a1.1)
+* [⬅ עברו לתרגיל סיבוכיות בינונית]({% link cst/2complexity/Ex2.2complexity.lessEasy.md %}#2a2.2)
 
 <details markdown="1">
 <summary>מקום לפתרון</summary>
