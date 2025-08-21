@@ -45,7 +45,7 @@ lang: he
 
 <div class="mermaid">
 graph LR
-    O1[O(1)] --> Ologn[O(log n)] --> On[O(n)] --> Onlogn[O(n log n)] --> On2[O(n²)] --> Oexp[O(2ⁿ)]
+    O1["O(1)"] --> Ologn["O(log(n))"] --> On["O(n)"] --> Onlogn["O(n·log(n))"] --> On2["O(n²)"] --> Oexp["O(2ⁿ)"]
 </div>
 
 הדיאגרמה משווה בין סיבוכויות שונות. ככל שהגודל n גדל, ההבדל בין O(n) לבין O(n²) נהיה משמעותי.
@@ -99,7 +99,7 @@ public static int SumArray(int[] row)
 כדי לתרגל ניתוח סיבוכיות, נסו לדרג את הסיבוכיות של פונקציות שאתם כותבים. תוכלו למצוא תרגילים נוספים בעמודי התרגול:
 
 * [⬅ עברו לתרגיל סיבוכיות פשוטה]({% link cst/2complexity/Ex2.1complexity.easy.md %}#id2a1.1)
-* [⬅ עברו לתרגיל סיבוכיות בינונית]({% link cst/2complexity/Ex2.2complexity.lessEasy.md %}#2a2.2)
+* [⬅ עברו לתרגיל סיבוכיות בינונית]({% link cst/2complexity/Ex2.2complexity.lessEasy.md %}#id2a2.2)
 
 <details markdown="1">
 <summary>מקום לפתרון</summary>

@@ -13,7 +13,7 @@ lang: he
 
 
 
-## 4a1.1 בדיקת פלינדרום במחסנית {#4a1.1}
+## 4a1.1 בדיקת פלינדרום במחסנית {#id4a1.1}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zDoYvaBV5KTu/csharp-FBxAQvAItsYlH9k)
 
 עליכם לממש פונקציה בשם `IsStackPalindrome` אשר מקבלת פרמטר אחד:
@@ -42,7 +42,7 @@ lang: he
 
 
 
-## 4a1.8 הסרת מופעים ממחסנית {#4a1.8}
+## 4a1.8 הסרת מופעים ממחסנית {#id4a1.8}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zDoYvaBV5KTu/csharp-BRc7J8lp8KFVrYP)
 
 עליכם לממש פונקציה בשם `RemoveAllOccurrences` אשר מקבלת שני פרמטרים:
@@ -67,7 +67,7 @@ lang: he
 
 
 
-## 4a1.3 העתקה ממחסנית {#4a1.3}
+## 4a1.3 העתקה ממחסנית {#id4a1.3}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zDoYvaBV5KTu/csharp-LzcVppyiQX7hWPR)
 
 עליכם לממש פונקציה בשם `CopyStack` אשר מקבלת מחסנית מסוג `Unit4.CollectionsLib.Stack` ומחזירה מחסנית חדשה שהיא העתק זהה של המקורית.
@@ -104,7 +104,7 @@ lang: he
 
 
 
-## 4a1.9 השוואת תוכן מחסניות {#4a1.9}
+## 4a1.9 השוואת תוכן מחסניות {#id4a1.9}
 
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zDoYvaBV5KTu/csharp-7bXx1J4ZKqD0OaO)
 
@@ -138,7 +138,7 @@ lang: he
 
 
 
-## 4a1.7 מציאת איבר מינימאלי והעברתו לראש המחסנית {#4a1.7}
+## 4a1.7 מציאת איבר מינימאלי והעברתו לראש המחסנית {#id4a1.7}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zDoYvaBV5KTu/csharp-BUrzF8VPS1xkE8X)
 
 עליכם לממש פונקציה בשם `MoveMinToTop` אשר מקבלת פרמטר אחד:
@@ -170,7 +170,7 @@ lang: he
 
 
 
-## 4a1.4 סכום איברי מחסנית {#4a1.4}
+## 4a1.4 סכום איברי מחסנית {#id4a1.4}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zDoYvaBV5KTu/csharp-KGoOpGPM7FjoI1g)
 
 עליכם לממש פונקציה בשם `SumStackElements` אשר מקבלת פרמטר אחד:
@@ -198,7 +198,7 @@ lang: he
 
 
 
-## 4a1.5 ספירת איברים במחסנית {#4a1.5}
+## 4a1.5 ספירת איברים במחסנית {#id4a1.5}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zDoYvaBV5KTu/csharp-gGHnv4sZDij7Z3F)
 
 עליכם לממש פונקציה בשם `CountStackElements` אשר מקבלת פרמטר אחד:
@@ -228,7 +228,7 @@ lang: he
 
 
 
-## 4a1.6 ספירת מופעים של איבר במחסנית {#4a1.6}
+## 4a1.6 ספירת מופעים של איבר במחסנית {#id4a1.6}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zDoYvaBV5KTu/csharp-5qHUlNHE23bUznb)
 
 עליכם לממש פונקציה בשם `CountOccurrences` אשר מקבלת שני פרמטרים:

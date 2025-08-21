@@ -10,7 +10,7 @@ lang: he
 
 
 
-## 3a2.1 בניית ברקורסיה של שרשרת מ-1 עד n {#3a2.1}
+## 3a2.1 בניית ברקורסיה של שרשרת מ-1 עד n {#id3a2.1}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-wn4SzzATrGauLe1) -->
 
@@ -25,7 +25,7 @@ lang: he
 
 
 
-## 3a2.2 הסרת האיבר הראשון המכיל את הערך {#3a2.2}
+## 3a2.2 הסרת האיבר הראשון המכיל את הערך {#id3a2.2}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-LcJdoNcv1aZQCVw) -->
 
@@ -45,7 +45,7 @@ lang: he
 5. יש לטפל במקרה שבו המספר להסרה לא נמצא ברשימה כלל.
 
 
-## 3a2.3 מציאת מקסימאלי רקורסיבית {#3a2.3}
+## 3a2.3 מציאת מקסימאלי רקורסיבית {#id3a2.3}
 
 **יחסית פשוט**
 
@@ -63,7 +63,7 @@ lang: he
 2. השתמשו במחלקה Node מתוך Unit4.CollectionsLib.
 3. מקרה בסיס: אם הרשימה מכילה איבר אחד בלבד, הוא המקסימום. אם הרשימה ריקה, אין מקסימום (ניתן להחזיר ערך מינימלי כלשהו או לזרוק חריגה, אך לצורך תרגיל זה, נניח שהרשימה אינה ריקה או שתטופל על ידי קוד הבדיקה).
 
-## 3a2.4 הסרת כל השליליים רקורסיבית {#3a2.4}
+## 3a2.4 הסרת כל השליליים רקורסיבית {#id3a2.4}
 
 **די קשה**
 
@@ -85,7 +85,7 @@ lang: he
 
 
 
-## 3a2.5 סכום שרשרת {#3a2.5}
+## 3a2.5 סכום שרשרת {#id3a2.5}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-SyOUIe9w9qMnsrj) -->
 
@@ -102,7 +102,7 @@ lang: he
 3. הקפידו לא לשנות את מבנה הרשימה המקורית במהלך החישוב.
 
 
-## 3a2.6 כמות הזוגיים {#3a2.6}
+## 3a2.6 כמות הזוגיים {#id3a2.6}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-CnrRLUTl23Iuhss) -->
 

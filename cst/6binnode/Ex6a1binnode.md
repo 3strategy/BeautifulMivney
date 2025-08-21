@@ -8,7 +8,7 @@ lang: he
 
 
 
-## 6a1.1 סכום צמתים בעץ בינארי {#6a1.1}
+## 6a1.1 סכום צמתים בעץ בינארי {#id6a1.1}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-BxPk17cBVOPb2eO) -->
 
 עליכם לממש פונקציה בשם `SumBinaryTreeNodes` אשר מקבלת פרמטר אחד:
@@ -45,7 +45,7 @@ lang: he
 
 
 
-## 6a1.2 המספר המקסימלי בעץ בינארי {#6a1.2}
+## 6a1.2 המספר המקסימלי בעץ בינארי {#id6a1.2}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-RJbpTdUbf7tw554) -->
 
 עליכם לממש פונקציה חיצונית בשם `FindMaxInBinaryTree` אשר מקבלת פרמטר אחד:
@@ -94,7 +94,7 @@ lang: he
 
 
 
-## 6a1.3 {#6a1.3}
+## 6a1.3 {#id6a1.3}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-xZv7vuJqdKon9WX) -->
 
 עליכם לממש פונקציה בשם `CountSingleChildren` אשר מקבלת פרמטר אחד:
@@ -147,7 +147,7 @@ lang: he
 
 
 
-## 6a1.4 {#6a1.4}
+## 6a1.4 {#id6a1.4}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-9V82E37LZtLCkLU) -->
 
 עליכם לממש פונקציה בשם `CountEvenNodes` אשר מקבלת פרמטר אחד:
@@ -188,7 +188,7 @@ lang: he
 
 
 
-## 6a1.6 סכום בנים ימניים בעץ בינארי {#6a1.6}
+## 6a1.6 סכום בנים ימניים בעץ בינארי {#id6a1.6}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-Pc8EwaYDAV1SHR6) -->
 
 עליכם לממש פונקציה בשם `SumOfRightChildren` אשר מקבלת פרמטר אחד:
@@ -212,7 +212,7 @@ lang: he
 
 
 
-## 6a1.7 ספירת צמתים בעץ בינארי {#6a1.7}
+## 6a1.7 ספירת צמתים בעץ בינארי {#id6a1.7}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-PfzCbpw6xERpiRQ) -->
 
 עליכם לממש פונקציה חיצונית בשם `CountOccurrences` אשר מקבלת שני פרמטרים:
@@ -254,7 +254,7 @@ lang: he
 
 
 
-## 6a1.8 ספירת עלים בעץ בינארי {#6a1.8}
+## 6a1.8 ספירת עלים בעץ בינארי {#id6a1.8}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-HHVed2UwzSG73nG) -->
 
 עליכם לממש פונקציה סטטית בשם `CountLeaves` אשר מקבלת פרמטר אחד:
@@ -324,7 +324,7 @@ lang: he
 
 
 
-## 6a1.9 {#6a1.9}
+## 6a1.9 {#id6a1.9}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-nZTXCjDFBxrQQo9) -->
 
 עליכם לממש פונקציה בשם `CountNodesSmallerThanChild` אשר מקבלת פרמטר אחד:
@@ -390,7 +390,7 @@ lang: he
 
 
 
-## 6a1.10  ספירת צמתים גדולים מהאב בעץ בינארי {#6a1.10}
+## 6a1.10  ספירת צמתים גדולים מהאב בעץ בינארי {#id6a1.10}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-yhEzaoqHjDR4P5F) -->
 
 עליכם לממש פונקציה בשם `CountNodesGreaterThanParent` אשר מקבלת פרמטר אחד:
@@ -435,7 +435,7 @@ lang: he
 
 
 
-## 6a1.11 {#6a1.11}
+## 6a1.11 {#id6a1.11}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-Pagtda3BI15q3zW) -->
 
 עליכם לממש פונקציה חיצונית בשם `SumOddSingleNodes` אשר מקבלת פרמטר אחד:
@@ -486,7 +486,7 @@ lang: he
 
 
 
-## 6a1.12 כמות סבים בעץ בינארי {#6a1.12}
+## 6a1.12 כמות סבים בעץ בינארי {#id6a1.12}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-cHWOVsK7DXFICMx) -->
 

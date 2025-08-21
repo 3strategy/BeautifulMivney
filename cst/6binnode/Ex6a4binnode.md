@@ -7,7 +7,7 @@ lang: he
 ---
 
 
-## 6a4.1. בדיקת שוויון בין עצים בינאריים {#6a4.1.}
+## 6a4.1. בדיקת שוויון בין עצים בינאריים {#id6a4.1.}
 
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-IipcItdaVHujXAI) -->
@@ -50,7 +50,7 @@ lang: he
 
 
 
-## 6a4.2. תמונת ראי של עצים בינאריים {#6a4.2.}
+## 6a4.2. תמונת ראי של עצים בינאריים {#id6a4.2.}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-ip5OPQCSDAYMuA1) -->
 
@@ -106,7 +106,7 @@ lang: he
 
 
 
-## 6a4.3. עדכון עלי עץ בינארי לערך האב {#6a4.3.}
+## 6a4.3. עדכון עלי עץ בינארי לערך האב {#id6a4.3.}
 
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-4tLsiehctUg1LuQ) -->
@@ -174,7 +174,7 @@ lang: he
 
 
 
-## 6a4.4. מחיקת צמתי בן יחיד מעץ בינארי {#6a4.4.}
+## 6a4.4. מחיקת צמתי בן יחיד מעץ בינארי {#id6a4.4.}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-W8kTf6AEjferMSD) -->
 
 עליכם לכתוב פונקציה סטטית בשם `DeleteSingleChildNodes` המקבלת כקלט שורש של עץ בינארי. הפונקציה צריכה למחוק כל צומת בעץ שהינו שיש לו רק צאצא אחד - ימני או שמאלי.
@@ -263,7 +263,7 @@ lang: he
 
 
 
-## 6a4.5. הוספת בן שמאלי לעלי עץ בינארי {#6a4.5.}
+## 6a4.5. הוספת בן שמאלי לעלי עץ בינארי {#id6a4.5.}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-viVq9iIefv3tWL2) -->
 
@@ -325,7 +325,7 @@ lang: he
 (הבן השמאלי של 10 הוא 10, של 25 הוא 25, ושל 35 הוא 35)
 
 
-## 6a4.6. הוספת אח לבן יחיד בעץ בינארי {#6a4.6.}
+## 6a4.6. הוספת אח לבן יחיד בעץ בינארי {#id6a4.6.}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-lFodsGrGyzasaWi) -->
 
@@ -401,7 +401,7 @@ null null
 
 
 
-## 6a4.7. כמות צמתים ברמה בעץ בינארי {#6a4.7.}
+## 6a4.7. כמות צמתים ברמה בעץ בינארי {#id6a4.7.}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-gkjHpa0Q20wWV88) -->
 
 עליכם לממש פונקציה חיצונית בשם `CountNodesAtLevel` אשר מקבלת שני פרמטרים:
@@ -436,7 +436,7 @@ null null
 
 
 
-## 6a4.8 גדר העץ הבינארי {#6a4.8}
+## 6a4.8 גדר העץ הבינארי {#id6a4.8}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-96YVcnE99BTHHjQ) -->
 
 במשימה זו, עליכם לממש פעולה בשם `GetTreeFence` בתוך מחלקה סטטית בשם `Solution`. הפעולה תקבל כפרמטר עץ בינארי מסוג `Unit4.BinNode` ותחזיר רשימת חוליות מסוג `Unit4.Node` המייצגת את 'גדר העץ'.
@@ -508,7 +508,7 @@ current2 = current2.Next;
 
 
 
-## 6a4.9 מסלול עולה בעץ בינארי {#6a4.9}
+## 6a4.9 מסלול עולה בעץ בינארי {#id6a4.9}
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-sIbSRB21iogv8jR) -->
 
 במשימה זו, עליכם לכתוב פעולה סטטית בשם `HasAscendingPath` במחלקה `Solution` שתקבל כפרמטר שורש של עץ בינארי (מסוג `Unit4.BinNode`) ותחזיר `true` אם קיים בעץ מסלול מהשורש לעלה שבו הערכים ממוינים בסדר עולה. אחרת, הפעולה תחזיר `false`.
@@ -621,7 +621,7 @@ Console.WriteLine(Solution.HasAscendingPath(root)); // פלט: True
 
 
 
-## 6a4.10 סכום מקסימלי של מסלול בעץ בינארי {#6a4.10}
+## 6a4.10 סכום מקסימלי של מסלול בעץ בינארי {#id6a4.10}
 
 <!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-rCshSJ9n0OtGcFP) -->
 
@@ -679,7 +679,7 @@ Console.WriteLine(Solution.HasAscendingPath(root)); // פלט: True
 
 
 
-## 6a4.111 {#6a4.111}
+## 6a4.111 {#id6a4.111}
 
 
 
@@ -689,7 +689,7 @@ Console.WriteLine(Solution.HasAscendingPath(root)); // פלט: True
 
 
 
-## 6a4.111 {#6a4.111}
+## 6a4.111 {#id6a4.111}
 
 
 
