@@ -1,15 +1,15 @@
 ---
 layout: page 
-title: "פרק 5 – מחלקת Queue<T>"
+title: "פרק 5 – מחלקת Queue⟨T⟩"
 subtitle: "תור, FIFO ותור מעגלי"
-tags: [Queue, תור, Enqueue, Dequeue, מחלקה גנרית, תור מעגלי]
+tags: [Queue, תור, Insert , Remove, מחלקה גנרית, תור מעגלי]
 mathjax: true
 lang: he
 ---
 
-<div class="box-note">
+{: .box-note}
 תור (Queue) הוא מבנה נתונים שבו הפריט הראשון שנכנס הוא הראשון שיוצא – **First‑In‑First‑Out**. בפרק זה נלמד לממש תור גנרי ב‑#C, להבין מתי כדאי להשתמש בתור מעגלי וכיצד לשמור על יעילות הפעולות.
-</div>
+
 
 <!-- Source: University of Wisconsin – Queues notes -->
 
@@ -18,13 +18,75 @@ lang: he
 <details markdown="1">
 <summary>הגדרה ותיאור</summary>
 
-תור הוא סדרה ליניארית שבה שני קצוות: קצה הכניסה (**Rear**) וקצה היציאה (**Front**). פעולת `Enqueue` מוסיפה פריט לסוף התור, ו‑`Dequeue` מסירה את הפריט מההתחלה. אם ננסה להסיר פריט מתור ריק נקבל חריגה.
+תור הוא סדרה ליניארית שבה שני קצוות: קצה הכניסה (**Rear**) וקצה היציאה (**Front**). פעולת `Insert` מוסיפה פריט לסוף התור, ו‑`Remove` מסירה את הפריט מההתחלה. אם ננסה להסיר פריט מתור ריק נקבל חריגה.
 
 </details>
 
-### מימוש בסיסי של תור במערך
+### מימוש של תור ב- Unit4 הוא באמצעות שרשרת חוליות ולא במערך
 
-הדרך הפשוטה לממש תור היא באמצעות מערך ולנהל שני אינדקסים: אחד לראש ואחד לזנב. אך פעולה `Dequeue` על מערך רגיל דורשת הזזה של כל האיברים שמאחורי הראש ומכאן נעשית ב‑\(O(n)\). כדי לשפר זאת נשתמש במערך מעגלי.
+```csharp
+// Unit4 המימוש הרשמי של 
+public class Queue<T>
+{
+    private Node<T> first;
+    private Node<T> last;
+
+    //-----------------------------------
+    //constructor
+    public Queue()
+    {
+        this.first = null;
+        this.last = null;
+    }
+    //-----------------------------------
+    //adds element x to the end of the queue
+    public void Insert(T x)
+    {
+        Node<T> temp = new Node<T>(x);
+        if (first == null)
+            first = temp;
+        else
+            last.SetNext(temp);
+        last = temp;
+    }
+    //-----------------------------------
+    //removes & returns the element from the head of the queue
+    public T Remove()
+    {
+        if (IsEmpty())
+            return default(T);
+        T x = first.GetValue();
+        first = first.GetNext();
+        if (first == null)
+            last = null;
+        return x;
+    }
+    //-----------------------------------
+    //returns the element from the head of the queue
+    public T Head()
+    {
+        return first.GetValue();
+    }
+    //-----------------------------------
+    //returns true if there are no elements in queue
+    public bool IsEmpty()
+    {
+        return first == null;
+    }
+    //-------------------------------------
+    //ToString
+    public override string ToString()
+    {
+        if (this.IsEmpty())
+            return "[]";
+        string temp = first.ToString();
+        return "QueueHead[" + temp.Substring(0, temp.Length - 1) + "]";
+    }
+}
+```
+
+<details markdown="1">
+<summary>מימוש באמצעות מערך מעגלי</summary>
 
 ```csharp
 public class Queue<T>
@@ -42,7 +104,7 @@ public class Queue<T>
         count = 0;
     }
 
-    public void Enqueue(T item)
+    public void Insert(T item)
     {
         if (count == data.Length)
         {
@@ -61,7 +123,7 @@ public class Queue<T>
         count++;
     }
 
-    public T Dequeue()
+    public T Remove()
     {
         if (IsEmpty())
             throw new InvalidOperationException("Queue is empty");
@@ -90,44 +152,50 @@ public class Queue<T>
 }
 ```
 
-במימוש זה אנחנו מנהלים את המצביעים `front` ו‑`rear` במערך מעגלי כך שכל פעולה של `Enqueue` ו‑`Dequeue` מתבצעת בזמן קבוע. כאשר המערך מתמלא, אנו מכפילים את גודלו ומעתיקים את הערכים הקיימים לפי הסדר.
+במימוש זה אנחנו מנהלים את המצביעים `front` ו‑`rear` במערך מעגלי כך שכל פעולה של `Insert` ו‑`Remove` מתבצעת בזמן קבוע. כאשר המערך מתמלא, אנו מכפילים את גודלו ומעתיקים את הערכים הקיימים לפי הסדר.
 
 #### דיאגרמה – תור מעגלי
 
 <div class="mermaid">
 graph LR
-    Start[front=0, rear=0, count=0] --> Enq1[Enqueue(5)]
-    Enq1 --> Enq2[Enqueue(7)]
-    Enq2 --> Deq1[Dequeue() → 5]
-    Deq1 --> Enq3[Enqueue(9)]
-    Enq3 --> State[front=1, rear=0 (מעגלי), count=2]
+    Start[front=0, rear=0, count=0] --> Ins1[Insert(5)]
+    Ins1 --> Ins2[Insert(7)]
+    Ins2 --> Rem1[Remove() → 5]
+    Rem1 --> Ins3[Insert(9)]
+    Ins3 --> State[front=1, rear=0 (מעגלי), count=2]
 </div>
 
 בדוגמה זו אנו מוסיפים 5 ו‑7, מסירים את 5 ואז מוסיפים 9. האינדקסים של `front` ו‑`rear` מחושבים מודולו אורך המערך.
+
+</details>
+
+
 
 ### פעולות זמינות במחלקת Queue&lt;T&gt;
 
 | Method | תיאור |
 | --- | --- |
-| `Enqueue(T item)` | מוסיף פריט לסוף התור |
-| `T Dequeue()` | מסיר ומחזיר את הפריט בתחילת התור |
-| `T Peek()` | מחזיר את הפריט בתחילת התור מבלי להסיר |
-| `bool IsEmpty()` | בודק אם התור ריק |
-| `int Count()` | מחזיר את מספר הפריטים בתור |
+|מוסיף פריט לסוף התור | `Insert (T item)` | 
+| מסיר ומחזיר את הפריט בתחילת התור | `T Remove()` |
+|מחזיר את הפריט בתחילת התור מבלי להסיר | `T Peek()` | 
+| בודק אם התור ריק | `bool IsEmpty()` |
+| מחזיר את מספר הפריטים בתור |`int Count()` | 
 {: .table-rl}
 
 #### דגשים לשימוש נכון בתור
-{: .subq}
 
-א. אל תשתמשו בהזזה של כל האיברים ב־`Dequeue`; השתמשו במערך מעגלי או רשימה מקושרת כדי להשיג סיבוכיות O(1).  
-ב. ודאו שאתם בודקים אם התור ריק לפני קריאה ל‑`Dequeue` או `Peek`.  
+{: .subq}
+א. אל תשתמשו בהזזה של כל האיברים ב־`Remove`; השתמשו במערך מעגלי או רשימה מקושרת כדי להשיג סיבוכיות O(1).  
+{: .subq}
+ב. ודאו שאתם בודקים אם התור ריק לפני קריאה ל‑`Remove` או `Peek`.  
+{: .subq}
 ג. תורים שימושיים באלגוריתמים של חיפוש ברוחב (BFS) ובמודלים של שירות (למשל תור לקוחות).  
 
 ### תרגול וקישורים
 
 נסו לממש תור משלכם ולהשתמש בו בסימולציה של שירות לקוחות. לשם תרגול נוסף:
 
-* [⬅ עברו לתרגיל עבודה עם תור מעגלי]({% link cst/5queue/Ex5a2queue.md %}#5a2)
+- [⬅ עברו לתרגיל עבודה עם תור מעגלי]({% link cst/5queue/Ex5a2queue.md %}#5a2.3)
 
 <details markdown="1">
 <summary>מקום לפתרון</summary>

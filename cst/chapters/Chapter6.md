@@ -121,11 +121,11 @@ public class BinNode<T>
 
 קיימות שלוש דרכי מעבר עיקריות על עץ בינארי:
 
-| אלגוריתם|  שם הטרוורסה  | סדר |
+| אלגוריתם|  שם הטרוורסה  | Order |
 | --- | --- | --- |
-| בקר: בקר בצומת → עבור לעץ השמאלי → עבור לעץ הימני | **Preorder** | root, left, right |
-| בקר בעץ השמאלי → בקר בצומת → בקר בעץ הימני | **Inorder** | left, root, right |
-|בקר בעץ השמאלי → בקר בעץ הימני → בקר בצומת | **Postorder** |  left, right, root |
+| בקר בצומת ⟵ עבור לעץ השמאלי ⟵ עבור לעץ הימני | **Preorder** | root, left, right |
+| בקר בעץ השמאלי ⟵ בקר בצומת ⟵ בקר בעץ הימני | **Inorder** | left, root, right |
+|בקר בעץ השמאלי ⟵ בקר בעץ הימני ⟵ בקר בצומת | **Postorder** |  left, right, root |
 {: .table-rl}
 
 ```csharp
@@ -148,12 +148,24 @@ public static void Inorder<T>(BinNode<T> root)
 graph TD
     A[8] --> B[3]
     A --> C[10]
-    B --> D[1]
-    B --> E[6]
-    E --> F[4]
-    E --> G[7]
-    C --> H[14]
+    C ~~~   K[" "] %%fake element to force the binary look
+    C -->   H[14]
+    H ~~~ P[" "] %%fake element to force the binary look
     H --> I[13]
+    B --- D[1]
+    B --> E[6]
+    E <--> F[4]
+    E --> G[7]
+
+    %% Invisible nodes to influence positioning
+    %%style C fill:green,stroke:none
+    %%style H fill:none,stroke:red
+    style K fill:none,stroke:none
+    style P fill:none,stroke:none
+    %% Force special arrows
+    
+    %%H ~~~     I[13]
+    %%H -.-> I
 </div>
 
 בדוגמה זו כל צומת מחזיק ערך מספרי. צמתים משמאל קטנים מהשורש, וצמתים מימין גדולים – תכונה אופיינית לעצים בינאריים של חיפוש.
