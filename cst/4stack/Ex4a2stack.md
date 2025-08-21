@@ -8,44 +8,14 @@ lang: he
 
 
 
-## 4a2.111 בדיקת מחסנית עולה יורדת {#id4a2.111}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-DytFoPpnAqfGYmV)
-
-עליכם לממש פונקציה בשם `IsMountainStack` אשר מקבלת פרמטר אחד:
-
-1. st - מחסנית של מספרים שלמים (מסוג Unit4.CollectionsLib.Stack).
-
-הפונקציה צריכה לבדוק האם המחסנית היא 'עולה-יורדת'. מחסנית 'עולה-יורדת' היא מחסנית שבה, כשקוראים את האיברים מראש  המחסנית כלפי מטה, המספרים עולים עד לנקודה מסוימת, ומנקודה זו הם יורדים עד לסוף המחסנית.
-
-הפונקציה צריכה להחזיר `true` אם המחסנית עונה על הקריטריון ו-`false` אחרת.
-
-דרישה חשובה: בסיום הפעולה, המחסנית `st` חייבת לחזור למצבה המקורי (כלומר, להכיל את אותם איברים באותו סדר כמו שהייתה לפני קריאה לפונקציה).
-
-שימו לב:
-
-1. השתמשו במחלקה Unit4.CollectionsLib.Stack.
-2. ניתן להשתמש במבני נתונים עזר (כמו מחסניות או תורים נוספים) לצורך הבדיקה והשחזור.
-3. המחסנית יכולה להיות ריקה או להכיל איבר בודד. במקרים אלו, המחסנית נחשבת 'עולה-יורדת'.
-
-### דוגמאות:
-
-1. עבור המחסנית [5, 4, 3, 2, 1] (כאשר 5 בראש המחסנית), הפונקציה תחזיר true (1 עולה ל-5, ואז 5 יורד ל-1).
-2. עבור המחסנית [1, 2, 3, 4, 5] (כאשר 1 בראש המחסנית), הפונקציה תחזיר true (5 עולה ל-1, ואז 1 יורד ל-5).
-3. עבור המחסנית [1, 3, 2, 4] (כאשר 1 בראש המחסנית), הפונקציה תחזיר false (הסדר אינו עולה-יורד).
-4. עבור המחסנית [10, 20, 15] (כאשר 10 בראש המחסנית), הפונקציה תחזיר true (15 עולה ל-20, ואז 20 יורד ל-10).
 
 
 
 
-
-
-
-
-
-## 4a2.111 בדיקת מיון מחסנית איטרטיבית {#id4a2.111}
+## 4a2.1 בדיקת מיון מחסנית איטרטיבית {#id4a2.1}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-Ihn17uL5phOpTxz)
 
-עליכם לממש פונקציה איטרטיבית בשם `IsStackSorted` אשר מקבלת פרמטר אחד:
+עליכם לממש פונקציה איטרטיבית בשם `IsStackSortedIterative` אשר מקבלת פרמטר אחד:
 
 1. stack - מחסנית של מספרים שלמים (מסוג Unit4.CollectionsLib.Stack).
 
@@ -80,7 +50,7 @@ lang: he
 
 
 
-## 4a2.111 בדיקת מיון מחסנית רקורסיבית {#id4a2.111}
+## 4a2.2 בדיקת מיון מחסנית רקורסיבית {#id4a2.2}
 [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-6m01NxEitsp4RTj)
 
 עליכם לממש פונקציה רקורסיבית בשם `IsStackSorted` אשר מקבלת מחסנית של מספרים שלמים (מסוג `Stack`).
@@ -96,8 +66,6 @@ lang: he
 חתימת הפונקציה הנדרשת:
 
 public static bool IsStackSorted(Stack)
-
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-6m01NxEitsp4RTj)
 
 ### דוגמאות:
 
@@ -127,8 +95,8 @@ public static bool IsStackSorted(Stack)
 
 
 
-## 4a2.111 בדיקת קיום איבר במחסנית רקורסיבי {#id4a2.111}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-bpIkHY24KZupaTr)
+## 4a2.3 בדיקת קיום איבר במחסנית רקורסיבי {#id4a2.3}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-bpIkHY24KZupaTr) -->
 
 עליכם לממש פונקציה רקורסיבית בשם `IsElementInStack` אשר מקבלת שני פרמטרים:
 
@@ -146,7 +114,6 @@ public static bool IsStackSorted(Stack)
 3. טפלו במקרה הבסיס של מחסנית ריקה.
 4. ודאו שהמחסנית משוחזרת למצבה המקורי לאחר הבדיקה.
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-bpIkHY24KZupaTr)
 
 ### דוגמאות:
 
@@ -167,62 +134,15 @@ public static bool IsStackSorted(Stack)
 
 
 
-## 4a2.111 בדיקת רצף ספרות במחסנית {#id4a2.111}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-6JdniYxfBp6FIIS)
-
-עליכם לממש פונקציה בשם `CheckSequenceInStack` אשר מקבלת שני פרמטרים:
-
-1. number (int) - מספר שלם שאת ספרותיו יש לחפש.
-2. stack (Stack
-
-הפונקציה צריכה להחזיר `true` אם ספרות המספר מופיעות ברצף במחסנית (בכיוון עולה או יורד), ו-`false` אחרת.
-
-### דרישות מיוחדות:
-
-1. יש להשתמש במחלקת Stack מתוך Unit4.CollectionsLib.
-2. המחסנית המקורית (stack) חייבת לחזור למצבה המקורי בסיום הפעולה (כלומר, אם הפונקציה קיבלה מחסנית עם איברים מסוימים, היא צריכה להחזיר אותה באותו מצב בדיוק).
-3. הרצף יכול להופיע בכל מיקום במחסנית.
-4. הרצף יכול להיות בכיוון עולה (לדוגמה, 1,2,3 עבור המספר 123) או בכיוון יורד (לדוגמה, 3,2,1 עבור המספר 123).
-
-### הנחיות למימוש:
-
-1. שמירת מצב המחסנית: לפני התחלת העבודה עם המחסנית, העבירו את כל איבריה למחסנית עזר או תור עזר, כך שתוכלו לשחזר אותה בסיום הפעולה.
-2. הוצאת ספרות המספר: פרקו את המספר הנתון לספרותיו ושמרו אותן ברשימה או מערך, גם בסדר רגיל וגם בסדר הפוך.
-3. בדיקת רצף: עברו על המחסנית (לאחר שהועברה למבנה עזר שמאפשר גישה סדרתית) ובדקו אם אחד מהרצפים (רגיל או הפוך) מופיע בה. זכרו שהרצף יכול להתחיל בכל נקודה במחסנית.
-4. שחזור המחסנית: בסיום הבדיקה, שחזרו את המחסנית המקורית למצבה הראשוני באמצעות מבנה העזר.
-
-
-using Unit4.CollectionsLib;
-
-public class Solution
-{
-public static bool CheckSequenceInStack(int number, Stack)
-{
-// implement your code here
-}
-}
-
-### דוגמאות:
-
-1. עבור מספר 123 ומחסנית המכילה [5, 4, 1, 2, 3, 6], הפונקציה תחזיר true (הרצף 1,2,3 נמצא).
-2. עבור מספר 123 ומחסנית המכילה [5, 4, 3, 2, 1, 6], הפונקציה תחזיר true (הרצף 3,2,1 נמצא).
-3. עבור מספר 789 ומחסנית המכילה [1, 2, 3, 4, 5], הפונקציה תחזיר false.
-4. עבור מספר 12 ומחסנית המכילה [1, 3, 2], הפונקציה תחזיר false (אין רצף 1,2 או 2,1).
 
 
 
 
 
+## 4a2.4 בדיקת שוויון בין מחסניות, רקורסיבי {#id4a2.4}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-BBucoFS7pWlrQFP) -->
 
-
-
-
-
-
-## 4a2.111 בדיקת שוויון בין מחסניות, רקורסיבי {#id4a2.111}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-BBucoFS7pWlrQFP)
-
-עליכם לממש פונקציה רקורסיבית בשם `AreStacksEqual` אשר מקבלת שני פרמטרים:
+עליכם לממש פונקציה רקורסיבית בשם `AreStacksEqualRecursive` אשר מקבלת שני פרמטרים:
 
 1. s1 - מחסנית ראשונה (מסוג Stack)
 2. s2 - מחסנית שנייה (מסוג Stack)
@@ -256,8 +176,8 @@ public static bool CheckSequenceInStack(int number, Stack)
 
 
 
-## 4a2.111 הזזה מעגלית במחסנית {#id4a2.111}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-UUGgtQTsXIiLQ7M)
+## 4a2.5 הזזה מעגלית במחסנית {#id4a2.5}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-UUGgtQTsXIiLQ7M) -->
 
 עליכם לממש פעולה בשם `CircularShift` אשר מקבלת שני פרמטרים:
 
@@ -301,8 +221,8 @@ public static bool CheckSequenceInStack(int number, Stack)
 
 
 
-## 4a2.111 פיענוח מחסנית מקודדת {#id4a2.111}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-rQK3bmdBIt082Oa)
+## 4a2.6 פיענוח מחסנית מקודדת {#id4a2.6}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-rQK3bmdBIt082Oa) -->
 
 עליכם לממש פונקציה בשם `DecodeStack` אשר מקבלת מחסנית מקודדת של מספרים שלמים ומחזירה מחסנית חדשה מפוענחת.
 
@@ -348,8 +268,8 @@ public static bool CheckSequenceInStack(int number, Stack)
 
 
 
-## 4a2.111 קידוד מחסנית בשיטת אורך-רצף (RLE) {#id4a2.111}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-NxRrJSaJtOwsHlt)
+## 4a2.7 קידוד מחסנית בשיטת אורך-רצף (RLE) {#id4a2.7}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-NxRrJSaJtOwsHlt) -->
 
 עליכם לממש פונקציה בשם `EncodeStackRLE` אשר מקבלת מחסנית של מספרים שלמים (`Stack`) כפרמטר.
 
@@ -390,4 +310,82 @@ public static bool CheckSequenceInStack(int number, Stack)
 
 מחסנית מקורית (מהתחתית לראש): `1,2,3,4`
 מחסנית חדשה (מהתחתית לראש): `1,1,2,1,3,1,4,1`
+
+
+
+
+
+## 4a2.8 בדיקת רצף ספרות במחסנית {#id4a2.8}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-6JdniYxfBp6FIIS) -->
+
+עליכם לממש פונקציה בשם `CheckSequenceInStack` אשר מקבלת שני פרמטרים:
+
+1. number (int) - מספר שלם שאת ספרותיו יש לחפש.
+2. stack (Stack
+
+הפונקציה צריכה להחזיר `true` אם ספרות המספר מופיעות ברצף במחסנית (בכיוון עולה או יורד), ו-`false` אחרת.
+
+### דרישות מיוחדות:
+
+1. יש להשתמש במחלקת Stack מתוך Unit4.CollectionsLib.
+2. המחסנית המקורית (stack) חייבת לחזור למצבה המקורי בסיום הפעולה (כלומר, אם הפונקציה קיבלה מחסנית עם איברים מסוימים, היא צריכה להחזיר אותה באותו מצב בדיוק).
+3. הרצף יכול להופיע בכל מיקום במחסנית.
+4. הרצף יכול להיות בכיוון עולה (לדוגמה, 1,2,3 עבור המספר 123) או בכיוון יורד (לדוגמה, 3,2,1 עבור המספר 123).
+
+### הנחיות למימוש:
+
+1. שמירת מצב המחסנית: לפני התחלת העבודה עם המחסנית, העבירו את כל איבריה למחסנית עזר או תור עזר, כך שתוכלו לשחזר אותה בסיום הפעולה.
+2. הוצאת ספרות המספר: פרקו את המספר הנתון לספרותיו ושמרו אותן ברשימה או מערך, גם בסדר רגיל וגם בסדר הפוך.
+3. בדיקת רצף: עברו על המחסנית (לאחר שהועברה למבנה עזר שמאפשר גישה סדרתית) ובדקו אם אחד מהרצפים (רגיל או הפוך) מופיע בה. זכרו שהרצף יכול להתחיל בכל נקודה במחסנית.
+4. שחזור המחסנית: בסיום הבדיקה, שחזרו את המחסנית המקורית למצבה הראשוני באמצעות מבנה העזר.
+
+
+using Unit4.CollectionsLib;
+
+public class Solution
+{
+public static bool CheckSequenceInStack(int number, Stack)
+{
+// implement your code here
+}
+}
+
+### דוגמאות:
+
+1. עבור מספר 123 ומחסנית המכילה [5, 4, 1, 2, 3, 6], הפונקציה תחזיר true (הרצף 1,2,3 נמצא).
+2. עבור מספר 123 ומחסנית המכילה [5, 4, 3, 2, 1, 6], הפונקציה תחזיר true (הרצף 3,2,1 נמצא).
+3. עבור מספר 789 ומחסנית המכילה [1, 2, 3, 4, 5], הפונקציה תחזיר false.
+4. עבור מספר 12 ומחסנית המכילה [1, 3, 2], הפונקציה תחזיר false (אין רצף 1,2 או 2,1).
+
+
+
+
+
+## 4a2.9 בדיקת מחסנית עולה יורדת {#id4a2.9}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-eFafVqtQzSJ7/csharp-DytFoPpnAqfGYmV) -->
+
+עליכם לממש פונקציה בשם `IsMountainStack` אשר מקבלת פרמטר אחד:
+
+1. st - מחסנית של מספרים שלמים (מסוג Unit4.CollectionsLib.Stack).
+
+הפונקציה צריכה לבדוק האם המחסנית היא 'עולה-יורדת'. מחסנית 'עולה-יורדת' היא מחסנית שבה, כשקוראים את האיברים מראש  המחסנית כלפי מטה, המספרים עולים עד לנקודה מסוימת, ומנקודה זו הם יורדים עד לסוף המחסנית.
+
+הפונקציה צריכה להחזיר `true` אם המחסנית עונה על הקריטריון ו-`false` אחרת.
+
+דרישה חשובה: בסיום הפעולה, המחסנית `st` חייבת לחזור למצבה המקורי (כלומר, להכיל את אותם איברים באותו סדר כמו שהייתה לפני קריאה לפונקציה).
+
+שימו לב:
+
+1. השתמשו במחלקה Unit4.CollectionsLib.Stack.
+2. ניתן להשתמש במבני נתונים עזר (כמו מחסניות או תורים נוספים) לצורך הבדיקה והשחזור.
+3. המחסנית יכולה להיות ריקה או להכיל איבר בודד. במקרים אלו, המחסנית נחשבת 'עולה-יורדת'.
+
+### דוגמאות:
+
+1. עבור המחסנית [5, 4, 3, 2, 1] (כאשר 5 בראש המחסנית), הפונקציה תחזיר true (1 עולה ל-5, ואז 5 יורד ל-1).
+2. עבור המחסנית [1, 2, 3, 4, 5] (כאשר 1 בראש המחסנית), הפונקציה תחזיר true (5 עולה ל-1, ואז 1 יורד ל-5).
+3. עבור המחסנית [1, 3, 2, 4] (כאשר 1 בראש המחסנית), הפונקציה תחזיר false (הסדר אינו עולה-יורד).
+4. עבור המחסנית [10, 20, 15] (כאשר 10 בראש המחסנית), הפונקציה תחזיר true (15 עולה ל-20, ואז 20 יורד ל-10).
+
+
 
