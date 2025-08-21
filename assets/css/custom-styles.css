@@ -403,3 +403,36 @@ pre code span.c1 {
     background: no-repeat center/contain;
     background-image: url('/assets/img/simple_leaf_half.svg');
 }
+
+
+/* ================= Mermaid node styling =============== 
+==========================================================*/
+.mermaid .node rect {
+  fill: var(--navbar-col) !important;
+  stroke: var(--text-col) !important;
+  stroke-width: 2px !important;
+}
+
+/* Mermaid text styling */
+.mermaid .nodeLabel {
+  fill: var(--text-col) !important;
+  color: var(--text-col) !important;
+}
+
+/* Mermaid arrow/edge styling */
+.mermaid .edgePath .path {
+  stroke: var(--text-col) !important;
+  stroke-width: 2px !important;
+}
+
+/* Arrow heads */
+.mermaid .arrowheadPath {
+  fill: var(--text-col) !important;
+  stroke: var(--text-col) !important;
+}
+
+/* Edge labels */
+.mermaid .edgeLabel {
+  background-color: var(--page-col) !important;
+  color: var(--text-col) !important;
+}
