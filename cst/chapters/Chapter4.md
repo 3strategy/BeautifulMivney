@@ -26,24 +26,45 @@ lang: he
 בהמשך מופיע מימוש פשוט של מחסנית גנרית המבוססת על מערך פנימי ודינאמי. במחסנית זו קיימות פעולות הוספה, הסרה והצצה:
 
 ```csharp
+// Unit4 המימוש הרשמי של 
 public class Stack<T>
 {
     private Node<T> head;
-    public Stack() => this.head = null;
+
+    //-----------------------------------
+    //constructor
+    public Stack()
+    {
+        this.head = null;
+    }
+    //-----------------------------------
+    //adds element x to the top of the stack
     public void Push(T x)
     {
         Node<T> temp = new Node<T>(x);
         temp.SetNext(head);
         head = temp;
     }
+    //-----------------------------------
+    //removes & returns the element from the top of the stack
     public T Pop()
     {
         T x = head.GetValue();
         head = head.GetNext();
         return x;
     }
-    public T Top() => head.GetValue();
+    //-----------------------------------
+    //returns the element from the top of the stack
+    public T Top()
+    {
+        return head.GetValue();
+    }
+    //-----------------------------------
+    //returns true if there are no elements in stack
+    // ...כיוון שאני לא מסוגל בלי קצת כתיב מקוצר
     public bool IsEmpty() => head == null;
+    //-------------------------------------
+    //ToString
     public override string ToString()
     {
         if (this.IsEmpty())
@@ -62,7 +83,7 @@ public class Stack<T>
 
 הדיאגרמה מציגה פעולות בסיסיות: בהתחלה המחסנית ריקה; דוחפים את 5 ואז את 10; הצצה מחזירה 10; לאחר מכן שולפים 10, וה־5 נשאר.
 
-### פעולות זמינות במחלקת `Stack<T>`
+### פעולות זמינות במחלקת `<Stack<T`
 
 |  תיאור | Method |
 |--------|--------|
