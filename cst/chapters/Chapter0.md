@@ -1,15 +1,15 @@
 ---
 layout: page 
 title: "פרק 0 – חזרה על מחלקות ב‑#C"
-subtitle: "סקירה קצרה של מחלקות, שדות, שיטות ומאפיינים"
-tags: [מחלקה, שדות, שיטות, C#, ירושה, קונסטרוקטור]
+subtitle: "סקירה קצרה של מחלקות, שדות, פעולות ותכונות"
+tags: [מחלקה, שדות, C#,ctor,prop,propfull, ירושה, קונסטרוקטור]
 mathjax: true
 lang: he
 ---
 
-<div class="box-note">
+{: .box-note}
 הפרק הזה מציג חזרה קצרה על מושגי יסוד במחלקות בשפת #C לקראת המשך הקורס. הבנה של מושגים אלו תעזור לתלמידים לעבוד עם מבני נתונים מורכבים בהמשך.
-</div>
+
 
 <!-- Source: https://careerhub.ufl.edu/classes/c-hands-on-practice-with-data-structures/ -->
 
@@ -23,47 +23,21 @@ lang: he
 ```csharp
 public class Student
 {
-    private string _firstName; // שדה לשם פרטי
-    private string _lastName; // שדה לשם משפחה
-     
-    private double grade; // (שדה לציון (בדרך כלל נקרא לזה תכונה
+    private string _firstName; // 1. שדה לשם פרטי
+    private string _lastName; // 1. שדה לשם משפחה
+    private double grade; // 1. שדה לציון (בדרך כלל נקרא לזה תכונה)
 
     public Student() { }
 
-    // 1.  קונסטרקטור מלא
+    // 2. קונסטרקטור מלא
     public Student(string firstName, string lastName, double grade)
     {
         _firstName = firstName;
         _lastName = lastName;
-        this.grade = grade; // כדי להבדיל בין הפרמטר לשדה this- שימוש ב
+        this.grade = grade; // 2. כדי להבדיל בין הפרמטר לשדה this- שימוש ב
     }
 
-    // 2. כל מה שלא נכתוב:
-    // -Native C# Properties
-    //   אבל ככה כותבים את זה
-
-    private int classNum;
-
-    public int ClassNum
-    {
-        get { return classNum; }
-        set { classNum = value; }
-    }
-
-    // 2b. Property לשם פרטי :מקוצר field תחביר מקוצר לפרופרטי. לא צריך שדה
-    public string FirstName { get; set; }
-
-    // 2c. Property מקוצר עבור שם משפחה prop 
-    public string LastName { get; set; }
-
-    // 2d. Property תחביר גטר סטר סי-שארפ מלא עם תחביר פונקציה מקוצר (=>) עבור הציון
-    public double Grade
-    {
-        get => grade;
-        set => grade = value;
-    }
-
-
+    // ======================   מה שאנחנו נכתוב    ===========================
     // 3a. Java-style getter - לשים לב: ג'אווה סטייל הוא התחביר היחיד שמותר בבחינות!
     // !!!וזה משנה מפני שאלו פעולות והקריאה היא עם סוגריים בסוף!!!
     public double GetGrade()
@@ -78,10 +52,38 @@ public class Student
     public void SetFirstName(string firstName) => _firstName = firstName;
 
     // 3d. Java-style setter - לשים לב: זהו התחביר היחיד שמותר בבחינות!
-    public void SetGrade(double grade) => this.grade = grade;
+    public void SetGrade(double grade)
+    {
+        this.grade = grade;
+    }
 
     // 4. Get-סתם פעולה ולכן השם לא מתחיל ב
     public bool IsPassed() => grade >= 60.0;
+
+    // ====================== כל מה שלא נכתוב ===========================
+    // 5. Native C# Properties - אבל ככה כותבים את זה
+    
+    private int classNum;
+
+    // 5a. Property מלא בסגנון C#
+    public int ClassNum
+    {
+        get { return classNum; }
+        set { classNum = value; }
+    }
+
+    // 5b. Property לשם פרטי :מקוצר field תחביר מקוצר לפרופרטי. לא צריך שדה
+    public string FirstName { get; set; }
+
+    // 5c. Property מקוצר עבור שם משפחה prop 
+    public string LastName { get; set; }
+
+    // 5d. Property תחביר גטר סטר סי-שארפ מלא עם תחביר פונקציה מקוצר (=>) עבור הציון
+    public double Grade
+    {
+        get => grade;
+        set => grade = value;
+    }
 }
 ```
 

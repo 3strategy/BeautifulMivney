@@ -7,9 +7,9 @@ mathjax: true
 lang: he
 ---
 
-<div class="box-note">
+{: .box-note}
 כאשר מנתחים מבני נתונים ואלגוריתמים חשוב לדעת לא רק מה הם עושים אלא גם כמה משאבים הם צורכים. בפרק זה נלמד להעריך את **יעילות** האלגוריתם (כמה זמן וזיכרון הוא צורך בפועל) ולמדוד את **סיבוכיותו** – תיאור אסימפטוטי של התלות בגודל הקלט.
-</div>
+
 
 <!-- Source: University of Wisconsin – Complexity & Big‑O notes; University of Tennessee – Big‑O overview -->
 

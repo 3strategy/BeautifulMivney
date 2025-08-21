@@ -7,7 +7,7 @@ mathjax: true
 lang: he
 ---
 
-{. :box-note}
+{: .box-note}
 מחסנית (Stack) היא מבנה נתונים המתנהג לפי עיקרון **Last‑In‑First‑Out**: הפריט האחרון שנכנס הוא הראשון שיוצא. בפרק זה נלמד כיצד לעבוד עם מחסנית גנרית StackT ב‑C# ונעמוד על יתרונותיה וחסרונותיה.
 
 <!-- Source: University of Wisconsin – Notes on Stacks -->
