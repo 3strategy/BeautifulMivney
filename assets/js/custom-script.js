@@ -43,12 +43,15 @@ window.onload = function() {
   if (size === "large") document.body.classList.add("large-theme");
 }
 
+// Store original mermaid content
+let originalMermaidContent = new Map();
+
 // Mermaid theme management
 function initMermaid() {
   const isLight = document.body.classList.contains("light-theme");
   
   mermaid.initialize({
-    startOnLoad: true,
+    startOnLoad: false, // Important: set to false so we control rendering
     theme: isLight ? 'default' : 'dark',
     themeVariables: isLight ? {
       // Light theme
@@ -75,13 +78,35 @@ function initMermaid() {
     }
   });
   
-  // Re-render existing diagrams
-  document.querySelectorAll('.mermaid').forEach(el => {
-    if (el.getAttribute('data-processed')) {
-      el.removeAttribute('data-processed');
+  // Process all mermaid diagrams
+  document.querySelectorAll('.mermaid').forEach((el, index) => {
+    const id = `mermaid-diagram-${index}`;
+    
+    // Store original content on first run
+    if (!originalMermaidContent.has(id)) {
+      originalMermaidContent.set(id, el.textContent.trim());
+    }
+    
+    // Restore original content
+    const originalText = originalMermaidContent.get(id);
+    
+    // Clear the element and restore original text
+    el.innerHTML = originalText;
+    el.removeAttribute('data-processed');
+    
+    // Render the diagram
+    try {
+      mermaid.render(id + '-svg', originalText).then(result => {
+        el.innerHTML = result.svg;
+      }).catch(error => {
+        console.error('Mermaid rendering error:', error);
+        el.innerHTML = `<pre>${originalText}</pre>`;
+      });
+    } catch (error) {
+      console.error('Mermaid rendering error:', error);
+      el.innerHTML = `<pre>${originalText}</pre>`;
     }
   });
-  mermaid.init();
 }
 
 // Initialize mermaid when page loads
@@ -104,6 +129,6 @@ function toggleTheme() {
   
   // Re-initialize mermaid with new theme
   if (typeof mermaid !== 'undefined') {
-    setTimeout(initMermaid, 50);
+    setTimeout(initMermaid, 100);
   }
 }
