@@ -407,32 +407,41 @@ pre code span.c1 {
 
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
-.mermaid .node rect {
-  fill: var(--navbar-col) !important;
-  stroke: var(--text-col) !important;
-  stroke-width: 2px !important;
-}
-
-/* Mermaid text styling */
-.mermaid .nodeLabel {
-  fill: var(--text-col) !important;
-  color: var(--text-col) !important;
-}
-
-/* Mermaid arrow/edge styling */
-.mermaid .edgePath .path {
-  stroke: var(--text-col) !important;
-  stroke-width: 2px !important;
-}
-
-/* Arrow heads */
+/* Additional arrow targeting for dark mode */
 .mermaid .arrowheadPath {
   fill: var(--text-col) !important;
   stroke: var(--text-col) !important;
 }
 
-/* Edge labels */
-.mermaid .edgeLabel {
-  background-color: var(--page-col) !important;
-  color: var(--text-col) !important;
+/* Alternative arrow selectors */
+.mermaid .arrowhead {
+  fill: var(--text-col) !important;
+  stroke: var(--text-col) !important;
+}
+
+.mermaid marker path {
+  fill: var(--text-col) !important;
+  stroke: var(--text-col) !important;
+}
+
+.mermaid defs marker path {
+  fill: var(--text-col) !important;
+  stroke: var(--text-col) !important;
+}
+
+/* Catch-all for any arrow markers */
+.mermaid marker[id*="arrow"] path {
+  fill: var(--text-col) !important;
+  stroke: var(--text-col) !important;
+}
+
+.mermaid marker[id*="Triangle"] path {
+  fill: var(--text-col) !important;
+  stroke: var(--text-col) !important;
+}
+
+/* Also try targeting by element type */
+.mermaid polygon {
+  fill: var(--text-col) !important;
+  stroke: var(--text-col) !important;
 }
