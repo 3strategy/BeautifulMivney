@@ -52,15 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
       startOnLoad: true,
       theme: isLight ? 'default' : 'dark',
       themeVariables: isLight ? {
-        primaryColor: '#ffffff',
-        primaryTextColor: '#101010',
-        primaryBorderColor: '#404040',
         lineColor: '#404040',
         arrowheadColor: '#404040'
       } : {
-        primaryColor: '#424242',
-        primaryTextColor: '#E0E0E0',
-        primaryBorderColor: '#E0E0E0',
         lineColor: '#E0E0E0',
         arrowheadColor: '#E0E0E0'
       }
