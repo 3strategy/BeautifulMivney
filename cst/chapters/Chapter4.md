@@ -1,6 +1,6 @@
 ---
 layout: page 
-title: "פרק 4 – מחלקת Stack<T>"
+title: פרק 4 – מחלקת Stack&lt;T&gt;
 subtitle: "עבודה עם מחסנית – LIFO, Push ו‑Pop"
 tags: [Stack, מחסנית, Push, Pop, Top, מחסנית גנרית, C#]
 mathjax: true
