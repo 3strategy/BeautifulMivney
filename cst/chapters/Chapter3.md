@@ -24,6 +24,7 @@ lang: he
 
 ### דיאגרמה – רשימה מקושרת
 
+<div class="mermaid">
 flowchart LR
     subgraph A[" "]
         A1["value: 5"]
@@ -46,6 +47,7 @@ flowchart LR
     B2 --> C
     C2 --> D
     head -->A
+</div>
 
 <details open markdown="1">
 <summary>מהי המחלקה Bead?</summary>
