@@ -19,17 +19,6 @@ function getCookie(cname) {
   return "";
 }
 
-// Toggle theme function
-function toggleTheme() {
-  const body = document.body;
-  if (body.classList.contains("light-theme")) {
-    body.classList.remove("light-theme");
-    setCookie("theme", "dark", 365);
-  } else {
-    body.classList.add("light-theme");
-    setCookie("theme", "light", 365);
-  }
-}
 
 // call this to toggle “big text+layout”
 function toggleSize() {
@@ -102,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// Update your existing toggleTheme function
+// Modified toggleTheme function
 function toggleTheme() {
   const body = document.body;
   if (body.classList.contains("light-theme")) {
