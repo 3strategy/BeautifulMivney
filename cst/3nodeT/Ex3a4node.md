@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "ex3a.3 שרשרת חוליות"
+title: "ex3a.4 שרשרת חוליות"
 subtitle: "Node<T> תרגילים עם דרישות רקורסיה"
 tags: []
 lang: he
@@ -9,7 +9,7 @@ lang: he
 
 
 ## 3a4.1 איחוד ממוין של רשימות מקושרות ללא כפילויות {#id3a4.1}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-mTGoXrYRti2COsa)
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-mTGoXrYRti2COsa) -->
 
 במשימה זו, עליכם לממש פעולה סטטית בשם `SortedUnionNew` . פעולה זו תקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה, ממוינת וללא כפילויות, המכילה את כל האיברים משתי הרשימות המקוריות.
 
@@ -31,7 +31,7 @@ lang: he
 8. זכרו לטפל במקרה שבו אחת הרשימות או שתיהן ריקות בהתחלה.
 
 ```csharp
-    public static Node<int> sortedUnionNew(Node<int> list1, Node<int> list2)
+    public static Node<int> SortedUnionNew(Node<int> list1, Node<int> list2)
     {
         // Implement your solution here
         return null;
@@ -40,8 +40,7 @@ lang: he
 
 
 ## 3a4.2 איחוד ממוין של רשימות מקושרות עם חזרות {#id3a4.2}
-
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-hlM9yH2XyXDd9Y1)
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-hlM9yH2XyXDd9Y1) -->
 
 במשימה זו, עליכם לממש פעולה בשם `SortedUnionNewDuply` שתקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה ממוינת המכילה את כל האיברים משתי הרשימות המקוריות, כולל כפילויות.
 
@@ -69,25 +68,28 @@ lang: he
 
 
 
-## 3a4.XX (כפילות עם SortedUnionNew 3a4.1) איחוד (union) רשימות ממויינות ללא כפילויות {#id3a4.XX}
-## למחוק את זה!
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-1KWmWC0LO6mI6og)
 
-בתרגיל זה, עליכם לממש פעולה בשם `SortedUnionToList` אשר מקבלת שתי רשימות מקושרות ממויינות ומאחדת את האיברים מהרשימה השנייה לתוך הרשימה הראשונה. הפעולה צריכה להבטיח שהרשימה הראשונה תישאר ממויינת וכי לא יהיו בה כפילויות של ערכים.
+## 3a4.3 חיתוך (intersect) רשימות מקושרות ניטרול כפילויות. מעבר יחיד {#id3a4.3}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-lmrAa8PqiQ8PA6H) -->
 
-```csharp
-    public static Node<int> SortedUnionToList(Node<int> list1, Node<int> list2)
+עליכם לממש פעולה סטטית בשם `SortedListsIntersection` במחלקה `Solution` שתקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה המייצגת את חיתוך האיברים בין שתי הרשימות המקוריות. רשימת החיתוך צריכה להכיל כל איבר משותף פעם אחת בלבד (ללא חזרות), גם אם הוא מופיע מספר פעמים באחת או בשתי רשימות הקלט.
+
+### דרישות:
+
+1. מעבר יחיד: הפתרון חייב לעבור על כל אחת מהרשימות המקוריות לכל היותר פעם אחת. כלומר, אסור לכם להשתמש בלולאות מקוננות שגורמות למעבר חוזר על רשימה שכבר נסרקה.
+2. ללא חזרות: ודאו שרשימת החיתוך הסופית לא מכילה איברים כפולים, גם אם הם הופיעו מספר פעמים ברשימות הקלט.
+
+    public static Node<int> SortedListsIntersection(Node<int> list1, Node<int> list2)
     {
-        // Your implementation here
-        return null; 
+        // Implement your solution here
+        return null;
     }
-```
 
 
 
 ## 3a4.4 הכנסת שלם לרשימה ממוינת {#id3a4.4}
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-SSsiyyCHsLe6Zce)
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-SSsiyyCHsLe6Zce) -->
 
 **רצוי לתת את השאלה גם בגרסה של הכנסת Node, ולקראת בגרות אפילו לדבר שם על Node<T> with Comparator**
 
@@ -105,7 +107,7 @@ lang: he
 8. מקרה קצה - רשימה ריקה: טפלו במקרה שבו הרשימה המקורית ריקה, והמספר החדש יהיה האיבר היחיד ברשימה.
 
 ```csharp
-    public static Node<int> insertIntoSortedList(Node<int> head, int number)
+    public static Node<int> InsertIntoSortedList(Node<int> head, int number)
     {
         // Implement your solution here
         return null;
@@ -113,51 +115,19 @@ lang: he
 ```
 
 
+## 3a4.5 הכנה חוליה לשרשרת ממוינת {#id3a4.5}
 
-## 3a4.111 חיתוך (intersect) רשימות מקושרות ניטרול כפילויות. מעבר יחיד {#id3a4.111}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-v9pbgok59FrnKTA) -->
 
-**כנראה קשוח**
-
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-lmrAa8PqiQ8PA6H)
-
-### תיאור המשימה
-
-עליכם לממש פעולה סטטית בשם `SortedListsIntersection` במחלקה `Solution` שתקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה המייצגת את חיתוך האיברים בין שתי הרשימות המקוריות. רשימת החיתוך צריכה להכיל כל איבר משותף פעם אחת בלבד (ללא חזרות), גם אם הוא מופיע מספר פעמים באחת או בשתי רשימות הקלט.
-
-### דרישות:
-
-1. מעבר יחיד: הפתרון חייב לעבור על כל אחת מהרשימות המקוריות לכל היותר פעם אחת. כלומר, אסור לכם להשתמש בלולאות מקוננות שגורמות למעבר חוזר על רשימה שכבר נסרקה.
-2. ללא חזרות: ודאו שרשימת החיתוך הסופית לא מכילה איברים כפולים, גם אם הם הופיעו מספר פעמים ברשימות הקלט.
-
-    public static Node<int> SortedListsIntersection(Node<int> list1, Node<int> list2)
-    {
-        // Implement your solution here
-        return null;
-    }
-
-
-## 3a4.5 מיון הכנסה לשרשרת חדשה {#id3a4.5}
-
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-v9pbgok59FrnKTA)
-
-בתרגיל זה, עליכם לממש את אלגוריתם מיון הכנסה (Insertion Sort) עבור רשימה מקושרת. מטרת המיון היא לסדר את איברי הרשימה בסדר עולה.
+בתרגיל זה, עליכם לממש את אלגוריתם עליו מתבסס מיון הכנסה (`InsertSorted`) עבור רשימה מקושרת. מטרת המיון היא הכנה לסידור איברי רשימה בסדר עולה.
 
 ### הנחיות למימוש
 
-1. הגדרת המחלקה Solution: צרו מחלקה סטטית בשם Solution שתכיל את הפעולות הנדרשות.
-2. מבנה הנתונים Unit4.Node: התרגיל מתבסס על מבנה הנתונים Unit4.Node המייצג צומת ברשימה מקושרת. לכל צומת יש שדה Value (מספר שלם) ושדה Next (מצביע לצומת הבא).
-3. פעולת עזר InsertSorted:
-4. כתבו פעולה סטטית פרטית בשם InsertSorted בתוך המחלקה Solution.
+4. כתבו פעולה סטטית פרטית בשם `InsertSorted` 
 5. הפעולה תקבל שני פרמטרים: head (ראש רשימה מקושרת ממויינת) ו-newNode (צומת חדש שיש להכניס לרשימה).
 6. תפקיד הפעולה הוא להכניס את newNode למקומו הנכון ברשימה הממויינת head, כך שהרשימה תישאר ממויינת.
 7. הפעולה תחזיר את ראש הרשימה הממויינת החדשה.
 8. 
-9. פעולה ראשית insertionSort:
-10. כתבו פעולה סטטית ציבורית בשם insertionSort בתוך המחלקה Solution.
-11. הפעולה תקבל פרמטר אחד: head (ראש רשימה מקושרת לא ממויינת).
-12. תפקיד הפעולה הוא למיין את הרשימה הנתונה באמצעות אלגוריתם מיון הכנסה, תוך שימוש בפעולת העזר InsertSorted.
-13. הפעולה תחזיר את ראש הרשימה הממויינת החדשה.
-14. 
 
 ### דרישות נוספות
 
@@ -171,35 +141,23 @@ lang: he
         // Implement InsertSorted logic here
         return null; // Placeholder
     }
-
-    public static Node<int> insertionSort(Node<int> head)
-    {
-        // Implement insertionSort logic here
-        return null; // Placeholder
-    }
-
 ```
 
 
 
-## 3a4.111 מיון הכנסה (in-place) לשרשרת {#id3a4.111}
+## 3a4.6 מיון הכנסה (in-place) לשרשרת {#id3a4.6}
+<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-n2EjDyE6ZlPDvEu) -->
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-n2EjDyE6ZlPDvEu)
+במשימה זו, עליכם לכתוב את הפעולה `InsertionSortInPlace`. עליכם לממש את אלגוריתם מיון ההכנסה (Insertion Sort) עבור רשימה מקושרת. המיון צריך להתבצע במקום, (in-place) כלומר, עליכם לשנות את הקישורים בין החוליות הקיימות ברשימה מבלי ליצור חוליות חדשות.
 
 
-במשימה זו, עליכם לממש את אלגוריתם מיון ההכנסה (Insertion Sort) עבור רשימה מקושרת. המיון צריך להתבצע 'במקום' (in-place), כלומר, עליכם לשנות את הקישורים בין החוליות הקיימות ברשימה מבלי ליצור חוליות חדשות.
+**תיאור המשימה:**
 
-הפעולה אותה תצטרכו לממש היא:
+{: .leafify}
+- קלט: הפעולה תקבל כפרמטר head המייצג את ראש הרשימה המקושרת שיש למיין.
+- פלט: הפעולה תחזיר את ראש הרשימה הממויינת
 
-1. public static void InsertionSortInPlace(Node
-
-`תיאור המשימה:`
-
-`קלט: הפעולה תקבל כפרמטר head המייצג את ראש הרשימה המקושרת שיש למיין.`
-
-`פלט: הפעולה תחזיר את ראש הרשימה הממויינת`
-
-`אלגוריתם מיון הכנסה:`
+**אלגוריתם מיון הכנסה:**
 
 1. מיון הכנסה עובד על ידי חלוקת הרשימה לשני חלקים: חלק ממוין וחלק לא ממוין.
 2. בתחילה, החלק הממוין מכיל את החוליה הראשונה בלבד (או שהוא ריק אם הרשימה ריקה).
@@ -207,9 +165,8 @@ lang: he
 4. הכניסו את החוליה הזו למקום הנכון בתוך החלק הממוין, תוך שמירה על סדר עולה.
 5. יש לטפל במקרה שבו החוליה צריכה להיות מוכנסת לפני ראש הרשימה הממוינת.
 
-``
 
-`דגשים חשובים:`
+**דגשים חשובים:**
 
 1. מיון 'במקום' (In-Place): אסור ליצור חוליות Node חדשות. יש לשנות רק את הקישורים (השדות Next) של החוליות הקיימות.
 2. טיפול במקרה של רשימה ריקה או חוליה בודדת: הפעולה צריכה לעבוד נכון גם עבור רשימות אלו.
