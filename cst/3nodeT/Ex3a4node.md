@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "ex3a.4 שרשרת חוליות"
+title: "3a4 שרשרת חוליות"
 subtitle: "Node<T> תרגילים עם דרישות רקורסיה"
 tags: []
 lang: he
