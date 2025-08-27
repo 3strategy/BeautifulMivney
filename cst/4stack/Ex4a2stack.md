@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "ex4a2 מחסנית Stack"
-subtitle: "Stack<T> מחסנית: תרגילים מתקדמים"
+title: "ex4a2 מחסנית Stack⟨T⟩"
+subtitle: "Stack⟨T⟩ מחסנית: תרגילים מתקדמים"
 tags: []
 lang: he
 ---
