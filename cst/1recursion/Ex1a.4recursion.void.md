@@ -7,7 +7,6 @@ lang: he
 ---
 
 ## 1a4.1 הדפסה רקורסיבית של מספרים
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-XGcXFia6fL9tfKx)
 
 עליכם לממש פעולה רקורסיבית בשם `PrintReverse` אשר מקבלת n - מספר שלם חיובי
 
@@ -22,7 +21,6 @@ lang: he
 
 
 ## 1a4.2 הדפסת מספרים בסדר יורד רקורסיבית
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-5Rm7RRJpgc1huYI)
 
 עליכם לממש פונקציה רקורסיבית בשפת #C עם החתימה הבאה:
 
@@ -42,7 +40,6 @@ public static void PrintNumbers(int n)
 
 
 ## 1a4.3 הדפסת משולש כוכביות רקורסיבית
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-LUX8T9NiwrP4Q7X)
 
 עליכם לממש פונקציה רקורסיבית ב-#C עם ההגדרה הבאה:
 ```csharp
@@ -67,7 +64,6 @@ public static void DrawTriangle(int n)
 
 
 ## 1a4.4 הדפסת תווים של מחרוזת באמצעות רקורסיה
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-gzAKkLURZ94jasT)
 
 עליכם לממש פונקציה רקורסיבית בשם `PrintStringChars`:
 
@@ -86,7 +82,6 @@ public static void DrawTriangle(int n)
 
 
 ## 1a4.5 הדפסת ספרות מספר באמצעות רקורסיה
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-wJxnRWIW9FGJJG6)
 
 עליכם לממש פונקציה רקורסיבית בשפת #C עם החתימה
 ```csharp

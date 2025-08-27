@@ -6,7 +6,7 @@ tags: []
 lang: he
 ---
 
-## 1a3.01 האם יש איבר זוגי במערך?
+## 1a3.1 האם יש איבר זוגי במערך?
 
 כתוב פונקציה `bool EvenExists (int[] arr)` שמחזירה `true` אם קיים איבר זוגי במערך, אחרת `false`
 
@@ -27,8 +27,7 @@ public static bool EvenExists(int[] arr, int i = -2)
 ```
 
 
-## 1a3.02 חיפוש בינארי רקורסיבי
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-ITfVvTg637YTCKG)
+## 1a3.2 חיפוש בינארי רקורסיבי
 
 עליכם לממש פונקציה רקורסיבית בשם `BinarySearch` ב-C# עם הכותרת:`public static int BinarySearch(int[] arr, int target)`
 
@@ -51,8 +50,7 @@ public static bool EvenExists(int[] arr, int i = -2)
 3. האלגוריתם חייב להיות רקורסיבי.
 4. אין צורך לטפל במקרים שבהם המערך אינו ממוין או מכיל איברים כפולים מעבר לבדיקה שהערך קיים או לא.
 
-## 1a3.03 מציאת אינדקס ראשון באמצעות רקורסיה
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-aNhyLpVhQ4bMUkD)
+## 1a3.3 מציאת אינדקס ראשון באמצעות רקורסיה
 
 עליכם לממש פונקציה רקורסיבית בשם `FindFirstIndex` בשפת C#, בעלת החתימה הבאה:
 ```csharp
@@ -71,8 +69,7 @@ public static int FindFirstIndex(int[] arr, int target)
 2. הפונקציה צריכה להיות static ולקבל את הפרמטרים כפי שצוין.
 3. שימו לב לטיפול במקרי הבסיס של הרקורסיה.
 
-## 1a3.04 היפוך מערך באמצעות רקורסיה
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-PjQHeGNrPo2cXmr)
+## 1a3.4 היפוך מערך באמצעות רקורסיה
 
 עליכם לממש פונקציה בשם `ReverseString` אשר מקבלת פרמטר אחד: `str` - מחרוזת להיפוך
 
@@ -89,8 +86,7 @@ public static int FindFirstIndex(int[] arr, int target)
 1. אם המחרוזת ריקה או עם תו אחד - החזירו אותה כמו שהיא
 2. אחרת - החזירו את המחרוזת ההפוכה של כל התווים מהשני ואילך, בתוספת התו הראשון בסוף
 
-## 1a3.05 סכום איברי מערך רקורסיבי
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-gDrQAhCg1ZZej8k)
+## 1a3.5 סכום איברי מערך רקורסיבי
 
 עליכם לממש פונקציה רקורסיבית ב-C# בשם `SumArray` אשר מקבלת מערך של מספרים שלמים `arr`.
 
@@ -106,8 +102,7 @@ public static int SumArray(int[] arr)
 2. יש לבצע קריאה רקורסיבית שתתקדם במערך.
 
 
-## 1a3.06 הדפסת מערך בסדר הפוך (רקורסיה)
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-UUw8aPHiYVLwZd4)
+## 1a3.6 הדפסת מערך בסדר הפוך (רקורסיה)
 
 עליכם לממש פונקציה רקורסיבית ב-C# בשם `PrintArray` עם החתימה הבאה:
 ```csharp
@@ -124,8 +119,7 @@ public static void PrintArray(int[] arr)
 3. ודאו שההדפסה היא בסדר הפוך.
 4. אין צורך לטפל במקרה של מערך ריק או באינדקסים חורגים; המערך יכיל תמיד מספרים שלמים חיוביים.
 
-## 1a3.07 מיון מיזוג (Merge Sort)
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-8VuQNuCl73QOaeD)
+## 1a3.7 מיון מיזוג (Merge Sort)
 
 עליכם לממש את הפונקציה הרקורסיבית `MergeSort` בשפת C#:
 ```csharp
@@ -152,8 +146,7 @@ public class Solution
 1. חלוקה: חלקו את המערך לשני חצאים באופן רקורסיבי עד שמגיעים לתת-מערכים בגודל 1 (או 0).
 2. מיזוג: מזגו את תתי-המערכים הממוינים בחזרה, תוך שמירה על סדר ממוין.
 
-## 1a3.08 ספירת מספרים זוגיים במערך רקורסיבית
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-AKCQGPGkyb8hbw1)
+## 1a3.8 ספירת מספרים זוגיים במערך רקורסיבית
 
 עליכם לממש פונקציה רקורסיבית ב-C# בשם `CountEven` עם החתימה הבאה:`static int CountEven(int[] arr)`
 
@@ -166,8 +159,7 @@ public class Solution
 1. הפתרון חייב להיות רקורסיבי. אין להשתמש בלולאות (for, while, foreach).
 2. השתמשו במקרה הבסיס כשהאינדקס מגיע לסוף המערך.
 
-## 1a3.09 האיבר הגדול ביותר במערך (רקורסיבי)
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-zG5toBUc8w7eTEA)
+## 1a3.9 האיבר הגדול ביותר במערך (רקורסיבי)
 
 עליכם לממש פונקציה רקורסיבית ב-C# בשם `MaxArray` בעלת החתימה הבאה:
 ```csharp
@@ -192,7 +184,6 @@ static int MaxArray(int[] arr)
 
 
 ## 1a3.10 בדיקת מערך ממוין רקורסיבית
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-tJUIS2Pd6lF4hlY)
 
 עליכם לממש פונקציה רקורסיבית ב-C# בשם `IsSorted` בעלת החתימה הבאה:
 ```csharp
@@ -211,7 +202,6 @@ public static bool IsSorted(int[] arr)
 
 
 ## 1a3.11 חיפוש איבר במערך רקורסיבי
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-nP8MYXITTLlkqFL)
 
 עליכם לממש פונקציה רקורסיבית ב-C# בשם `SearchArray` עם החתימה הבאה:
 ```csharp
@@ -235,7 +225,6 @@ public static bool SearchArray(int[] arr, int target)
 
 
 ## 1a3.12 חיפוש רקורסיבי של איבר במערך לא ממויין 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-nP8MYXITTLlkqFL)
 
 עליכם לממש פונקציה רקורסיבית ב-C# בשם `SearchArray` עם החתימה הבאה:
 

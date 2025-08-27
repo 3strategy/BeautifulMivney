@@ -8,8 +8,6 @@ lang: he
 
 ## 3a3.1 שרשרת המוכלת בשרשרת אחרת {#id3a3.1}
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-tmB9bz2hUKxHMlS)
-
 במשימה זו, עליכם לממש פעולה סטטית בשם `IsSubList` במחלקת `Solution`. פעולה זו תקבל שתי רשימות מקושרות (שרשרת חוליות) ותקבע האם הרשימה הראשונה (list1) היא רשימה חלקית של הרשימה השנייה (list2).
 
 ### דרישות:
@@ -43,7 +41,6 @@ lang: he
 
 
 ## 3a3.2 הפיכת רצפים זהים למופע יחיד {#id3a3.2}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-zVdf8d9DlcLN3LI)
 
 בתרגיל זה, עליכם לממש פעולה סטטית בשם `RemoveSequencesOfIdenticalNumbers` בתוך מחלקה בשם `Solution`. הפעולה תקבל כפרמטר ראש של רשימה מקושרת של מספרים שלמים ותשנה את הרשימה כך שכל רצף של איברים זהים יוחלף במופע בודד של האיבר. כלומר, אם יש רצף של מספרים זהים (לדוגמה, `1, 1, 1`), הוא יהפוך לאיבר בודד (`1`).
 
@@ -102,8 +99,6 @@ lang: he
 
 ## 3a3.4 שרשור שתי שרשראות union {#id3a3.4}
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-a6ByQuCrdOTjrEq)
-
 בתרגיל זה, עליכם לממש פעולה בשם `ListsUnion` שתקבל שתי רשימות מקושרות ותחזיר רשימה מקושרת חדשה המהווה את איחוד האיברים משתי הרשימות המקוריות.
 
 דרישות:
@@ -134,8 +129,6 @@ lang: he
 
 
 ## 3a3.5 intersect חיתוך שרשראות (במשמעות המתמטית)  {#id3a3.5}
-
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-uiULM09uJ8WuaXA)
 
 ### תיאור המשימה
 
@@ -225,8 +218,6 @@ lang: he
 
 ## 3a3.7 פלינדרום ברשימה מקושרת {#id3a3.7}
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-i8VpkQKd5hAq4nq)
-
 בתרגיל זה, עליכם לממש פעולה סטטית בשם `IsPalindrome` בתוך מחלקה בשם `Solution`. הפעולה תקבל כפרמטר ראש של רשימה מקושרת ותחזיר ערך בוליאני (`true` או `false`) המציין האם הרשימה המקושרת מהווה פלינדרום.
 
 דרישות נוספות:
@@ -248,7 +239,6 @@ lang: he
 
 
 ## 3a3.8 מיון לפי זוגיות בשרשרת {#id3a3.8}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-oZ8YLMLVuFPY/csharp-6EleMpsVJc0iTzQ)
 
 בתרגיל זה, עליכם לממש פעולה בשם `ParityPartition` במחלקה Solution שתקבל רשימה מקושרת של מספרים שלמים ותשנה את סדר איבריה בהתאם לזוגיות.
 

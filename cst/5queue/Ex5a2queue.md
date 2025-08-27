@@ -13,7 +13,6 @@ lang: he
 
 
 ## 5a2.1 סידור תור: שליליים תחילה, חיוביים אחריהם {#id5a2.1}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-ET4CEri79iylFzY)
 
 עליכם לממש פונקציה בשם `RearrangeQueue` אשר מקבלת פרמטר אחד:
 
@@ -50,7 +49,6 @@ lang: he
 
 
 ## 5a2.2 הפיכת סדר איברים בתור {#id5a2.2}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-KugxY68FipeA2WN)
 
 עליכם לממש פעולה סטטית בשם `ReverseQueue` במחלקה `Solution`.
 הפעולה תקבל פרמטר אחד:
@@ -88,7 +86,6 @@ lang: he
 
 
 ## 5a2.3 בדיקת פלינדרום בתור {#id5a2.3}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-OcP16w5kWlxBUR1)
 
 עליכם לממש פונקציה בשם `IsPalindromeQueue` אשר מקבלת פרמטר אחד:
 
@@ -134,8 +131,6 @@ using Unit4.CollectionsLib;
 
 ## 5a2.4 ספירת איברים באופן רקורסיבי {#id5a2.4}
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-QefFrPxTEQS6BXI)
-
 עליכם לממש פונקציה רקורסיבית בשם `CountQueueElements` אשר מקבלת פרמטר אחד:
 
 1. queue - תור (מסוג Queue) המכיל מספרים שלמים.
@@ -163,7 +158,6 @@ using Unit4.CollectionsLib;
 
 
 ## 5a2.5 בדיקת קיום איבר באופן רקורסיבי {#id5a2.5}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-YFWGrtWYpUwQZsy)
 
 עליכם לממש פונקציה רקורסיבית בשם `IsElementInQueue` אשר מקבלת שני פרמטרים:
 
@@ -197,8 +191,6 @@ using Unit4.CollectionsLib;
 
 
 ## 5a2.6 מיזוג תורים: Q1 לתוך Q2 {#id5a2.6}
-
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-0GqEALeOCEPlcdV)
 
 עליכם לממש פונקציה בשם `MergeQueues` אשר מקבלת שני פרמטרים:
 
@@ -250,7 +242,6 @@ public static Queue
 
 
 ## 5a2.7 פיענות הודעת רדיו סודית {#id5a2.7}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-1XwzJ9s8AvuZ/csharp-s6uSi8jAyZcX1SD)
 
 עליכם לממש פונקציה בשם `DecodeSecretMessage` אשר מקבלת שני פרמטרים:
 

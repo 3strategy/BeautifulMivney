@@ -9,7 +9,6 @@ lang: he
 
 
 ## 5a1.1 ספירת איברים בתור {#id5a1.1}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-Yvtv2R3fsxwblwO)
 
 עליכם לממש פונקציה בשם `CountQueueElements` אשר מקבלת פרמטר אחד:
 
@@ -41,7 +40,6 @@ lang: he
 
 
 ## 5a1.2 סכום איברי תור {#id5a1.2}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-hHItixmPNCEhv4V)
 
 עליכם לממש פונקציה בשם `SumQueue` אשר מקבלת פרמטר אחד:
 
@@ -73,7 +71,6 @@ lang: he
 
 
 ## 5a1.3 בדיקת קיום איבר בתור {#id5a1.3}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-zT0TidHxL3V9cdf)
 
 עליכם לממש פונקציה בשם `IsElementInQueue` אשר מקבלת שני פרמטרים:
 
@@ -115,8 +112,6 @@ lang: he
 
 ## 5a1.4 ספירת הופעות איבר בתור {#id5a1.4}
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-FocE4jommtUAazY)
-
 עליכם לממש פונקציה בשם `CountOccurrences` אשר מקבלת שני פרמטרים:
 
 1. queue - תור (מסוג Queue
@@ -151,7 +146,6 @@ lang: he
 
 
 ## 5a1.5 הזזת איברי תור קדימה {#id5a1.5}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-4Kvn1pAFD2U6f6r)
 
 עליכם לממש פונקציה בשם `ShiftQueueForward` אשר מקבלת פרמטר אחד:
 
@@ -183,7 +177,6 @@ lang: he
 
 
 ## 5a1.6 הכפלת איברי תור {#id5a1.6}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-UJMQiEIVldCQSqw)
 
 עליכם לממש פונקציה בשם `MultiplyQueueElements` אשר מקבלת שני פרמטרים:
 
@@ -215,8 +208,6 @@ lang: he
 
 ## 5a1.7 העתקת תור {#id5a1.7}
 
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-Uh93Of6g8keTDhl)
-
 עליכם לממש פונקציה בשם `CopyQueue` אשר מקבלת פרמטר אחד:
 
 1. originalQueue - תור (מסוג Queue) אותו יש להעתיק.
@@ -243,7 +234,6 @@ lang: he
 
 
 ## 5a1.8 העתקת K איברים מתוך התור {#id5a1.8}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-iNdNioetGjGbFJo)
 
 עליכם לממש פונקציה בשם `CopyKElementsFromQueue` אשר מקבלת שני פרמטרים:
 
@@ -278,7 +268,6 @@ public static Queue
 
 
 ## 5a1.9 תור הפרשים {#id5a1.9}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-SKvgeZBoobP8Qoz)
 
 עליכם לממש פונקציה בשם `CalculateDifferenceQueue` אשר מקבלת תור של מספרים שלמים בשם `Q`.
 
@@ -316,7 +305,6 @@ public static Queue
 
 
 ## 5a1.10 הסרת כפילויות מתור {#id5a1.10}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-zEjO14skrjTX/csharp-u19w9JFMYeVcc8T)
 
 עליכם לממש פונקציה בשם `RemoveDuplicatesFromQueue` אשר מקבלת תור (מסוג `Queue`) כפרמטר.
 

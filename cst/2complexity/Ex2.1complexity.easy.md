@@ -11,7 +11,6 @@ lang: he
 
 
 ## 2a1.1 אינדקס שיווי משקל במערך {#id2a1.1}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-Zl2ZHWkxU2Tk/csharp-4xrcxhCo3R9Pjdx)
 
 עליכם לממש פונקציה בשם `FindEquilibriumIndex` אשר מקבלת פרמטר אחד:
 
@@ -34,7 +33,6 @@ lang: he
 
 
 ## 2a1.2 בדיקת סכום זוג במערך ממוין {#id2a1.2}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-Zl2ZHWkxU2Tk/csharp-IhiOgFWqCs7T3tM)
 
 עליכם לממש פונקציה בשם `HasPairWithSum` אשר מקבלת שני פרמטרים:
 
@@ -57,7 +55,6 @@ lang: he
 
 
 ## 2a1.3 הפרש מקסימלי במערך {#id2a1.3}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-Zl2ZHWkxU2Tk/csharp-Dgok9L1TXCG9aFQ)
 
 עליכם לממש פונקציה בשם `MaxDifference` אשר מקבלת פרמטר אחד:
 
@@ -78,7 +75,6 @@ lang: he
 
 
 ## 2a1.4 חיפוש בינארי במערך ממוין {#id2a1.4}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-Zl2ZHWkxU2Tk/csharp-FLOG9RqnEF9oeW4)
 
 עליכם לממש פונקציה בשם `BinarySearch` אשר מקבלת שני פרמטרים:
 
@@ -102,7 +98,6 @@ lang: he
 
 
 ## 2a1.5 מציאת שיא מקומי במערך {#id2a1.5}
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-Zl2ZHWkxU2Tk/csharp-uUbVqDHyjkLY8TQ)
 
 עליכם לממש פונקציה בשם `FindLocalPeak` אשר מקבלת פרמטר אחד:
 

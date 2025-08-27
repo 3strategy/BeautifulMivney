@@ -176,7 +176,6 @@ lang: he
 
 
 ## 1a1.1 חישוב עצרת באמצעות רקורסיה
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-cMEoCWtAE1N2tkA)
 
 עליכם לממש פונקציה בשם `Factorial` אשר מקבלת פרמטר אחד:
 
@@ -198,7 +197,6 @@ lang: he
 
 
 ## 1a1.2 סכום ספרות מספר באמצעות רקורסיה
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-BA8I4OG33wyPjHn)
 
 עליכם לממש פונקציה רקורסיבית בשם `SumDigits` אשר מקבלת פרמטר אחד:
 
@@ -223,7 +221,6 @@ lang: he
 
 
 ## 1a1.3 בדיקת זוגיות מספר באמצעות רקורסיה
-[link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-x1LcqrIF1KRb4jy)
 
 עליכם לממש פונקציה רקורסיבית בשם `IsEven` אשר מקבלת פרמטר אחד:
 
