@@ -12,8 +12,6 @@ lang: he
 
 ## 3a2.1 בניית ברקורסיה של שרשרת מ-1 עד n {#id3a2.1}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-wn4SzzATrGauLe1) -->
-
 עליכם לממש פונקציה רקורסיבית בשם `Build1toNListRec` אשר מקבלת מספר שלם `n` כפרמטר. הפונקציה צריכה לבנות רשימה מקושרת שאיבריה הם המספרים מ-`n` ועד `1` (בסדר עולה!!!) ולהחזיר את ראש הרשימה.
 
 ### דרישות:
@@ -26,8 +24,6 @@ lang: he
 
 
 ## 3a2.2 הסרת האיבר הראשון המכיל את הערך {#id3a2.2}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-LcJdoNcv1aZQCVw) -->
 
 עליכם לממש פונקציה רקורסיבית בשם `RemoveNum` אשר מקבלת שני פרמטרים:
 
@@ -49,7 +45,6 @@ lang: he
 
 **יחסית פשוט**
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-BYjQqElg52xYwfA) -->
 
 עליכם לממש פונקציה רקורסיבית בשם `MaxMemberRec` אשר מקבלת פרמטר אחד:
 
@@ -67,7 +62,6 @@ lang: he
 
 **די קשה**
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-WfV8VLFrtnJFbL4) -->
 
 עליכם לממש פונקציה רקורסיבית בשם `RemoveNegative` אשר מקבלת פרמטר אחד:
 
@@ -87,8 +81,6 @@ lang: he
 
 ## 3a2.5 סכום שרשרת {#id3a2.5}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-SyOUIe9w9qMnsrj) -->
-
 עליכם לממש פונקציה רקורסיבית בשם `SumLinkedListRecursive` אשר מקבלת פרמטר אחד:
 
 1. head - מצביע לראש הרשימה המקושרת (מסוג Node
@@ -103,8 +95,6 @@ lang: he
 
 
 ## 3a2.6 כמות הזוגיים {#id3a2.6}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-rYctBtndP6Bs/csharp-CnrRLUTl23Iuhss) -->
 
 עליכם לממש פונקציה רקורסיבית בשם `CountEvenNodes` אשר מקבלת פרמטר אחד:
 

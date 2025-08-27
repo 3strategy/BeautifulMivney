@@ -52,8 +52,6 @@ lang: he
 
 ## 6a4.2. תמונת ראי של עצים בינאריים {#id6a4.2.}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-ip5OPQCSDAYMuA1) -->
-
 עליכם לממש פעולה חיצונית (לא חלק ממחלקת BinNode) בשם `AreMirror` אשר מקבלת שני פרמטרים:
 
 1. tree1 - מצביע לשורש של עץ בינארי (מסוג BinNode)
@@ -77,7 +75,7 @@ lang: he
 3. אין צורך לטפל במקרים בהם הערכים בצמתים שונים, רק במבנה.
 4. אין צורך לטפל במקרים בהם אחד מהעצים הוא null והשני לא, או במקרים של עצים לא חוקיים (לדוגמה, צמתים שמצביעים על עצמם).
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-ip5OPQCSDAYMuA1) -->
+
 
 עליכם לממש פעולה חיצונית (לא חלק ממחלקת BinNode) בשם `AreMirror` אשר מקבלת שני פרמטרים:
 
@@ -109,7 +107,6 @@ lang: he
 ## 6a4.3. עדכון עלי עץ בינארי לערך האב {#id6a4.3.}
 
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-4tLsiehctUg1LuQ) -->
 
 עליכם לממש פונקציה חיצונית בשם `UpdateLeavesWithParentValue` אשר מקבלת פרמטר אחד:
 
@@ -139,7 +136,7 @@ lang: he
 1. יש להשתמש ב-using Unit4.CollectionsLib; וב-using Unit4.BinTreeUtilsLib;.
 2. הפונקציה לא צריכה להחזיר ערך (void).
 3. אין צורך לטפל במקרי קצה של עצים לא חוקיים (לדוגמה, עץ עם לולאות).
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-4tLsiehctUg1LuQ) -->
+
 
 ### דוגמאות:
 
@@ -175,7 +172,6 @@ lang: he
 
 
 ## 6a4.4. מחיקת צמתי בן יחיד מעץ בינארי {#id6a4.4.}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-W8kTf6AEjferMSD) -->
 
 עליכם לכתוב פונקציה סטטית בשם `DeleteSingleChildNodes` המקבלת כקלט שורש של עץ בינארי. הפונקציה צריכה למחוק כל צומת בעץ שהינו שיש לו רק צאצא אחד - ימני או שמאלי.
 
@@ -191,7 +187,6 @@ lang: he
 
 הפונקציה מחזירה קלט מסוג `Node
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-W8kTf6AEjferMSD) -->
 
 ### דוגמאות
 
@@ -265,8 +260,6 @@ lang: he
 
 ## 6a4.5. הוספת בן שמאלי לעלי עץ בינארי {#id6a4.5.}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-viVq9iIefv3tWL2) -->
-
 עליכם לממש פונקציה חיצונית בשם `AddLeftChildToLeaves` אשר מקבלת פרמטר אחד:
 
 1. tree - עץ בינארי של מספרים שלמים (BinNode
@@ -284,7 +277,6 @@ lang: he
 1. הפונקציה אינה מחזירה ערך (void).
 2. אין צורך לטפל במקרי קצה של עץ ריק או עץ עם צומת בודד, אלא ליישם את הלוגיקה הכללית.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-viVq9iIefv3tWL2) -->
 
 ### דוגמאות:
 
@@ -327,8 +319,6 @@ lang: he
 
 ## 6a4.6. הוספת אח לבן יחיד בעץ בינארי {#id6a4.6.}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-lFodsGrGyzasaWi) -->
-
 עליכם לממש פונקציה חיצונית בשם `AddSiblingToSingleChild` אשר מקבלת פרמטר אחד:
 
 1. tree - עץ בינארי מסוג BinNode שהצמתים שלו הם מטיפוס שלם.
@@ -343,7 +333,7 @@ lang: he
 4. אין לגעת בצמתים שיש להם שני בנים או כאלה שאין להם בנים כלל.
 5. הפתרון צריך להיות יעיל ולעבור על העץ פעם אחת.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-lFodsGrGyzasaWi) -->
+
 
 ### דוגמאות:
 
@@ -402,7 +392,6 @@ null null
 
 
 ## 6a4.7. כמות צמתים ברמה בעץ בינארי {#id6a4.7.}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-gkjHpa0Q20wWV88) -->
 
 עליכם לממש פונקציה חיצונית בשם `CountNodesAtLevel` אשר מקבלת שני פרמטרים:
 
@@ -416,7 +405,7 @@ null null
 1. יש להשתמש במחלקות מתוך Unit4.CollectionsLib ובמחלקה BinNode.
 2. ניתן להשתמש בגישה איטרטיבית (באמצעות תור) או רקורסיבית.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-gkjHpa0Q20wWV88) -->
+
 
 ### דוגמאות:
 
@@ -437,7 +426,6 @@ null null
 
 
 ## 6a4.8 גדר העץ הבינארי {#id6a4.8}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-96YVcnE99BTHHjQ) -->
 
 במשימה זו, עליכם לממש פעולה בשם `GetTreeFence` בתוך מחלקה סטטית בשם `Solution`. הפעולה תקבל כפרמטר עץ בינארי מסוג `Unit4.BinNode` ותחזיר רשימת חוליות מסוג `Unit4.Node` המייצגת את 'גדר העץ'.
 
@@ -453,7 +441,7 @@ null null
 2. הפעולה תקבל Unit4.BinNode כפרמטר ותחזיר Unit4.Node.
 3. הסדר ברשימת החוליות צריך להיות: עלה ימני ביותר -> צמתים בדרך הימנית העולה לשורש -> שורש -> צמתים בדרך השמאלית היורדת מהשורש -> עלה שמאלי ביותר.
 4. השתמשו ב Unit4.CollectionsLib
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-96YVcnE99BTHHjQ) -->
+
 
 ### דוגמאות: יצירת העץ וקריאה לפעולה
 
@@ -509,7 +497,6 @@ current2 = current2.Next;
 
 
 ## 6a4.9 מסלול עולה בעץ בינארי {#id6a4.9}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-sIbSRB21iogv8jR) -->
 
 במשימה זו, עליכם לכתוב פעולה סטטית בשם `HasAscendingPath` במחלקה `Solution` שתקבל כפרמטר שורש של עץ בינארי (מסוג `Unit4.BinNode`) ותחזיר `true` אם קיים בעץ מסלול מהשורש לעלה שבו הערכים ממוינים בסדר עולה. אחרת, הפעולה תחזיר `false`.
 
@@ -550,7 +537,7 @@ public static bool HasAscendingPath(Unit4.BinNode tree)
 // }
 }
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-sIbSRB21iogv8jR) -->
+
 
 ### דוגמאות
 
@@ -623,8 +610,6 @@ Console.WriteLine(Solution.HasAscendingPath(root)); // פלט: True
 
 ## 6a4.10 סכום מקסימלי של מסלול בעץ בינארי {#id6a4.10}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-rCshSJ9n0OtGcFP) -->
-
 לפעמים בחיים, אנחנו צריכים למצוא את הדרך הטובה ביותר מנקודה אחת לאחרת, בין אם זה המסלול המהיר ביותר ב-GPS, או הנתיב הרווחי ביותר בעסק. בתכנות, עצים בינאריים יכולים לייצג מגוון רחב של מבנים היררכיים, כמו מערכת קבצים, יחסי משפחה או אפשרויות קבלת החלטות. למשל, דמיינו שאתם מפתחים אלגוריתם למשחק אסטרטגיה שבו כל צומת בעץ מייצג החלטה, והערך שלו הוא הניקוד שתקבלו. המטרה שלכם היא למצוא את סדרת ההחלטות (המסלול מהשורש לעלה) שתיתן לכם את הניקוד הגבוה ביותר. התרגיל הזה ילמד אתכם איך לנווט בעצים כדי למצוא את המסלול האופטימלי, מיומנות קריטית בעולם פתרון הבעיות.
 
 עליכם לממש פונקציה בשם `FindMaxPathSum` שתקבל כפרמטר צומת שורש של עץ בינארי מסוג `Unit4.CollectionLib.BinNode`. מטרת הפונקציה היא למצוא את המסלול מהשורש (הצומת שהתקבל כפרמטר) לעלה (צומת ללא בנים) בעץ, כך שסכום ערכי הצמתים במסלול זה יהיה הגדול ביותר האפשרי. הפונקציה צריכה להחזיר את סכום המסלול המקסימלי הזה.
@@ -640,7 +625,7 @@ Console.WriteLine(Solution.HasAscendingPath(root)); // פלט: True
 ### פלט
 
 הפונקציה תחזיר ערך מספרי שלם (int) המייצג את סכום המסלול המקסימלי מהשורש לעלה בעץ הבינארי.
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-rCshSJ9n0OtGcFP) -->
+
 
 ### דוגמאות
 
@@ -672,26 +657,6 @@ Console.WriteLine(Solution.HasAscendingPath(root)); // פלט: True
 קלט: עץ ריק (null)
 פלט : -2147483648
 (int.MinValue)
-
-
-
-
-
-
-
-## 6a4.111 {#id6a4.111}
-
-
-
-
-
-
-
-
-
-## 6a4.111 {#id6a4.111}
-
-
 
 
 

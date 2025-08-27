@@ -9,7 +9,6 @@ lang: he
 
 
 ## 6a1.1 סכום צמתים בעץ בינארי {#id6a1.1}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-BxPk17cBVOPb2eO) -->
 
 עליכם לממש פונקציה בשם `SumBinaryTreeNodes` אשר מקבלת פרמטר אחד:
 
@@ -46,7 +45,6 @@ lang: he
 
 
 ## 6a1.2 המספר המקסימלי בעץ בינארי {#id6a1.2}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-RJbpTdUbf7tw554) -->
 
 עליכם לממש פונקציה חיצונית בשם `FindMaxInBinaryTree` אשר מקבלת פרמטר אחד:
 
@@ -61,7 +59,6 @@ lang: he
 3. השתמשו במחלקה BinNode מהספרייה Unit4.CollectionsLib.
 4. שימו לב לשימוש ב-using Unit4.CollectionsLib; בתחילת הקובץ.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-RJbpTdUbf7tw554) -->
 
 ### דוגמאות:
 
@@ -95,7 +92,6 @@ lang: he
 
 
 ## 6a1.3 {#id6a1.3}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-xZv7vuJqdKon9WX) -->
 
 עליכם לממש פונקציה בשם `CountSingleChildren` אשר מקבלת פרמטר אחד:
 
@@ -109,8 +105,6 @@ lang: he
 2. עץ ריק (null) אינו מכיל בנים יחידים.
 3. עליכם להשתמש במחלקת BinNode מהספרייה Unit4.CollectionsLib.
 4. יש להוסיף את השורה using Unit4.CollectionsLib; בראש הקובץ.
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-xZv7vuJqdKon9WX) -->
 
 ### דוגמאות:
 
@@ -148,7 +142,6 @@ lang: he
 
 
 ## 6a1.4 {#id6a1.4}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-9V82E37LZtLCkLU) -->
 
 עליכם לממש פונקציה בשם `CountEvenNodes` אשר מקבלת פרמטר אחד:
 
@@ -160,8 +153,6 @@ lang: he
 
 1. אם העץ ריק (כלומר, t הוא null), הפונקציה צריכה להחזיר 0.
 2. עליכם לעבור על כל הצמתים בעץ ולבדוק את זוגיות ערכם.
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-9V82E37LZtLCkLU) -->
 
 ### דוגמאות:
 
@@ -189,7 +180,6 @@ lang: he
 
 
 ## 6a1.6 סכום בנים ימניים בעץ בינארי {#id6a1.6}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-Pc8EwaYDAV1SHR6) -->
 
 עליכם לממש פונקציה בשם `SumOfRightChildren` אשר מקבלת פרמטר אחד:
 
@@ -213,7 +203,6 @@ lang: he
 
 
 ## 6a1.7 ספירת צמתים בעץ בינארי {#id6a1.7}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-PfzCbpw6xERpiRQ) -->
 
 עליכם לממש פונקציה חיצונית בשם `CountOccurrences` אשר מקבלת שני פרמטרים:
 
@@ -229,7 +218,6 @@ lang: he
 3. עליכם להשתמש במחלקת BinNode מהספרייה Unit4.CollectionsLib.
 4. אין לשנות את מבנה העץ המקורי.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-PfzCbpw6xERpiRQ) -->
 
 ### דוגמאות:
 
@@ -255,7 +243,6 @@ lang: he
 
 
 ## 6a1.8 ספירת עלים בעץ בינארי {#id6a1.8}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-HHVed2UwzSG73nG) -->
 
 עליכם לממש פונקציה סטטית בשם `CountLeaves` אשר מקבלת פרמטר אחד:
 
@@ -271,7 +258,7 @@ lang: he
 4. עליכם להשתמש במחלקה BinNode.
 5. יש לכלול את השורה using Unit4.CollectionsLib; בקוד שלכם כדי להשתמש במחלקת BinNode.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-HHVed2UwzSG73nG) -->
+
 
 ### דוגמאות:
 
@@ -325,7 +312,6 @@ lang: he
 
 
 ## 6a1.9 {#id6a1.9}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-nZTXCjDFBxrQQo9) -->
 
 עליכם לממש פונקציה בשם `CountNodesSmallerThanChild` אשר מקבלת פרמטר אחד:
 
@@ -342,7 +328,6 @@ lang: he
 5. השתמשו ב-using Unit4.CollectionsLib; עבור המחלקה BinNode.
 
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-nZTXCjDFBxrQQo9) -->
 
 ### דוגמאות:
 
@@ -391,7 +376,6 @@ lang: he
 
 
 ## 6a1.10  ספירת צמתים גדולים מהאב בעץ בינארי {#id6a1.10}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-yhEzaoqHjDR4P5F) -->
 
 עליכם לממש פונקציה בשם `CountNodesGreaterThanParent` אשר מקבלת פרמטר אחד:
 
@@ -406,7 +390,7 @@ lang: he
 3. הפתרון צריך להיות רקורסיבי.
 4. ודאו שאתם מטפלים כראוי במקרה של עץ ריק או עץ עם צומת שורש בלבד.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-yhEzaoqHjDR4P5F) -->
+
 
 ### דוגמאות:
 
@@ -436,7 +420,6 @@ lang: he
 
 
 ## 6a1.11 {#id6a1.11}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-Pagtda3BI15q3zW) -->
 
 עליכם לממש פונקציה חיצונית בשם `SumOddSingleNodes` אשר מקבלת פרמטר אחד:
 
@@ -454,7 +437,6 @@ lang: he
 לצורך פתרון התרגיל, עליכם להשתמש ב-`using Unit4.CollectionsLib;`
 
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-Pagtda3BI15q3zW) -->
 
 ### דוגמאות:
 
@@ -488,8 +470,6 @@ lang: he
 
 ## 6a1.12 כמות סבים בעץ בינארי {#id6a1.12}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-cHWOVsK7DXFICMx) -->
-
 עליכם לממש פונקציה חיצונית בשם `CountGrandparents` אשר מקבלת פרמטר אחד:
 
 1. t - עץ בינארי (BinNode
@@ -507,7 +487,6 @@ lang: he
 3. שימו לב למקרים בהם צמתים מסוימים או כל העץ ריקים.
 
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-vXSGGjwefq8p/csharp-cHWOVsK7DXFICMx) -->
 
 ### דוגמאות:
 

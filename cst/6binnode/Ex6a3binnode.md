@@ -9,8 +9,6 @@ lang: he
 
 ## 6a3.1. גובה עץ בינארי {#id6a3.1.}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-ILjSkHAEzbXXBzk) -->
-
 עליכם לממש פונקציה בשם `CalculateTreeHeight` אשר מקבלת פרמטר אחד:
 
 1. tree - מצביע לשורש של עץ בינארי (מסוג BinNode)
@@ -24,7 +22,6 @@ lang: he
 3. עליכם להשתמש ברקורסיה כדי לפתור את הבעיה.
 4. יש להשתמש במחלקה BinNode מתוך Unit4.CollectionsLib.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-ILjSkHAEzbXXBzk) -->
 
 ### דוגמאות:
 
@@ -48,9 +45,6 @@ lang: he
 
 ## 6a3.2. הדפסת צמתי עץ בינארי בסדר סופי {#id6a3.2.}
 
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-z1DNeWwfQrcIEGt) -->
-
 עליכם לממש פונקציה חיצונית בשם `PrintPostOrder` אשר מקבלת פרמטר אחד:
 
 1. tree - עץ בינארי (מסוג BinNode) שהצמתים שלו מכילים מספרים שלמים.
@@ -64,7 +58,6 @@ lang: he
 3. ניתן להשתמש בפונקציות עזר של BinTreeUtils ליצירת העץ לצורך בדיקה.
 4. עבור C#, יש להוסיף using Unit4.CollectionsLib; ו-using Unit4.BinTreeUtilsLib;.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-z1DNeWwfQrcIEGt) -->
 
 ### דוגמאות:
 
@@ -99,7 +92,6 @@ lang: he
 
 
 ## 6a3.3. הדפסת בנים ימניים בעץ בינארי {#id6a3.3.}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-tW6MEIRAgZ6yVUY) -->
 
 עליכם לממש פונקציה חיצונית בשם `PrintRightChildren` אשר מקבלת פרמטר אחד:
 
@@ -112,8 +104,6 @@ lang: he
 1. השתמשו במחלקת BinNode מהספרייה Unit4.CollectionsLib.
 2. תוכלו להשתמש במעבר על העץ (לדוגמה, DFS או BFS) כדי לבקר בכל הצמתים.
 3. בכל צומת, בדקו אם קיים בן ימני (GetRight() אינו null). אם כן, הדפיסו את ערכו (GetValue()).
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-tW6MEIRAgZ6yVUY) -->
 
 ### דוגמאות:
 
@@ -149,7 +139,6 @@ lang: he
 
 
 ## 6a3.4. הדפסת עלי עץ בינארי משמאל לימין {#id6a3.4.}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-6ccZKqWqMNVlRTu) -->
 
 עליכם לממש פונקציה חיצונית בשם `PrintLeavesLeftToRight` אשר מקבלת פרמטר אחד:
 
@@ -167,7 +156,7 @@ lang: he
 הגדרה של עלה:
 עלה הוא צומת שאין לו ילדים (לא ילד שמאלי ולא ילד ימני).
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-6ccZKqWqMNVlRTu) -->
+
 
 ### דוגמאות:
 
@@ -203,8 +192,6 @@ lang: he
 ## 6a3.5. הדפסת צמתים קטנים מאביהם בעץ בינארי {#id6a3.5.}
 
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-aFePHQKy9NOg3h8) -->
-
 עליכם לממש פונקציה חיצונית (לא חלק ממחלקת BinNode) בשם `PrintNodesSmallerThanParent` אשר מקבלת פרמטר אחד:
 
 1. t - עץ בינארי (מסוג BinNode) שצמתיו מטיפוס שלם.
@@ -219,7 +206,6 @@ lang: he
 4. השתמשו ב-Console.WriteLine() להדפסה.
 5. עליכם להשתמש במחלקת BinNode מהספרייה Unit4.CollectionsLib.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-aFePHQKy9NOg3h8) -->
 
 ### דוגמאות:
 
@@ -251,8 +237,6 @@ lang: he
 
 ## 6a3.6. הדפסת צמתים בעלי 2 בנים וערך גדול מאחד מהם {#id6a3.6.}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-WtA1lOeMRr0GID3) -->
-
 עליכם לממש פונקציה חיצונית (לא חלק ממחלקת BinNode) בשם `PrintNodesWithTwoChildrenAndGreaterValue` אשר מקבלת פרמטר אחד:
 
 1. tree - מצביע לשורש של עץ בינארי (מסוג BinNode
@@ -281,7 +265,6 @@ tree.GetLeft().SetRight(new BinNode)
 tree.GetRight().SetLeft(new BinNode)
 tree.GetRight().SetRight(new BinNode)
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wyK0yUR68xup/csharp-WtA1lOeMRr0GID3) -->
 
 ### דוגמאות:
 

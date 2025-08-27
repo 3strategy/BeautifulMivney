@@ -9,7 +9,6 @@ lang: he
 
 
 ## 3a4.1 איחוד ממוין של רשימות מקושרות ללא כפילויות {#id3a4.1}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-mTGoXrYRti2COsa) -->
 
 במשימה זו, עליכם לממש פעולה סטטית בשם `SortedUnionNew` . פעולה זו תקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה, ממוינת וללא כפילויות, המכילה את כל האיברים משתי הרשימות המקוריות.
 
@@ -40,7 +39,6 @@ lang: he
 
 
 ## 3a4.2 איחוד ממוין של רשימות מקושרות עם חזרות {#id3a4.2}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-hlM9yH2XyXDd9Y1) -->
 
 במשימה זו, עליכם לממש פעולה בשם `SortedUnionNewDuply` שתקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה ממוינת המכילה את כל האיברים משתי הרשימות המקוריות, כולל כפילויות.
 
@@ -70,7 +68,6 @@ lang: he
 
 
 ## 3a4.3 חיתוך (intersect) רשימות מקושרות ניטרול כפילויות. מעבר יחיד {#id3a4.3}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-lmrAa8PqiQ8PA6H) -->
 
 עליכם לממש פעולה סטטית בשם `SortedListsIntersection` במחלקה `Solution` שתקבל שתי רשימות מקושרות ממוינות ותחזיר רשימה מקושרת חדשה המייצגת את חיתוך האיברים בין שתי הרשימות המקוריות. רשימת החיתוך צריכה להכיל כל איבר משותף פעם אחת בלבד (ללא חזרות), גם אם הוא מופיע מספר פעמים באחת או בשתי רשימות הקלט.
 
@@ -88,8 +85,6 @@ lang: he
 
 
 ## 3a4.4 הכנסת שלם לרשימה ממוינת {#id3a4.4}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-SSsiyyCHsLe6Zce) -->
 
 **רצוי לתת את השאלה גם בגרסה של הכנסת Node, ולקראת בגרות אפילו לדבר שם על Node<T> with Comparator**
 
@@ -116,8 +111,6 @@ lang: he
 
 
 ## 3a4.5 הכנה חוליה לשרשרת ממוינת {#id3a4.5}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-v9pbgok59FrnKTA) -->
 
 בתרגיל זה, עליכם לממש את אלגוריתם עליו מתבסס מיון הכנסה (`InsertSorted`) עבור רשימה מקושרת. מטרת המיון היא הכנה לסידור איברי רשימה בסדר עולה.
 
@@ -146,7 +139,6 @@ lang: he
 
 
 ## 3a4.6 מיון הכנסה (in-place) לשרשרת {#id3a4.6}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-dlWrNAqVX9dj/csharp-n2EjDyE6ZlPDvEu) -->
 
 במשימה זו, עליכם לכתוב את הפעולה `InsertionSortInPlace`. עליכם לממש את אלגוריתם מיון ההכנסה (Insertion Sort) עבור רשימה מקושרת. המיון צריך להתבצע במקום, (in-place) כלומר, עליכם לשנות את הקישורים בין החוליות הקיימות ברשימה מבלי ליצור חוליות חדשות.
 

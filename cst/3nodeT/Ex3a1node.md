@@ -12,8 +12,6 @@ lang: he
 
 ## 3a1.1 בנייה רקורסיבית של שרשרת מ-n עד 1  {#id3a1.1}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-neOnRcUKk8JTV60) -->
-
 עליכם לממש פונקציה בשם `Build1ToNListReverse` אשר מקבלת פרמטר אחד:
 
 1. n (int) - מספר שלם חיובי.
@@ -52,7 +50,6 @@ node1.SetNext(new Node<int>(30));
 
 
 ## 3a1.2 בניית ללא רקורסיה של שרשרת מ-1 עד n {#id3a1.2}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-8KFSM1V4tSgtEAc) -->
 
 עליכם לממש פונקציה בשם `Build1ToNList` אשר מקבלת פרמטר אחד:
 
@@ -69,8 +66,6 @@ node1.SetNext(new Node<int>(30));
 
 
 ## 3a1.3 בניית שרשרת מרשימת מספרים מופרדים בפסיק {#id3a1.3}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-L8F4783Y1jnw5ps) -->
 
 עליכם לממש פונקציה בשם `BuildIntListFromString` אשר מקבלת פרמטר אחד:
 
@@ -90,8 +85,6 @@ node1.SetNext(new Node<int>(30));
 
 ## 3a1.4 הדפסת הגדולים מהעוקב {#id3a1.4}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-bSzpuEMKCLvk1xo) -->
-
 עליכם לממש פונקציה בשם `printBiggerPrec` אשר מקבלת פרמטר אחד:
 
 1. head - מצביע לראש רשימה מקושרת של מספרים שלמים (מסוג Node).
@@ -106,8 +99,6 @@ node1.SetNext(new Node<int>(30));
 
 
 ## 3a1.5 חישוב ממוצע {#id3a1.5}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-DuCHAoilz7s4Bb0) -->
 
 עליכם לממש פונקציה בשם `ListAvg` אשר מקבלת פרמטר אחד:
 
@@ -124,8 +115,6 @@ node1.SetNext(new Node<int>(30));
 
 
 ## 3a1.6 חישוב מרחק {#id3a1.6}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-pFCm2HGk8yuU/csharp-REfj5hOJJ8P6Y9C) -->
 
 עליכם לממש פונקציה בשם `MaxAndSecDistance` אשר מקבלת פרמטר אחד:
 

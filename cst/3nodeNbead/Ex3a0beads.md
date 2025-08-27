@@ -8,7 +8,6 @@ lang: he
 
 
 ## 3a0.1 CreateChain3 {#id3a0.1}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-pKoeMVE31zVF0SW) -->
 
 במשימה זו, עליכם לממש את הפונקציה `CreateChain3` כך שתבנה שרשרת של שלושה חרוזים (Bead) ותחזיר את החרוז הראשון בשרשרת. השרשרת צריכה להיות עם הצבעים הבאים ובסדר זה: "Red" -> "Blue" -> "Green".
 
@@ -63,8 +62,6 @@ public static Bead CreateChain3()
 
 ## 3a0.2 יצירת חרוזים ממערך {#id3a0.2}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-JUThDPqyBCaNsqM) -->
-
 במשימה זו, עליכם לממש פונקציה סטטית בשם `CreateChainFromStart` שתקבל מערך של מחרוזות (המייצגות צבעים) ותבנה מהן שרשרת של אובייקטי `Bead` (חרוזים) בסדר הנתון. הפונקציה צריכה להחזיר את החרוז הראשון (ראש השרשרת) שנוצר.
 
 ### הפונקציה למימוש:
@@ -90,7 +87,6 @@ return null;
 
 
 ## 3a0.3 יצירה מהסוף להתחלה {#id3a0.3}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-Lbm3LOFqvfsIs1k) -->
 
 בתרגיל זה, עליכם לממש פונקציה סטטית בשם `CreateChainFromEnd` במחלקת `Solution`. פונקציה זו תקבל מערך של מחרוזות צבע (`string[] colors`) ותבנה מהן שרשרת חרוזים מקושרת (Linked List) באמצעות המחלקה `Bead`.
 
@@ -122,8 +118,6 @@ public static class Solution
 
 ## 3a0.4 הדפסת שרשרת {#id3a0.4}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-IehsbvFDySAAhgi) -->
-
 במשימה זו, עליכם לממש את הפונקציה `PrintChain` אשר מקבלת כפרמטר את ראש השרשרת (אובייקט מסוג `Bead`) ומדפיסה את צבעי החרוזים לקונסולה.
 
 ### הפונקציה למימוש:
@@ -150,8 +144,6 @@ public static void PrintChain(Bead head)
 ## 3a0.5 ספירת חרוזים {#id3a0.5}
 
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-v1lTlX75HoxF1nT) -->
-
 בתרגיל זה, עליכם לכתוב פונקציה שתספור את מספר החרוזים בשרשרת נתונה של אובייקטי `Bead`. הפונקציה תקבל את ראש השרשרת ותחזיר את הספירה הכוללת.
 
 ### הפונקציה למימוש:
@@ -171,8 +163,6 @@ public static int CountBeads(Bead head)
 
 
 ## 3a0.6  חיפוש חרוז {#id3a0.6}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-eLMtuaM29EDwik0) -->
 
 בתרגיל זה, עליכם לממש פונקציה סטטית בשם `FindBead` שתקבל ראש של שרשרת חרוזים (מסוג `Bead`) וצבע יעד (מחרוזת). מטרת הפונקציה היא למצוא את החרוז הראשון בשרשרת שצבעו תואם לצבע היעד.
 
@@ -209,8 +199,6 @@ public static Bead FindBead(Bead head, string targetColor)
 
 
 ## 3a0.7 הוספת חרוז לסוף: {#id3a0.7}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-GNLcEJp6gJaUFdf) -->
 
 במשימה זו, עליכם לממש פונקציה בשם `AddBeadToEnd` שתקבל ראש של שרשרת חרוזים (רשימה מקושרת) וצבע של חרוז חדש, ותוסיף את החרוז החדש לסוף השרשרת.
 
@@ -249,8 +237,6 @@ return head;
 
 ## 3a0.8 שרשור שרשראות {#id3a0.8}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-nsRkVrTjDBwdz0Y) -->
-
 בתרגיל זה, עליכם לממש פונקציה לשרשור שרשראות חרוזים. שרשרת חרוזים מיוצגת על ידי רשימה מקושרת פשוטה, כאשר כל חרוז (Bead) מכיל צבע (string) והפניה לחרוז הבא בשרשרת.
 
 ### המשימה:
@@ -285,8 +271,6 @@ return first;
 
 ## 3a0.9 היפוך שרשרת {#id3a0.9}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-DnstvfE7FiiNZRp) -->
-
 במשימה זו, עליכם לממש פונקציה סטטית בשם `ReverseChain` במחלקת `Bead` שתהפוך את הסדר של שרשרת חרוזים (רשימה מקושרת).
 
 
@@ -312,8 +296,6 @@ return null;
 
 
 ## 3a0.10 הסרת חרוזים משרשרת {#id3a0.10}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-F9XxLUo2VUxg5OV) -->
 
 במשימה זו, עליכם לממש פונקציה שתסיר חרוז ספציפי משרשרת חרוזים מקושרת. השרשרת מיוצגת על ידי אובייקטים מסוג `Bead` המקושרים ביניהם.
 
@@ -341,8 +323,6 @@ return head;
 
 
 ## 3a0.11 הסרת חרוזים לפי מיקום זוגי/אי-זוגי {#id3a0.11}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-65Ycf01GtRIn9uF) -->
 
 בתרגיל זה, עליכם לממש פונקציה שמסירה חרוזים משרשרת חרוזים (רשימה מקושרת) על בסיס מיקומם.
 
@@ -378,8 +358,6 @@ return head;
 
 ## 3a0.12 הסרת כל החרוזים העונים על תנאי {#id3a0.12}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-nZSdv8jbzyyVHKj) -->
-
 ### תיאור המשימה
 
 במשימה זו, עליכם לממש פונקציה בשם `RemoveAll` שתסיר את כל המופעים של חרוזים בעלי צבע מסוים משרשרת חרוזים מקושרת (Linked List).
@@ -407,8 +385,6 @@ public static Bead RemoveAll(Bead head, string colorToRemove)
 
 
 ## 3a0.13 מציאת תבנית {#id3a0.13}
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-aF1oQLlO0syV/csharp-syokFfWjqFABP40) -->
 
 בתרגיל זה, עליכם לממש פונקציה שתבדוק האם שרשרת חרוזים מכילה רצף מסוים של צבעים (תבנית).
 

@@ -9,7 +9,6 @@ lang: he
 
 
 ## 6a2.1 בדיקת ערכים אי-זוגיים בעץ בינארי {#id6a2.1}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wgK2uTCNPYfO/csharp-opSDqpbMbX4ecqE) -->
 
 עליכם לממש פונקציה חיצונית בשם `AllValuesAreOdd` אשר מקבלת פרמטר אחד:
 
@@ -24,7 +23,6 @@ lang: he
 3. אם הגעתם לסוף ענף (צומת null) מבלי למצוא ערך זוגי, המשמעות היא שהענף הזה מכיל רק ערכים אי-זוגיים (או שהוא ריק).
 4. זכרו לכלול את ה-using המתאים עבור Unit4.CollectionsLib ו-Unit4.BinTreeUtilsLib.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wgK2uTCNPYfO/csharp-opSDqpbMbX4ecqE) -->
 
 ### דוגמאות:
 
@@ -58,7 +56,6 @@ lang: he
 
 
 ## 6a2.2. בדיקת זוגות אחים בעץ בינארי	 {#id6a2.2.}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wgK2uTCNPYfO/csharp-eVVnYndq1Vk8XGS) -->
 
 דמיינו שאתם מנהלים בסיס נתונים של עץ בינארי, כמו למשל היררכיה של קבצים במערכת הפעלה או מבנה נתונים של אובייקטים במשחק מחשב. לעיתים קרובות, אתם רוצים לוודא שאין כפילויות לא רצויות או חריגות מסוימות בנתונים. מציאת אחים עם ערכים זהים יכולה להצביע על שגיאה, כפילות מידע, או צורך באופטימיזציה. תרגיל זה מדמה מצב כזה, ומאפשר לכם לזהות בעיות פוטנציאליות במבני נתונים היררכיים.
 
@@ -80,7 +77,6 @@ lang: he
 
 הפונקציה תחזיר ערך בוליאני (`bool`): `true` אם נמצאו אחים בעלי ערך זהה, ו-`false` אחרת. הפונקציה לא תדפיס דבר.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wgK2uTCNPYfO/csharp-eVVnYndq1Vk8XGS) -->
 
 ### דוגמאות
 
@@ -129,7 +125,6 @@ lang: he
 
 
 ## 6a2.3. בדיקת ערך עלים מול ערך אב בעץ בינארי {#id6a2.3.}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wgK2uTCNPYfO/csharp-JGKciO7Ij4LYysO) -->
 
 עליכם לממש פונקציה חיצונית בשם `AreLeavesEqualToParent` אשר מקבלת פרמטר אחד:
 
@@ -150,7 +145,6 @@ lang: he
 לצורך פתרון התרגיל, עליכם להשתמש ב-`BinNode` מהספרייה `Unit4.CollectionsLib`.
 יש להוסיף את השורה `using Unit4.CollectionsLib;` בתחילת הקובץ.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-wgK2uTCNPYfO/csharp-JGKciO7Ij4LYysO) -->
 
 ### דוגמאות:
 
@@ -204,8 +198,6 @@ null
 
 ## 6a2.4. עץ אריאל {#id6a2.4.}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-WoFCEFq1C7aevN4) -->
-
 עליכם לממש פונקציה חיצונית בשם `IsArielTree` אשר מקבלת פרמטר אחד:
 
 1. t - עץ בינארי (מסוג BinNode) שהצמתים שלו הם מטיפוס שלם.
@@ -241,8 +233,6 @@ using Unit4.CollectionsLib;
 
 ## 6a2.5 בדיקת צומת עם בנים שונים בעץ בינארי {#id6a2.5}
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-WoFCEFq1C7aevN4) -->
-
 עליכם לממש פונקציה חיצונית בשם `IsArielTree` אשר מקבלת פרמטר אחד:
 
 1. t - עץ בינארי (מסוג BinNode) שהצמתים שלו הם מטיפוס שלם.
@@ -277,7 +267,6 @@ using Unit4.CollectionsLib;
 
 
 ## 6a2.6  עץ יחיאל {#id6a2.6}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-UqQHxFmkQGkXPIw) -->
 
 עליכם לממש פונקציה חיצונית בשם `IsYechielTree` אשר מקבלת פרמטר אחד:
 
@@ -305,7 +294,6 @@ using Unit4.CollectionsLib;
 
 
 ## 6a2.7. עץ צחי {#id6a2.7.}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-7mp27ju08jCjY63) -->
 
 עליכם לממש פונקציה חיצונית בשם `IsTzachiTree` אשר מקבלת פרמטר אחד:
 
@@ -333,7 +321,6 @@ using Unit4.CollectionsLib;
 
 
 ## 6a2.8. בדיקת עץ בינארי מיוחד {#id6a2.8.}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-mlFFyZmsz8ljFt9) -->
 
 עליכם לממש פונקציה חיצונית בשם `CheckSpecialBinaryTree` אשר מקבלת פרמטר אחד:
 
@@ -361,7 +348,6 @@ using Unit4.CollectionsLib;
 
 
 ## 6a2.9. בדיקת עץ מעיין {#id6a2.9.}
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/review/csharp-4sMnzqKPvtRtGPF) -->
 
 עליכם לממש פעולה חיצונית (פונקציה סטטית) בשם `IsMaayanTree` אשר מקבלת פרמטר אחד:
 
