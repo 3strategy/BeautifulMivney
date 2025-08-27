@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "ex6a4 עצים בינאריים BinNode"
-subtitle: "עצים בינריים: BinNode<T> תרגול 6a4"
+title: "ex6a4 עצים בינאריים BinNode⟨T⟩"
+subtitle: "עצים בינריים: BinNode⟨T⟩ תרגול 6a4"
 tags: []
 lang: he
 ---
@@ -9,8 +9,6 @@ lang: he
 
 ## 6a4.1. בדיקת שוויון בין עצים בינאריים {#id6a4.1.}
 
-
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-IipcItdaVHujXAI) -->
 
 עליכם לממש פונקציה חיצונית בשם `AreTreesIdentical` אשר מקבלת שני פרמטרים:
 
@@ -28,7 +26,6 @@ lang: he
 5. עבור עצים שאינם ריקים, יש להשוות את ערכי השורשים שלהם, וכן להשוות באופן רקורסיבית את תתי-העצים השמאליים ואת תתי-העצים הימניים.
 6. השתמשו ב-using Unit4.CollectionsLib; כדי לייבא את המחלקה BinNode.
 
-<!-- [link](https://stacks.co.il/console/classroom/cE8hnVaSTt/assignment/cE8hnVaSTt-csharp-BT1Ci0gL4Ji4/csharp-IipcItdaVHujXAI) -->
 
 ### דוגמאות:
 

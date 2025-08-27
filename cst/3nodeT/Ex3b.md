@@ -2,7 +2,7 @@
 ---
 layout: page
 title: "ex3b1 שרשרת חוליות"
-subtitle: "Node<T> תרגילי codeboard 2024"
+subtitle: "Node⟨T⟩ תרגילי codeboard 2024"
 tags: []
 lang: he
 ---

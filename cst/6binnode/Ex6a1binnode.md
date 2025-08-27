@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "ex6a1 עצים בינאריים BinNode"
-subtitle: "עצים בינריים: BinNode<T> תרגילים ראשונים"
+title: "ex6a1 עצים בינאריים BinNode⟨T⟩"
+subtitle: "עצים בינריים: BinNode⟨T⟩ תרגילים ראשונים"
 tags: []
 lang: he
 ---

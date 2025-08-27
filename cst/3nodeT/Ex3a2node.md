@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "ex3a.2 שרשרת חוליות"
-subtitle: "Node<T> תרגילים עם דרישות רקורסיה"
+title: "ex3a.2 שרשרת חוליות - רקורסיה"
+subtitle: "Node⟨T⟩ תרגילים עם דרישות רקורסיה"
 tags: []
 lang: he
 ---

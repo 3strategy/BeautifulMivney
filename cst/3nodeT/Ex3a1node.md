@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "ex3a.1 שרשרת חוליות"
-subtitle: "Node<T> תרגילים ראשונים"
+subtitle: "Node⟨T⟩ תרגילים ראשונים"
 tags: []
 lang: he
 ---
