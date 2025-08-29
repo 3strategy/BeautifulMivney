@@ -34,6 +34,7 @@ navbar-links:
     - בגרויות משרד החינוך: "https://meyda.education.gov.il/bagmgr/default.html#/"
 
   רקורסיה ויעילות:
+    - פתיחת שנה: "/mivney/0minhalot/YearOpening"
     - תרגול: "/mivney/1recursionAndComplexity/Links"
 
   שרשרת חוליות:
