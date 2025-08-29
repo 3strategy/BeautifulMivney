@@ -475,3 +475,21 @@ pre code span.c1 {
   fill: var(--text-col) !important;
   stroke: var(--text-col) !important;
 }
+
+
+/* for gaant mermaid */
+.mermaid svg .section {
+  fill: var(--page-col) !important;
+  opacity: 1 !important;
+}
+
+.mermaid svg .sectionTitle,
+.mermaid svg .titleText,
+.mermaid svg .taskText {
+  fill: var(--text-col) !important;
+}
+
+/* Any additional classes that need text colored */
+.mermaid svg .grid .tick text {
+  fill: var(--text-col) !important;
+}
