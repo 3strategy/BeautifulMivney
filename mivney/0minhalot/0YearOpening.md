@@ -23,10 +23,19 @@ _מטרת המפגש_: להגדיר ציפיות, להציג דרישות עבו
 
 <!-- תמונה מוצעת: דיאגרמה פשוטה של התקדמות השנה (ציר זמן) -->
 
-<div class="mermaid">
----
-displayMode: compact
----
+<div class="mermaid" style="width:100%">
+%%{init: {
+  "gantt": {
+    "displayMode": "compact",
+    "leftPadding": 60,
+    "rightPadding": 20,
+    "topPadding": 30,
+    "gridLineStartPadding": 20,
+    "barGap": 1,
+    "barHeight": 14
+  },
+  "themeVariables": { "fontSize": "12px" }
+} }%%
 gantt
 title תכנית עבודה – ספט׳ עד יוני 
 dateFormat YYYY-MM-DD
@@ -74,8 +83,6 @@ OOP + Android Studio :oop, 2025-11-01, 2026-02-28
 %% -----------------------------
 section finals
 תקופת המבחנים (Finals) :crit, finals, 2026-03-15, 75d
-
-
 </div>
 
 
@@ -92,7 +99,7 @@ section finals
 
 ## הגשות וציון
 - **הגשות**: 20–25% מהציון, ו**~90% מהלמידה בפועל**.
-- עיקר ההגשות במערכת **הגשות.שלי.com**; יהיו גם הגשות ב-**Google Classroom**.
+- עיקר ההגשות במערכת [**הגשות.שלי.com**](https://xn--6dbde3fg.xn--eebf2b.com/) -יהיו גם הגשות ב-**Google Classroom**.
 - מי שלא יתרגלו בצורה עקבית – ירגישו פערים כבר בתחילת השנה.
 
 <!-- תמונה מוצעת: צילום מסך של הגשות.שלי.com או אייקון "V" של הגשה -->
