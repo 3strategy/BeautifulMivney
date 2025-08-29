@@ -33,11 +33,17 @@ navbar-links:
     - קמפוס מבני נתונים: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/"
     - בגרויות משרד החינוך: "https://meyda.education.gov.il/bagmgr/default.html#/"
 
+  פתיחת שנה: 
+    - 0. פתיחת שנה: "/mivney/0minhalot/0YearOpening"
+    - 0. עבודה בקמפוס: "/mivney/minhalot/ChapterCampus"
+    - 0. מחלקות: "/mivney/0minhalot/Chapter0"
+    - 0. מעקב התקדמות: ""
   רקורסיה ויעילות:
-    - פתיחת שנה: "/mivney/0minhalot/YearOpening"
+    - 1. רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"
     - תרגול: "/mivney/1recursionAndComplexity/Links"
 
   שרשרת חוליות:
+    - 
     - תרגול: "/mivney/3node/Links"
 
   מחסנית:

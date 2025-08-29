@@ -121,3 +121,7 @@ public class Student
 
 כאן תוכלו להוסיף קוד שלכם ותרגל את הנושא.
 </details>
+
+
+
+[עבודה בקמפוס](ChapterCampus.md)
