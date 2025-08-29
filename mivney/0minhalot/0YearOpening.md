@@ -27,7 +27,7 @@ lang: he
 
 <!-- תכנית עבודה מרמייד -->
 
-<div class="mermaid" style="width:100%">
+<div class="mermaid" style="width:100%; background-color: var(--backs-col);">
 %%{init: {
   "gantt": {
     "displayMode": "compact",
