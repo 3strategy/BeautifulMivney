@@ -59,6 +59,9 @@ navbar-links:
     - עץ בינארי לעומת עץ חיפוש: "/mivney/6binnode/binnode1"
     
   תמ"ע:
+    - פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
+    - מצגת מני והרדי: "/oop/oop1Meni-Hardi.pptx"
+
 
   אנדרואיד:
     - תיקון גרסאות: "/android/versionUpdates"
@@ -72,6 +75,7 @@ navbar-links:
   חיצוני מדמח:
     - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
     - קמפוס יסודות: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceA_HE+2023_1/course/"
+   
 
   תכנים:
     - מבחן זמני: "/mathtests/582q3/"
