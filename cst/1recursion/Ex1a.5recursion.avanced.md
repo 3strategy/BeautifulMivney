@@ -8,12 +8,12 @@ lang: he
 
 
 ## 1a5.1 מגדלי האנוי רקורסיבי כולל תיאור מעברים {#id1a5.1}
-עליכם לממש פונקציה רקורסיבית בשם `TowerOfHanoi` עם החתימה הבאה:
+עליכם לממש פונקציה רקורסיבית בשם `TowerOfHanoiSteps` עם הכותרת הבאה:
 
 ```csharp
-public static int TowerOfHanoi(int n, char from, char to, char aux)
+public static int TowerOfHanoiSteps(int n, char from, char to, char aux)
 ```
-עליכם לממש גרסה של הפונקציה TowerOfHanoi כך בנוסף להחזרת מספר המעברים, היא תדפיס לכל מעבר טקסט ברור עם הוראת המעבר, לדוגמה:
+בנוסף להחזרת מספר המעברים, היא תדפיס לכל מעבר טקסט ברור עם הוראת המעבר, לדוגמה:
 
 ```Move disk 3 from A to C```
 
@@ -30,10 +30,10 @@ public static int TowerOfHanoi(int n, char from, char to, char aux)
 
 
 ## 1a5.2 מגדלי האנוי רקורסיבי {#id1a5.2}
-עליכם לממש פונקציה רקורסיבית בשם `TowerOfHanoi` עם החתימה הבאה:
+עליכם לממש פונקציה רקורסיבית בשם `TowerOfHanoiRecursive` עם הכותרת הבאה:
 
 ```csharp
-public static int TowerOfHanoi(int n)
+public static int TowerOfHanoiRecursive(int n)
 ```
 
 הפונקציה תפתור את חידת מגדל האנוי הקלאסית עבור `n` טבעות. 
@@ -54,7 +54,7 @@ public static int TowerOfHanoi(int n)
 ---
 
 ## 1a5.3 שאלה 2: פתרון האנוי באמצעות נוסחה מפורשת (Closed-Form) {#id1a5.3}
-במקום פתרון רקורסיבי, מצאו את הנוסחה המפורשת למספר הצעדים הנדרש להעברת `n` טבעות במגדל האנוי.
+פעילות חקר: במקום פתרון רקורסיבי, כתבו פונקציה `TowersOfHanoiClosedForm` המממשת את הנוסחה המפורשת למספר הצעדים הנדרש להעברת `n` טבעות במגדל האנוי.
 
 הנוסחה הרקורסיבית היא זו שקיבלתם בתרגיל הקודם.
 
@@ -64,12 +64,12 @@ public static int TowerOfHanoi(int n)
 
 ### הדרכה למציאת נוסחה מפורשת
 
-מרגע שהתקבל כלל נסיגה רקורסיבי, יש לנסות ולפעול על מנת להפוך אותו לנוסחה מפורשת. המעבר דורש ידע בקומבינטוריקה ו/או נסיון. לחילופין באפשרותכם לקחת את הערכים של תחילת הסדרה ולנסות לקבל נוסחה מפורשת באמצעות חיפוש באינטרנט. מקום טוב הוא [האנציקלופדיה לסדרות](https://oeis.org/search?q=1%2C4%2C10%2C22%2C46&language=english&go=Search)
+מרגע שהתקבל כלל נסיגה רקורסיבי, יש לנסות ולפעול על מנת להפוך אותו לנוסחה מפורשת. בחוג למתמטיקה באוניברסיטה לומדים טכניקות בקומבינטוריקה למעבר מרקורסיה לנוסחה מפורשת. במקרה שלנו ניקח את הערכים של תחילת הסדרה ולנסות לקבל נוסחה מפורשת באמצעות חיפוש באינטרנט. מקום טוב הוא [האנציקלופדיה לסדרות](https://oeis.org/search?q=1%2C4%2C10%2C22%2C46&language=english&go=Search)
 
 
 
 ## 1a5.4 בדיקת חוקיות סודוקו {#id1a5.4}
-עליכם לממש פונקציה רקורסיבית בשם `IsValidSudoku` עם החתימה הבאה:
+עליכם לממש פונקציה רקורסיבית בשם `IsValidSudoku` עם הכותרת הבאה:
 ```csharp
 static bool IsValidSudoku(int[,] board, int row, int col, int num)
 ```
@@ -95,7 +95,7 @@ static bool IsValidSudoku(int[,] board, int row, int col, int num)
 
 
 ## 1a5.5 ספירת מסלולים במטריצה {#id1a5.5}
-עליכם לממש פונקציה רקורסיבית בשם `CountPaths` עם החתימה הבאה:
+עליכם לממש פונקציה רקורסיבית בשם `CountPaths` עם הכותרת הבאה:
 ```csharp
 static int CountPaths(int[,] matrix, int row, int col)
 ```
@@ -122,7 +122,7 @@ static int CountPaths(int[,] matrix, int row, int col)
 
 
 ## 1a5.6 פתרון מבוך רקורסיבי {#id1a5.6}
-עליכם לממש פונקציה רקורסיבית ב-C# עם החתימה הבאה:
+עליכם לממש פונקציה רקורסיבית בשם `SolveMaze` עם הכותרת הבאה:
 ```csharp
 static bool SolveMaze(int[,] maze, int row, int col, int[,] solution)
 ```

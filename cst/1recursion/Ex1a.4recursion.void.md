@@ -20,7 +20,7 @@ lang: he
 
 
 ## 1a4.2 הדפסת מספרים בסדר יורד רקורסיבית {#id1a4.2}
-עליכם לממש פונקציה רקורסיבית בשפת #C עם החתימה הבאה:
+עליכם לממש פונקציה רקורסיבית בשם `PrintNumbers` עם הכותרת הבאה:
 
 ```csharp
 public static void PrintNumbers(int n)
@@ -38,7 +38,7 @@ public static void PrintNumbers(int n)
 
 
 ## 1a4.3 הדפסת משולש כוכביות רקורסיבית {#id1a4.3}
-עליכם לממש פונקציה רקורסיבית ב-#C עם ההגדרה הבאה:
+עליכם לממש פונקציה רקורסיבית בשם `DrawTriangle` עם ההגדרה הבאה:
 ```csharp
 public static void DrawTriangle(int n)
 ```
@@ -78,7 +78,7 @@ public static void DrawTriangle(int n)
 
 
 ## 1a4.5 הדפסת ספרות מספר באמצעות רקורסיה {#id1a4.5}
-עליכם לממש פונקציה רקורסיבית בשפת #C עם החתימה
+עליכם לממש פונקציה רקורסיבית `PrintDigits` עם הכותרת
 ```csharp
 static void PrintDigits(int num)
 ```
