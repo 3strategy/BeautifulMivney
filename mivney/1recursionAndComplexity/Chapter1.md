@@ -222,9 +222,10 @@ return 0"]
 
 כדי לתרגל את הנושא מומלץ לפתור מספר שאלות רקורסיביות. תוכלו למצוא תרגילים בקישורים הבאים:
 
-- [⬅ עברו לתרגיל סכום ספרות במספר]({% link cst/1recursion/Ex1a.1recursion.misparitNBool.md %}#id1a1.2)
-- [⬅ עברו לתרגיל שרשראות ומחרוזות]({% link cst/1recursion/Ex1a.2recursion.strings.md %}#id1a2.3)
+[⬅ עברו לתרגיל סכום ספרות במספר]({% link cst/1recursion/Ex1a.1recursion.misparitNBool.md %}#id1a1.2)
 
-בנוסף, נסו לכתוב פונקציה שמחשבת פקטוריאל באופן רקורסיבי ופונקציה שהופכת מחרוזת. התנסו גם בפתרון איטרטיבי והשוו ביניהם.
+[⬅ עברו לתרגיל שרשראות ומחרוזות]({% link cst/1recursion/Ex1a.2recursion.strings.md %}#id1a2.3)
+
+[בנוסף, נסו לכתוב פונקציה שמחשבת עצרת באופן רקורסיבי. התנסו גם בפתרון איטרטיבי והשוו ביניהם. $$5! = 1·2·3·4·5$$]({% link cst/1recursion/Ex1a.1recursion.misparitNBool.md %}#id1a1.1)
 
 

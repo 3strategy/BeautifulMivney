@@ -324,9 +324,10 @@ button:hover {
   text-align: left;
 }
 
-.table-he {
-    direction: rtl;
-    text-align: right;
+.table-he th,
+.table-he td {
+  text-align: right;
+  direction: rtl;
 }
 
 table {
