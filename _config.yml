@@ -38,48 +38,48 @@ navbar-links:
     - 0. עבודה בקמפוס: "/mivney/minhalot/ChapterCampus"
     - 0. מחלקות: "/mivney/0minhalot/Chapter0"
     - 0. מעקב התקדמות: ""
-    
+
   רקורסיה ויעילות:
     - 1. רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"
-    - תרגול: "/mivney/1recursionAndComplexity/Links"
+  #  - תרגול: "/mivney/1recursionAndComplexity/Links"
 
   שרשרת חוליות:
-    - 
-    - תרגול: "/mivney/3node/Links"
+  #   - 
+  #   - תרגול: "/mivney/3node/Links"
 
   מחסנית:
-    - תרגול: "/mivney/4stack/Links"
+  #   - תרגול: "/mivney/4stack/Links"
 
   תור:
-    - אנימציית תור: "/mivney/5queue/QueueAnimation.html"
-    - תרגול: "/mivney/5queue/Links"
+  #   - אנימציית תור: "/mivney/5queue/QueueAnimation.html"
+  #   - תרגול: "/mivney/5queue/Links"
 
   עץ בינארי:
-    - תרגול: "/mivney/6binnode/Links"
-    - סוגי עצים: "/mivney/6binnode/binary_tree_full_complete_perfect"
-    - עץ בינארי לעומת עץ חיפוש: "/mivney/6binnode/binnode1"
+  #   - תרגול: "/mivney/6binnode/Links"
+  #   - סוגי עצים: "/mivney/6binnode/binary_tree_full_complete_perfect"
+  #   - עץ בינארי לעומת עץ חיפוש: "/mivney/6binnode/binnode1"
     
   תמ"ע:
-    - פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
-    - מצגת מני והרדי: "/oop/oop1Meni-Hardi.pptx"
+  #   - פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
+  #   - מצגת מני והרדי: "/oop/oop1Meni-Hardi.pptx"
 
 
   אנדרואיד:
-    - תיקון גרסאות: "/android/versionUpdates"
-    - הוספת Activity: "/android/projectSteps/addingActivities"
-    - הוספת Activity לתפריט: "/android/projectSteps/addingActivityToMenu"
-    - תיקון קיצור לפירמוט: "/android/androidCodeFormatting"
-    - FBref reloaded: "/android/projectSteps/newFBref"
-    - שינוי שם: "/android/projectSteps/renameProject"
-    - התחברות ל-Firebase: "/android/projectSteps/connectDatabase"
+  #   - תיקון גרסאות: "/android/versionUpdates"
+  #   - הוספת Activity: "/android/projectSteps/addingActivities"
+  #   - הוספת Activity לתפריט: "/android/projectSteps/addingActivityToMenu"
+  #   - תיקון קיצור לפירמוט: "/android/androidCodeFormatting"
+  #   - FBref reloaded: "/android/projectSteps/newFBref"
+  #   - שינוי שם: "/android/projectSteps/renameProject"
+  #   - התחברות ל-Firebase: "/android/projectSteps/connectDatabase"
 
-  חיצוני מדמח:
-    - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
-    - קמפוס יסודות: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceA_HE+2023_1/course/"
+  # חיצוני מדמח:
+  #   - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
+  #   - קמפוס יסודות: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceA_HE+2023_1/course/"
    
 
-  תכנים:
-    - מבחן זמני: "/mathtests/582q3/"
+  הגדרות:
+
     - החלפת רקע: "javascript:toggleTheme();"
     - החלפת גודל: "javascript:toggleSize();"
 
