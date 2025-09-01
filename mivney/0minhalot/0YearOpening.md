@@ -233,3 +233,5 @@ section finals
 
 ## שאלות❓
 
+## מערכת שעות כרגע:
+![alt text](Schedule.png)
