@@ -8,152 +8,126 @@ mathjax: true
 
 
 
-## 1) מעבר **מבסיס 10 לבסיס קטן יותר** (למשל: 2, 3, 8)
+# 1) מעבר **מבסיס 10 לבסיס קטן יותר** (למשל: 2, 3, 8, 9)
 
-### הרעיון
-כאשר ממירים מספר עשרוני \(N\) לבסיס \(b\) קטן מ־10, משתמשים בשיטת "**חלוקה חוזרת**":  
-בכל צעד מחלקים את \(N\) בבסיס \(b\), שומרים את ה**שארית** (שהיא הספרה התחתונה ביותר בבסיס החדש), וממשיכים עם המנה.  
-את התוצאה מרכיבים **מלמעלה למטה** (כלומר מהקריאה האחרונה אחורה), ולכן רקורסיה מתאימה כאן במיוחד.
-
-{: .box-success}
-כלל אצבע:  
-אם \(N < b\) — התוצאה היא ספרה יחידה: \(digit(N)\).  
-אחרת — \(toBase(N,b) = toBase(\lfloor N/b \rfloor, b) \;+\; digit(N \bmod b)\).
-
-### קוד C## (רקורסיבי, לבסיסים 2..9)
-{% highlight csharp linenos %}
-using System;
-
-public static class BaseConvert
-{
-    // ספרות חוקיות עד בסיס 36 (נשתמש בחלק הראשון עבור בסיסים קטנים)
-    private const string DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    // ממיר N (עשרוני) לבסיס b ("קטן" = עד 9, לכן מספיקות ספרות 0..9)
-    public static string ToBaseSmall(int n, int b)
-    {
-        if (n == 0) return "0";                                   // מקרה פינה שימושי
-        return ToBaseSmallRec(n, b);
-    }
-
-    private static string ToBaseSmallRec(int n, int b)
-    {
-        if (n < b) return DIGITS[n].ToString();                   // בסיס רקורסיה
-        return ToBaseSmallRec(n / b, b) + DIGITS[n % b];          // קריאה רקורסיבית + ספרת שארית
-    }
-
-    // דוגמה לשימוש
-    public static void Main()
-    {
-        Console.WriteLine(ToBaseSmall(13, 2));  // 1101
-        Console.WriteLine(ToBaseSmall(157, 3)); // 12212
-        Console.WriteLine(ToBaseSmall(255, 8)); // 377
-    }
-}
-{% endhighlight %}
-
-<details markdown="1">
-<summary>מעקב בשיטת המלבנים — ToBaseSmall(13, 2)</summary>
-
-<div class="mermaid">
-flowchart TD
-A["ToBaseSmall(13,2)
-(13 &lt; 2? false)
-return ToBaseSmall(6,2) + D(1)"] -->|קריאה רקורסיבית| B["ToBaseSmall(6,2)
-(6 &lt; 2? false)
-return ToBaseSmall(3,2) + D(0)"]
-B -->|קריאה רקורסיבית| C["ToBaseSmall(3,2)
-(3 &lt; 2? false)
-return ToBaseSmall(1,2) + D(1)"]
-C -->|קריאה רקורסיבית| D["ToBaseSmall(1,2)
-(1 &lt; 2? true)
-return D(1) = "1""]
-
-D -.->|"חזרה: "1""| C
-C -.->|"חזרה: "11""| B
-B -.->|"חזרה: "110""| A
-A -.->|תוצאה: "1101"| OUT(("ToBaseSmall(13,2) = 1101"))
-</div>
-
-</details>
-
----
-
-## 2) מעבר **מבסיס 10 לבסיס ספירה גבוה יותר** (למשל: 11..36 — בסיסים עם אותיות A..Z)
-
-### הרעיון
-אותו אלגוריתם בדיוק — חלוקה חוזרת — רק שכעת ספרות מעל 9 מסומנות באותיות:  
-10→A, 11→B, …, 15→F (בבסיס 16), וכן הלאה עד 35→Z (בסיס 36).
+## הרעיון
+מיישמים **חלוקה חוזרת**: בכל צעד לוקחים את השארית \(num \bmod b\) כספרה התחתונה, וממשיכים רקורסיבית עם \( \lfloor num / b \rfloor \).  
+בגרסה זו (שהחזרת) נבנה תוצאה **מספרית**: `num % b + 10 * recurse(...)`, ולכן מתאימה לבסיסים **≤10** בלבד.
 
 {: .box-warning}
-ודאו שהבסיס בטווח 2..36 ושיש לכם **מיפוי ספרות** מתאים. בקלט \(N=0\) החזירו `"0"`.
+שימו לב: כאן מוחזר **int**. אם התוצאה בבסיס החדש היא, למשל, `"1101"` — הערך המוחזר יהיה המספר העשרוני `1101` (שמייצג את הרצף הספרתי).
 
-### קוד C## (כללי, 2..36)
+## קוד C# — לפי הבקשה (בסיסים ≤ 10)
 {% highlight csharp linenos %}
-using System;
-
-public static class BaseConvertHi
+public static int ConvertFromBase10toLower(int num, int b)
 {
-    private const string DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (num == 0)
+        return 0;
 
-    public static string ToBase(int n, int b)
-    {
-        if (n == 0) return "0";                           // כיסוי מקרה אפס
-        return ToBaseRec(n, b);
-    }
-
-    private static string ToBaseRec(int n, int b)
-    {
-        if (n < b) return DIGITS[n].ToString();           // בסיס רקורסיה
-        return ToBaseRec(n / b, b) + DIGITS[n % b];       // קריאה רקורסיבית + ספרת שארית
-    }
-
-    // דוגמה לשימוש
-    public static void Main()
-    {
-        Console.WriteLine(ToBase(255, 16)); // FF
-        Console.WriteLine(ToBase(2025, 36)); // 1HL
-        Console.WriteLine(ToBase(31, 32));   // V
-    }
+    return
+        num % b + 10 * ConvertFromBase10toLower(num / b, b);
 }
 {% endhighlight %}
 
+### דוגמאות שימוש (הדפסה בלבד)
+{% highlight csharp linenos %}
+// דוגמאות (תוצאה היא int עם ספרות הבסיס החדש)
+Console.WriteLine(ConvertFromBase10toLower(13, 2)); // 1101
+Console.WriteLine(ConvertFromBase10toLower(157, 3)); // 12212
+Console.WriteLine(ConvertFromBase10toLower(255, 8)); // 377
+{% endhighlight %}
+
 <details markdown="1">
-<summary>מעקב בשיטת המלבנים — ToBase(255, 16)</summary>
+<summary>מעקב בשיטת המלבנים — ConvertFromBase10toLower(13, 2)</summary>
 
 <div class="mermaid">
 flowchart TD
-X["ToBase(255,16)
-(255 &lt; 16? false)
-return ToBase(15,16) + D(15=F)"] -->|קריאה רקורסיבית| Y["ToBase(15,16)
-(15 &lt; 16? true)
-return D(15=F) = "F""]
+A["ConvertFromBase10toLower(13,2)
+(13 == 0? false)
+return (13%2=1) + 10*Convert(6,2)"] -->|קריאה רקורסיבית| B["ConvertFromBase10toLower(6,2)
+(6 == 0? false)
+return (6%2=0) + 10*Convert(3,2)"]
+B -->|קריאה רקורסיבית| C["ConvertFromBase10toLower(3,2)
+(3 == 0? false)
+return (3%2=1) + 10*Convert(1,2)"]
+C -->|קריאה רקורסיבית| D["ConvertFromBase10toLower(1,2)
+(1 == 0? false)
+return (1%2=1) + 10*Convert(0,2)"]
+D -->|קריאה רקורסיבית| E["ConvertFromBase10toLower(0,2)
+(0 == 0? true)
+return 0"]
 
-Y -.->|"חזרה: "F""| X
-X -.->|תוצאה: "FF"| OUT(("ToBase(255,16) = FF"))
+E -.->|"חזרה: 0"| D
+D -.->|"חזרה: 1 + 10*0 = 1"| C
+C -.->|"חזרה: 1 + 10*1 = 11"| B
+B -.->|"חזרה: 0 + 10*11 = 110"| A
+A -.->|תוצאה: 1 + 10*110 = 1101| OUT(("ConvertFromBase10toLower(13,2) = 1101"))
 </div>
 
 </details>
 
 ---
 
-### הערות הוראה קצרות
-- רקורסיה "מרכיבה מלמעלה": קודם פותרים את תת-הבעיה \(N/b\) ואז מוסיפים למטה את ספרת \(N \bmod b\).  
-- בגישה איטרטיבית (ערמה של שאריות) מקבלים את הספרות **מהסוף להתחלה** ולכן מפכים את המחרוזת בסוף.
-- עבור תלמידים — התחילו בבסיס 2 ו־8; עברו לבסיס 16 עם טבלת מיפוי ספרות→אותיות.
+# 2) מעבר **מבסיס 10 לבסיס ספירה גבוה יותר** (למשל: 11..36 — שימוש באותיות A..Z)
 
-<details markdown="1">
-<summary>נספח: גרסה איטרטיבית קצרה (אופציונלי)</summary>
+## הרעיון
+אותו עיקרון חלוקה חוזרת, אבל הפלט הוא **מחרוזת**. הספרות מעל 9 מיוצגות באותיות:  
+10→A, 11→B, …, 15→F (בבסיס 16), וכן הלאה עד 35→Z (בבסיס 36).
 
+{: .box-success}
+הפונקציה הבאה (שלך) מתאימה גם לבסיסים נמוכים וגם לגבוהים: היא מחזירה `string` עם הספרות הנכונות, ומרכיבה את התוצאה משמאל באמצעות רקורסיה.
+
+{: .box-warning}
+הערת קצה: עבור `num == 0` הפונקציה מחזירה מחרוזת ריקה `""`. אם תרצו שהפלט יהיה `"0"`, עטפו את הקריאה ובדקו את המקרה הזה מבחוץ.
+
+## קוד C# — לפי הבקשה (בסיסים גבוהים/כלליים)
 {% highlight csharp linenos %}
-public static string ToBaseIter(int n, int b)
+public static string ConvertFromBase10(int num, int b)
 {
-    if (n == 0) return "0";
-    const string DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var s = "";
-    while (n > 0) { s = DIGITS[n % b] + s; n /= b; } // צוברים משמאל
-    return s;
+    if (num == 0) 
+        return "";
+
+    int mod = num % b;
+    char ch = (char)(mod + (mod < 10 ? '0' : 'A' - 10));
+    return ConvertFromBase10(num / b, b) + ch;
 }
 {% endhighlight %}
 
+### דוגמאות שימוש
+{% highlight csharp linenos %}
+// דוגמאות (תוצאה היא string; שימו לב למקרה 0)
+string s1 = ConvertFromBase10(255, 16); // "FF"
+string s2 = ConvertFromBase10(2025, 36); // "1HL"
+string s3 = ConvertFromBase10(31, 32);   // "V"
+string s0 = ConvertFromBase10(0, 16);    // ""  --> לשיקולכם להחזיר "0" חיצונית
+{% endhighlight %}
+
+<details markdown="1">
+<summary>מעקב בשיטת המלבנים — ConvertFromBase10(255, 16)</summary>
+
+<div class="mermaid">
+flowchart TD
+X["ConvertFromBase10(255,16)
+(255 == 0? false)
+mod=255%16=15 → ch='F'
+return Convert(15,16) + 'F'"] -->|קריאה רקורסיבית| Y["ConvertFromBase10(15,16)
+(15 == 0? false)
+mod=15%16=15 → ch='F'
+return Convert(0,16) + 'F'"]
+Y -->|קריאה רקורסיבית| Z["ConvertFromBase10(0,16)
+(0 == 0? true)
+return """]
+
+Z -.->|"חזרה: """| Y
+Y -.->|"חזרה: "" + 'F' = "F""| X
+X -.->|תוצאה: "F" + 'F' = "FF"| OUT(("ConvertFromBase10(255,16) = \"FF\""))
+</div>
+
 </details>
+
+---
+
+## טיפים הוראתיים קצרים
+- בשתי הפונקציות — הסדר הוא: **קודם** פותרים את תת-הבעיה על ידי חלקי-שלם (`num / b`), **אחר-כך** מוסיפים את ספרת השארית.
+- כשבסיס ≤ 10 ואינכם צריכים מחרוזת — `ConvertFromBase10toLower` היא קומפקטית ונוחה. כאשר רוצים תמיכה גם בבסיסים גבוהים — השתמשו ב־`ConvertFromBase10`.
+- מומלץ להדגים בבסיס 2, 8, ו־16, ולהראות כיצד האותיות נוצרות אוטומטית מקוד ה־ASCII בשורה של יצירת `ch`.
