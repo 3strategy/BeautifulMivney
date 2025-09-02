@@ -35,9 +35,8 @@ navbar-links:
 
   פתיחת שנה: 
     - 0. פתיחת שנה: "/mivney/0minhalot/0YearOpening"
-    - 0. עבודה בקמפוס: "/mivney/minhalot/ChapterCampus"
+    - 0. עבודה בקמפוס: "/mivney/0minhalot/ChapterCampus"
     - 0. מחלקות: "/mivney/0minhalot/Chapter0"
-    - 0. מעקב התקדמות: ""
 
   רקורסיה ויעילות:
     - 1. רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"

@@ -2,24 +2,30 @@
 layout: page
 title: "מצגות קמפוס"
 subtitle: "קישורים למצגות קמפוס, וכיצד ניתן לפתוח את המצגות באתר"
-tags: מצגות, קמפוס
+tags: מצגות, קמפוס, campus il
 author: גיא סידס
 lang: he
 ---
 
+{: .box-note} 
+בעמוד זה תמצאו קישורים למצגות קמפוס, ולקורס עצמו, והסברים על עבודה בתוך הקורס.
+
+[campus.il קישור לקורס עצמו](https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/)
 
 
 ## כיצד להגיע למצגות קמפוס מבני נתונים
 
-[פרק 1 - ניתוח זמן ריצה](https://lomdot.education.gov.il/Qualitest/CS01-runTime/index.html){:target="_blank"}
+סדר הפרקים כאן - לפי סדר ההוראה
 
 [פרק 2 - רקורסיה](https://lomdot.education.gov.il/Qualitest/CS02-recursion_new/index.html)
 
-[פרק 3 - תור](https://lomdot.education.gov.il/Qualitest/CS03-queue/index.html){:target="_blank"}
+[פרק 1 - ניתוח זמן ריצה](https://lomdot.education.gov.il/Qualitest/CS01-runTime/index.html){:target="_blank"}
+
+[פרק 5 - שרשרת חוליות](https://lomdot.education.gov.il/Qualitest/CS05-intNode_new/index.html){:target="_blank"}
 
 [פרק 4 - מחסנית](https://lomdot.education.gov.il/Qualitest/CS04-stack_new/index.html){:target="_blank"}
 
-[פרק 5 - שרשרת חוליות](https://lomdot.education.gov.il/Qualitest/CS05-intNode_new/index.html){:target="_blank"}
+[פרק 3 - תור](https://lomdot.education.gov.il/Qualitest/CS03-queue/index.html){:target="_blank"}
 
 [פרק 6 - עצים בינאריים](https://lomdot.education.gov.il/Qualitest/CS06-trees/index.html){:target="_blank"}
 

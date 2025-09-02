@@ -96,8 +96,8 @@ section finals
 - **ספרים**: "מבט לחלונות" – _ניתן להסתדר גם בלעדיהם. כמו שנה שעברה_.
 - **אתרי קורס**:
   - **מבני.שלי.com** – חומרי הלימוד המלווים.
-  - **[campus.il](mivney/0minhalot/ChapterCampus)** – תכנים משלימים.
-
+  - **[campus.il המצגות](/mivney/0minhalot/ChapterCampus)** – תכנים משלימים.
+  - [campus.il קישור לקורס](https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/)
 
 
 ---
