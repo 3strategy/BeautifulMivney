@@ -16,8 +16,9 @@ lang: he
 ## מבוא לרקורסיה
 
 
+{: .box-success}
+רקורסיה מתארת תהליך שבו פונקציה קוראת לעצמה לצורך פתרון בעיה. למשל, קביעת סכום של מערך יכולה להתבצע על ידי סכימת האיבר הראשון עם סכום המערך החל מהאיבר השני. כדי להבטיח שהאלגוריתם מסתיים, עלינו להגדיר **מקרה בסיס** – תנאי, **שבו הפונקציה מחזירה תוצאה ללא קריאה נוספת.**
 
-רקורסיה מתארת תהליך שבו פונקציה קוראת לעצמה לצורך פתרון בעיה. למשל, קביעת סכום של מערך יכולה להתבצע על ידי סכימת האיבר הראשון עם סכום המערך החל מהאיבר השני. כדי להבטיח שהאלגוריתם מסתיים, עלינו להגדיר **מקרה בסיס** – תנאי שבו הפונקציה מחזירה תוצאה ללא קריאה נוספת .
 
 <details markdown="1">
 <summary>דוגמא לרקורסיה - סכום איברי מערך?</summary>
@@ -70,7 +71,7 @@ graph TD
 ג. רצוי לחשוב על המקרה הבסיסי כעל פתרון לבעיה הפשוטה ביותר האפשרית.  
 
 
-## תרגול: מכפלה של שני מספרים באופן רקורסיבי
+## דוגמא 1/תרגול: מכפלה של שני מספרים באופן רקורסיבי
 כתבו את הפונקציה `Mul(int a, int b)` המחשבת כפל של $$a·b$$ ברקורסיה. 
 
 הרעיון: $$a⨯b = a+a+ ... b פעמים$$ נניח ש-$$b$$ אינו שלילי.
@@ -143,9 +144,14 @@ A -.->|תוצאה: 12| OUT(("Mul(4,3) = 12"))
 
 
 
-## דוגמא 2: מנה של חלוקה שלמה בחיסור חוזר : $$\lfloor (9/4) \rfloor = 2$$
+## דוגמא 2/תרגול: מנה של חלוקה שלמה בחיסור חוזר : $$\lfloor (9/4) \rfloor = 2$$
 
 רעיון: כמה פעמים ניתן לחסר את b מתוך a עד שהמספר קטן מ־b.
+
+
+
+
+<details markdown="1"><summary>פתרון</summary>
 
 {% highlight csharp linenos %}public static int Div(int a, int b)
 {
@@ -156,7 +162,12 @@ A -.->|תוצאה: 12| OUT(("Mul(4,3) = 12"))
 }
 {% endhighlight %}
 
-**מעקב בשיטת המלבנים:**
+</details>
+
+
+
+<details markdown="1"><summary>מעקב בשיטת המלבנים</summary>
+
 
 <div class="mermaid">
 
@@ -175,7 +186,9 @@ return 0"]
   X -.->|תוצאה: 2| OUT2(("Div(9,4) = 2"))
 
 </div>
-  
+
+</details>  
+
 **שיטת המלבנים (סיכום קצר):**
 
 {: .leafify}
@@ -195,10 +208,9 @@ return 0"]
 
 [קישור למקור בקמפוס](https://app.campus.gov.il/learning/course/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@sequential+block@544f0df2068641c6a70929278aa4b772/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@vertical+block@ee0013d1d833495bbe888bb2f693f803)
 
-עקבו אחר קטע הקוד הבא. מה יוחזר עבור הקריאה `Mystery(3)`
+עקבו אחר קטע הקוד הבא. **מה יוחזר עבור הקריאה `Mystery(3)`?**
 
-```csharp
-public static int Mystery  (int n)
+{% highlight csharp linenos %}public static int Mystery  (int n)
 {
   if (n <= 0) // תנאי עצירה
       return 0;
@@ -211,8 +223,9 @@ public static int Mystery  (int n)
         return Mystery (n - 1);
     }
 }
+{% endhighlight %}
 
-```
+
 <details markdown="1">
 <summary>תרשים המלבנים של Mystery(3)</summary>
 <div class="mermaid">
