@@ -141,6 +141,31 @@ strong {
             transform: scale(1.4);
         }
     }
+
+    /* Custom styles for 1280x800 resolution */
+    @media (width: 1280px) and (height: 800px) {
+    html, body {
+        font-size: 1.3em;
+    }
+    .container-md {
+        /* Slightly larger scaling and padding for this resolution */
+        transform: scale(1.7);
+        max-width: 100% !important;
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+    h1 {
+        font-size: 2.3em;
+    }
+    h2, h3 {
+        font-size: 2em;
+        margin-top: 8em;
+    }
+    pre, code {
+        font-size: 1.15em;
+    }
+    /* You can add more selectors here for further tweaks */
+    }
 }
 
 details {
