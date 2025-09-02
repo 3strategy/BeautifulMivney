@@ -22,8 +22,7 @@ lang: he
 <details markdown="1">
 <summary>דוגמא לרקורסיה - סכום איברי מערך?</summary>
 
-```csharp
-// סכום אלמנטים במערך באמצעות רקורסיה
+{% highlight csharp linenos %}// סכום אלמנטים במערך באמצעות רקורסיה
 public static int Sum(int[] arr, int index)
 {
     // מקרה בסיס – הגענו לסוף המערך
@@ -33,7 +32,7 @@ public static int Sum(int[] arr, int index)
     // מקרה רקורסיבי – מוסיפים את הערך הנוכחי לסכום שאר האיברים
     return arr[index] + Sum(arr, index + 1);
 }
-```
+{% endhighlight %}
 
 
 <details markdown="1"><summary>הבנת מחסנית הקריאות</summary>
@@ -84,15 +83,14 @@ graph TD
 
 <details markdown="1"><summary>פתרון</summary>
 
-```csharp
-public static int Mul(int a, int b)
+{% highlight csharp linenos %}public static int Mul(int a, int b)
 {
   if (b == 0) 
     return 0; // תנאי עצירה
 
   return a + Mul(a, b - 1); // b חזרה עם הקטנת 
 }
-```
+{% endhighlight %}
 
 </details>
 
@@ -149,15 +147,14 @@ A -.->|תוצאה: 12| OUT(("Mul(4,3) = 12"))
 
 רעיון: כמה פעמים ניתן לחסר את b מתוך a עד שהמספר קטן מ־b.
 
-```csharp
-public static int Div(int a, int b)
+{% highlight csharp linenos %}public static int Div(int a, int b)
 {
     if (a < b) 
         return 0;       // תנאי עצירה
 
     return 1 + Div(a - b, b);  // b חזרה עם חיסור 
 }
-```
+{% endhighlight %}
 
 **מעקב בשיטת המלבנים:**
 
