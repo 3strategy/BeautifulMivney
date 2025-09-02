@@ -10,14 +10,15 @@ lang: he
 {: .box-note} 
 בעמוד זה תמצאו קישורים למצגות קמפוס, ולקורס עצמו, והסברים על עבודה בתוך הקורס.
 
-[campus.il קישור לקורס עצמו](https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/)
+[campus.il קישור לקורס עצמו](https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/){:target="_blank"}
 
+[סירטוני רקורסיה ב-Campus](https://www.youtube.com/watch?v=aLM2zShqzC4&list=PLnVUJu2KuoA31IAsWsbeP81gYvWoj3jGM&pp=gAQB){:target="_blank"}
 
 ## כיצד להגיע למצגות קמפוס מבני נתונים
 
 סדר הפרקים כאן - לפי סדר ההוראה
 
-[פרק 2 - רקורסיה](https://lomdot.education.gov.il/Qualitest/CS02-recursion_new/index.html)
+[פרק 2 - רקורסיה](https://lomdot.education.gov.il/Qualitest/CS02-recursion_new/index.html){:target="_blank"}
 
 [פרק 1 - ניתוח זמן ריצה](https://lomdot.education.gov.il/Qualitest/CS01-runTime/index.html){:target="_blank"}
 
