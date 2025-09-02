@@ -15,10 +15,12 @@ lang: he
 
 ## מבוא לרקורסיה
 
-<details markdown="1">
-<summary>מהי רקורסיה?</summary>
+
 
 רקורסיה מתארת תהליך שבו פונקציה קוראת לעצמה לצורך פתרון בעיה. למשל, קביעת סכום של מערך יכולה להתבצע על ידי סכימת האיבר הראשון עם סכום המערך החל מהאיבר השני. כדי להבטיח שהאלגוריתם מסתיים, עלינו להגדיר **מקרה בסיס** – תנאי שבו הפונקציה מחזירה תוצאה ללא קריאה נוספת .
+
+<details markdown="1">
+<summary>דוגמא לרקורסיה - סכום איברי מערך?</summary>
 
 ```csharp
 // סכום אלמנטים במערך באמצעות רקורסיה
@@ -87,6 +89,7 @@ public static int Mul(int a, int b)
 {
   if (b == 0) 
     return 0; // תנאי עצירה
+
   return a + Mul(a, b - 1); // b חזרה עם הקטנת 
 }
 ```
@@ -151,6 +154,7 @@ public static int Div(int a, int b)
 {
     if (a < b) 
         return 0;       // תנאי עצירה
+
     return 1 + Div(a - b, b);  // b חזרה עם חיסור 
 }
 ```
@@ -189,6 +193,133 @@ return 0"]
 
 - שרטט/י מעקב עבור `Mul(3,2)` ו־`Div(10,3)` והוסיפ/י תוויות על ערכי ההחזרה בכל שלב.
 - כמה קריאות/חזרות יש בכל אחד מהמקרים? הסבירו בקצרה כיצד נובע המספר מהפרמטרים.
+
+## תרגול מעקב - שאלת קמפוס
+
+[קישור למקור בקמפוס](https://app.campus.gov.il/learning/course/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@sequential+block@544f0df2068641c6a70929278aa4b772/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@vertical+block@ee0013d1d833495bbe888bb2f693f803)
+
+עקבו אחר קטע הקוד הבא. מה יוחזר עבור הקריאה `Mystery(3)`
+
+```csharp
+public static int Mystery  (int n)
+{
+  if (n <= 0) // תנאי עצירה
+      return 0;
+
+  else
+    {
+      if (n % 3 == 0) // n הקריאות הרקורסיביות מקטינות את 
+        return Mystery (n - 1) + n;
+      else 
+        return Mystery (n - 1);
+    }
+}
+
+```
+<details markdown="1">
+<summary>תרשים המלבנים של Mystery(3)</summary>
+<div class="mermaid">
+
+flowchart TD
+A["Mystery(3) 
+(n <= 0? false) 
+(n % 3 == 0? true) 
+return Mystery(2) + 3"] -->|קריאה רקורסיבית| B["Mystery(2) 
+(n <= 0? false) 
+(n % 3 == 0? false) 
+return Mystery(1)"]
+
+B -->|קריאה רקורסיבית| C["Mystery(1) 
+(n <= 0? false) 
+(n % 3 == 0? false) 
+return Mystery(0)"]
+
+C -->|קריאה רקורסיבית| D["Mystery(0) 
+(n <= 0? true) 
+return 0"]
+
+D -.->|חזרה: 0| C
+C -.->|חזרה: 0| B
+B -.->|חזרה: 0| A
+A -.->|תוצאה: 3| OUT(("Mystery(3) = 3"))
+
+</div>
+</details>
+
+<details markdown="1">
+<summary>נסו לעקוב מה יודפס עבור Mystery(10)</summary>
+
+<div class="mermaid">
+
+flowchart TD
+A["Mystery(10) 
+(n <= 0? false) 
+(n % 3 == 0? false) 
+return Mystery(9)"] -->|קריאה רקורסיבית| B["Mystery(9) 
+(n <= 0? false) 
+(n % 3 == 0? true) 
+return Mystery(8) + 9"]
+
+B -->|קריאה רקורסיבית| C["Mystery(8) 
+(n <= 0? false) 
+(n % 3 == 0? false) 
+return Mystery(7)"]
+
+C -->|קריאה רקורסיבית| D["Mystery(7) 
+(n <= 0? false) 
+(n % 3 == 0? false) 
+return Mystery(6)"]
+
+D -->|קריאה רקורסיבית| E["Mystery(6) 
+(n <= 0? false) 
+(n % 3 == 0? true) 
+return Mystery(5) + 6"]
+
+E -->|קריאה רקורסיבית| F["Mystery(5) 
+(n <= 0? false) 
+(n % 3 == 0? false) 
+return Mystery(4)"]
+
+F -->|קריאה רקורסיבית| G["Mystery(4) 
+(n <= 0? false) 
+(n % 3 == 0? false) 
+return Mystery(3)"]
+
+G -->|קריאה רקורסיבית| H["Mystery(3) 
+(n <= 0? false) 
+(n % 3 == 0? true) 
+return Mystery(2) + 3"]
+
+H -->|קריאה רקורסיבית| I["Mystery(2) 
+(n <= 0? false) 
+(n % 3 == 0? false) 
+return Mystery(1)"]
+
+I -->|קריאה רקורסיבית| J["Mystery(1) 
+(n <= 0? false) 
+(n % 3 == 0? false) 
+return Mystery(0)"]
+
+J -->|קריאה רקורסיבית| K["Mystery(0) 
+(n <= 0? true) 
+return 0"]
+
+%% חיצי החזרה
+K -.->|חזרה: 0| J
+J -.->|חזרה: 0| I
+I -.->|חזרה: 0| H
+H -.->|חזרה: 3| G
+G -.->|חזרה: 3| F
+F -.->|חזרה: 3| E
+E -.->|חזרה: 9| D
+D -.->|חזרה: 9| C
+C -.->|חזרה: 9| B
+B -.->|חזרה: 18| A
+A -.->|תוצאה: 18| OUT(("Mystery(10) = 18"))
+
+</div>
+</details>
+
 
 
 
