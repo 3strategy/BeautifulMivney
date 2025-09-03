@@ -381,6 +381,39 @@ A -.->|תוצאה: 18| OUT(("Mystery(10) = 18"))
 | בהירות קוד | לעיתים קריא יותר | לעיתים נדרשים משתנים נוספים |
 {: .table-he}
 
+
+## דוגמא לרקורסיה במחרוזת
+```csharp
+public static string StrReverse(string str)
+{
+   //null כדאי גם לבדוק 
+   if (str.Length < 2) // תנאי עצירה: ריק או תו בודד
+      return str;
+
+   return StrReverse(str.Substring(1)) + str[0];
+}
+```
+
+<div class="mermaid">
+
+flowchart TD
+A["StrReverse(abc)
+(len < 2? false)
+return StrReverse(&quot;bc&quot;) + &quot;a&quot;"] -->|קריאה רקורסיבית| B["StrReverse(&quot;bc&quot;)
+(len < 2? false)\nreturn StrReverse(&quot;c&quot;) + &quot;b&quot;"]
+B -->|קריאה רקורסיבית| C["StrReverse(c)
+(len < 2? true)
+return &quot;c&quot;"]
+
+
+C -.->|חזרה: c| B
+B -.->|חזרה: cb| A
+A -.->|תוצאה: cba| OUT(("StrReverse(abc) = &quot;cba&quot;"))
+
+
+</div>
+
+
 ## תרגול וקישורים
 
 כדי לתרגל את הנושא נפתור **הרבה** שאלות רקורסיביות. תוכלו למצוא תרגילים בקישורים הבאים:
