@@ -399,16 +399,17 @@ public static string StrReverse(string str)
 flowchart TD
 A["StrReverse(abc)
 (len < 2? false)
-return StrReverse(&quot;bc&quot;) + &quot;a&quot;"] -->|קריאה רקורסיבית| B["StrReverse(&quot;bc&quot;)
-(len < 2? false)\nreturn StrReverse(&quot;c&quot;) + &quot;b&quot;"]
+return StrReverse(bc) + a"] -->|קריאה רקורסיבית| B["StrReverse(bc)
+(len < 2? false)
+return StrReverse(c) + b"]
 B -->|קריאה רקורסיבית| C["StrReverse(c)
 (len < 2? true)
-return &quot;c&quot;"]
+return c"]
 
 
 C -.->|חזרה: c| B
 B -.->|חזרה: cb| A
-A -.->|תוצאה: cba| OUT(("StrReverse(abc) = &quot;cba&quot;"))
+A -.->|תוצאה: cba| OUT(("StrReverse(abc) = cba"))
 
 
 </div>
