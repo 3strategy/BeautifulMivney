@@ -422,9 +422,8 @@ A -.->|תוצאה: cba| OUT(("StrReverse(abc) = cba"))
 </details>
 </details>
 
-{#idRevNumRec}
 
-<details markdown="1"><summary>דוגמא לרקורסיה: הפיכת מספר - ללא שימוש במחרוזת. כיוון לפתרון</summary>
+<details id="idRevNumRec" markdown="1"><summary>דוגמא לרקורסיה: הפיכת מספר - ללא שימוש במחרוזת. כיוון לפתרון</summary>
 
 הפיכת מחרוזת  - קשה יותר מהפיכת מספר. 
 הטכניקה שעליכם לחשוב עליה היא שימוש במשתנה עזר, והעברה שלו בתוך הקריאה הרקורסיבית. 
