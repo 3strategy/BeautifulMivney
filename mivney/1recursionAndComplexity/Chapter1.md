@@ -382,7 +382,9 @@ A -.->|תוצאה: 18| OUT(("Mystery(10) = 18"))
 {: .table-he}
 
 
-## דוגמא לרקורסיה במחרוזת
+
+<details markdown="1"><summary>דוגמא לרקורסיה במחרוזת: הפיכת מחרוזת</summary>
+
 ```csharp
 public static string StrReverse(string str)
 {
@@ -393,6 +395,9 @@ public static string StrReverse(string str)
    return StrReverse(str.Substring(1)) + str[0];
 }
 ```
+
+
+<details markdown="1"><summary>מעקב</summary>
 
 <div class="mermaid">
 
@@ -414,6 +419,29 @@ A -.->|תוצאה: cba| OUT(("StrReverse(abc) = cba"))
 
 </div>
 
+</details>
+</details>
+
+
+<details markdown="1"><summary>דוגמא לרקורסיה: הפיכת מספר - ללא שימוש במחרוזת. כיוון לפתרון</summary>
+
+הפיכת מחרוזת  - קשה יותר מהפיכת מספר. 
+הטכניקה שעליכם לחשוב עליה היא שימוש במשתנה עזר, והעברה שלו בתוך הקריאה הרקורסיבית. 
+חישבו על מצב שבו עובדים עם 2 מספרים:
+
+- המספר שאתם מחלקים ב-10
+- והתוצאה שאנחנו בונים: זו שכופלים ב-10.
+
+```csharp
+public static Rev(int num, int result = 0)
+```
+שימוש: `int rev = Rev(1234);`  (כלומר, בקריאה מבחוץ לא מתייחסים לפרמטר הנוסף והוא יתחיל כ-0)
+
+בקריאה הראשונה נקרא ל-: `Rev(123, 4)`
+
+ומי שיקבל את זה, יקרא ל: `Rev(123, 43)`
+
+</div>
 
 ## תרגול וקישורים
 
