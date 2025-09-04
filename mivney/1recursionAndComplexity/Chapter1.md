@@ -422,6 +422,7 @@ A -.->|תוצאה: cba| OUT(("StrReverse(abc) = cba"))
 </details>
 </details>
 
+{#idRevNumRec}
 
 <details markdown="1"><summary>דוגמא לרקורסיה: הפיכת מספר - ללא שימוש במחרוזת. כיוון לפתרון</summary>
 
