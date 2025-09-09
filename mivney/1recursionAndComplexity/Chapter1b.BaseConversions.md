@@ -11,13 +11,13 @@ mathjax: true
 # 1) מעבר **מבסיס 10 לבסיס קטן יותר** (למשל: 2, 3, 8, 9)
 
 ## הרעיון
-מיישמים **חלוקה חוזרת**: בכל צעד לוקחים את השארית \(num \bmod b\) כספרה התחתונה, וממשיכים רקורסיבית עם \( \lfloor num / b \rfloor \).  
+מיישמים **חלוקה חוזרת**: בכל צעד לוקחים את השארית $$(num \bmod b)$$ כספרה התחתונה, וממשיכים רקורסיבית עם $$( \lfloor num / b \rfloor )$$.  
 בגרסה זו (שהחזרת) נבנה תוצאה **מספרית**: `num % b + 10 * recurse(...)`, ולכן מתאימה לבסיסים **≤10** בלבד.
 
 {: .box-warning}
 שימו לב: כאן מוחזר **int**. אם התוצאה בבסיס החדש היא, למשל, `"1101"` — הערך המוחזר יהיה המספר העשרוני `1101` (שמייצג את הרצף הספרתי).
 
-## קוד C# — לפי הבקשה (בסיסים ≤ 10)
+## קוד C# — (בסיסים ≤ 10)
 {% highlight csharp linenos %}
 public static int ConvertFromBase10toLower(int num, int b)
 {
@@ -34,8 +34,41 @@ public static int ConvertFromBase10toLower(int num, int b)
 // דוגמאות (תוצאה היא int עם ספרות הבסיס החדש)
 Console.WriteLine(ConvertFromBase10toLower(13, 2)); // 1101
 Console.WriteLine(ConvertFromBase10toLower(157, 3)); // 12212
-Console.WriteLine(ConvertFromBase10toLower(255, 8)); // 377
+Console.WriteLine(ConvertFromBase10toLower(86, 8)); // 126
 {% endhighlight %}
+
+
+<details markdown="1">
+<summary>מעקב בשיטת המלבנים — ConvertFromBase10toLower(86, 8)</summary>
+
+<div class="mermaid">
+flowchart TD
+X["ConvertFromBase10toLower(86, 8)
+(86 == 0? false)
+return 86 % 8 + 10 * Convert(86/8, 8)
+= 6 + 10 * Convert(10, 8)"] --> Y["Y ConvertFromBase10toLower(10, 8)
+(10 == 0? false)
+return 10 % 8 + 10 * Convert(10/8, 8)
+= 2 + 10 * Convert(1, 8)"]
+
+Y --> Z["Z ConvertFromBase10toLower(1, 8)
+(1 == 0? false)
+return 1 % 8 + 10 * Convert(1/8, 8)
+= 1 + 10 * Convert(0, 8)"]
+
+Z --> W["W ConvertFromBase10toLower(0, 8)
+(0 == 0? true)
+return 0"]
+
+W -.->|return: 0| Z
+Z -.->|return: 1 + 10 * 0 = 1| Y
+Y -.->|return: 2 + 10 * 1 = 12| X
+X -.->|final result: 6 + 10 * 12 = 126| OUT(("126₈"))
+
+</div>
+
+</details>
+
 
 <details markdown="1">
 <summary>מעקב בשיטת המלבנים — ConvertFromBase10toLower(13, 2)</summary>
@@ -75,10 +108,8 @@ A -.->|תוצאה: 1 + 10*110 = 1101| OUT(("ConvertFromBase10toLower(13,2) = 110
 10→A, 11→B, …, 15→F (בבסיס 16), וכן הלאה עד 35→Z (בבסיס 36).
 
 {: .box-success}
-הפונקציה הבאה (שלך) מתאימה גם לבסיסים נמוכים וגם לגבוהים: היא מחזירה `string` עם הספרות הנכונות, ומרכיבה את התוצאה משמאל באמצעות רקורסיה.
+הפונקציה הבאה מתאימה גם לבסיסים נמוכים וגם לגבוהים: היא מחזירה `string` עם הספרות הנכונות, ומרכיבה את התוצאה משמאל באמצעות רקורסיה.
 
-{: .box-warning}
-הערת קצה: עבור `num == 0` הפונקציה מחזירה מחרוזת ריקה `""`. אם תרצו שהפלט יהיה `"0"`, עטפו את הקריאה ובדקו את המקרה הזה מבחוץ.
 
 ## קוד C# — לפי הבקשה (בסיסים גבוהים/כלליים)
 {% highlight csharp linenos %}
@@ -110,24 +141,27 @@ flowchart TD
 X["ConvertFromBase10(255,16)
 (255 == 0? false)
 mod=255%16=15 → ch='F'
-return Convert(15,16) + 'F'"] -->|קריאה רקורסיבית| Y["ConvertFromBase10(15,16)
+return Convert(15,16) + 'F'"] --> Y["ConvertFromBase10(15,16)
 (15 == 0? false)
 mod=15%16=15 → ch='F'
 return Convert(0,16) + 'F'"]
+
 Y -->|קריאה רקורסיבית| Z["ConvertFromBase10(0,16)
 (0 == 0? true)
-return """]
+return ''"]
 
-Z -.->|"חזרה: """| Y
-Y -.->|"חזרה: "" + 'F' = "F""| X
-X -.->|תוצאה: "F" + 'F' = "FF"| OUT(("ConvertFromBase10(255,16) = \"FF\""))
+Z -.->|"חזרה מחרוזת ריקה: ''"| Y
+
+Y -.->|"חזרה: '' + 'F' = 'F'"| X
+
+X -.->|"תוצאה: 'F' + 'F' = 'FF'"| OUT((""FF""))
 </div>
 
 </details>
 
 ---
 
-## טיפים הוראתיים קצרים
-- בשתי הפונקציות — הסדר הוא: **קודם** פותרים את תת-הבעיה על ידי חלקי-שלם (`num / b`), **אחר-כך** מוסיפים את ספרת השארית.
+## טיפים קצרים
+- בשתי הפונקציות — הסדר הוא: **קודם** פותרים את תת-הבעיה על ידי חלקי-שלם (`num / b`), **אחר-כך** מוסיפים את ספרת השארית. וכך מתקבל הסדר הנכון.
 - כשבסיס ≤ 10 ואינכם צריכים מחרוזת — `ConvertFromBase10toLower` היא קומפקטית ונוחה. כאשר רוצים תמיכה גם בבסיסים גבוהים — השתמשו ב־`ConvertFromBase10`.
 - מומלץ להדגים בבסיס 2, 8, ו־16, ולהראות כיצד האותיות נוצרות אוטומטית מקוד ה־ASCII בשורה של יצירת `ch`.
