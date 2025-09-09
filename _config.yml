@@ -41,7 +41,9 @@ navbar-links:
   רקורסיה ויעילות:
     - 1. רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"
     - 1. טענת יציאה (מטרת הפונקציה): "/mivney/1recursionAndComplexity/Chapter1ExTracking"
- 
+    - 1. המרת בסיסים ברקורסיה: "mivney/1recursionAndComplexity/Chapter1b.BaseConversions"
+
+
   שרשרת חוליות:
   #   - 
   #   - תרגול: "/mivney/3node/Links"

@@ -1,18 +1,16 @@
 ---
 layout: page
 title: "רקורסיה - המרת בסיסים"
-subtitle: "המרות בסיסים: מבסיס 10 לבסיס קטן/גדול יותר"
+subtitle: "המרות בסיסים: מבסיס 10 לבסיס קטן/גדול יותר. לא למבחן"
 lang: he
 mathjax: true
 ---
 
 
 
-# 1) מעבר **מבסיס 10 לבסיס קטן יותר** (למשל: 2, 3, 8, 9)
-
-## הרעיון
-מיישמים **חלוקה חוזרת**: בכל צעד לוקחים את השארית $$(num \bmod b)$$ כספרה התחתונה, וממשיכים רקורסיבית עם $$( \lfloor num / b \rfloor )$$.  
-בגרסה זו (שהחזרת) נבנה תוצאה **מספרית**: `num % b + 10 * recurse(...)`, ולכן מתאימה לבסיסים **≤10** בלבד.
+{: .box-success}
+**הרעיון**: מיישמים **חלוקה חוזרת**: בכל צעד לוקחים את השארית $$(num \bmod b)$$ כספרה התחתונה, וממשיכים רקורסיבית עם $$\lfloor num / b \rfloor$$.  
+בגרסה זו (שהחזרת) נבנה תוצאה **מספרית**: `(...)num % b + 10 * recurse`, ולכן מתאימה לבסיסים $$≤10$$ בלבד.
 
 {: .box-warning}
 שימו לב: כאן מוחזר **int**. אם התוצאה בבסיס החדש היא, למשל, `"1101"` — הערך המוחזר יהיה המספר העשרוני `1101` (שמייצג את הרצף הספרתי).
@@ -43,20 +41,19 @@ Console.WriteLine(ConvertFromBase10toLower(86, 8)); // 126
 
 <div class="mermaid">
 flowchart TD
-X["ConvertFromBase10toLower(86, 8)
+X["Convert(86, 8)
 (86 == 0? false)
-return 86 % 8 + 10 * Convert(86/8, 8)
-= 6 + 10 * Convert(10, 8)"] --> Y["Y ConvertFromBase10toLower(10, 8)
+6 + 10 * Convert(10, 8)"] 
+
+--> Y["Convert(10, 8)
 (10 == 0? false)
-return 10 % 8 + 10 * Convert(10/8, 8)
-= 2 + 10 * Convert(1, 8)"]
+2 + 10 * Convert(1, 8)"]
 
-Y --> Z["Z ConvertFromBase10toLower(1, 8)
+--> Z["Convert(1, 8)
 (1 == 0? false)
-return 1 % 8 + 10 * Convert(1/8, 8)
-= 1 + 10 * Convert(0, 8)"]
+1 + 10 * Convert(0, 8)"]
 
-Z --> W["W ConvertFromBase10toLower(0, 8)
+--> W["Convert(0, 8)
 (0 == 0? true)
 return 0"]
 
@@ -64,7 +61,6 @@ W -.->|return: 0| Z
 Z -.->|return: 1 + 10 * 0 = 1| Y
 Y -.->|return: 2 + 10 * 1 = 12| X
 X -.->|final result: 6 + 10 * 12 = 126| OUT(("126₈"))
-
 </div>
 
 </details>
@@ -75,18 +71,18 @@ X -.->|final result: 6 + 10 * 12 = 126| OUT(("126₈"))
 
 <div class="mermaid">
 flowchart TD
-A["ConvertFromBase10toLower(13,2)
+A["Convert(13,2)
 (13 == 0? false)
-return (13%2=1) + 10*Convert(6,2)"] -->|קריאה רקורסיבית| B["ConvertFromBase10toLower(6,2)
+return (13%2=1) + 10*Convert(6,2)"] --> B["Convert(6,2)
 (6 == 0? false)
 return (6%2=0) + 10*Convert(3,2)"]
-B -->|קריאה רקורסיבית| C["ConvertFromBase10toLower(3,2)
+B --> C["Convert(3,2)
 (3 == 0? false)
 return (3%2=1) + 10*Convert(1,2)"]
-C -->|קריאה רקורסיבית| D["ConvertFromBase10toLower(1,2)
+C --> D["Convert(1,2)
 (1 == 0? false)
 return (1%2=1) + 10*Convert(0,2)"]
-D -->|קריאה רקורסיבית| E["ConvertFromBase10toLower(0,2)
+D --> E["Convert(0,2)
 (0 == 0? true)
 return 0"]
 
@@ -94,7 +90,7 @@ E -.->|"חזרה: 0"| D
 D -.->|"חזרה: 1 + 10*0 = 1"| C
 C -.->|"חזרה: 1 + 10*1 = 11"| B
 B -.->|"חזרה: 0 + 10*11 = 110"| A
-A -.->|תוצאה: 1 + 10*110 = 1101| OUT(("ConvertFromBase10toLower(13,2) = 1101"))
+A -.->|תוצאה: 1 + 10*110 = 1101| OUT(("Convert(13,2) = 1101"))
 </div>
 
 </details>
@@ -161,7 +157,6 @@ X -.->|"תוצאה: 'F' + 'F' = 'FF'"| OUT((""FF""))
 
 ---
 
-## טיפים קצרים
-- בשתי הפונקציות — הסדר הוא: **קודם** פותרים את תת-הבעיה על ידי חלקי-שלם (`num / b`), **אחר-כך** מוסיפים את ספרת השארית. וכך מתקבל הסדר הנכון.
+## טיפים 
+- בגרסה המחרוזת יש חשיבות לסדר: **קודם** פותרים את תת-הבעיה על ידי חלקי-שלם (`num / b`), **אחר-כך** מוסיפים את ספרת השארית. וכך מתקבל הסדר הנכון.
 - כשבסיס ≤ 10 ואינכם צריכים מחרוזת — `ConvertFromBase10toLower` היא קומפקטית ונוחה. כאשר רוצים תמיכה גם בבסיסים גבוהים — השתמשו ב־`ConvertFromBase10`.
-- מומלץ להדגים בבסיס 2, 8, ו־16, ולהראות כיצד האותיות נוצרות אוטומטית מקוד ה־ASCII בשורה של יצירת `ch`.
