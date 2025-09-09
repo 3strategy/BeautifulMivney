@@ -40,8 +40,8 @@ navbar-links:
 
   רקורסיה ויעילות:
     - 1. רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"
-  #  - תרגול: "/mivney/1recursionAndComplexity/Links"
-
+    - 1. מעקב רקורסיה huji: "http://stc.huji.ac.il/center/groups/OOP2006/Csharp/chap4-Recursion-CSharp.pdf#page=20"
+ 
   שרשרת חוליות:
   #   - 
   #   - תרגול: "/mivney/3node/Links"
