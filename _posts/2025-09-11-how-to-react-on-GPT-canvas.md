@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "כ מאחורי האתר ב-GitHub Pages"
+title: "React in GPT Canvas"
 subtitle: "רלוונטי למורים. ולתלמידים סקרנים. לא קשור לאנדרואיד סטודיו"
 tags: [react, GPT, canvase]
 comments: true
@@ -21,32 +21,28 @@ body {
 How to create & share a mini React app in ChatGPT Canvas
 
 1. **Open a coding canvas**
-   In any chat on GPT, say “use canvas” / “open a coding canvas”, or click the toolbox icon in the composer and pick **Canvas** (you can also type **/canvas**). Canvas opens as a side-by-side editor+preview. ([OpenAI Help Center][1])
+   In any chat on GPT, say “use canvas” / “open a coding canvas”, or click the toolbox icon in the composer and pick **Canvas** (you can also type **/canvas**). Canvas opens as a side-by-side editor+preview. ([OpenAI Help Center](https://help.openai.com/en/articles/9930697-what-is-the-canvas-feature-in-chatgpt-and-how-do-i-use-it))
 
 2. **Paste a single-file React component**
 
    * Use a **default export** (e.g., `export default function App(){…}`) so Canvas can render it.
    * Styling: Tailwind utility classes work out of the box.
-   * You can import many npm libraries; React/HTML runs in a sandboxed preview. ([OpenAI Help Center][1])
+   * You can import many npm libraries; React/HTML runs in a sandboxed preview. ([OpenAI Help Center](https://help.openai.com/en/articles/9930697-what-is-the-canvas-feature-in-chatgpt-and-how-do-i-use-it))
 
 3. **See the live preview**
-   React/HTML code is rendered in a sandbox; most npm packages and many JS libraries “just work.” Edits in the code pane update the preview instantly. ([OpenAI Help Center][1])
+   React/HTML code is rendered in a sandbox; most npm packages and many JS libraries “just work.” Edits in the code pane update the preview instantly. ([OpenAI Help Center](https://help.openai.com/en/articles/9930697-what-is-the-canvas-feature-in-chatgpt-and-how-do-i-use-it))
 
 4. **Share it**
-   Click **Share** in the Canvas toolbar (top-right) → create a shared link. This publishes the canvas (document/code or rendered React/HTML) so others can open it at a URL like `chatgpt.com/canvas/shared/...`. ([OpenAI Help Center][1])
+   Click **Share** in the Canvas toolbar (top-right) → create a shared link. This publishes the canvas (document/code or rendered React/HTML) so others can open it at a URL like `chatgpt.com/canvas/shared/...`. ([OpenAI Help Center](https://help.openai.com/en/articles/9930697-what-is-the-canvas-feature-in-chatgpt-and-how-do-i-use-it))
 
 5. **What viewers can do**
-   People who open your link can view the live preview and edit the code **in their own copy** (your original canvas isn’t changed). This works like sharing a conversation, but for Canvas assets. ([OpenAI Help Center][2])
+   People who open your link can view the live preview and edit the code **in their own copy** (your original canvas isn’t changed). This works like sharing a conversation, but for Canvas assets. ([OpenAI Help Center](https://help.openai.com/en/articles/6825453-chatgpt-release-notes))
 
-6. **(Optional) Network & execution**
-   Canvas can execute code and web previews may make network requests. In Team/Enterprise/Edu, admins can toggle code execution and network access for Canvas in workspace settings. If a fetch fails on a shared link at work, this setting may be why. ([OpenAI Help Center][1])
 
-7. **Export/download**
-   Use **Download** in the Canvas toolbar to export documents as Markdown/PDF/Docx, or code as language-appropriate files (e.g., `.js`, `.py`). ([OpenAI Help Center][1])
 
 ---
 
-### Below is a starter ready now
+### Below is a starter you can use
 
 <details markdown="1"><summary>sample react by GPT that you can put in your canvas</summary>
 
@@ -166,10 +162,6 @@ export default function CanvasStarter() {
 
 ```
 </details>
-
-
-[1]: https://help.openai.com/en/articles/9930697-what-is-the-canvas-feature-in-chatgpt-and-how-do-i-use-it "What is the canvas feature in ChatGPT and how do I use it? | OpenAI Help Center"
-[2]: https://help.openai.com/en/articles/6825453-chatgpt-release-notes "ChatGPT — Release Notes | OpenAI Help Center"
 
 
 [⟶ Open a code testing react demo in canvase](https://chatgpt.com/canvas/shared/68bc38badd14819190331b8447918d4f)
