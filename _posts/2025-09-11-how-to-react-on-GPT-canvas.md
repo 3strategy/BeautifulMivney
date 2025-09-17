@@ -2,7 +2,7 @@
 layout: post
 title: "React in GPT Canvas"
 subtitle: "רלוונטי למורים. ולתלמידים סקרנים. לא קשור לאנדרואיד סטודיו"
-tags: [react, GPT, canvase]
+tags: [react, GPT, canvas]
 comments: true
 mathjax: true
 author: "גיא סידס"
@@ -164,4 +164,4 @@ export default function CanvasStarter() {
 </details>
 
 
-[⟶ Open a code testing react demo in canvase](https://chatgpt.com/canvas/shared/68bc38badd14819190331b8447918d4f)
+[⟶ Open a code testing react demo in canvas](https://chatgpt.com/canvas/shared/68bc38badd14819190331b8447918d4f)

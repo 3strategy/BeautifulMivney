@@ -43,9 +43,10 @@ navbar-links:
     - 1. טענת יציאה (מטרת הפונקציה): "/mivney/1recursionAndComplexity/Chapter1ExTracking"
     - 1. המרת בסיסים ברקורסיה: "mivney/1recursionAndComplexity/Chapter1b.BaseConversions"
     - 1. react (by anonymous): "https://chatgpt.com/canvas/shared/68bc38badd14819190331b8447918d4f"
+  #  - 2. יעילות וסיבוכיות: "mivney/1recursionAndComplexity/Chapter2"
 
   שרשרת חוליות:
-  #   - 
+    - 3. שרשרת חוליות: "/mivney/3node/Chapter3"
   #   - תרגול: "/mivney/3node/Links"
 
   מחסנית:
