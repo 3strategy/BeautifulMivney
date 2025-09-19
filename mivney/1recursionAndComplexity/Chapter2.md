@@ -71,7 +71,7 @@ lang: he
    
 
 <div class="mermaid">
-graph LR
+graph TD
     O1["O(1)
     גישה לאיבר במערך"] 
     --> Ologn["O(log n)
