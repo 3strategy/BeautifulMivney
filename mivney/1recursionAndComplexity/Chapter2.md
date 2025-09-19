@@ -48,7 +48,7 @@ lang: he
 ### סיבוכיויות זמני ריצה נפוצות
 
 <div class="two-columns">
-  <div class="column">
+  <div markdown="1" class="column">
 
 
 {: .subq}
