@@ -291,7 +291,7 @@ public static bool HasSubarrayWithSum2(int[] arr, int target)
 
 ---
 
-<details markdown="1"><summary>
+<details markdown="1"><summary>פתרון</summary>
 
 ```csharp
 public static int CountEqualRuns(int[] arr)
