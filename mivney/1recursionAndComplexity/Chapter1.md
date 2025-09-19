@@ -448,11 +448,11 @@ public static Rev(int num, int result = 0)
 
 ## תרגול וקישורים
 
-כדי לתרגל את הנושא נפתור **הרבה** שאלות רקורסיביות. תוכלו למצוא תרגילים בקישורים הבאים:
-
+כדי לתרגל את הנושא נפתור **הרבה** שאלות רקורסיביות. תוכלו למצוא תרגילים במערכת ההגשות.
+<!-- 
 [⬅ עברו לתרגיל סכום ספרות במספר]({% link cst/1recursion/Ex1a.1recursion.misparitNBool.md %}#id1a1.2)
 
-[בנוסף, נסו לכתוב פונקציה שמחשבת עצרת באופן רקורסיבי. התנסו גם בפתרון איטרטיבי והשוו ביניהם. $$5! = 1·2·3·4·5$$]({% link cst/1recursion/Ex1a.1recursion.misparitNBool.md %}#id1a1.1)
+[בנוסף, נסו לכתוב פונקציה שמחשבת עצרת באופן רקורסיבי. התנסו גם בפתרון איטרטיבי והשוו ביניהם. $$5! = 1·2·3·4·5$$]({% link cst/1recursion/Ex1a.1recursion.misparitNBool.md %}#id1a1.1) -->
 
 [קישור לתרגול בקמפוס](https://app.campus.gov.il/learning/course/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@sequential+block@544f0df2068641c6a70929278aa4b772/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@vertical+block@ee0013d1d833495bbe888bb2f693f803){:target="_blank"}
 
