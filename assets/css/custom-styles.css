@@ -430,6 +430,13 @@ pre code span.c1 {
     background-image: url('/assets/img/simple_leaf_half.svg');
 }
 
+.two-columns {
+  display: flex;
+  gap: 20px;
+}
+.two-columns .column {
+  flex: 1;
+}
 
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
