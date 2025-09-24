@@ -509,6 +509,9 @@ pre code span.c1 {
   stroke: var(--text-col) !important;
 }
 
+.label-container {
+    background-color: var(--backn-col);
+}
 
 /* for gaant mermaid */
 /* .mermaid svg .section {

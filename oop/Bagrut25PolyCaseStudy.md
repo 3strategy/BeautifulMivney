@@ -230,7 +230,7 @@ A ac = new C(6);    // מצביע A אל אובייקט מטיפוס C
 
 ---
 
-## תרשים זרימה (Mermaid)
+## תרשים זרימה
 
 <div class="mermaid">
 graph TD
