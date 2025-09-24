@@ -9,7 +9,8 @@ lang: he
 
 
 ## 4a1.0 בדיקה האם שתי מחסניות זהות {#id4a1.0}
-כתבו פונקציה public static bool StacksEqual(Stack<int> a, Stack<int> b) שבודקת אם שתי המחסניות זהות.
+כתבו פונקציה `StacksEqual` שבודקת אם שתי המחסניות זהות.
+
 
 
 
