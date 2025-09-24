@@ -474,10 +474,10 @@ pre code span.c1 {
 }
 
 /* Also try targeting by element type */
-.mermaid polygon {
+/* .mermaid polygon {
   fill: var(--text-col) !important;
   stroke: var(--text-col) !important;
-}
+} */
 
 /* Mermaid arrow lines */
 .mermaid .flowchart-link {
@@ -509,9 +509,10 @@ pre code span.c1 {
   stroke: var(--text-col) !important;
 }
 
+/* possibly not needed 
 .label-container {
-    background-color: var(--backn-col);
-}
+    fill: var(--backn-col);
+} */
 
 /* for gaant mermaid */
 /* .mermaid svg .section {
