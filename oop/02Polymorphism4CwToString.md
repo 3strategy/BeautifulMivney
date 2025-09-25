@@ -7,6 +7,8 @@ mathjax: true
 lang: he
 ---
 
+ניקח את הדוגמא הבאה: `Console.WriteLine(myInstance.ToString());` מדוע תופעל הפעולה מהמחלקה הספציפית גם אם אין override?
+
 
 העניין קשור ישירות לאופן שבו `Console.WriteLine` עובד ב־C# ומהו מנגנון ההדפסה הפנימי שלו.
 
@@ -14,7 +16,7 @@ lang: he
 
 ### 1. מה קורה בלי `override`
 
-כאשר אתה יוצר מחלקה עם מתודה `ToString()` *בלי* מילת המפתח `override`, בעצם יצרת **מתודה חדשה** שמסתירה (`hides`) את המתודה הווירטואלית שהוגדרה במחלקת הבסיס (`object.ToString()`).
+כאשר אתם יוצרים מחלקה עם פעולה `ToString()` *בלי* מילת המפתח `override`, בעצם יצרתם **פעולה חדשה** שמסתירה (`hides`) את הפעולה הווירטואלית שהוגדרה במחלקת הבסיס (`object.ToString()`).
 
 במקרה זה:
 
@@ -24,57 +26,57 @@ class MyClass {
 }
 ```
 
-* כאשר אתה כותב:
+* כאשר אתם כותבים:
 
   ```csharp
   Console.WriteLine(myInstance.ToString());
   ```
 
-  אתה קורא ישירות לגרסה שלך, כי אתה *מכריח* את הקומפיילר לבחור במתודה הזו.
+  אתם קוראים ישירות לגרסה שלכם, כי אתם **מכריחים** את הקומפיילר לבחור בפעולה הזו.
 
-* אבל כשאתה כותב:
+* אבל כשאתם כותבים:
 
   ```csharp
   Console.WriteLine(myInstance);
   ```
 
   כאן מה שקורה בפועל הוא שהקומפיילר בוחר באוברלואד `Console.WriteLine(object value)`, שבתוכו יש קריאה ל־`value.ToString()`.
-  המתודה שהוא מפעיל היא ה־`virtual ToString` שהוגדרה ב־`object`. מאחר שלא ביצעת `override`, המימוש של `object.ToString()` רץ — ולא שלך.
+  המתודה שהוא מפעיל היא ה־`virtual ToString` שהוגדרה ב־`object`. מאחר שלא ביצעתם `override`, המימוש של `object.ToString()` רץ — ולא שלכם.
 
 ---
 
 ### 2. מה קורה עם `override`
 
-כאשר אתה מוסיף:
+כאשר אתם מוסיפים:
 
 ```csharp
 public override string ToString() { return "My version"; }
 ```
 
-אתה *באמת* מחליף את המימוש הווירטואלי של `object.ToString()`.
-עכשיו גם אם הקוד מגיע מ־`Console.WriteLine(object value)` → הקריאה ל־`value.ToString()` מתבצעת פולימורפית לפי סוג האובייקט בפועל.
-לכן ההדפסה תשתמש במימוש שלך גם אם לא קראת לו במפורש.
+אתם *באמת* מחליפים את המימוש הווירטואלי של `object.ToString()`.
+עכשיו גם אם הקוד מגיע מ־`Console.WriteLine(object value)` → הקריאה ל־`value.ToString()` מתבצעת **פולימורפית** לפי סוג האובייקט בפועל.
+לכן ההדפסה תשתמש במימוש שלכם גם אם לא קראתם לו במפורש.
 
 ---
 
 ### 3. אפשר להסביר זאת כך:
 
-* **בלי override** → כתבנו פעולה חדשה, אבל `Console.WriteLine` לא מכיר אותה אלא אם כן קראת לה במפורש.
-* **עם override** → שינינו את החוק הבסיסי של `.ToString()` בכל אובייקט מהמחלקה שלך → ולכן גם `Console.WriteLine(myInstance)` *באופן אוטומטי* יקרא לגרסה שלך.
+* **בלי override** → כתבנו פעולה חדשה, אבל `Console.WriteLine` לא מכיר אותה אלא אם כן קראתם לה במפורש.
+* **עם override** → שינינו את החוק הבסיסי של `.()ToString` בכל אובייקט מהמחלקה שלכם → ולכן גם `Console.WriteLine(myInstance)` *באופן אוטומטי* יקרא לגרסה שלכם.
 
 ---
 
 <div class="mermaid">
 graph TD
 A["Console.WriteLine(obj)"] --> B{איזה אוברלואד נבחר?}
-B -->|object value| C["בתוך המימוש מתבצעת קריאה ל-obj.ToString()"]
+B -->|object value| C["בתוך המימוש מתבצעת קריאה ל-()obj.ToString"]
 
 
 C --> D{"האם במחלקה יש override ל-ToString()?"}
-D -->|כן| E[ריצה פולימורפית → ToString של המחלקה שלך]
+D -->|כן| E[ריצה פולימורפית → ToString של המחלקה שלכם]
 D -->|לא| F["ריצה של Object.ToString() → שם הטיפוס"]
 
 
 B -->|string value| G["נבחר האוברלואד Console.WriteLine(string)"]
-G --> H[מדפיס ישירות את המחרוזת שלך]
+G --> H[מדפיס ישירות את המחרוזת שלכם]
 </div>
