@@ -161,8 +161,11 @@ for (int i = 0; i < kennel.Length; i++)
 {: .box-note}
 **תרגיל:** הוסיפו מחלקה נוספת `WorkingDog` עם שדה `Task` ובנאי מתאים, והדגימו קריאות ל-Getters/Setters.
 
-```
+
 
 ---
 
-רוצה שאבנה גם **תרשים זרימת קריאות הבנאים** (flowchart ב-Mermaid) כדי להמחיש לתלמידים את סדר ההרצה?
+
+[inheritc](/oop/01inheritc)
+
+[inherit consturctors](/oop/01inheritdconstructors)

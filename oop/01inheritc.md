@@ -1,4 +1,11 @@
-# ירושה ב-C# - Inheritance
+---
+layout: page
+title: "ירושה - שיעור פתיחה"
+subtitle: "היכרות ראשונית עם ירושה ומבני מחלקות"
+tags: [ירושה, OOP, CSharp]
+mathjax: true
+lang: he
+---
 
 ## מטרות הלמידה
 
@@ -230,6 +237,8 @@ public class GoldenRetriever : Dog
 
 ## 5. דיאגרמת UML לירושה
 
+
+<div class="mermaid">
 classDiagram
     class Animal {
         -string name
@@ -271,11 +280,12 @@ classDiagram
     Animal <|-- Cat
     Dog <|-- GoldenRetriever
     Cat <|-- PersianCat
-
+</div>
 
 {: .box-note}
 **סימנים ב-UML:**
 - **△** (משולש ריק) - מציין ירושה
+- **◆** (מעוין מלא) - מציין קומפוזיציה/הכלה (Composition) - "has-a" חזק
 - **-** מציין private
 - **+** מציין public
 - **#** מציין protected
@@ -289,9 +299,9 @@ classDiagram
 * כל בנאי בשרשרת מחויב להריץ קודם את הבנאי של מחלקת הבסיס שלו.
 * הסדר תמיד **מלמטה למעלה** (Base → Derived), ורק לאחר סיום כל הבנאים יש לנו אובייקט מוכן לעבודה.
 
-### דיאגרמת Mermaid - סדר הפעלת בנאים
+### סדר הפעלת נאים
 
-```mermaid
+<div class="mermaid">
 graph TD
     A[יצירת אובייקט GoldenRetriever] --> B[קריאה לבנאי GoldenRetriever]
     B --> C[קריאה ל-base - בנאי Dog]
@@ -303,7 +313,7 @@ graph TD
     
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style H fill:#9f9,stroke:#333,stroke-width:2px
-```
+</div>
 
 {: .box-note}
 **כלל חשוב:** הבנאים נקראים מהאב לבן, אך מבוצעים מהבן לאב!
@@ -581,7 +591,7 @@ public class Manager : Employee
 
 ## 10. שאלות לתרגול עצמי
 
-1. מהו ההבדל בין ירושה לקומפוזיציה?
+1. מהו ההבדל בין ירושה לקומפוזיציה (הכלה)?
 2. מתי נשתמש בירושה ומתי לא?
 3. מה סדר הפעלת הבנאים בהיררכיית ירושה?
 4. האם מחלקה נגזרת יכולה לגשת ל-private fields של מחלקת האב?
