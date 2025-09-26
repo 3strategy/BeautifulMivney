@@ -35,7 +35,7 @@ lang: he
 
 ## תרשים UML של שרשרת ירושה
 
-```mermaid
+<div class="mermaid">
 classDiagram
     direction TB
     class Organism {
@@ -62,11 +62,11 @@ classDiagram
     Organism <|-- Animal
     Animal <|-- Mammal
     Mammal <|-- Dog
-````
+</div>
 
 ---
 
-## מימוש בקוד C# (עם Getters/Setters בסגנון Java)
+## מימוש בקוד
 
 ```csharp
 public class Organism
@@ -156,7 +156,7 @@ for (int i = 0; i < kennel.Length; i++)
 * ירושה יוצרת יחס "הוא סוג של".
 * סדר בנאים תמיד מהבסיס אל הנגזר.
 * שימוש ב-`private`, `protected`, `public`, `internal` חשוב כדי לשלוט בגישה.
-* בבחינת הבגרות נעדיף לרשום `public` במקום `internal`.
+* בבגרות נרשום `public` ולא `internal`.
 
 {: .box-note}
 **תרגיל:** הוסיפו מחלקה נוספת `WorkingDog` עם שדה `Task` ובנאי מתאים, והדגימו קריאות ל-Getters/Setters.

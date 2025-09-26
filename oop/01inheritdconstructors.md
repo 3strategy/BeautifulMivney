@@ -8,7 +8,7 @@ lang: he
 ---
 
 {: .box-note}
-**הגדרה:** כאשר מחלקה (class) או מבנה (struct) נוצרים, הזמן ריצה (runtime) קורא לבנאי שלהם. בנאים הם מתודות מיוחדות שיש להן את אותו השם כמו המחלקה או המבנה, והן בדרך כלל מאתחלות את שדות הנתונים של האובייקט החדש.
+**הגדרה:** כאשר עצם במחלקה (class) נוצר, הזמן ריצה (runtime) קורא לבנאי שלה. בנאים הם פעולות מיוחדות שיש להן את אותו שם כמו למחלקה, והן בדרך כלל מאתחלות את שדות הנתונים של האובייקט החדש.
 
 ---
 
@@ -37,13 +37,13 @@ class TestTaxi
 }
 ```
 
-```mermaid
+<div class="mermaid">
 graph LR
     A[קריאה ל-new Taxi] --> B[הקצאת זיכרון]
     B --> C[הפעלת הבנאי]
     C --> D[אתחול שדות]
     D --> E[החזרת האובייקט]
-```
+</div>
 
 ---
 
@@ -80,82 +80,11 @@ myCar.SetYear(2024);
 
 ---
 
-## 3. מניעת יצירת מופעים - Private Constructor
 
-ניתן למנוע יצירת מופעים של מחלקה על ידי הפיכת הבנאי לפרטי:
 
-```csharp
-class NLog
-{
-    // בנאי פרטי - מונע יצירת אובייקטים
-    private NLog() { }
-    
-    // משתנה סטטי ציבורי
-    public static double e = Math.E;  // 2.71828...
-}
+## 3. ריבוי בנאים (Constructor Overloading)
 
-// שימוש
-// NLog log = new NLog();  // שגיאת קומפילציה!
-double value = NLog.e;     // עובד - גישה לשדה סטטי
-```
-
-{: .box-note}
-**שימושים נפוצים לבנאי פרטי:**
-- מחלקות Singleton
-- מחלקות עזר סטטיות (Utility Classes)
-- מחלקות Factory
-
----
-
-## 4. בנאים במבנים (Structs)
-
-בנאים עבור מבנים דומים לבנאי מחלקות, עם כמה הבדלים חשובים:
-
-```csharp
-public struct Point
-{
-    private int x;
-    private int y;
-    
-    // בנאי עם פרמטרים
-    public Point(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-    }
-    
-    // Getters and Setters
-    public int GetX() { return x; }
-    public void SetX(int x) { this.x = x; }
-    
-    public int GetY() { return y; }
-    public void SetY(int y) { this.y = y; }
-}
-
-// דרכים שונות לאתחל struct
-Point p1 = new Point();        // x=0, y=0 (ערכי ברירת מחדל)
-Point p2 = new Point(10, 20);  // x=10, y=20
-Point p3 = default;             // x=0, y=0
-```
-
-### אתחול מספרים שלמים
-```csharp
-// שימוש בבנאי ללא פרמטרים של Int32
-int i = new int();  // i = 0
-Console.WriteLine(i);
-
-// אתחול ישיר
-int a = 44;
-int b;
-b = 33;  // הקצאה לפני השימוש
-Console.WriteLine($"{a}, {b}");  // 44, 33
-```
-
----
-
-## 5. ריבוי בנאים (Constructor Overloading)
-
-מחלקות ומבנים יכולים להגדיר מספר בנאים עם חתימות שונות:
+מחלקות יכולות להגדיר מספר בנאים עם חתימות שונות:
 
 ```csharp
 public class Employee
@@ -223,7 +152,7 @@ graph TD
 
 ---
 
-## 6. שרשור בנאים עם base
+## 4. שרשור בנאים עם base
 
 בנאי יכול להשתמש במילת המפתח `base` כדי לקרוא לבנאי של מחלקת הבסיס:
 
@@ -264,12 +193,45 @@ public Manager(int initialData)
 }
 ```
 
-{: .box-note}
-**אזהרה:** אם למחלקת הבסיס אין בנאי ללא פרמטרים, חובה לקרוא לבנאי עם `base` באופן מפורש!
 
 ---
 
-## 7. שרשור בנאים עם this
+## 5. העדר בנאי ברירת מחדל 
+
+{: .box-note}
+**אזהרה:** אם למחלקת הבסיס אין בנאי ללא פרמטרים, חובה לקרוא לבנאי עם `base` באופן מפורש!
+
+
+מרגע שהוגדר בנאי כלשהו במחלקה, בנאי ברירת המחדל מתבטל. ברגע שבמחלקת בסיס הוגדר בנאי, חייב להתקיים אחד משני מצבים לפחות:
+1. במחלקת הבסיס הוגדר בנאי ללא פרמטרים
+2. במחלקה הנגזרת יש קריאה מפורשת `: base (חתימה קיימת של פרמטרים)`
+
+**להמחשה:** להלן דוגמא מינימלית **שלא תתקמפל**:
+```csharp
+public class A 
+{
+    protected int i;
+    public A(int i)  // מבטל את בנאי ברירת המחדל
+    {
+        this.i = i;
+    }
+}
+
+public class B : A
+{
+    public B()  // יוצג באדום: לא נמצא בנאי ברירת מחדל, ואין פניה לבנאי שכן קיים
+    {
+        Console.WriteLine("will not compile");
+    }
+    public B(int i) // יוצג באדום: לא נמצא בנאי ברירת מחדל, ואין פניה לבנאי שכן קיים
+    {
+        Console.WriteLine("will not compile");
+    }
+}
+```
+
+
+## 6. שרשור בנאים עם this
 
 בנאי יכול לקרוא לבנאי אחר באותה מחלקה באמצעות `this`:
 
@@ -317,7 +279,7 @@ Rectangle r2 = new Rectangle(7);      // Rectangle created: 7x7, Square created
 Rectangle r3 = new Rectangle();       // Rectangle created: 1x1, Default rectangle created
 ```
 
-```mermaid
+<div class="mermaid">
 graph TD
     A[new Rectangle#40;#41;] --> B[קריאה ל-this#40;1,1#41;]
     B --> C[Rectangle#40;1,1#41; Constructor]
@@ -328,7 +290,7 @@ graph TD
     G --> H[Rectangle#40;7,7#41; Constructor]
     H --> I[אתחול Width=7, Height=7]
     I --> J[הדפסת Square created]
-```
+</div>
 
 ---
 
@@ -371,174 +333,130 @@ public class DatabaseConnection
 - `private` - נגיש רק בתוך המחלקה
 - `protected` - נגיש למחלקה ולמחלקות יורשות
 - `internal` - נגיש באותו Assembly
-- `protected internal` - נגיש באותו Assembly או למחלקות יורשות
-- `private protected` - נגיש למחלקות יורשות באותו Assembly
 
 ---
 
-## 9. בנאים סטטיים (Static Constructors)
 
-בנאי סטטי נקרא אוטומטית לפני הגישה הראשונה לשדות סטטיים של המחלקה:
+<details markdown="1"><summary>7. דוגמה מקיפה - מערכת בנקאית</summary>
 
-```csharp
-public class Configuration
-{
-    private static string connectionString;
-    private static int maxConnections;
-    
-    // בנאי סטטי - נקרא פעם אחת בלבד
-    static Configuration()
-    {
-        Console.WriteLine("Loading configuration...");
-        connectionString = LoadFromFile("connection");
-        maxConnections = 100;
-    }
-    
-    private static string LoadFromFile(string key)
-    {
-        // סימולציה של טעינה מקובץ
-        return "Server=localhost;Database=MyDB";
-    }
-    
-    // Static Getters - Java Style
-    public static string GetConnectionString() { return connectionString; }
-    public static int GetMaxConnections() { return maxConnections; }
-}
-
-// שימוש
-string conn = Configuration.GetConnectionString();  // הבנאי הסטטי נקרא כאן
-int max = Configuration.GetMaxConnections();        // הבנאי כבר רץ, לא נקרא שוב
-```
-
-{: .box-success}
-**מאפייני בנאי סטטי:**
-- אין לו מתאם גישה
-- אין לו פרמטרים
-- נקרא אוטומטית לפני השימוש הראשון במחלקה
-- נקרא פעם אחת בלבד
-- לא ניתן לקרוא לו ישירות
-
----
-
-## 10. דוגמה מקיפה - מערכת בנקאית
 
 ```csharp
 public abstract class Account
 {
     private static int nextAccountNumber = 1000;
-    
+
     private int accountNumber;
     private string owner;
-    protected decimal balance;  // protected כדי שמחלקות נגזרות יוכלו לגשת
+    protected double balance;  // protected כדי שמחלקות נגזרות יוכלו לגשת
     private DateTime createdDate;
-    
+
     // בנאי סטטי - אתחול מונה חשבונות
     static Account()
     {
         Console.WriteLine("Banking system initialized");
         // ניתן לטעון את המספר האחרון מבסיס נתונים
     }
-    
+
     // בנאי מוגן למחלקות נגזרות
-    protected Account(string owner, decimal initialBalance)
+    protected Account(string owner, double initialBalance)
     {
         if (string.IsNullOrEmpty(owner))
             throw new ArgumentException("Owner name is required");
-            
+
         if (initialBalance < 0)
             throw new ArgumentException("Initial balance cannot be negative");
-            
+
         accountNumber = nextAccountNumber++;
         this.owner = owner;
         this.balance = initialBalance;
         this.createdDate = DateTime.Now;
-        
+
         Console.WriteLine($"Account #{accountNumber} created for {owner}");
     }
-    
-    // Getters - Java Style
-    public int GetAccountNumber() { return accountNumber; }
+
+    // Getters
+    public int GetAccountNumber() => accountNumber;
     public string GetOwner() { return owner; }
-    public decimal GetBalance() { return balance; }
+    public double GetBalance() { return balance; }
     public DateTime GetCreatedDate() { return createdDate; }
-    
+
     // Protected setter for balance - למחלקות נגזרות
-    protected void SetBalance(decimal balance) { this.balance = balance; }
+    protected void SetBalance(double balance) { this.balance = balance; }
 }
 
 public class SavingsAccount : Account
 {
-    private decimal interestRate;
-    
+    private double interestRate;
+
     // שרשור לבנאי הבסיס
-    public SavingsAccount(string owner, decimal initialBalance, decimal interestRate)
+    public SavingsAccount(string owner, double initialBalance, double interestRate)
         : base(owner, initialBalance)
     {
-        if (interestRate < 0 || interestRate > 0.1m)
+        if (interestRate < 0 || interestRate > 0.1)
             throw new ArgumentException("Invalid interest rate");
-            
+
         this.interestRate = interestRate;
         Console.WriteLine($"Savings account with {interestRate:P} interest");
     }
-    
+
     // בנאי נוחות עם ריבית ברירת מחדל
-    public SavingsAccount(string owner, decimal initialBalance)
-        : this(owner, initialBalance, 0.02m)  // 2% ברירת מחדל
+    public SavingsAccount(string owner, double initialBalance)
+        : this(owner, initialBalance, 0.02)  // 2% ברירת מחדל
     {
     }
-    
+
     // Getters and Setters
-    public decimal GetInterestRate() { return interestRate; }
-    public void SetInterestRate(decimal rate) 
-    { 
-        if (rate >= 0 && rate <= 0.1m)
-            this.interestRate = rate; 
+    public double GetInterestRate() { return interestRate; }
+    public void SetInterestRate(double rate)
+    {
+        if (rate >= 0 && rate <= 0.1)
+            this.interestRate = rate;
     }
 }
 
 public class CheckingAccount : Account
 {
-    private decimal overdraftLimit;
-    
-    public CheckingAccount(string owner, decimal initialBalance, decimal overdraftLimit)
+    private double overdraftLimit;
+
+    public CheckingAccount(string owner, double initialBalance, double overdraftLimit)
         : base(owner, initialBalance)
     {
         if (overdraftLimit < 0)
             throw new ArgumentException("Overdraft limit cannot be negative");
-            
+
         this.overdraftLimit = overdraftLimit;
         Console.WriteLine($"Checking account with ${overdraftLimit} overdraft");
     }
-    
+
     // בנאי ללא אוברדרפט
-    public CheckingAccount(string owner, decimal initialBalance)
+    public CheckingAccount(string owner, double initialBalance)
         : this(owner, initialBalance, 0)
     {
     }
-    
+
     // Getters and Setters
-    public decimal GetOverdraftLimit() { return overdraftLimit; }
-    public void SetOverdraftLimit(decimal limit) 
-    { 
+    public double GetOverdraftLimit() { return overdraftLimit; }
+    public void SetOverdraftLimit(double limit)
+    {
         if (limit >= 0)
-            this.overdraftLimit = limit; 
+            this.overdraftLimit = limit;
     }
 }
 
 // שימוש
-class BankingApp
+public class BankingApp
 {
-    static void Main()
+    public static void Main()
     {
         var savings = new SavingsAccount("Alice", 1000);
         var checking = new CheckingAccount("Bob", 500, 200);
-        var vipSavings = new SavingsAccount("Charlie", 10000, 0.05m);
-        
+        var vipSavings = new SavingsAccount("Charlie", 10000, 0.05);
+
         // שימוש ב-Getters
         Console.WriteLine($"Alice's balance: ${savings.GetBalance()}");
         Console.WriteLine($"Bob's overdraft: ${checking.GetOverdraftLimit()}");
         Console.WriteLine($"Charlie's interest rate: {vipSavings.GetInterestRate():P}");
-        
+
         /* פלט:
         Banking system initialized
         Account #1000 created for Alice
@@ -566,8 +484,7 @@ class BankingApp
 3. ניתן להגדיר מספר בנאים עם חתימות שונות (Overloading)
 4. השתמשו ב-`base` לקריאה לבנאי מחלקת הבסיס
 5. השתמשו ב-`this` לקריאה לבנאי אחר באותה מחלקה
-6. בנאים סטטיים מאתחלים את המחלקה פעם אחת בלבד
-7. בנאים פרטיים מונעים יצירת מופעים של המחלקה
+
 
 {: .box-note}
 **טיפ:** תמיד אתחלו את כל השדות בבנאי כדי למנוע מצבים לא מוגדרים!
