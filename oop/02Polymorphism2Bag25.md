@@ -9,14 +9,14 @@ lang: he
 
 
 {: .box-note}
-בתת פרק זה נחזק את הבנת פולימורפיזם באמצעות פתרון בגרות 2025
+בתת פרק זה נחזק את הבנת פולימורפיזם באמצעות פתרון [שאלה מבגרות 2025](/bagruyot/2025.6.271.pdf#page=24)
 
-````markdown
-# מדעי המחשב, קיץ תשפ"ה, מס' 899271 - תרגיל בע"מ 24
 
-## מחלקות נתונות
+#### מדעי המחשב, קיץ תשפ"ה, מס' 899271 - תרגיל בע"מ 24
 
 ```csharp
+// מחלקות נתונות
+
 public class A {
     protected int i;
     public A(int i) { this.i = i; }
@@ -71,6 +71,50 @@ public class D : B {
 
 **א.** סרטטו את תרשים ההיררכיה של המחלקות A, B, C, D (חץ מייצג ירושה).
 
+<details markdown="1"><summary>לחצו לפתרון</summary>
+
+<div class="mermaid" >
+graph BT
+    B --> A
+    C --> B
+    D --> B
+</div>
+</details>
+
+<details markdown="1"><summary>לחצו לתרשים UML (לא נדרש)</summary>
+
+<div class="mermaid" style="direction:ltr">
+classDiagram
+    class A {
+        - int i
+        + A(int i)
+    }
+
+    class B {
+        + B(int i)
+        + bool Foo(Object myObject)
+        + virtual bool Foo(B myB, int num)
+    }
+
+    class C {
+        + C(int i)
+        + bool Foo(int num)
+    }
+
+    class D {
+        + D(int i)
+        + override bool Foo(B myB, int num)
+    }
+
+    A <|-- B
+    B <|-- C
+    B <|-- D
+
+</div>
+
+</details>
+
+
 ## ב. נתונה המחלקה Tester
 
 ```csharp
@@ -108,7 +152,7 @@ Console.WriteLine(((C)ac).Foo(c));//(5)
 ב2. כתבו את הפלט של הפעולות (ציינו ליד כל פלט את מספר השורה).
 
 
-## תרשים זרימה
+## עץ החלטה (לשימוש בבחינה)
 
 <div class="mermaid">
 graph TD
@@ -257,6 +301,8 @@ A ac = new C(6);    // מצביע A אל אובייקט מטיפוס C
 
 ---
 
-[בגרות 2021 נבצרים מכילה שאלה ברמת קושי דומה](https://יסודות.שלי.com/bagruyot/2021.5.381.pdf#page=22)
+[בגרות 2021 נבצרים, בקישור זה, מכילה שאלה ברמת קושי דומה](https://יסודות.שלי.com/bagruyot/2021.5.381.pdf#page=22)
 
-[למה כשאני מגדיר `ToString` בלי המילה override, אני עדיין יכול לכתוב `Console.WriteLine(c.ToString());`]
+[מתי הקביעה היא בזמן קומפילציה ומתי זה דינאמי?](/oop/02Polymorphism3)
+
+[למה כשאני מגדיר `ToString` בלי המילה override, אני עדיין יכול לכתוב `Console.WriteLine(c.ToString())`](/oop/02Polymorphism4CwToString)
