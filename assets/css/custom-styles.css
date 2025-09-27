@@ -440,10 +440,14 @@ pre code span.c1 {
 
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
-/* Arrow heads - hollow triangles */
-.mermaid marker path {
+/* Only UML class diagram arrow heads - hollow triangles */
+.mermaid marker[id*="aggregation"] path,
+.mermaid marker[id*="extension"] path,
+.mermaid marker[id*="composition"] path,
+.mermaid marker[id*="dependency"] path {
   fill: none !important;
   stroke: var(--text-col) !important;
+  stroke-width: 1px !important; /* Thinner stroke to reduce size */
 }
 
 /* Arrow lines */
