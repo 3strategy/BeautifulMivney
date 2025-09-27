@@ -122,7 +122,8 @@ public class Dog : Animal  // הסימן : מציין ירושה
     private string breed;
     
     // Constructor
-    public Dog(string name, int age, string breed) : base(name, age)
+    public Dog(string name, int age, string breed) : base(name, age) // קריאה לבנאי במחלקת הבסיס
+    // מדוע הקריאה לבנאי של בייס היא חובה בדוגמא זו?
     {
         this.breed = breed;
         Console.WriteLine("Dog constructor called");
@@ -285,7 +286,8 @@ classDiagram
     Cat <|-- PersianCat
 </div>
 
-{: .box-note}
+<div class="box-note" markdown=1>
+
 **סימנים ב-UML:**
 - **△** (משולש ריק) - מציין ירושה
 - **◆** (מעוין מלא) - מציין קומפוזיציה/הכלה (Composition) - "has-a" חזק
@@ -293,6 +295,7 @@ classDiagram
 - **+** מציין public
 - **#** מציין protected
 
+</div>
 ---
 
 ## 6. שרשור בנאים (Constructor Chaining)
@@ -323,7 +326,7 @@ graph TD
 </div>
 
 {: .box-note}
-**כלל חשוב:** הבנאים נקראים מהאב לבן, אך מבוצעים מהבן לאב!
+**כלל חשוב:** הבנאים נקראים מהבן לאב, אך מבוצעים מהאב לבן!
 
 ### דוגמת קוד מפורטת
 ```csharp
@@ -567,32 +570,34 @@ public class Manager : Employee
 - `Airplane`, `Helicopter` (יורשות מ-AirVehicle)
 
 ### תרגיל 2: מערכת בנקאית
-מימשו:
+מַמְּשׁוּ:
 - `Account` (מחלקת בסיס עם מספר חשבון ויתרה)
 - `SavingsAccount` (עם ריבית)
 - `CheckingAccount` (עם אפשרות למשיכת יתר)
 
-{: .box-note}
-**טיפ:** זכרו להשתמש ב-Getters ו-Setters בסגנון Java לכל השדות הפרטיים!
 
 ---
 
 ## 9. סיכום ונקודות מפתח
 
-{: .box-success}
+<div class="box-success">
+
 **נקודות חשובות לזכור:**
 1. ירושה מאפשרת שימוש חוזר בקוד ויצירת היררכיות לוגיות
-2. השתמשו בירושה רק כאשר מתקיים יחס IS-A
-3. בנאים נקראים מהבסיס לנגזר (Base → Derived)
+2. השתמשו בירושה רק כאשר מתקיים יחס IS-A בין טיפוסים
+3. בנאים רצים מהבסיס לנגזר (Base → Derived)
 4. השתמשו ב-`base` לקריאה לבנאי או לפעולות של מחלקת האב
 5. כל מחלקה ב-C# יכולה לרשת רק ממחלקה אחת (Single Inheritance)
 
+</div>
+
 ### מה הלאה?
-בשיעור הבא נלמד על:
+בשיעורים הבאים נלמד על:
+- **עוד טיפה על (/oop/01inheritdconstructors)[בנאים]**
 - **פולימורפיזם** - איך אובייקטים שונים יכולים להתנהג בצורות שונות
-- **Virtual ו-Override** - דריסת פעולות
-- **Abstract Classes** - מחלקות מופשטות
-- **Interfaces** - ממשקים
+    - **Virtual ו-Override** - דריסת פעולות
+    - **Abstract Classes** - מחלקות מופשטות
+- **Interfaces** - לא נלמד על (או שכן אבל זה לא לבגרות)
 
 ---
 
