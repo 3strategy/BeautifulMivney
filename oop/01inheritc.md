@@ -8,18 +8,6 @@ lang: he
 ---
 
 
-<details markdown="1"><summary>מטרות הלמידה</summary>
-
-## מטרות הלמידה
-
-בסיום פרק זה תוכלו:
-- להבין את המושג "ירושה" בתכנות מונחה עצמים
-- ליצור היררכיות של מחלקות באמצעות ירושה
-- להבין ולממש את עקרון "הוא סוג של" (IS-A)
-- לקרוא ולצייר דיאגרמות UML של ירושה
-
-</details>
----
 
 ## 1. חזרה - מה זו ירושה?
 
@@ -103,7 +91,7 @@ classDiagram
 
 ---
 
-<details markdown=1><summary>נוסיף Human. נסו להרחיב ולממש דוגמא יותר מציאותית המתוארת ב-UML שלהלן</summary>
+<details markdown=1><summary markdown=1>נוסיף **Human**. נסו להרחיב ולממש דוגמא יותר מפורטת המתוארת ב-UML שלהלן</summary>
 <div class=mermaid style="direction:ltr;">
 ---
 config:
@@ -153,9 +141,11 @@ classDiagram
 
 ## 4. תרגול מעשי - מימוש C#
 
-<details markdown=1><summary>פתרון אפשרי ב- C#</summary>
+נסו להרחיב את המימוש שלכם כדי שיתאים ל-UML
 
-```csharp
+לרשותכם המחלקה `Mammal`
+
+```cs
 public class Mammal
 {
     protected string name;
@@ -171,6 +161,12 @@ public class Mammal
     public void Eat() => Console.WriteLine($"{this} is eating");
     public void Sleep() => Console.WriteLine($"{this} is sleeping");
 }
+```
+
+<details markdown=1><summary>פתרון אפשרי ב- C#</summary>
+
+```csharp
+
 
 public class Dog : Mammal
 {

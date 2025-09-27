@@ -11,6 +11,21 @@ lang: he
 **ירושה** היא מנגנון המאפשר לנו להגדיר מחלקה חדשה (יורשת) על בסיס מחלקה קיימת (בסיס). זוהי **אבן יסוד** בתכנות מונחה עצמים. במחלקה היורשת יהיו באופן אוטומטי כל התכונות והפעולות של מחלקת הבסיס. המחלקה היורשת יכולה להוסיף תכונות ופעולות, ואף להחליף פעולות מסויימות ממחלקת הבסיס. מומלץ לצפות ,תחילה ב- [youtube playlist](https://www.youtube.com/playlist?list=PLnVUJu2KuoA0CpYg4ga45Q0C5dGaSEYPH)
 
 
+
+<details markdown="1"><summary>מטרות הלמידה</summary>
+
+## מטרות הלמידה
+
+בסיום פרק זה תוכלו:
+- להבין את המושג "ירושה" בתכנות מונחה עצמים
+- לסרטט היררכיות של ירושה והכלה בין מחלקות
+- להבין ולממש את עקרון "הוא סוג של" (IS-A)
+- לקרוא, לממש, ולצייר דיאגרמות UML
+
+</details>
+---
+
+
 ## כתיבה של ירושה ב-C#
 
 ```csharp
@@ -22,14 +37,6 @@ public class Dog : Animal   // Dog inherits Animal
 ```
 
 
-<div class="box-success" markdown=1>
-
-**סדר פעולות ביצירת עצם ממחלקה יורשת:**
-- אם לא מצוין `(...)base` בבנאי של מחלקה יורשת, ייקרא אוטומטית **בנאי ברירת מחדל** של מחלקת הבסיס (**אם קיים**).  
-- סדר היצירה של אובייקט יורש הוא: קודם בנאי הבסיס, אחריו בנאי המחלקה הנגזרת.
-</div>
-
----
 
 
 
@@ -42,13 +49,8 @@ classDiagram
     direction TB
     class Organism {
       -string name
-      +GetName() string
-      +SetName(string)
-    }
-    class Animal {
       -int age
-      +GetAge() int
-      +SetAge(int)
+      +ToString() string
     }
     class Mammal {
       -bool hasFur
@@ -61,10 +63,9 @@ classDiagram
       +SetBreed(string)
     }
 
+    Organism <|-- Mammal : חץ מנגזרת לבסיס
+    Mammal <|-- Dog : ראש חץ חלול לציון ירושה
 
-    Organism <|-- Animal : חץ מבת לאם
-    Animal <|-- Mammal :ראש חץ חלול
-    Mammal <|-- Dog
 
 </div>
 
@@ -80,44 +81,28 @@ classDiagram
 public class Organism
 {
     private string name;
-
-    public Organism(string name)
-    {
-        Console.WriteLine("Organism.ctor");
-        this.name = name;
-    }
-
-    public string GetName() { return name; }
-    public void SetName(string name) { this.name = name; }
-}
-
-public class Animal : Organism
-{
     private int age;
 
-    // בדוגמא זו חובה לקרוא לבייס. יוסבר בהמשך
-    public Animal(string name, int age) : base(name) 
+    public Organism(string name, int age)
     {
-        Console.WriteLine("Animal.ctor");
+        this.name = name;
         this.age = age;
     }
 
-    public int GetAge() { return age; }
-    public void SetAge(int age) { this.age = age; }
+    public override string ToString() => $"{name}, age {age}";
 }
 
-public class Mammal : Animal
+public class Mammal : Organism
 {
     private bool hasFur;
 
     public Mammal(string name, int age, bool hasFur) : base(name, age)
     {
-        Console.WriteLine("Mammal.ctor");
         this.hasFur = hasFur;
     }
 
-    public bool GetHasFur() { return hasFur; }
-    public void SetHasFur(bool hasFur) { this.hasFur = hasFur; }
+    public bool GetHasFur() => hasFur; 
+    public void SetHasFur(bool hasFur) => this.hasFur = hasFur; 
 }
 
 public class Dog : Mammal
@@ -127,12 +112,11 @@ public class Dog : Mammal
     public Dog(string name, int age, string breed)
         : base(name, age, true)
     {
-        Console.WriteLine("Dog.ctor");
         this.breed = breed;
     }
 
-    public string GetBreed() { return breed; }
-    public void SetBreed(string breed) { this.breed = breed; }
+    public string GetBreed() => breed; 
+    public void SetBreed(string breed) => this.breed = breed; 
 }
 ```
 
@@ -153,21 +137,58 @@ Dog[] kennel = new Dog[]
 for (int i = 0; i < kennel.Length; i++)
 {
     Console.WriteLine(
-        $"{i}: {kennel[i].GetName()}, " +
-        $"age {kennel[i].GetAge()}, " +
-        $"breed {kennel[i].GetBreed()}"
-    );
+        $"{i}: {kennel[i]}, breed {kennel[i].GetBreed()}");
 }
 ```
 
 </details>
 
+
+
+<div class="box-success" markdown=1>
+
+**סדר פעולות ביצירת עצם ממחלקה יורשת:**
+- אם לא מצוין `(...)base` בבנאי של מחלקה יורשת, ייקרא אוטומטית **בנאי ברירת מחדל** של מחלקת הבסיס (**אם קיים**).  
+- סדר היצירה של אובייקט יורש הוא: קודם בנאי הבסיס, אחריו בנאי המחלקה הנגזרת.
+</div>
+
+---
+
+
 <details markdown=1><summary>למימוש מעט יותר משוכלל</summary>
+
+<div class="mermaid">
+classDiagram
+    direction TB
+    class Organism {
+      -static int counter
+      -readonly int id
+      -string name
+      -int age
+      +GetId() int
+      +ToString() string
+    }
+    class Mammal {
+      -bool hasFur
+      +GetHasFur() bool
+      +SetHasFur(bool)
+      +ToString() string
+    }
+    class Dog {
+      -string breed
+      +GetBreed() string
+      +SetBreed(string)
+      +ToString() string
+    }
+
+    Organism <|-- Mammal
+    Mammal <|-- Dog
+</div>
 
 בגרסה זו השינויים הבאים:
 1. שימוש במשתנה סטטי ליצירת מונה של מופעים והקצאת id לכל עצם
 1. למחלקות השונות הוגדר `override string ToString()` שמחזיר יצוג של העצם
-1. בכל `ToString` נוספה קריאה לאותה הפעולה במחלקת הבסיס. כך שכל מחלקה מטפלת ומציגה את המידע שלה
+1. בכל `ToString` נוספה קריאה לאותה הפעולה במחלקת הבסיס. כך שכל מחלקה מטפלת ומוסיפה רק את **המידע שלה**
 
 
 ```cs
@@ -176,52 +197,34 @@ public class Organism
     private static int counter = 0;   // counts instances
     private readonly int id;          // assigned unique id
     private string name;
+    private int age;
 
-    public Organism(string name)
+    public Organism(string name, int age)
     {
-        Console.WriteLine("Organism.ctor");
         this.id = counter++;
         this.name = name;
+        this.age = age;
     }
 
     public string GetName() { return name; }
     public void SetName(string name) { this.name = name; }
-    public int GetId() => id;
-    public override string ToString() => $"{id}: {name}";
-        
-}
-
-public class Animal : Organism
-{
-    private int age;
-
-    public Animal(string name, int age) : base(name)
-    {
-        Console.WriteLine("Animal.ctor");
-        this.age = age;
-    }
-
     public int GetAge() { return age; }
     public void SetAge(int age) { this.age = age; }
-
-    public override string ToString()
-    {
-        return base.ToString() + $", age {age}";
-    }
+    public int GetId() => id;
+    public override string ToString() => $"{id}: {name}, age {age}";
 }
 
-public class Mammal : Animal
+public class Mammal : Organism
 {
     private bool hasFur;
 
     public Mammal(string name, int age, bool hasFur) : base(name, age)
     {
-        Console.WriteLine("Mammal.ctor");
         this.hasFur = hasFur;
     }
 
-    public bool GetHasFur() => hasFur; 
-    public void SetHasFur(bool hasFur) => this.hasFur = hasFur; 
+    public bool GetHasFur() => hasFur;
+    public void SetHasFur(bool hasFur) => this.hasFur = hasFur;
 }
 
 public class Dog : Mammal
@@ -231,30 +234,40 @@ public class Dog : Mammal
     public Dog(string name, int age, string breed)
         : base(name, age, true)
     {
-        Console.WriteLine("Dog.ctor");
         this.breed = breed;
     }
 
-    public string GetBreed() => breed; 
-    public void SetBreed(string value) => breed = value; 
+    public string GetBreed() => breed;
+    public void SetBreed(string value) => breed = value;
     public override string ToString() =>
-        base.ToString() + $", breed {breed}";  
+        base.ToString() + $", breed {breed}";
 }
 
-
-//usage
-Dog[] kennel = new Dog[]
+// Example usage
+class Program
 {
-    new Dog("Rex", 5, "Labrador"),
-    new Dog("Luna", 2, "Husky"),
-    new Dog("Milo", 3, "Beagle")
-};
+    static void Main()
+    {
+        Dog[] kennel = new Dog[]
+        {
+            new Dog("Rex", 5, "Labrador"),
+            new Dog("Luna", 2, "Husky"),
+            new Dog("Milo", 3, "Beagle")
+        };
 
-foreach (var dog in kennel)
-    Console.WriteLine(dog);
+        foreach (var dog in kennel)
+            Console.WriteLine(dog);
 
+    }
+}
 ```
 
+פלט
+```
+0: Rex, age 5, breed Labrador
+1: Luna, age 2, breed Husky
+2: Milo, age 3, breed Beagle
+```
 </details>
 
 
@@ -303,7 +316,7 @@ class Program
         Animal a1 = new Dog();
         Animal a2 = new Animal();
 
-        if (a1 is Dog d) 
+        if (a1 is Dog d)  // pattern matching
             d.Bark();   // a1 הוא סוג של Dog → Woof!
         if (a2 is Dog) 
             Console.WriteLine("a2 הוא כלב"); 
