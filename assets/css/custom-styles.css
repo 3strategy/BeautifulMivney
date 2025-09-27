@@ -440,32 +440,3 @@ pre code span.c1 {
 
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
-
-/* General arrows (all diagrams): keep default filled look */
-.mermaid .arrowheadPath,
-.mermaid .arrowhead,
-.mermaid marker path,
-.mermaid defs marker path,
-.mermaid marker[id*="arrow"] path,
-.mermaid marker[id*="Triangle"] path,
-.mermaid defs marker[id*="pointEnd"] path,
-.mermaid defs marker[id*="flowchart"] path {
-  fill: var(--text-col) !important;
-  stroke: var(--text-col) !important;
-}
-
-/* Edge lines */
-.mermaid .flowchart-link,
-.mermaid .edgePaths .path,
-.mermaid .edge-thickness-normal {
-  stroke: var(--text-col) !important;
-  stroke-width: 2px !important;
-}
-
-/* --- Class diagram overrides --- */
-/* Important: don't touch stroke-width here, to avoid scaling bug */
-.mermaid.classDiagram marker polygon,
-.mermaid.classDiagram marker path {
-  fill: none !important;               /* make hollow */
-  stroke: var(--text-col) !important;  /* outline only */
-}
