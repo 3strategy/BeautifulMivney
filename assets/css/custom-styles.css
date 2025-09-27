@@ -43,6 +43,7 @@ strong {
         var(--pre-bg-2) calc(var(--line-height) * 2.2)
     );
 
+    --code-ncls-col: #44C9B0;
     --code-met-col: #DCDCAA;
     --code-keyw-col: #D8A0DF;
     --code-bracets-col: #EEEEDD;
@@ -87,6 +88,7 @@ strong {
         var(--pre-bg-2) calc(var(--line-height) * 2.2)
     );
 
+    --code-ncls-col: #2B91AF;
     --code-met-col: #74531F;
     --code-keyw-col: #9108C4;
     --code-bracets-col: #040404;
@@ -392,6 +394,7 @@ pre code span.kc { color: #569CD6 !important; }
 pre .lineno { color: #666666 !important; }
 
 /* CSharp Code formatting */
+pre code span.nc { color: var(--code-ncls-col) !important; }
 pre code span.nf { color: var(--code-met-col) !important; }
 pre code span.n { color: var(--code-vars-col) !important; }
 pre code span.kt { color: var(--code-types-col) !important; }
