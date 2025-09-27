@@ -10,6 +10,18 @@ lang: he
 {: .box-note}
 **ירושה** היא מנגנון המאפשר לנו להגדיר מחלקה חדשה (יורשת) על בסיס מחלקה קיימת (בסיס). זוהי **אבן יסוד** בתכנות מונחה עצמים. במחלקה היורשת יהיו באופן אוטומטי כל התכונות והפעולות של מחלקת הבסיס. המחלקה היורשת יכולה להוסיף תכונות ופעולות, ואף להחליף פעולות מסויימות ממחלקת הבסיס. מומלץ לצפות ,תחילה ב- [youtube playlist](https://www.youtube.com/playlist?list=PLnVUJu2KuoA0CpYg4ga45Q0C5dGaSEYPH)
 
+
+## כתיבה של ירושה ב-C#
+
+```csharp
+public class Animal { }
+public class Dog : Animal   // Dog inherits Animal
+{
+
+}
+```
+
+
 <div class="box-success" markdown=1>
 
 **סדר פעולות ביצירת עצם ממחלקה יורשת:**
@@ -23,7 +35,7 @@ lang: he
 
 ## תרשים UML של שרשרת ירושה
 
-על צורת הכתיבה של UML יוסבר בהמשך
+לעיתים נציג מחלקות בתרשים UML. על צורת הכתיבה של UML יוסבר בהמשך
 
 <div class="mermaid" style="direction:ltr">
 classDiagram
@@ -60,7 +72,7 @@ classDiagram
 
 ## מימוש בקוד
 
-<details markdown=1><summary>למימוש פשוט</summmary>
+<details markdown=1><summary>למימוש פשוט</summary>
 
 ```csharp
 public class Organism
@@ -148,7 +160,7 @@ for (int i = 0; i < kennel.Length; i++)
 
 </details>
 
-<details markdown=1><summary>למימוש מעט יותר משוכלל</summmary>
+<details markdown=1><summary>למימוש מעט יותר משוכלל</summary>
 
 בגרסה זו השינויים הבאים:
 1. שימוש במשתנה סטטי ליצירת מונה של מופעים והקצאת id לכל עצם

@@ -327,6 +327,7 @@ graph TD
 ## 9. מתאמי גישה (access modifiers) לבנאים
 
 בנאים יכולים להיות מוגדרים עם מתאמי גישה שונים:
+לא ראיתי שאלות בהקשר זה בבגרוית.
 
 ```csharp
 public class DatabaseConnection
@@ -391,10 +392,13 @@ public abstract class Account
     protected Account(string owner, double initialBalance)
     {
         if (string.IsNullOrEmpty(owner))
-            throw new ArgumentException("Owner name is required");
+            owner = "Unknown Owner";
 
         if (initialBalance < 0)
-            throw new ArgumentException("Initial balance cannot be negative");
+        { 
+            Console.WriteLine("Initial balance cannot be negative");
+            initialBalance=0;
+        }
 
         accountNumber = nextAccountNumber++;
         this.owner = owner;
@@ -423,7 +427,7 @@ public class SavingsAccount : Account
         : base(owner, initialBalance)
     {
         if (interestRate < 0 || interestRate > 0.1)
-            throw new ArgumentException("Invalid interest rate");
+            interestRate = 0;
 
         this.interestRate = interestRate;
         Console.WriteLine($"Savings account with {interestRate:P} interest");
@@ -452,7 +456,7 @@ public class CheckingAccount : Account
         : base(owner, initialBalance)
     {
         if (overdraftLimit < 0)
-            throw new ArgumentException("Overdraft limit cannot be negative");
+            overdraftLimit *= -1;
 
         this.overdraftLimit = overdraftLimit;
         Console.WriteLine($"Checking account with ${overdraftLimit} overdraft");
