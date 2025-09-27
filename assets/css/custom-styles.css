@@ -440,3 +440,6 @@ pre code span.c1 {
 
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
+.mermaid .extension, .edgePaths {
+    stroke: #FF0000;
+}
