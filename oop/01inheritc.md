@@ -289,11 +289,16 @@ classDiagram
 <div class="box-note" markdown=1>
 
 **סימנים ב-UML:**
-- **△** (משולש ריק) - מציין ירושה
-- **◆** (מעוין מלא) - מציין קומפוזיציה/הכלה (Composition) - "has-a" חזק
-- **-** מציין private
-- **+** מציין public
-- **#** מציין protected
+
+**△** (משולש ריק) - מציין ירושה
+
+**◆** (מעוין מלא) - מציין קומפוזיציה/הכלה (Composition) - "has-a" חזק
+
+**-** מציין private
+
+**+** מציין public
+
+**#** מציין protected
 
 </div>
 ---
@@ -562,12 +567,14 @@ public class Manager : Employee
 ## 8. תרגול מעשי
 
 ### תרגיל 1: היררכיית כלי תחבורה
-יצרו היררכיית מחלקות עבור:
+סרטטו היררכיית מחלקות (ללא קוד) עבור:
 - `Vehicle` (מחלקת בסיס)
 - `LandVehicle`, `WaterVehicle`, `AirVehicle` (יורשות מ-Vehicle)
 - `Car`, `Bicycle` (יורשות מ-LandVehicle)
 - `Boat`, `Submarine` (יורשות מ-WaterVehicle)
 - `Airplane`, `Helicopter` (יורשות מ-AirVehicle)
+
+כעת כתבו בקצרה את הקוד של מחלקות אלו (רק את הגדרות הירושה בינהן)
 
 ### תרגיל 2: מערכת בנקאית
 מַמְּשׁוּ:

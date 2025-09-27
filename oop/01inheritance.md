@@ -8,34 +8,22 @@ lang: he
 ---
 
 {: .box-note}
-**ירושה** היא מנגנון המאפשר לנו להגדיר מחלקה חדשה (יורשת) על בסיס מחלקה קיימת (בסיס). זוהי **אבן יסוד** בתכנות מונחה עצמים. במחלקה היורשת יהיו באופן אוטומטי כל התכונות והפעולות של מחלקת הבסיס. המחלקה היורשת יכולה להוסיף תכונות ופעולות, ואף להחליף פעולות מסויימות ממחלקת הבסיס. מומלץ לצפות ,תחילה ב- [youtube playlist](https://youtu.be/x5TJOoWTP20?si=27b6_-RDYtwgZSyE
-)
+**ירושה** היא מנגנון המאפשר לנו להגדיר מחלקה חדשה (יורשת) על בסיס מחלקה קיימת (בסיס). זוהי **אבן יסוד** בתכנות מונחה עצמים. במחלקה היורשת יהיו באופן אוטומטי כל התכונות והפעולות של מחלקת הבסיס. המחלקה היורשת יכולה להוסיף תכונות ופעולות, ואף להחליף פעולות מסויימות ממחלקת הבסיס. מומלץ לצפות ,תחילה ב- [youtube playlist](https://www.youtube.com/playlist?list=PLnVUJu2KuoA0CpYg4ga45Q0C5dGaSEYPH)
 
 <div class="box-success" markdown=1>
 
 **סדר פעולות ביצירת עצם ממחלקה יורשת:**
 - אם לא מצוין `(...)base` בבנאי של מחלקה יורשת, ייקרא אוטומטית בנאי ברירת מחדל של מחלקת הבסיס (אם קיים).  
-- סדר ההרצה בעת יצירת אובייקט יורש הוא: קודם בנאי הבסיס, אחריו בנאי הנגזר.
+- סדר ההרצה בעת יצירת אובייקט יורש הוא: קודם בנאי הבסיס, אחריו בנאי המחלקה הנגזרת.
 </div>
 
 ---
 
-## רמות גישה (Access Modifiers)
 
-
-**טבלה מסכמת:**
-
-| הגדרה       | נגישות                                                                 |
-|-------------|------------------------------------------------------------------------|
-|נגיש מכל מקום בפרויקט.                                                 | `public`    | 
-| נגיש רק מתוך המחלקה עצמה.                                              |`private`   | 
-|  נגיש מתוך המחלקה עצמה ומתוך **מחלקות שיורשות** ממנה.                       |**`protected`** |
-|  נגיש לכל הקבצים באותו Assembly (בבחינת בגרות נרשום **public**). |`internal`  |
-{: .table-rl}
-
----
 
 ## תרשים UML של שרשרת ירושה
+
+על צורת הכתיבה של UML יוסבר בהמשך
 
 <div class="mermaid" style="direction:ltr">
 classDiagram
@@ -66,9 +54,13 @@ classDiagram
     Mammal <|-- Dog
 </div>
 
+
+
 ---
 
 ## מימוש בקוד
+
+<details markdown=1><summary>למימוש פשוט</summmary>
 
 ```csharp
 public class Organism
@@ -130,6 +122,8 @@ public class Dog : Mammal
 }
 ```
 
+
+
 ---
 
 ## הדגמה עם מערך עצמים
@@ -152,15 +146,130 @@ for (int i = 0; i < kennel.Length; i++)
 }
 ```
 
+</details>
+
+<details markdown=1><summary>למימוש מעט יותר משוכלל</summmary>
+
+בגרסה זו השינויים הבאים:
+1. שימוש במשתנה סטטי ליצירת מונה של מופעים והקצאת id לכל עצם
+1. למחלקות השונות הוגדר `override string ToString()` שמחזיר יצוג של העצם
+1. בכל `ToString` נוספה קריאה לאותה הפעולה במחלקת הבסיס. כך שכל מחלקה מטפלת ומציגה את המידע שלה
+
+
+```cs
+public class Organism
+{
+    private static int counter = 0;   // counts instances
+    private readonly int id;          // assigned unique id
+    private string name;
+
+    public Organism(string name)
+    {
+        Console.WriteLine("Organism.ctor");
+        this.id = counter++;
+        this.name = name;
+    }
+
+    public string GetName() { return name; }
+    public void SetName(string name) { this.name = name; }
+    public int GetId() => id;
+    public override string ToString() => $"{id}: {name}";
+        
+}
+
+public class Animal : Organism
+{
+    private int age;
+
+    public Animal(string name, int age) : base(name)
+    {
+        Console.WriteLine("Animal.ctor");
+        this.age = age;
+    }
+
+    public int GetAge() { return age; }
+    public void SetAge(int age) { this.age = age; }
+
+    public override string ToString()
+    {
+        return base.ToString() + $", age {age}";
+    }
+}
+
+public class Mammal : Animal
+{
+    private bool hasFur;
+
+    public Mammal(string name, int age, bool hasFur) : base(name, age)
+    {
+        Console.WriteLine("Mammal.ctor");
+        this.hasFur = hasFur;
+    }
+
+    public bool GetHasFur() => hasFur; 
+    public void SetHasFur(bool hasFur) => this.hasFur = hasFur; 
+}
+
+public class Dog : Mammal
+{
+    private string breed;
+
+    public Dog(string name, int age, string breed)
+        : base(name, age, true)
+    {
+        Console.WriteLine("Dog.ctor");
+        this.breed = breed;
+    }
+
+    public string GetBreed() => breed; 
+    public void SetBreed(string value) => breed = value; 
+    public override string ToString() =>
+        base.ToString() + $", breed {breed}";  
+}
+
+
+//usage
+Dog[] kennel = new Dog[]
+{
+    new Dog("Rex", 5, "Labrador"),
+    new Dog("Luna", 2, "Husky"),
+    new Dog("Milo", 3, "Beagle")
+};
+
+foreach (var dog in kennel)
+    Console.WriteLine(dog);
+
+```
+
+</details>
+
+
+
+
+## רמות גישה (Access Modifiers)
+ניתן לקבוע רמות גישה שונות לשדות, תכונות, פעולות ובנאים
+
+**טבלה מסכמת:**
+
+| הגדרה       | נגישות                                                                 |
+|-------------|------------------------------------------------------------------------|
+|נגיש מכל מקום בפרויקט.                                                 | `public`    | 
+| נגיש רק מתוך המחלקה עצמה.                                              |`private`   | 
+|  נגיש מתוך המחלקה עצמה ומתוך **מחלקות שיורשות** ממנה.                       |**`protected`** |
+|  נגיש לכל הקבצים באותו Assembly (בבחינת בגרות נרשום **public**). |`internal`  |
+{: .table-rl}
+
+---
+
 
 
 
 ## "הוא סוג של" – עקרון ה־IS A  
 
 {: .box-note}  
-ב־OOP אנו משתמשים בירושה ליצירת יחס של **"הוא סוג של" (IS A)**.  
+ב-OOP אנו משתמשים בירושה ליצירת יחס של **"הוא סוג של" (IS A)**.  
 מחלקת בן יורשת ממחלקת אב ולכן **היא סוג של** המחלקה שמעליה.  
-ב־C# **ניתן לבדוק זאת בזמן ריצה** בעזרת המילה השמורה `is`.
+**ניתן לבדוק זאת בזמן ריצה** בעזרת המילה השמורה `is`.
 
 ---
 
@@ -220,7 +329,7 @@ class Program
 
 ---
 
-[Campus playlist - ירושה בלבד](https://youtu.be/x5TJOoWTP20?si=27b6_-RDYtwgZSyE)
+[Campus playlist - ירושה בלבד](https://www.youtube.com/playlist?list=PLnVUJu2KuoA0CpYg4ga45Q0C5dGaSEYPH)
 
 [המשך - הרחבת נושא ירושה](/oop/01inheritc)
 
