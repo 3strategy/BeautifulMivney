@@ -10,6 +10,16 @@ lang: he
 {: .box-note}
 **הגדרה:** כאשר עצם במחלקה (class) נוצר, הזמן ריצה (runtime) קורא לבנאי שלה. בנאים הם פעולות מיוחדות שיש להן את אותו שם כמו למחלקה, והן בדרך כלל מאתחלות את שדות הנתונים של האובייקט החדש.
 
+<details markdown="1"><summary>מטרות הלמידה</summary>
+
+## מטרות הלמידה
+
+בסיום תת פרק זה תוכלו:
+- לכתוב ולהבין שרשור בנאים (Constructor Chaining)
+
+</destails>
+
+
 ---
 
 ## 1. בנאי בסיסי
@@ -63,19 +73,11 @@ public class Car
     
     // המהדר יוצר אוטומטית:
     // public Car() { }
-    
-    // Getters and Setters - Java Style
-    public string GetModel() { return model; }
-    public void SetModel(string model) { this.model = model; }
-    
-    public int GetYear() { return year; }
-    public void SetYear(int year) { this.year = year; }
+
 }
 
 // שימוש
 Car myCar = new Car();  // עובד בגלל הבנאי האוטומטי
-myCar.SetModel("Toyota");
-myCar.SetYear(2024);
 ```
 
 ---
@@ -119,13 +121,6 @@ public class Employee
         this.name = name;
         this.salary = weeklySalary * numberOfWeeks;
     }
-    
-    // Getters and Setters - Java Style
-    public int GetSalary() { return salary; }
-    public void SetSalary(int salary) { this.salary = salary; }
-    
-    public string GetName() { return name; }
-    public void SetName(string name) { this.name = name; }
 }
 ```
 
@@ -137,7 +132,7 @@ Employee e3 = new Employee("John", 50000);         // שם ומשכורת
 Employee e4 = new Employee("Jane", 1000, 52);      // חישוב שנתי
 ```
 
-```mermaid
+<div class="mermaid">
 graph TD
     A[Employee Class] --> B[בנאי ללא פרמטרים]
     A --> C[בנאי עם משכורת]
@@ -148,7 +143,7 @@ graph TD
     C --> G[Salary=value, Name='Unknown']
     D --> H[Salary=value, Name=value]
     E --> I[Salary=weekly*weeks, Name=value]
-```
+</div>
 
 ---
 
@@ -167,17 +162,57 @@ public class Manager : Employee
         this.department = department;
         // הוראות נוספות כאן
     }
-    
-    // Getter and Setter for department
-    public string GetDepartment() { return department; }
-    public void SetDepartment(string department) { this.department = department; }
 }
 ```
+
+
+## 5. סדר הפעולה בשרשור בנאים (Constructor chaining)
 
 {: .box-success}
 **כלל חשוב:** הבנאי של מחלקת הבסיס נקרא **לפני** שהבלוק של הבנאי הנגזר מתבצע!
 
-### קריאה משתמעת לבנאי הבסיס
+1. **אתה מבקש ליצור מופע של המחלקה התחתונה**
+   לדוגמה: `new C()`.
+
+2. **המהדר "נועל" קודם כל את הבנאי של C**
+   כלומר ההחלטה היא: נריץ את הבלוק של `C()`.
+   אבל – לפני שנכנסים לבלוק, חייבים לדעת איזה בנאי של **B** (האב הישיר) לקרוא, כי ל-C אין זכות להתחיל לפעול עד שהבסיס שלו מוכן.
+
+   לכן בשורה הראשונה (מפורשת או מובלעת) יש `: base(...)`.
+
+3. **הקריאה "מטפסת" מבן → אב**
+   כדי להריץ את `C()`, צריך קודם להריץ את `B()`.
+   כדי להריץ את `B()`, צריך קודם להריץ את `A()`.
+   לכן הקריאות **מסתדרות מהבן כלפי מעלה**: C → B → A.
+
+4. **הביצוע בפועל הוא מקונן (נסטינג)**
+
+   * נכנסים ל-A, מריצים את הקוד שלו.
+   * חוזרים ל-B, מריצים את הקוד שלו.
+   * חוזרים ל-C, מריצים את הקוד שלו.
+
+   כלומר הביצוע **יורד עד האב העליון ואז מתבצע למטה כלפי הבן**.
+
+
+
+אפשר לדמיין את זה כמו **קינון** של קריאות:
+
+```cs
+C() {
+    B() {
+        A() {
+            // גוף A
+        }
+        // גוף B
+    }
+    // גוף C
+}
+```
+
+
+## 6. קריאה משתמעת (מובלעת) לבנאי הבסיס
+
+{: .box-success}
 אם לא מציינים קריאה מפורשת עם `base`, הבנאי ללא פרמטרים של מחלקת הבסיס נקרא אוטומטית:
 
 ```csharp
@@ -196,17 +231,17 @@ public Manager(int initialData)
 
 ---
 
-## 5. העדר בנאי ברירת מחדל 
+## 7. העדר בנאי ברירת מחדל 
 
 {: .box-note}
 **אזהרה:** אם למחלקת הבסיס אין בנאי ללא פרמטרים, חובה לקרוא לבנאי עם `base` באופן מפורש!
 
 
-מרגע שהוגדר בנאי כלשהו במחלקה, בנאי ברירת המחדל מתבטל. ברגע שבמחלקת בסיס הוגדר בנאי, חייב להתקיים אחד משני מצבים לפחות:
+מרגע שהוגדר בנאי כלשהו במחלקה, בנאי ברירת המחדל **מתבטל**. ברגע שבמחלקת בסיס הוגדר בנאי, חייב להתקיים **אחד משני מצבים** לפחות:
 1. במחלקת הבסיס הוגדר בנאי ללא פרמטרים
 2. במחלקה הנגזרת יש קריאה מפורשת `: base (חתימה קיימת של פרמטרים)`
 
-**להמחשה:** להלן דוגמא מינימלית **שלא תתקמפל**:
+**להמחשה:** להלן דוגמא מינימלית **שלא תתקמפל!!**:
 ```csharp
 public class A 
 {
@@ -231,7 +266,7 @@ public class B : A
 ```
 
 
-## 6. שרשור בנאים עם this
+## 8. שרשור בנאים עם this
 
 בנאי יכול לקרוא לבנאי אחר באותה מחלקה באמצעות `this`:
 
@@ -294,7 +329,7 @@ graph TD
 
 ---
 
-## 8. מתאמי גישה לבנאים
+## 9. מתאמי גישה (access modifiers) לבנאים
 
 בנאים יכולים להיות מוגדרים עם מתאמי גישה שונים:
 
@@ -337,7 +372,7 @@ public class DatabaseConnection
 ---
 
 
-<details markdown="1"><summary>7. דוגמה מקיפה - מערכת בנקאית</summary>
+<details markdown="1"><summary>10. דוגמה מקיפה - מערכת בנקאית</summary>
 
 
 ```csharp
@@ -472,12 +507,14 @@ public class BankingApp
     }
 }
 ```
+</details>
 
 ---
 
 ## סיכום
 
-{: .box-success}
+<div class="box-success">
+
 **נקודות מפתח לזכור:**
 1. בנאים נקראים אוטומטית בעת יצירת אובייקט עם `new`
 2. אם לא מגדירים בנאי, המהדר יוצר בנאי ללא פרמטרים
@@ -485,6 +522,7 @@ public class BankingApp
 4. השתמשו ב-`base` לקריאה לבנאי מחלקת הבסיס
 5. השתמשו ב-`this` לקריאה לבנאי אחר באותה מחלקה
 
+</div>
 
 {: .box-note}
 **טיפ:** תמיד אתחלו את כל השדות בבנאי כדי למנוע מצבים לא מוגדרים!

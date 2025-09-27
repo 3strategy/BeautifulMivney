@@ -440,93 +440,15 @@ pre code span.c1 {
 
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
-/* Additional arrow targeting for dark mode */
-.mermaid .arrowheadPath {
-  fill: var(--text-col) !important;
-  stroke: var(--text-col) !important;
-}
-
-/* Alternative arrow selectors */
-.mermaid .arrowhead {
-  fill: var(--text-col) !important;
-  stroke: var(--text-col) !important;
-}
-
-.mermaid marker path {
-  fill: var(--text-col) !important;
-  stroke: var(--text-col) !important;
-}
-
+/* Arrow heads - hollow triangles */
 .mermaid defs marker path {
-  fill: var(--text-col) !important;
+  fill: none !important;
   stroke: var(--text-col) !important;
 }
 
-/* Catch-all for any arrow markers */
-.mermaid marker[id*="arrow"] path {
-  fill: var(--text-col) !important;
-  stroke: var(--text-col) !important;
-}
-
-.mermaid marker[id*="Triangle"] path {
-  fill: var(--text-col) !important;
-  stroke: var(--text-col) !important;
-}
-
-/* Also try targeting by element type */
-/* .mermaid polygon {
-  fill: var(--text-col) !important;
-  stroke: var(--text-col) !important;
-} */
-
-/* Mermaid arrow lines */
+/* Arrow lines */
+.mermaid .edgePaths path,
 .mermaid .flowchart-link {
   stroke: var(--text-col) !important;
   stroke-width: 2px !important;
 }
-
-/* All edge paths */
-.mermaid .edgePaths .path {
-  stroke: var(--text-col) !important;
-  stroke-width: 2px !important;
-}
-
-/* Specific targeting for the edge thickness classes */
-.mermaid .edge-thickness-normal {
-  stroke: var(--text-col) !important;
-}
-
-/* Target the marker definitions (arrow heads) */
-.mermaid defs marker[id*="pointEnd"] path,
-.mermaid defs marker[id*="flowchart"] path {
-  fill: var(--text-col) !important;
-  stroke: var(--text-col) !important;
-}
-
-/* Catch-all for any marker paths */
-.mermaid marker path {
-  fill: var(--text-col) !important;
-  stroke: var(--text-col) !important;
-}
-
-/* possibly not needed 
-.label-container {
-    fill: var(--backn-col);
-} */
-
-/* for gaant mermaid */
-/* .mermaid svg .section {
-  fill: var(--page-col) !important;
-  opacity: 1 !important;
-}
-
-.mermaid svg .sectionTitle,
-.mermaid svg .titleText,
-.mermaid svg .taskText {
-  fill: var(--text-col) !important;
-} */
-
-/* Any additional classes that need text colored */
-/* .mermaid svg .grid .tick text {
-  fill: var(--text-col) !important;
-} */
