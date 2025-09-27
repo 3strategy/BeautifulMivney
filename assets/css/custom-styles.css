@@ -441,7 +441,7 @@ pre code span.c1 {
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
 
-/* General arrowheads (all diagrams): keep filled */
+/* General arrows (all diagrams): keep default filled look */
 .mermaid .arrowheadPath,
 .mermaid .arrowhead,
 .mermaid marker path,
@@ -454,7 +454,7 @@ pre code span.c1 {
   stroke: var(--text-col) !important;
 }
 
-/* Lines */
+/* Edge lines */
 .mermaid .flowchart-link,
 .mermaid .edgePaths .path,
 .mermaid .edge-thickness-normal {
@@ -462,10 +462,10 @@ pre code span.c1 {
   stroke-width: 2px !important;
 }
 
-/* --- CLASS DIAGRAM SPECIFIC OVERRIDE --- */
-.mermaid.classDiagram marker[id*="extension"] path,
-.mermaid.classDiagram marker[id*="composition"] path,
-.mermaid.classDiagram marker[id*="aggregation"] path {
-  fill: none !important;               /* hollow */
+/* --- Class diagram overrides --- */
+/* Important: don't touch stroke-width here, to avoid scaling bug */
+.mermaid.classDiagram marker polygon,
+.mermaid.classDiagram marker path {
+  fill: none !important;               /* make hollow */
   stroke: var(--text-col) !important;  /* outline only */
 }
