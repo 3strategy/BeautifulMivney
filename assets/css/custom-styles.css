@@ -440,18 +440,25 @@ pre code span.c1 {
 
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
-/* Only UML class diagram arrow heads - hollow triangles */
-.mermaid marker[id*="aggregation"] path,
-.mermaid marker[id*="extension"] path,
-.mermaid marker[id*="composition"] path,
-.mermaid marker[id*="dependency"] path {
-  fill: none !important;
-  stroke: var(--text-col) !important;
-  stroke-width: 1px !important; /* Thinner stroke to reduce size */
-}
 
-/* Arrow lines */
-.mermaid .edgePaths path {
+/* Edge and link lines */
+.mermaid .flowchart-link,
+.mermaid .edgePaths .path,
+.mermaid .edge-thickness-normal {
   stroke: var(--text-col) !important;
   stroke-width: 2px !important;
+  fill: none !important;
+}
+
+/* Arrowheads: hollow */
+.mermaid .arrowheadPath,
+.mermaid .arrowhead,
+.mermaid marker path,
+.mermaid defs marker path,
+.mermaid marker[id*="arrow"] path,
+.mermaid marker[id*="Triangle"] path,
+.mermaid defs marker[id*="pointEnd"] path,
+.mermaid defs marker[id*="flowchart"] path {
+  fill: none !important;
+  stroke: var(--text-col) !important;
 }
