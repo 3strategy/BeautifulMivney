@@ -440,6 +440,60 @@ pre code span.c1 {
 
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
-.mermaid.classDiagram .extension[marker-end*="extensionEnd"] {
-  stroke: #00FF00 !important;
+/* Additional arrow targeting for dark mode */
+.mermaid .arrowheadPath {
+  fill: none !important;
+  stroke: var(--text-col) !important;
+}
+/* Alternative arrow selectors */
+.mermaid .arrowhead {
+  fill: none !important;
+  stroke: var(--text-col) !important;
+}
+.mermaid marker path {
+  fill: none !important;
+  stroke: var(--text-col) !important;
+}
+.mermaid defs marker path {
+  fill: none !important;
+  stroke: var(--text-col) !important;
+}
+/* Catch-all for any arrow markers */
+.mermaid marker[id*="arrow"] path {
+  fill: none !important;
+  stroke: var(--text-col) !important;
+}
+.mermaid marker[id*="Triangle"] path {
+  fill: none !important;
+  stroke: var(--text-col) !important;
+}
+
+/* Mermaid arrow lines */
+.mermaid .flowchart-link {
+  stroke: var(--text-col) !important;
+  stroke-width: 2px !important;
+}
+
+/* All edge paths */
+.mermaid .edgePaths .path {
+  stroke: var(--text-col) !important;
+  stroke-width: 2px !important;
+}
+
+/* Specific targeting for the edge thickness classes */
+.mermaid .edge-thickness-normal {
+  stroke: var(--text-col) !important;
+}
+
+/* Target the marker definitions (arrow heads) */
+.mermaid defs marker[id*="pointEnd"] path,
+.mermaid defs marker[id*="flowchart"] path {
+  fill: none !important;
+  stroke: var(--text-col) !important;
+}
+
+/* Catch-all for any marker paths */
+.mermaid marker path {
+  fill: var(--text-col) !important;
+  stroke: var(--text-col) !important;
 }
