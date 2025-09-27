@@ -500,3 +500,12 @@ pre code span.c1 {
   fill: var(--text-col) !important;
   stroke: var(--text-col) !important;
 }
+
+/* Target composition markers specifically */
+.mermaid marker[id$="aggregationStart"] path,
+.mermaid marker[id$="aggregationEnd"] path,
+.mermaid marker[id$="compositionStart"] path,
+.mermaid marker[id$="compositionEnd"] path {
+  fill: var(--text-col) !important;
+  stroke: var(--text-col) !important;
+}

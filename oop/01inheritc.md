@@ -77,14 +77,14 @@ Vehicle <|-- Car
 - מנוע **אינו סוג של** מכונית ✗ (הוא חלק ממכונית - זו **קומפוזיציה/הכלה**). מנוע שייך למכונית
 - גלגל **אינו סוג של** אופניים ✗ (הוא רכיב באופניים). גלגל שייך לאופניים
 - כלב אינו סוג של אדם. כלב **שייך** לאדם.
-- חתוך אינו סוג של אדם. אדם **שייך** לחתול
+- חתול אינו סוג של אדם. אדם **שייך** לחתול
 
 ---
 
 
 
-## 3. היררכיית מחלקות - תרשים פשוט
-<details open markdown=1><summary>דוגמא פשוטה</summary>
+## 3. היררכיית מחלקות - תרשים היררכיה, ותרשים UML
+<details open markdown=1><summary>דוגמא פשוטה: סרטוט היררכיית מחלקות</summary>
 <div class=mermaid>
 ---
 config:
@@ -96,15 +96,15 @@ classDiagram
     direction BT
     GoldenRetriever --|> Dog
     PersianCat --|> Cat
-    Dog --|> Animal
-    Cat --|> Animal
+    Dog --|> Mamal
+    Cat --|> Mamal
 </div>
 </details>
 
 ---
 
-<details open markdown=1><summary>ננסה לממש דוגמא יותר מציאותית</summary>
-<div class=mermaid>
+<details markdown=1><summary>נוסיף Human. נסו להרחיב ולממש דוגמא יותר מציאותית המתוארת ב-UML שלהלן</summary>
+<div class=mermaid style="direction:ltr;">
 ---
 config:
     class:
@@ -148,12 +148,13 @@ classDiagram
         -String coatColor
         +Fetch()
     }
-</div>
-</div>
 
-## 4. נסו לממש את ההירככיה ב-C#
+</div>
+</details>
 
-<details markdown=1><summary>פתרון C#</summary>
+## 4. תרגול מעשי - מימוש C#
+
+<details markdown=1><summary>פתרון אפשרי ב- C#</summary>
 
 ```csharp
 public class Mammal
@@ -255,52 +256,6 @@ public class GoldenRetriever : Dog
 </details>
 ---
 
-## 5. דיאגרמת UML לירושה
-
-
-<div class="mermaid" style="direction:ltr;">
-classDiagram
-    class Animal {
-        -string name
-        -int age
-        +Animal(string name, int age)
-        +GetName() string
-        +SetName(string name) void
-        +GetAge() int
-        +SetAge(int age) void
-        +Eat() void
-        +Sleep() void
-    }
-    
-    class Dog {
-        -string breed
-        +Dog(string name, int age, string breed)
-        +GetBreed() string
-        +SetBreed(string breed) void
-        +Bark() void
-    }
-    
-    class Cat {
-        -bool isIndoor
-        +Cat(string name, int age, bool isIndoor)
-        +GetIsIndoor() bool
-        +SetIsIndoor(bool isIndoor) void
-        +Meow() void
-    }
-    
-    class GoldenRetriever {
-        +GoldenRetriever(string name, int age)
-    }
-    
-    class PersianCat {
-        +PersianCat(string name, int age)
-    }
-    
-    Animal <|-- Dog
-    Animal <|-- Cat
-    Dog <|-- GoldenRetriever
-    Cat <|-- PersianCat
-</div>
 
 <div class="box-note" markdown=1>
 
@@ -319,7 +274,7 @@ classDiagram
 </div>
 ---
 
-## 6. שרשור בנאים (Constructor Chaining)
+## 5. שרשור בנאים (Constructor Chaining)
 
 <div markdown=1 class="box-success" >
 
@@ -450,7 +405,7 @@ class Program
 
 ---
 
-## 7. הרחבה מעשית - מערכת ניהול עובדים
+## 6. הרחבה מעשית - מערכת ניהול עובדים
 
 ```csharp
 public class Person
@@ -580,7 +535,7 @@ public class Manager : Employee
 
 ---
 
-## 8. תרגול מעשי
+## 7. תרגול מעשי
 
 ### תרגיל 1: היררכיית כלי תחבורה
 סרטטו היררכיית מחלקות (ללא קוד) עבור:
@@ -601,7 +556,7 @@ public class Manager : Employee
 
 ---
 
-## 9. סיכום ונקודות מפתח
+## 8. סיכום ונקודות מפתח
 
 <div class="box-success" markdown=1>
 
@@ -624,11 +579,11 @@ public class Manager : Employee
 
 ---
 
-## 10. שאלות לתרגול עצמי
+## 9. שאלות לתרגול עצמי
 
 1. מהו ההבדל בין ירושה לקומפוזיציה (הכלה)?
 2. מתי נשתמש בירושה ומתי לא?
-3. מה סדר הפעלת הבנאים בהיררכיית ירושה?
+3. מה סדר הפעלת הבנאים בהיררכיית ירושה? למענה על השאלה ניתן לקרוא תחילה את [ההרחבה על בנאים](/oop/01inheritdconstructors)
 4. האם מחלקה נגזרת יכולה לגשת ל-private fields של מחלקת האב?
 5. מה ההבדל בין `()base` ל-`()this` בבנאים?
 
