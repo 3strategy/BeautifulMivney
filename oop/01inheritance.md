@@ -25,8 +25,8 @@ public class Dog : Animal   // Dog inherits Animal
 <div class="box-success" markdown=1>
 
 **סדר פעולות ביצירת עצם ממחלקה יורשת:**
-- אם לא מצוין `(...)base` בבנאי של מחלקה יורשת, ייקרא אוטומטית בנאי ברירת מחדל של מחלקת הבסיס (אם קיים).  
-- סדר ההרצה בעת יצירת אובייקט יורש הוא: קודם בנאי הבסיס, אחריו בנאי המחלקה הנגזרת.
+- אם לא מצוין `(...)base` בבנאי של מחלקה יורשת, ייקרא אוטומטית **בנאי ברירת מחדל** של מחלקת הבסיס (**אם קיים**).  
+- סדר היצירה של אובייקט יורש הוא: קודם בנאי הבסיס, אחריו בנאי המחלקה הנגזרת.
 </div>
 
 ---
@@ -347,6 +347,6 @@ class Program
 
 [המשך - הרחבה בנושא בנאים](/oop/01inheritdconstructors)
 
-[קמפוס - מצגת ירושה]("https://lomdot.education.gov.il/Qualitest/CSA11B-inherit/index.html")
+[קמפוס - מצגת ירושה](https://lomdot.education.gov.il/Qualitest/CSA11B-inherit/index.html)
 
-[קמפוס - מצגת מחלקות אבסטרקטיות]("https://lomdot.education.gov.il/Qualitest/CSA11C-abstract/index.html")
+[קמפוס - מצגת מחלקות אבסטרקטיות](https://lomdot.education.gov.il/Qualitest/CSA11C-abstract/index.html)

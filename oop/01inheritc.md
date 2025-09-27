@@ -621,7 +621,7 @@ public class Manager : Employee
 
 
 
-[Campus playlist](https://youtu.be/x5TJOoWTP20?si=27b6_-RDYtwgZSyE)
+[Campus playlist](https://www.youtube.com/playlist?list=PLnVUJu2KuoA0CpYg4ga45Q0C5dGaSEYPH)
 
 [חזרה להתחלה](/oop/01inheritance)
 
