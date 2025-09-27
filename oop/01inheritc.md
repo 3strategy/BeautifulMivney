@@ -241,7 +241,7 @@ public class GoldenRetriever : Dog
 ## 5. דיאגרמת UML לירושה
 
 
-<div class="mermaid">
+<div class="mermaid" style="direction:ltr;">
 classDiagram
     class Animal {
         -string name
@@ -297,12 +297,16 @@ classDiagram
 
 ## 6. שרשור בנאים (Constructor Chaining)
 
-{: .box-success}
+<div markdown=1 class="box-success" >
+
 **חשוב לזכור:**
 * כל בנאי בשרשרת מחויב להריץ קודם את הבנאי של מחלקת הבסיס שלו.
-* הסדר תמיד **מלמטה למעלה** (Base → Derived), ורק לאחר סיום כל הבנאים יש לנו אובייקט מוכן לעבודה.
+* הסדר תמיד **מלמעלה למטה** (Base → Derived), ורק לאחר סיום כל הבנאים יש לנו אובייקט מוכן לעבודה. בחירת הבנאים היא **מלמטה למעלה**
+* פירוט נוסף [בתת פרק בנאים](/oop/01inheritdconstructors)
 
-### סדר הפעלת נאים
+</div>
+
+### סדר הפעלת בנאים
 
 <div class="mermaid">
 graph TD
