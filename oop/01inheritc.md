@@ -74,114 +74,17 @@ Vehicle <|-- Car
 - סטודנט **הוא סוג של** אדם ✓
 
 ### דוגמאות שגויות:
-- מנוע **אינו סוג של** מכונית ✗ (הוא חלק ממכונית - זו **קומפוזיציה/הכלה**)
-- גלגל **אינו סוג של** אופניים ✗ (הוא רכיב באופניים)
+- מנוע **אינו סוג של** מכונית ✗ (הוא חלק ממכונית - זו **קומפוזיציה/הכלה**). מנוע שייך למכונית
+- גלגל **אינו סוג של** אופניים ✗ (הוא רכיב באופניים). גלגל שייך לאופניים
+- כלב אינו סוג של אדם. כלב **שייך** לאדם.
+- חתוך אינו סוג של אדם. אדם **שייך** לחתול
 
 ---
 
-## 3. מימוש בסיסי של ירושה ב-C#
 
-### מחלקת הבסיס - Animal
-```csharp
-public class Animal
-{
-    private string name;
-    private int age;
-    
-    // Constructor
-    public Animal(string name, int age)
-    {
-        this.name = name;
-        this.age = age;
-        Console.WriteLine("Animal constructor called");
-    }
-    
-    public string GetName() => name;
-    
-    public void SetName(string name) => this.name = name;
-    
-    public int GetAge()
-    {
-        return age;
-    }
-    
-    public void SetAge(int age)
-    {
-        if (age >= 0)
-            this.age = age;
-    }
-    
-    // Methods
-    public void Eat()
-    {
-        Console.WriteLine($"{name} is eating");
-    }
-    
-    public void Sleep()=> Console.WriteLine($"{name} is sleeping");
-    
-}
-```
 
-### מחלקה נגזרת - Dog
-```csharp
-public class Dog : Animal  // הסימן : מציין ירושה
-{
-    private string breed;
-    
-    // Constructor
-    public Dog(string name, int age, string breed) : base(name, age) // קריאה לבנאי במחלקת הבסיס
-    // מדוע הקריאה לבנאי של בייס היא חובה בדוגמא זו?
-    {
-        this.breed = breed;
-        Console.WriteLine("Dog constructor called");
-    }
-    
-    // Getter and Setter for breed
-    public string GetBreed()
-    {
-        return breed;
-    }
-    
-    public void SetBreed(string breed)
-    {
-        this.breed = breed;
-    }
-    
-    // Dog-specific method
-    public void Bark()
-    {
-        Console.WriteLine($"{GetName()} is barking: Woof!");
-    }
-}
-```
-
-### שימוש במחלקות
-```csharp
-class Program
-{
-    static void Main()
-    {
-        Dog myDog = new Dog("Max", 3, "Golden Retriever");
-        
-        // שימוש בפעולות שנורשו מ-Animal
-        myDog.Eat();      // "Max is eating"
-        myDog.Sleep();    // "Max is sleeping"
-        
-        // שימוש בפעולה ייחודית ל-Dog
-        myDog.Bark();     // "Max is barking: Woof!"
-        
-        // שימוש ב-Getters
-        Console.WriteLine($"Name: {myDog.GetName()}");
-        Console.WriteLine($"Age: {myDog.GetAge()}");
-        Console.WriteLine($"Breed: {myDog.GetBreed()}");
-    }
-}
-```
-
----
-
-## 4. היררכיית מחלקות - תרשים פשוט
-
+## 3. היררכיית מחלקות - תרשים פשוט
+<details open markdown=1><summary>דוגמא פשוטה</summary>
 <div class=mermaid>
 ---
 config:
@@ -196,61 +99,160 @@ classDiagram
     Dog --|> Animal
     Cat --|> Animal
 </div>
+</details>
 
-### דוגמת קוד להיררכיה מורחבת
+---
+
+<details open markdown=1><summary>ננסה לממש דוגמא יותר מציאותית</summary>
+<div class=mermaid>
+---
+config:
+    class:
+        hideEmptyMembersBox: true
+---
+classDiagram
+    direction BT
+    Human --|> Mammal
+    Dog --|> Mammal
+    Cat --|> Mammal
+    GoldenRetriever --|> Dog
+    PersianCat --|> Cat
+    
+    Cat "1" *-- "*" Human : owns
+    Human "0..1" *-- "*" Dog : owns
+    
+    class Mammal {
+        -String name
+        -int age
+        +GetName()
+        +GetAge()
+        +Eat()
+        +Sleep()
+    }
+    class Human {
+        -Dog[] pets
+        +ServeCat()
+    }
+    class Cat {
+        -Human[] controlledHumans
+        +Meow()
+    }
+    class Dog {
+        -String breed
+        +Bark()
+    }
+    class PersianCat {
+        -String furLength
+    }
+    class GoldenRetriever {
+        -String coatColor
+        +Fetch()
+    }
+</div>
+</div>
+
+## 4. נסו לממש את ההירככיה ב-C#
+
+<details markdown=1><summary>פתרון C#</summary>
+
 ```csharp
-public class Cat : Animal
+public class Mammal
 {
-    private bool isIndoor;
-    
-    public Cat(string name, int age, bool isIndoor) : base(name, age)
+    private string name;
+    private int age;
+
+    public Mammal(string name, int age)
     {
-        this.isIndoor = isIndoor;
+        this.name = name;
+        this.age = age;
+        Console.WriteLine("Mammal constructor called");
     }
-    
-    public bool GetIsIndoor()
+
+    public string GetName() => name;
+    public int GetAge() => age;
+
+    // Methods
+    public void Eat() => Console.WriteLine($"{name} is eating");
+    public void Sleep() => Console.WriteLine($"{name} is sleeping");
+}
+
+public class Dog : Mammal
+{
+    private string breed;
+
+    public Dog(string name, int age, string breed) : base(name, age)
     {
-        return isIndoor;
+        this.breed = breed;
+        Console.WriteLine("Dog constructor called");
     }
-    
-    public void SetIsIndoor(bool isIndoor)
+
+    public string GetBreed() => breed;
+
+    public void Bark() => Console.WriteLine($"{GetName()} is barking: Woof!");
+}
+
+public class Human : Mammal
+{
+    private Dog[] pets; // Human can own dogs
+
+    public Human(string name, int age) : base(name, age)
     {
-        this.isIndoor = isIndoor;
+        this.pets = new Dog[5]; // Fixed size array
+        Console.WriteLine("Human constructor called");
     }
-    
-    public void Meow()
+
+    public Dog[] GetPets() => pets;
+
+    public void ServeCat() => Console.WriteLine($"{GetName()} is serving the cat");
+}
+
+public class Cat : Mammal
+{
+    private Human[] controlledHumans; // Cats own humans!
+
+    public Cat(string name, int age) : base(name, age)
     {
-        Console.WriteLine($"{GetName()} says: Meow!");
+        this.controlledHumans = new Human[10]; // Fixed size array
+        Console.WriteLine("Cat constructor called");
     }
+
+    public Human[] GetControlledHumans() => controlledHumans;
+
+    public void Meow() => Console.WriteLine($"{GetName()} says: Meow!");
+}
+
+public class PersianCat : Cat
+{
+    private string furLength;
+
+    public PersianCat(string name, int age, string furLength) : base(name, age)
+    {
+        this.furLength = furLength;
+        Console.WriteLine("PersianCat constructor called");
+    }
+
+    public string GetFurLength() => furLength;
 }
 
 public class GoldenRetriever : Dog
 {
-    private double furLength;
-    
-    public GoldenRetriever(string name, int age, double furLength) 
+    private string coatColor;
+
+    public GoldenRetriever(string name, int age, string coatColor)
         : base(name, age, "Golden Retriever")
     {
-        this.furLength = furLength;
+        this.coatColor = coatColor;
+        Console.WriteLine("GoldenRetriever constructor called");
     }
-    
-    public double GetFurLength()
-    {
-        return furLength;
-    }
-    
-    public void SetFurLength(double furLength)
-    {
-        this.furLength = furLength;
-    }
-    
-    public void Fetch()
-    {
-        Console.WriteLine($"{GetName()} is fetching the ball!");
-    }
-}
-```
 
+    public string GetCoatColor() => coatColor;
+
+    public void Fetch() => Console.WriteLine($"{GetName()} is fetching the ball!");
+}
+
+
+```
+</details>
 ---
 
 ## 5. דיאגרמת UML לירושה
