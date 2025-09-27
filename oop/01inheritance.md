@@ -8,7 +8,8 @@ lang: he
 ---
 
 {: .box-note}
-**ירושה** היא מנגנון המאפשר לנו להגדיר מחלקה חדשה (יורשת) על בסיס מחלקה קיימת (בסיס). זוהי **אבן יסוד** בתכנות מונחה עצמים. במחלקה היורשת יהיו באופן אוטומטי כל התכונות והפעולות של מחלקת הבסיס. המחלקה היורשת יכולה להוסיף תכונות ופעולות, ואף להחליף פעולות מסויימות ממחלקת הבסיס.
+**ירושה** היא מנגנון המאפשר לנו להגדיר מחלקה חדשה (יורשת) על בסיס מחלקה קיימת (בסיס). זוהי **אבן יסוד** בתכנות מונחה עצמים. במחלקה היורשת יהיו באופן אוטומטי כל התכונות והפעולות של מחלקת הבסיס. המחלקה היורשת יכולה להוסיף תכונות ופעולות, ואף להחליף פעולות מסויימות ממחלקת הבסיס. מומלץ לצפות ,תחילה ב- [youtube playlist](https://youtu.be/x5TJOoWTP20?si=27b6_-RDYtwgZSyE
+)
 
 <div class="box-success" markdown=1>
 
@@ -88,7 +89,8 @@ public class Animal : Organism
 {
     private int age;
 
-    public Animal(string name, int age) : base(name)
+    // בדוגמא זו חובה לקרוא לבייס. יוסבר בהמשך
+    public Animal(string name, int age) : base(name) 
     {
         Console.WriteLine("Animal.ctor");
         this.age = age;
@@ -178,9 +180,12 @@ class Program
         Animal a1 = new Dog();
         Animal a2 = new Animal();
 
-        if (a1 is Dog d) d.Bark();   // a1 הוא סוג של Dog → Woof!
-        if (a2 is Dog) Console.WriteLine("a2 הוא כלב"); 
-        else Console.WriteLine("a2 אינו כלב");
+        if (a1 is Dog d) 
+            d.Bark();   // a1 הוא סוג של Dog → Woof!
+        if (a2 is Dog) 
+            Console.WriteLine("a2 הוא כלב"); 
+        else 
+            Console.WriteLine("a2 אינו כלב");
     }
 }
 ```
@@ -215,7 +220,12 @@ class Program
 
 ---
 
+[Campus playlist - ירושה בלבד](https://youtu.be/x5TJOoWTP20?si=27b6_-RDYtwgZSyE)
 
 [המשך - הרחבת נושא ירושה](/oop/01inheritc)
 
 [המשך - הרחבה בנושא בנאים](/oop/01inheritdconstructors)
+
+[קמפוס - מצגת ירושה]("https://lomdot.education.gov.il/Qualitest/CSA11B-inherit/index.html")
+
+[קמפוס - מצגת מחלקות אבסטרקטיות]("https://lomdot.education.gov.il/Qualitest/CSA11C-abstract/index.html")

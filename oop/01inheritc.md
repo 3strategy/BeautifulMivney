@@ -611,3 +611,11 @@ public class Manager : Employee
 
 {: .box-note}
 **להצלחה!** תרגול הוא המפתח להבנת ירושה. נסו ליצור היררכיות משלכם ולהתנסות בקוד!
+
+
+
+[Campus playlist](https://youtu.be/x5TJOoWTP20?si=27b6_-RDYtwgZSyE)
+
+[חזרה להתחלה](/oop/01inheritance)
+
+[המשך - הרחבה בנושא בנאים](/oop/01inheritdconstructors)
