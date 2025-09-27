@@ -441,14 +441,13 @@ pre code span.c1 {
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
 /* Arrow heads - hollow triangles */
-.mermaid defs marker path {
+.mermaid marker path {
   fill: none !important;
   stroke: var(--text-col) !important;
 }
 
 /* Arrow lines */
-.mermaid .edgePaths path,
-.mermaid .flowchart-link {
+.mermaid .edgePaths path {
   stroke: var(--text-col) !important;
   stroke-width: 2px !important;
 }

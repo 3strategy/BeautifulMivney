@@ -17,7 +17,7 @@ lang: he
 בסיום תת פרק זה תוכלו:
 - לכתוב ולהבין שרשור בנאים (Constructor Chaining)
 
-</destails>
+</details>
 
 
 ---
