@@ -115,30 +115,30 @@ classDiagram
     Human --|> Mammal
     Dog --|> Mammal
     Cat --|> Mammal
+    Cat "1" *-- "*" Human : owns
+    Human "0..1" *-- "*" Dog : owns
     GoldenRetriever --|> Dog
     PersianCat --|> Cat
     
-    Cat "1" *-- "*" Human : owns
-    Human "0..1" *-- "*" Dog : owns
-    
     class Mammal {
-        -String name
-        -int age
-        +GetName()
-        +GetAge()
+        #String name
+        #int age
+        +ToString() String
         +Eat()
         +Sleep()
     }
     class Human {
-        -Dog[] pets
+        -Dog[] dogs
+        +GetDogs() Dog[]
         +ServeCat()
     }
     class Cat {
-        -Human[] controlledHumans
+        #Human[] controlledHumans
+        +GetControlledHumans() Human[]
         +Meow()
     }
     class Dog {
-        -String breed
+        #String breed
         +Bark()
     }
     class PersianCat {
@@ -148,7 +148,6 @@ classDiagram
         -String coatColor
         +Fetch()
     }
-
 </div>
 </details>
 
@@ -159,67 +158,56 @@ classDiagram
 ```csharp
 public class Mammal
 {
-    private string name;
-    private int age;
+    protected string name;
+    protected int age;
 
     public Mammal(string name, int age)
     {
         this.name = name;
         this.age = age;
-        Console.WriteLine("Mammal constructor called");
     }
 
-    public string GetName() => name;
-    public int GetAge() => age;
-
-    // Methods
-    public void Eat() => Console.WriteLine($"{name} is eating");
-    public void Sleep() => Console.WriteLine($"{name} is sleeping");
+    public override string ToString() => $"{name} (Age: {age})";
+    public void Eat() => Console.WriteLine($"{this} is eating");
+    public void Sleep() => Console.WriteLine($"{this} is sleeping");
 }
 
 public class Dog : Mammal
 {
-    private string breed;
+    protected string breed;
 
     public Dog(string name, int age, string breed) : base(name, age)
     {
         this.breed = breed;
-        Console.WriteLine("Dog constructor called");
     }
 
-    public string GetBreed() => breed;
-
-    public void Bark() => Console.WriteLine($"{GetName()} is barking: Woof!");
+    public void Bark() => Console.WriteLine($"{this} is barking: Woof!");
 }
 
 public class Human : Mammal
 {
-    private Dog[] pets; // Human can own dogs
+    private Dog[] dogs;
 
     public Human(string name, int age) : base(name, age)
     {
-        this.pets = new Dog[5]; // Fixed size array
-        Console.WriteLine("Human constructor called");
+        dogs = new Dog[5];
     }
 
-    public Dog[] GetPets() => pets;
-
-    public void ServeCat() => Console.WriteLine($"{GetName()} is serving the cat");
+    public Dog[] GetDogs() => dogs;
+    public void ServeCat() => Console.WriteLine($"{this} is serving the cat");
 }
 
 public class Cat : Mammal
 {
-    private Human[] controlledHumans; // Cats own humans!
+    protected Human[] controlledHumans;
 
     public Cat(string name, int age) : base(name, age)
     {
-        this.controlledHumans = new Human[10]; // Fixed size array
-        Console.WriteLine("Cat constructor called");
+        controlledHumans = new Human[10];
     }
 
     public Human[] GetControlledHumans() => controlledHumans;
-
-    public void Meow() => Console.WriteLine($"{GetName()} says: Meow!");
+    public void Meow() => Console.WriteLine($"{this} says: Meow!");
 }
 
 public class PersianCat : Cat
@@ -229,10 +217,7 @@ public class PersianCat : Cat
     public PersianCat(string name, int age, string furLength) : base(name, age)
     {
         this.furLength = furLength;
-        Console.WriteLine("PersianCat constructor called");
     }
-
-    public string GetFurLength() => furLength;
 }
 
 public class GoldenRetriever : Dog
@@ -243,15 +228,10 @@ public class GoldenRetriever : Dog
         : base(name, age, "Golden Retriever")
     {
         this.coatColor = coatColor;
-        Console.WriteLine("GoldenRetriever constructor called");
     }
 
-    public string GetCoatColor() => coatColor;
-
-    public void Fetch() => Console.WriteLine($"{GetName()} is fetching the ball!");
+    public void Fetch() => Console.WriteLine($"{this} is fetching the ball!");
 }
-
-
 ```
 </details>
 ---
