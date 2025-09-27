@@ -35,7 +35,7 @@ public class Dog : Animal   // Dog inherits Animal
 
 ## תרשים UML של שרשרת ירושה
 
-לעיתים נציג מחלקות בתרשים UML. על צורת הכתיבה של UML יוסבר בהמשך
+לעיתים נציג מחלקות בתרשים UML. החץ כלפי מעלה - מהיורשת אל מחלקת הבסיס. על צורת הכתיבה של UML יוסבר בהמשך
 
 <div class="mermaid" style="direction:ltr">
 classDiagram
@@ -61,9 +61,11 @@ classDiagram
       +SetBreed(string)
     }
 
-    Organism <|-- Animal
-    Animal <|-- Mammal
+
+    Organism <|-- Animal : חץ מבת לאם
+    Animal <|-- Mammal :ראש חץ חלול
     Mammal <|-- Dog
+
 </div>
 
 

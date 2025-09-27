@@ -62,13 +62,17 @@ classDiagram
 </div>
 
 ---
-**כללי כתיבת UML:** 
-- private יסומנו בתחילית `-` 
-- public יסומנו בתחילית `+`. 
-- הורשה מסומנת בחץ `🠈` מהיורש למוריש
-- הכלה מסומנת ב `─♦`
-- אני ממליץ ליצור תרשימים כאלו [במרמייד]("https://mermaid.live/"). אפשר להעזר ב-AI.
-- Unified Modeling Language :UML
+**חזרה על כללי כתיבת UML**(Unified Modeling Language): 
+
+`-` private יסומנו בתחילית `-` 
+
+`+` public יסומנו בתחילית `+`. 
+
+`🠈` הורשה מסומנת בחץ `🠈` מהיורש למוריש. ראש החץ חלול, ולא מלא.
+
+`─♦` הכלה מסומנת ב `─♦`
+
+- מומלץ ליצור תרשימים כאלו [במרמייד](https://mermaid.live). אפשר להעזר ב-AI.
 
 
 ## קוד C#

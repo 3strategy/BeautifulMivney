@@ -21,30 +21,46 @@ lang: he
 </details>
 ---
 
-## 1. מבוא - מה זו ירושה?
+## 1. חזרה - מה זו ירושה?
 
 {: .box-note}
-**הגדרה:** ירושה (Inheritance) היא מנגנון המאפשר למחלקה חדשה לרשת תכונות והתנהגויות ממחלקה קיימת. המחלקה היורשת נקראת "מחלקת בת" (Derived/Child Class) והמחלקה ממנה יורשים נקראת "מחלקת אב" (Base/Parent Class).
+**הגדרה:** ירושה (Inheritance) היא מנגנון המאפשר למחלקה חדשה לרשת תכונות והתנהגויות ממחלקה קיימת. המחלקה היורשת נקראת "מחלקת בת/נגזרת" (Derived/Child Class) והמחלקה ממנה יורשים נקראת "מחלקת אם/בסיס" (Base/Parent Class).
 
 דמיינו עץ משפחה - ילדים יורשים תכונות מהוריהם. באופן דומה, בתכנות מונחה עצמים, מחלקות יכולות לרשת תכונות ופעולות ממחלקות אחרות.
 
-### דוגמה מהעולם האמיתי
+### דוגמה
+
+<div class="two-columns">
+  <div markdown="1" class="column">
 ```
-רכב (Vehicle)
-    ├── מכונית (Car)
-    │   ├── מכונית ספורט (SportsCar)
-    │   └── מכונית משפחתית (FamilyCar)
-    └── אופנוע (Motorcycle)
+Vehicle
+    ├── Car
+    │   ├── SportsCar
+    │   └── FamilyCar
+    └── Motorcycle
 ```
+  </div>
+  
+  <div class="column" markdown=1>
+
+סרטוט היררכית מחלקות. המחלקות היורשות תמיד **מתחת** למחלקות הבסיס.
 
 <div class="mermaid">
-graph BT
-    SportsCar[מכונית ספורט<br/>SportsCar] --> Car[מכונית<br/>Car]
-    FamilyCar[מכונית משפחתית<br/>FamilyCar] --> Car
-    Car --> Vehicle[רכב<br/>Vehicle]
-    Motorcycle[אופנוע<br/>Motorcycle] --> Vehicle
-</div>
+---
+config:
+    class:
+        hideEmptyMembersBox: true
+---
+classDiagram
+Vehicle <|-- Motorcycle
+Car <| -- SportsCar
+Car <| -- FamilyCar
+Vehicle <|-- Car
 
+</div>
+	
+  </div>
+</div>
 ---
 
 ## 2. עקרון IS-A - "הוא סוג של"
@@ -58,7 +74,7 @@ graph BT
 - סטודנט **הוא סוג של** אדם ✓
 
 ### דוגמאות שגויות:
-- מנוע **אינו סוג של** מכונית ✗ (הוא חלק ממכונית - זו **קומפוזיציה**)
+- מנוע **אינו סוג של** מכונית ✗ (הוא חלק ממכונית - זו **קומפוזיציה/הכלה**)
 - גלגל **אינו סוג של** אופניים ✗ (הוא רכיב באופניים)
 
 ---
@@ -80,16 +96,9 @@ public class Animal
         Console.WriteLine("Animal constructor called");
     }
     
-    // Getters and Setters - Java Style
-    public string GetName()
-    {
-        return name;
-    }
+    public string GetName() => name;
     
-    public void SetName(string name)
-    {
-        this.name = name;
-    }
+    public void SetName(string name) => this.name = name;
     
     public int GetAge()
     {
@@ -108,10 +117,8 @@ public class Animal
         Console.WriteLine($"{name} is eating");
     }
     
-    public void Sleep()
-    {
-        Console.WriteLine($"{name} is sleeping");
-    }
+    public void Sleep()=> Console.WriteLine($"{name} is sleeping");
+    
 }
 ```
 
@@ -176,11 +183,18 @@ class Program
 ## 4. היררכיית מחלקות - תרשים פשוט
 
 <div class=mermaid>
-graph BT
-    D[GoldenRetriever] --> B[Dog]
-    E[PersianCat] --> C[Cat]
-    B --> A[Animal]
-    C --> A
+---
+config:
+    class:
+        hideEmptyMembersBox: true
+---
+
+classDiagram
+    direction BT
+    GoldenRetriever --|> Dog
+    PersianCat --|> Cat
+    Dog --|> Animal
+    Cat --|> Animal
 </div>
 
 ### דוגמת קוד להיררכיה מורחבת

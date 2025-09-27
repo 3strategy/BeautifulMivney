@@ -309,7 +309,7 @@ Rectangle r3 = new Rectangle();       // Rectangle created: 1x1, Default rectang
 
 <div class="mermaid">
 graph TD
-    A[new Rectangle#40;#41;] --> B[קריאה ל-this#40;1,1#41;]
+    A["new Rectangle()"] --> B[קריאה ל-this#40;1,1#41;]
     B --> C[Rectangle#40;1,1#41; Constructor
     הדפסת Rec created: 1x1]
     C --> D[אתחול Width=1, Height=1]
@@ -491,28 +491,34 @@ public class BankingApp
         Console.WriteLine($"Bob's overdraft: ${checking.GetOverdraftLimit()}");
         Console.WriteLine($"Charlie's interest rate: {vipSavings.GetInterestRate():P}");
 
-        /* פלט:
-        Banking system initialized
-        Account #1000 created for Alice
-        Savings account with 2.00% interest
-        Account #1001 created for Bob
-        Checking account with $200 overdraft
-        Account #1002 created for Charlie
-        Savings account with 5.00% interest
-        Alice's balance: $1000
-        Bob's overdraft: $200
-        Charlie's interest rate: 5.00%
-        */
+
     }
 }
 ```
+
+פלט:
+
+```
+Banking system initialized
+Account #1000 created for Alice
+Savings account with 2.00% interest
+Account #1001 created for Bob
+Checking account with $200 overdraft
+Account #1002 created for Charlie
+Savings account with 5.00% interest
+Alice's balance: $1000
+Bob's overdraft: $200
+Charlie's interest rate: 5.00%
+```
+
+
 </details>
 
 ---
 
 ## סיכום
 
-<div class="box-success">
+<div class="box-success" markdown=1>
 
 **נקודות מפתח לזכור:**
 1. בנאים נקראים אוטומטית בעת יצירת אובייקט עם `new`
@@ -524,4 +530,4 @@ public class BankingApp
 </div>
 
 {: .box-note}
-**טיפ:** תמיד אתחלו את כל השדות בבנאי כדי למנוע מצבים לא מוגדרים!
+**טיפ:** תמיד אתחלו את כל השדות (החדשים) בבנאי כדי למנוע מצבים לא מוגדרים. היעזרו בבנאים של מחלקות הבסיס לאיתחול שדות המוגדרים בהן.
