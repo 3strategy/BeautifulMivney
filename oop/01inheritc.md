@@ -91,7 +91,7 @@ classDiagram
 
 ---
 
-<details markdown=1><summary>נוסיף Human. נסו להרחיב ולממש דוגמא יותר מפורטת המתוארת ב-UML שלהלן</summary>
+<details markdown=1><summary>נוסיף גם בני אדם Human להיררכיה. נסו להרחיב ולממש דוגמא יותר מפורטת המתוארת ב-UML שלהלן</summary>
 <div class=mermaid style="direction:ltr;">
 ---
 config:
@@ -264,17 +264,41 @@ public class GoldenRetriever : Dog
 ### סדר הפעלת בנאים
 
 <div class="mermaid">
-graph TD
-    A[יצירת אובייקט GoldenRetriever] --> B[קריאה לבנאי GoldenRetriever]
-    B --> C[קריאה ל-base - בנאי Dog]
-    C --> D[קריאה ל-base - בנאי Animal]
-    D --> E[ביצוע בנאי Animal]
-    E --> F[חזרה וביצוע בנאי Dog]
-    F --> G[חזרה וביצוע בנאי GoldenRetriever]
-    G --> H[האובייקט נוצר במלואו]
-    
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style H fill:#9f9,stroke:#333,stroke-width:2px
+block-beta
+  columns 2
+  
+  A0["new GoldenRetriever()"]  
+  B0["אובייקט מוכן"]
+  
+  space:2
+  
+  A1["-קריאה ל<br />GoldenRetriever"]    
+  B1["ביצוע<br />GoldenRetriever"] 
+  
+  space:2
+  
+  A3["-קריאה ל<br />Dog"]  
+  B3["ביצוע<br />Dog"]
+  
+  space:2
+  
+  A4["-קריאה ל<br />Mammal"]   
+  B4["ביצוע<br />Mammal"]
+
+  A0 --> A1
+  A1 --> A3
+  A3 --> A4
+  A4 --> B4
+  B4 --> B3
+  B3 --> B1
+  B1 --> B0
+
+  classDef orange fill:#fff3e0,stroke:#ef6c00
+  class B1 orange
+  class B3 orange
+  class B4 orange
+  style B0 fill:#c8e6c9,stroke:#1b5e20
+  style A0 fill:#e1f5fe,stroke:#0277bd
 </div>
 
 {: .box-note}
