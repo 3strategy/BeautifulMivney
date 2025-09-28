@@ -169,16 +169,17 @@ strong {
     /* You can add more selectors here for further tweaks */
     }
 
+}
 
-    /* Mobile-friendly override for the 2 column */
-    @media (max-width: 768px) {
-        .two-columns {
-            flex-direction: column; /* stack instead of side-by-side */
-        }
 
-        .two-columns .column {
-            width: 100%;   /* each column takes full width */
-        }
+/* Mobile-friendly override for the 2 column */
+@media (max-width: 768px) {
+    .two-columns {
+        flex-direction: column; /* stack instead of side-by-side */
+    }
+
+    .two-columns .column {
+        width: 100%;   /* each column takes full width */
     }
 }
 

@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "ירושה - שימוש בבנאים (Constructors)"
+title: "ירושה - בנאים Constructors"
 subtitle: "היכרות עם העמסת בנאים, וסדר הקריאה בירושה"
 tags: [ירושה, OOP,בנאים, העמסת בנאים, שרשור בנאים, CSharp]
 mathjax: true
