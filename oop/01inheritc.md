@@ -91,7 +91,7 @@ classDiagram
 
 ---
 
-<details markdown=1><summary markdown=1>נוסיף **Human**. נסו להרחיב ולממש דוגמא יותר מפורטת המתוארת ב-UML שלהלן</summary>
+<details markdown=1><summary>נוסיף Human. נסו להרחיב ולממש דוגמא יותר מפורטת המתוארת ב-UML שלהלן</summary>
 <div class=mermaid style="direction:ltr;">
 ---
 config:
