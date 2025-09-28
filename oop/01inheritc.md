@@ -267,30 +267,30 @@ public class GoldenRetriever : Dog
 block-beta
   columns 2
   
-  A0["new GoldenRetriever()"]  
+  A0["()new GoldenRetriever"]  
   B0["אובייקט מוכן"]
   
   space:2
   
-  A1["-קריאה ל<br />GoldenRetriever"]    
+  A1["קריאה ל-<br />GoldenRetriever"]    
   B1["ביצוע<br />GoldenRetriever"] 
   
   space:2
   
-  A3["-קריאה ל<br />Dog"]  
+  A3["קריאה ל-<br />Dog"]  
   B3["ביצוע<br />Dog"]
   
   space:2
   
-  A4["-קריאה ל<br />Mammal"]   
+  A4["קריאה ל-<br />Mammal"]   
   B4["ביצוע<br />Mammal"]
 
   A0 --> A1
   A1 --> A3
   A3 --> A4
   A4 --> B4
-  B4 --> B3
-  B3 --> B1
+  B4 -- "חזרה ל-Dog" --> B3
+  B3 -- "חזרה ל-GoldenRetriever" --> B1
   B1 --> B0
 
   classDef orange fill:#fff3e0,stroke:#ef6c00
@@ -303,6 +303,9 @@ block-beta
 
 {: .box-note}
 **כלל חשוב:** הבנאים נקראים מהבן לאב, אך מבוצעים מהאב לבן!
+
+
+<details markdown=1><summary>דוגמאות קוד חסרות תועלת. נא להתעלם</summary>
 
 ### דוגמת קוד מפורטת
 ```csharp
@@ -405,7 +408,7 @@ class Program
 
 ---
 
-## 6. הרחבה מעשית - מערכת ניהול עובדים
+## 6x. הרחבה מעשית - מערכת ניהול עובדים
 
 ```csharp
 public class Person
@@ -532,10 +535,10 @@ public class Manager : Employee
     }
 }
 ```
-
+</details>
 ---
 
-## 7. תרגול מעשי
+## 6. תרגול מעשי
 
 ### תרגיל 1: היררכיית כלי תחבורה
 סרטטו היררכיית מחלקות (ללא קוד) עבור:
@@ -556,7 +559,7 @@ public class Manager : Employee
 
 ---
 
-## 8. סיכום ונקודות מפתח
+## 7. סיכום ונקודות מפתח
 
 <div class="box-success" markdown=1>
 
@@ -579,7 +582,7 @@ public class Manager : Employee
 
 ---
 
-## 9. שאלות לתרגול עצמי
+## 8. שאלות לתרגול עצמי
 
 1. מהו ההבדל בין ירושה לקומפוזיציה (הכלה)?
 2. מתי נשתמש בירושה ומתי לא?
