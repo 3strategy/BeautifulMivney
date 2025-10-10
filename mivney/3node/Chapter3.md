@@ -165,14 +165,13 @@ head.Next = new Node<Student>(new Student("Bob", 75));
 
 ### דיאגרמה – רשימה מקושרת
 
-<div class="mermaid">
+```mermaid
 graph LR
     A([ראש]) --> B[Node< T >: Value1]
     B --> C[Node< T >: Value2]
     C --> D[Node< T >: Value3]
     D --> E([null])
-</div>
-
+```
 הדיאגרמה מתארת רשימה מקושרת שבה כל חוליה מצביעה לחוליה הבאה, והחוליה האחרונה מצביעה ל‑null.
 
 
