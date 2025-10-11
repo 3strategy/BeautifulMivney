@@ -224,14 +224,23 @@ body {
 /* Desktop submenu positioning is handled by theme CSS using dropdown-menu-right
    For mobile, stack submenus under parent, indented to the right */
 @media (max-width: 1199px) {
-    .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
+    /* Reset LTR padding */
+    .navbar-custom .dropdown-menu .dropdown-item {
+        padding-left: 0 !important;
+    }
+
+    /* Level 1: direct children in the first dropdown panel */
+    .navbar-custom .dropdown-menu > .dropdown-item,
+    .navbar-custom .dropdown-menu > .dropdown-submenu > a.dropdown-toggle {
         padding-right: 2rem !important;
-        padding-left: 0 !important;
     }
-    .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-submenu .dropdown-item {
+
+    /* Level 2: items inside a nested submenu panel */
+    .navbar-custom .dropdown-menu > .dropdown-submenu > .dropdown-menu > .dropdown-item,
+    .navbar-custom .dropdown-menu > .dropdown-submenu > .dropdown-menu > .dropdown-submenu > a.dropdown-toggle {
         padding-right: 3rem !important;
-        padding-left: 0 !important;
     }
+
     .navbar-custom .dropdown-submenu > .dropdown-menu {
         right: 0;
         left: auto;
