@@ -259,6 +259,15 @@ ul, ol {
     gap: 0.6em;
 }
 
+/* Keep footer social links horizontal despite global UL rule */
+footer .list-inline {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .5rem 1rem;
+}
+
 .subq {
     margin-inline-start: 2em;
     text-indent: -1.5em;
