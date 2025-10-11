@@ -13,20 +13,37 @@
   <div class="collapse navbar-collapse" id="main-navbar">
     <ul class="navbar-nav ml-auto">
       {%- for link in site.navbar-links -%}
-        {%- if link[1].first %}
+        {%- assign top_text = link[0] -%}
+        {%- assign top_item = link[1] -%}
+        {%- if top_item.first -%}
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ link[0] }}</a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              {%- for childlink in link[1] -%}
-                {%- for linkparts in childlink %}
-                  <a class="dropdown-item" href="{{ linkparts[1] | relative_url }}">{{ linkparts[0] }}</a>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-{{ forloop.index }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ top_text }}</a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown-{{ forloop.index }}">
+              {%- for childlink in top_item -%}
+                {%- for linkparts in childlink -%}
+                  {%- assign child_text = linkparts[0] -%}
+                  {%- assign child_item = linkparts[1] -%}
+                  {%- if child_item.first -%}
+                    <div class="dropdown-submenu">
+                      <a class="dropdown-item dropdown-toggle" href="#">{{ child_text }}</a>
+                      <div class="dropdown-menu">
+                        {%- for subchild in child_item -%}
+                          {%- for subparts in subchild -%}
+                            <a class="dropdown-item" href="{{ subparts[1] | relative_url }}">{{ subparts[0] }}</a>
+                          {%- endfor -%}
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  {%- else -%}
+                    <a class="dropdown-item" href="{{ child_item | relative_url }}">{{ child_text }}</a>
+                  {%- endif -%}
                 {%- endfor -%}
-              {%- endfor %}
+              {%- endfor -%}
             </div>
           </li>
-        {% else %}
+        {%- else -%}
           <li class="nav-item">
-            <a class="nav-link" href="{{ link[1] | relative_url }}">{{ link[0] }}</a>
+            <a class="nav-link" href="{{ top_item | relative_url }}">{{ top_text }}</a>
           </li>
         {%- endif -%}
       {%- endfor -%}
