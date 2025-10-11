@@ -38,10 +38,18 @@ let BeautifulJekyllJS = {
       if ($submenu.length) {
         e.preventDefault();
         e.stopPropagation();
-        // Close any open submenus at the same level
-        $toggle.parents('.dropdown-menu').first().find('.show').removeClass('show');
-        $submenu.toggleClass('show');
-        $toggle.parent('.dropdown-submenu').toggleClass('show');
+        if ($submenu.hasClass('show')) {
+          // Collapse if it's already open
+          $submenu.removeClass('show');
+          $toggle.parent('.dropdown-submenu').removeClass('show');
+        } else {
+          // Close only sibling submenus in the same level, then open this one
+          const $level = $toggle.closest('.dropdown-menu');
+          $level.find('> .dropdown-submenu .dropdown-menu.show').removeClass('show');
+          $level.find('> .dropdown-submenu.show').removeClass('show');
+          $submenu.addClass('show');
+          $toggle.parent('.dropdown-submenu').addClass('show');
+        }
       }
     });
     // When the top-level dropdown closes, close any open submenus

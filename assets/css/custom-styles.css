@@ -203,6 +203,47 @@ body {
     font-family: 'Arimo', sans-serif;
 }
 
+/* ================= RTL navbar dropdowns ================ */
+/* Align dropdown menus and items to the right for RTL */
+.navbar-custom .nav-item.dropdown .dropdown-menu {
+    text-align: right;
+}
+.navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
+    text-align: right;
+}
+
+/* Submenu caret: point left and place on the left side */
+.navbar-custom .dropdown-submenu > a.dropdown-toggle { position: relative; }
+.navbar-custom .dropdown-submenu > a.dropdown-toggle::after {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    margin-right: 0.5em;
+}
+
+/* Desktop submenu positioning is handled by theme CSS using dropdown-menu-right
+   For mobile, stack submenus under parent, indented to the right */
+@media (max-width: 1199px) {
+    .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-item {
+        padding-right: 2rem !important;
+        padding-left: 0 !important;
+    }
+    .navbar-custom .nav-item.dropdown .dropdown-menu .dropdown-submenu .dropdown-item {
+        padding-right: 3rem !important;
+        padding-left: 0 !important;
+    }
+    .navbar-custom .dropdown-submenu > .dropdown-menu {
+        right: 0;
+        left: auto;
+        margin: 0; /* avoid exposing background gaps */
+    }
+}
+
+/* Ensure dropdown panels inherit navbar background (prevents white strips) */
+.navbar-custom .nav-item.dropdown .dropdown-menu {
+    background-color: var(--navbar-col);
+}
+
 ul, ol {
     display: flex;
     flex-direction: column;
