@@ -30,14 +30,14 @@ Follow these steps in order:
 ---
 
 ## 1. Run the AGP Upgrade Assistant (Recommended)
-![AGP Plugin update](image.png)
+![AGP Plugin update](/assets/img/015/image.png)
 1. If you see a popup as show above, Click the popup **Android Gradle plugin version 8... has an upgrade available** → **Start the AGP Upgrade Assistant**.
 2. In the assistant:
 
    * Select a stable AGP version that is proposed (click **Run selected steps**). 
    * This will take a few minutes to complete
    * Let it update your `build.gradle` files and suggest the Gradle wrapper changes.
-   ![click Run selected steps](image-1.png)
+   ![click Run selected steps](/assets/img/015/image-1.png)
 3. Click **Apply Changes** and then **Sync Now**.
 
 *This automates updating the Android Gradle Plugin and wrapper. If you prefer manual control or encounter issues, proceed to Step 3.*
@@ -72,9 +72,9 @@ Follow these steps in order:
    targetSdk 34
    ```
    The lines that should be changed are higlighted, and the Studio's assitant will propose to do the change for you:
-   ![assistant proposed change](image-2.png)
+   ![assistant proposed change](/assets/img/015/image-2.png)
 3. Save and click **Sync Now**.
-4. If you try to udpate the targetSdk as well, **you will be getting a worrying message**, (red Error):![alt text](image-3.png). we respect that and will not change target without overhauling the app.
+4. If you try to udpate the targetSdk as well, **you will be getting a worrying message**, (red Error):![alt text](/assets/img/015/image-3.png). we respect that and will not change target without overhauling the app.
 
 ---
 

@@ -9,7 +9,7 @@ lang: he
 {: .box-note}
 **מטרת המפגש**: להגדיר ציפיות, להציג דרישות עבודה וליישר קו כדי שתצליחו השנה.
 
-![alt text](image.png)
+![alt text](/assets/img/0year/image.png)
 
 
 ## מה לומדים השנה
@@ -116,7 +116,7 @@ section finals
 
 
 <!-- תמונה מוצעת: צילום מסך של הגשות.שלי.com או אייקון "V" של הגשה -->
-![alt text](image-4.png)
+![alt text](/assets/img/0year/image-4.png)
 
 ---
 
@@ -125,7 +125,7 @@ section finals
 - השקעה מוקדמת מונעת פערים בהמשך.
 
 <!-- תמונה מוצעת: תרשים זרימה קטן שממחיש קריאה רקורסיבית -->
-![alt text](image-3.png)
+![alt text](/assets/img/0year/image-3.png)
 
 
 ## רף הקושי
@@ -144,7 +144,7 @@ section finals
 - אוכל - לבקש רשות. יהיה מותר/אסור לפי רמת הסדר המופתי שתשאירו אחריכם
 
 <!-- תמונה מוצעת: אייקון "אין טלפונים" + תמונת סט-אפ עם שני מסכים -->
-![alt text](image-5.png)
+![alt text](/assets/img/0year/image-5.png)
 
 
 ## תקשורת
@@ -152,7 +152,7 @@ section finals
 - שאלות פרטיות – אפשר בהודעה אישית, אך קודם לנסות בקבוצה.
 
 <!-- תמונה מוצעת: אייקון/לוגו WhatsApp -->
-![alt text](image-6.png)
+![alt text](/assets/img/0year/image-6.png)
 
 
 ## בחינות
@@ -201,7 +201,7 @@ section finals
 - שעות פרטניות/תמיכה יתואמו ויעודכנו בהמשך (יפורסם בקבוצה). תשלחו לי **מערכת שעות** שלכם, ותדגישו מתי מסתיים יום הלימודים ומתי יש לכם **שעות חלון**.
 
 <!-- תמונה מוצעת: אייקון מורה/עזרה -->
-![alt text](image-7.png)
+![alt text](/assets/img/0year/image-7.png)
 
 ## תמיכת תלמידי יא' לכיתות יוד
 
@@ -234,4 +234,4 @@ section finals
 ## שאלות❓
 
 ## מערכת שעות כרגע:
-![alt text](Schedule.png)
+![alt text](/assets/img/0year/Schedule.png)

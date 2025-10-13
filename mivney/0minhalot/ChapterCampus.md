@@ -40,10 +40,10 @@ lang: he
 ## במידה שזה לא נפתח או לא עדכני:
 
 **במידה שלא, אתם נגשים לתת פרק 0. כאן בדוגמא, 9.0 ביסודות, ובוחרים בלשונית השמאלית:**
-![alt text](image-2.png)
+![alt text](/assets/img/ChapterCampus/image-2.png)
 
 ולוחצים כדי לפתוח את המצגת במסך מלא
-![alt text](image-3.png)
+![alt text](/assets/img/ChapterCampus/image-3.png)
 
 ---
 

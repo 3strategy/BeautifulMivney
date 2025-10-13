@@ -46,7 +46,7 @@ lang: en
 ### 2. טיפול בבחירת פריטים
 
 1. פתחו את קובץ MasterActivity הנמצא כאן:
-    ![alt text](image-6.png)
+    ![alt text](/assets/img/013/image-6.png)
 1. עדכנו את הפונקציה(מתודה) `onOptionsItemSelected` כדי להפעיל את ה־Activity המתאים לאחר בחירה מהתפריט:
 ## הוספת כל ה‑Activities לתפריט Overflow (⋮)
 
@@ -155,15 +155,15 @@ public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 ```
 
 בשלב זה ניתן לבחור את המילה New ללחוץ Ctrl+R ולהחליף אותה (חשוב לסמן את Cc להחלפה רק של התאמה לאותיות גדולות) בשם ה-Activity שלנו. בכל פעם לבצע רק 4 החלפות - ואז ב-if הבא להחליף כבר למשהו אחר
-![alt text](image-10.png)
+![alt text](/assets/img/013/image-10.png)
 
 ---
 
 כך זה יראה לאחר השינוי. **1 עדיין באדום:**
-![alt text](image-11.png)
+![alt text](/assets/img/013/image-11.png)
 
 ונותר רק לרחף מעל ההערה באדום **ולבחור import class**
-![alt text](image-12.png)
+![alt text](/assets/img/013/image-12.png)
 
 
 ### 3. התאמות נוספות (אופציונלי)
