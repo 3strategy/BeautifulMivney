@@ -43,6 +43,25 @@ function toggleSize() {
   }
 }
 
+// Convert fenced ```mermaid code blocks to <div class="mermaid"> before Mermaid runs
+document.addEventListener('DOMContentLoaded', function () {
+  try {
+    const codeBlocks = document.querySelectorAll('pre > code.language-mermaid');
+    codeBlocks.forEach((code) => {
+      const pre = code.parentElement;
+      const container = document.createElement('div');
+      container.className = 'mermaid';
+      // textContent decodes any HTML entities into raw Mermaid source
+      container.textContent = code.textContent;
+      // Replace the whole <pre> block with the Mermaid container
+      pre.replaceWith(container);
+    });
+  } catch (e) {
+    // no-op: fail-safe so other scripts continue to run
+    console && console.warn && console.warn('Mermaid fence conversion failed:', e);
+  }
+});
+
 // on load, restore both theme & size
 window.onload = function() {
   // existing theme restore
