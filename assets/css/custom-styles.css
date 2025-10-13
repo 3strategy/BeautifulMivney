@@ -382,7 +382,7 @@ button:hover {
     padding-right: 1.3em;
 }
 
-.box-success {
+.box-success, .hll {
     background-color: var(--backs-col);
 }
 

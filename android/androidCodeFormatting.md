@@ -11,15 +11,15 @@
 
 1. ראשית ניכנסת לתפריט File > Settings > Keymap
 1. נרשום בשורת החיפוש Reformat ונגיע למסך הבא:
-    ![alt text](image-4.png)
+    ![alt text](/assets/img/012/image-4.png)
 
 1. נשנה את הקיצור של Reformat File... ע"י בחירה בו והקלדת הקיצור החדש Ctrl + K וסימון Second stroke D. הבעיה שקיצור זה כבר תפוס ולכן צריך להסיר את הקונפליקט. ככה זה נראה בתחילה:
-    ![alt text](image-5.png)
+    ![alt text](/assets/img/012/image-5.png)
 
 1. אין ברירה אלא לגשת ולחפש שוב - Commit:
-    ![alt text](image-6.png)
+    ![alt text](/assets/img/012/image-6.png)
 
 1. ולבצע הסרה.
 
 1. כעת ניתן להוסיף את הקיצור הרצוי:
-    ![alt text](image-7.png)
+    ![alt text](/assets/img/012/image-7.png)
