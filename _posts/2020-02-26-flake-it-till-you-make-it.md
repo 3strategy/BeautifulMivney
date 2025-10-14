@@ -10,7 +10,7 @@ author: Sharon Smith and Barry Simpson
 ---
 
 <style>
-body {
+main {
   direction: ltr !important;
   text-align: left !important;
 }

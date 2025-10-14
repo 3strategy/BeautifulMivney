@@ -10,7 +10,7 @@ lang: en
 ---
 
 <style>
-body {
+main {
   direction: ltr !important;
   text-align: left !important;
 }

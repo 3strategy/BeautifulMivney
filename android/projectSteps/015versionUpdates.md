@@ -9,10 +9,8 @@ lang: en
 
 
 <style>
-html {
+main {
   direction: ltr !important;
-}
-body {
   text-align: left !important;
 }
 </style>

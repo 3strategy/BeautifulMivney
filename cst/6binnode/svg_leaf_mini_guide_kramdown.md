@@ -8,8 +8,8 @@ lang: en
 
 # SVG Leaf Mini‑Guide
 <style>
-body {
-   direction: ltr !important;
+main {
+  direction: ltr !important;
   text-align: left !important;
 }
 </style>
