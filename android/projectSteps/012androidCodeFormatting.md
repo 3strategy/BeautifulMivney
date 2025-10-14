@@ -1,3 +1,10 @@
+---
+layout: page
+title: "Ctrl K D formatting"
+subtitle: "קינפוג ה-IDE לפירמוט קוד"
+tags: [אנדרואיד, Formatting, Ctrl K D]
+lang: en
+---
 
 
 

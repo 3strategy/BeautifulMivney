@@ -69,7 +69,54 @@ navbar-links:
   #   - מצגת מני והרדי: "/oop/oop1Meni-Hardi.pptx"
   - בגרויות: "/oop/Bagruyot"
 
-  אנדרואיד:
+
+  א יסודות:
+  - פתיח והתקנה:
+    - היכרות עם אנדרואיד: "/android/alon/02.Intro.pdf"
+    - Ctrl K D: "/android/projectSteps/012androidCodeFormatting"
+  - UI ופריסות:
+    - Layouts בסיסי: "/android/alon/03.Layouts.pdf"
+    - תרגיל Layout: "/android/alon/05.Layout%20Exercise.pdf"
+    - דגם MVC/MVP: "/android/alon/05.LayoutExMVC.MVP"
+    - מודל תרגול: "/android/alon/05.LayoutExModel"
+  - Activities ואינטנטים:
+    - Activity: "/android/alon/04.Activity.pdf"
+    - Activities & Intents: "/android/alon/07.ActivitiesAndIntents.pdf"
+    - Implicit Intents: "/android/alon/11.Implicit%20Intents.pdf"
+    - Activity For Result: "/android/alon/12.ActivityForResult.pdf"
+  - רכיבי UI:
+    - Dialog: "/android/alon/10.Dialog.pdf"
+    - RecyclerView: "/android/alon/09.RecycleView.pdf"
+  - הרשאות:
+    - הרשאות (PDF): "/android/alon/13b.Permissions.pdf"
+    - מדריך הרשאות: "/android/alon/13.android_permissions_tutorial_Version2"
+
+
+  א תרגול:
+  - תרגילי בסיס:
+    - ToDo List: "/android/amjad/Ex3.ToDoList"
+    - SQLite בסיסי: "/android/amjad/5.DbWorkSqlite"
+
+  - ניהול פרויקט:
+    - עדכוני גרסאות: "/android/projectSteps/015versionUpdates"
+    - הוספת Activities: "/android/projectSteps/011addingActivities"
+    - הוספת Activity לתפריט: "/android/projectSteps/013addingActivityToMenu"
+    - שינוי שם פרויקט: "/android/projectSteps/191renameProject"
+    - Git Pull Requests: "/android/projectSteps/202GitPullRequests"
+
+  א מתקדם:
+  - תקשורת ונתונים:
+    - SignalR TicTacToe: "/android/alon/05.TicTacToeSignalR"
+    - Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
+    - חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
+    - Firebase FBRef (חדש): "/android/projectSteps/185newFBref"
+  - שונות:
+    - BroadcastReceiver: "/android/alon/14.BroadCastReceiver.pdf"
+    - עבודה ברקע: "/android/alon/16.BackgroundWork.pdf"
+    - Fragments (מצגת): "/android/alon/15.Fragments.pptx"
+    - מדריך Fragments: "/android/alon/15b.FragmentsTutorial"
+    - KT JetPack Compose: "/android/projectSteps/192supportJetPackCompose"
+
   #   - תיקון גרסאות: "/android/versionUpdates"
   #   - הוספת Activity: "/android/projectSteps/addingActivities"
   #   - הוספת Activity לתפריט: "/android/projectSteps/addingActivityToMenu"
