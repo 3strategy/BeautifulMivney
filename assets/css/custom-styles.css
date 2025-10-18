@@ -253,6 +253,24 @@ body {
     background-color: var(--navbar-col);
 }
 
+/* --- Mobile navbar: make long menus scrollable --- */
+@media (max-width: 1199px) {
+  /* When the mobile menu is expanded, constrain the fixed navbar to viewport
+     height and allow scrolling so items off-screen become reachable */
+  .navbar-custom.top-nav-expanded {
+    max-height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Also allow long dropdown panels to scroll within the viewport */
+  .navbar-custom .nav-item.dropdown .dropdown-menu {
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 ul, ol {
     display: flex;
     flex-direction: column;
