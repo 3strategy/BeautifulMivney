@@ -72,24 +72,24 @@ navbar-links:
 
   א יסודות:
   - פתיח והתקנה:
-    - היכרות עם אנדרואיד: "/android/alon/02.Intro.pdf"
+    - 02 היכרות עם אנדרואיד: "/android/alon/02.Intro.pdf"
     - Ctrl K D: "/android/projectSteps/012androidCodeFormatting"
   - UI ופריסות:
-    - Layouts בסיסי: "/android/alon/03.Layouts.pdf"
-    - תרגיל Layout: "/android/alon/05.Layout%20Exercise.pdf"
-    - דגם MVC/MVP: "/android/alon/05.LayoutExMVC.MVP"
-    - מודל תרגול: "/android/alon/05.LayoutExModel"
+    - 03 Layouts בסיסי: "/android/alon/03.Layouts.pdf"
+    - 05 תרגיל Layout: "/android/alon/05.Layout%20Exercise.pdf"
+    - 05 דגם MVC/MVP: "/android/alon/05.LayoutExMVC.MVP"
+    - 05 מודל תרגול: "/android/alon/05.LayoutExModel"
   - Activities ואינטנטים:
-    - Activity: "/android/alon/04.Activity.pdf"
-    - Activities & Intents: "/android/alon/07.ActivitiesAndIntents.pdf"
-    - Implicit Intents: "/android/alon/11.Implicit%20Intents.pdf"
-    - Activity For Result: "/android/alon/12.ActivityForResult.pdf"
+    - 04 Activity: "/android/alon/04.Activity.pdf"
+    - 07 Activities & Intents: "/android/alon/07.ActivitiesAndIntents.pdf"
+    - 11 Implicit Intents: "/android/alon/11.Implicit%20Intents.pdf"
+    - 12 Activity For Result: "/android/alon/12.ActivityForResult.pdf"
   - רכיבי UI:
-    - Dialog: "/android/alon/10.Dialog.pdf"
-    - RecyclerView: "/android/alon/09.RecycleView.pdf"
+    - 10 Dialog: "/android/alon/10.Dialog.pdf"
+    - 09 RecyclerView: "/android/alon/09.RecycleView.pdf"
   - הרשאות:
-    - הרשאות (PDF): "/android/alon/13b.Permissions.pdf"
-    - מדריך הרשאות: "/android/alon/13.android_permissions_tutorial_Version2"
+    - 13b הרשאות (PDF): "/android/alon/13b.Permissions.pdf"
+    - 13 מדריך הרשאות: "/android/alon/13.android_permissions_tutorial_Version2"
 
 
   א תרגול:
@@ -98,24 +98,24 @@ navbar-links:
     - SQLite בסיסי: "/android/amjad/5.DbWorkSqlite"
 
   - ניהול פרויקט:
-    - עדכוני גרסאות: "/android/projectSteps/015versionUpdates"
-    - הוספת Activities: "/android/projectSteps/011addingActivities"
-    - הוספת Activity לתפריט: "/android/projectSteps/013addingActivityToMenu"
-    - שינוי שם פרויקט: "/android/projectSteps/191renameProject"
-    - Git Pull Requests: "/android/projectSteps/202GitPullRequests"
+    - 015 עדכוני גרסאות: "/android/projectSteps/015versionUpdates"
+    - 011 הוספת Activities: "/android/projectSteps/011addingActivities"
+    - 013 הוספת Activity לתפריט: "/android/projectSteps/013addingActivityToMenu"
+    - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
+    - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
 
   א מתקדם:
   - תקשורת ונתונים:
-    - SignalR TicTacToe: "/android/alon/05.TicTacToeSignalR"
-    - Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
-    - חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
-    - Firebase FBRef (חדש): "/android/projectSteps/185newFBref"
+    - 05 SignalR TicTacToe: "/android/alon/05.TicTacToeSignalR"
+    - 08 Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
+    - 181 חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
+    - 185 Firebase FBRef (חדש): "/android/projectSteps/185newFBref"
   - שונות:
-    - BroadcastReceiver: "/android/alon/14.BroadCastReceiver.pdf"
-    - עבודה ברקע: "/android/alon/16.BackgroundWork.pdf"
-    - Fragments (מצגת): "/android/alon/15.Fragments.pptx"
-    - מדריך Fragments: "/android/alon/15b.FragmentsTutorial"
-    - KT JetPack Compose: "/android/projectSteps/192supportJetPackCompose"
+    - 14 BroadcastReceiver: "/android/alon/14.BroadCastReceiver.pdf"
+    - 15 Fragments (מצגת): "/android/alon/15.Fragments.pptx"
+    - 15b מדריך Fragments: "/android/alon/15b.FragmentsTutorial"
+    - 16 עבודה ברקע: "/android/alon/16.BackgroundWork.pdf"
+    - 192 KT JetPack Compose: "/android/projectSteps/192supportJetPackCompose"
 
   #   - תיקון גרסאות: "/android/versionUpdates"
   #   - הוספת Activity: "/android/projectSteps/addingActivities"
