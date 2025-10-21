@@ -12,5 +12,9 @@ end
 # Performance-booster for watching directories on Windows
 gem "wdm", "~> 0.1", :platforms => [:mingw, :x64_mingw, :mswin]
   
-gemspec
+# Use newer Jekyll for GitHub Actions builds
+gem "jekyll", "~> 4.4"
+# Optional but recommended: ensure a modern Rouge for highlighting
+gem "rouge", ">= 3.30"
 
+gemspec
