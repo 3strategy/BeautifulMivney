@@ -304,3 +304,44 @@ Pull Requests transform Git from a version control system into a collaboration p
 - Changes are documented and traceable
 
 This is the foundation of modern software team collaboration!
+
+
+## finally: a simplified scenario where branch finished development while master was not modified:
+
+```mermaid
+gitGraph
+  branch master
+  checkout master
+  commit id: "A"
+  branch feat-My-change
+  checkout feat-My-change
+  commit id: "C1"
+  commit id: "C2"
+  commit id: "C3"
+  checkout master
+  merge feat-My-change
+  commit id: "C3 (now on master)"
+
+```
+
+Here is an actual command set for a feature branch called `feat/act-as`
+
+```
+# From anywhere:
+git fetch origin
+
+# Make sure master is current and selected
+git switch master
+git pull --ff-only
+
+# Fast-forward master to your feature branch
+git merge --ff-only feat/act-as
+
+# Push updated master
+git push origin master
+
+# (Optional) delete the feature branch
+# git branch -d feat/act-as
+# git push origin --delete feat/act-as
+
+```

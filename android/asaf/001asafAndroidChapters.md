@@ -40,44 +40,148 @@ lang: en
 - [קישור לAppSchool יש לגשת ידנית ל-2 פרק 1(תכנות בסיסי) שיעור 5](https://appschoolfront.web.app/course/learn/wmdWWTs17sLTO8N20HtO)
 
     <details markdown="1"><summary>example 1</summary>
-        ```java
-        public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-            int counter;
-            TextView tvDisplay;
-            Button btnPlus;
-            Button btnMinus;
-            @Override
-            protected void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                EdgeToEdge.enable(this);
-                setContentView(R.layout.activity_main);
-                ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-                    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                    return insets;
-                });
+    ```java
+    public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-                btnPlus= findViewById(R.id.btnPlus);
-                btnMinus= findViewById(R.id.btnMinus);
-                tvDisplay= findViewById(R.id.tvDisplay);
+        int counter;
+        TextView tvDisplay;
+        Button btnPlus;
+        Button btnMinus;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            EdgeToEdge.enable(this);
+            setContentView(R.layout.activity_main);
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
 
-                btnPlus.setOnClickListener(this);
-                btnMinus.setOnClickListener(this);
+            // XML - התחברות לכפתורים מה
+            btnPlus= findViewById(R.id.btnPlus);
+            btnMinus= findViewById(R.id.btnMinus);
+            tvDisplay= findViewById(R.id.tvDisplay);
 
-            }
+            btnPlus.setOnClickListener(this);
+            btnMinus.setOnClickListener(this);
 
-            @Override
-            public void onClick(View v) {
-                if(v==btnPlus)        {
-                    counter++;
-                } else if (v==btnMinus) {
-                    counter--;
-                }
-                tvDisplay.setText("Total Points " + counter);
-            }
         }
+
+        @Override
+        public void onClick(View v) {
+            if(v==btnPlus)        {
+                counter++;
+            } else if (v==btnMinus) {
+                counter--;
+            }
+            tvDisplay.setText("Total Points " + counter);
+        }
+    }
+    ```
+
+    </details>
+
+
+    <details markdown="1"><summary>simpler way כאשר אין צורך לטפל באופן אחיד במספר כפתורים שונים</summary>
+
+    ```java
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        // XML - התחברות לכפתורים מה
+        etFname = findViewById(R.id.etFname);
+        etLname = findViewById(R.id.etLname);
+        btnSave = findViewById(R.id.btnSave);
+        tvDisplay = findViewById(R.id.tvDisplay);
+        
+        btnSave.setOnClickListener(v -> {
+            tvDisplay.setText(etFname.getText() + " " + etLname.getText());
+        });
+    }
+    ```
+    
+    </details>
+
+    <details markdown="1"><summary>מה מותר ואסור למחוק</summary>
+
+    **הסבר פקודות ב-`onCreate` - מה אפשר למחוק ומתי**
+
+    1. `super.onCreate(savedInstanceState)`
+        ```java
+        super.onCreate(savedInstanceState);
         ```
+        **מה זה עושה:** קורא לבנאי של המחלקה האב (`AppCompatActivity`)
+
+        **האם אפשר למחוק?** ❌ **לעולם לא!**
+        - זו פקודה חובה בכל Activity
+        - בלעדיה האפליקציה תקרוס
+        - חייבת להיות הפקודה הראשונה ב-`onCreate`
+
+    
+    2. `EdgeToEdge.enable(this)`
+        ```java
+        EdgeToEdge.enable(this);
+        ```
+        **מה זה עושה:** מפעיל תצוגה מקצה לקצה (edge-to-edge) - התוכן עולה מתחת לסטטוס בר ולניווט בר
+
+        **האם אפשר למחוק?** ✅ **כן, בהחלט**
+        - זו תכונה חדשה שנוספה ב-Android Studio החדש (2023+)
+        - אם תמחק אותה, האפליקציה תעבוד רגיל עם המרווחים הסטנדרטיים
+        - **מתי למחוק:** כשאתה לא רוצה עיצוב edge-to-edge, או כשזה מסבך לך את העיצוב
+
+    
+
+    3. `setContentView(R.layout.activity_main)`
+        ```java
+        setContentView(R.layout.activity_main);
+        ```
+        **מה זה עושה:** טוען את קובץ ה-XML של הממשק (layout) למסך
+
+        **האם אפשר למחוק?** ❌ **לא!**
+        - בלעדיה לא יהיה לך ממשק משתמש
+        - כל ה-`findViewById` יחזירו `null`
+        - **חובה** לכל Activity עם ממשק גרפי
+
+        
+
+    4. `(...)ViewCompat.setOnApplyWindowInsetsListener`
+        ```java
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+        ```
+        **מה זה עושה:** מוסיף padding כדי שהתוכן לא יוסתר על ידי הסטטוס בר/ניווט בר במצב edge-to-edge
+
+        **האם אפשר למחוק?** ✅ **כן, במקרים רבים**
+
+        **מתי למחוק:**
+        - אם מחקת את `EdgeToEdge.enable(this)` - אז אין צורך בזה
+        - אם הוספת padding ידני ב-XML (בתוך ה-ConstraintLayout עם `android:padding="16dp"`)
+        - אם התוכן שלך לא צריך להימנע מהסטטוס בר
+
+        **מתי לשמור:**
+        - אם את.ה רוצה edge-to-edge אבל לא רוצה שהתוכן יוסתר
+        - אם העיצוב שלך דינמי ומשתנה
+
+        ---
+
+
+    **סיכום מהיר**
+
+    | מותר למחוק?| מתי למחוק |
+    |-------|-----------|
+    | אף פעם ❌   | `super.onCreate()` | 
+    |  ❌ אף פעם (אלא אם אין UI) |`setContentView()` |
+    |  אופציונלי  ✅ edge-to-edge |`EdgeToEdge.enable()` | 
+    |  אופציונלי  ✅  EdgeToEdge או יש padding ב-XML |  `ViewCompat.setOnApplyWindowInsetsListener()` |
+    {: .table-rl}
+
     </details>
 
 - **להכין דוגמאות של פניה טיפוסית ל-setOnClickListener**
