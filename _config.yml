@@ -27,7 +27,7 @@ navbar-links:
     - אתר יסודות: "https://יסודות.שלי.com"
     - אתר מתמטיקה: "https://מתמטיקה.com"
     - אתר הגשות: "https://הגשות.שלי.com"
-    - מצגות קמפוס: "/mivney/1recursionAndComplexity/ChapterCampus"
+    - מצגות קמפוס: "/mivney/0minhalot/ChapterCampus"
     - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
     - קמפוס יסודות: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceA_HE+2023_1/course/"
     - קמפוס מבני נתונים: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/"
@@ -36,7 +36,6 @@ navbar-links:
   פתיחת שנה: 
     - 0. פתיחת שנה: "/mivney/0minhalot/0YearOpening"
     - 0. עבודה בקמפוס: "/mivney/0minhalot/ChapterCampus"
-    - 0. מחלקות: "/mivney/0minhalot/Chapter0"
 
   רקורסיה ויעילות:
     - רקורסיה:
@@ -50,6 +49,7 @@ navbar-links:
 
   שרשרת חוליות:
     - 3. שרשרת חוליות: "/mivney/3node/Chapter3"
+    - 3. האוניברסיה העברית: "/mivney/3node/chap7-collection-CSharp"
   #   - תרגול: "/mivney/3node/Links"
 
   מחסנית:
@@ -65,12 +65,30 @@ navbar-links:
   #   - עץ בינארי לעומת עץ חיפוש: "/mivney/6binnode/binnode1"
     
   תמ"ע:
-  #   - פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
-  #   - מצגת מני והרדי: "/oop/oop1Meni-Hardi.pptx"
+
+
+  - 0 חזרה על עצמים:
+    - 0. חזרה על מחלקות: "/oop/00Chapter0"
+    - מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11A-objects/index.html"
+    - מצגת מני והרדי: "/oop/oop1Meni-Hardi.pptx"
+    - באוניברסיטה העברית - עצמים: "/oop/chap2-Objects-CSharp.pdf"
+    - באוניברסיטה העברית - מחלקות: "/oop/chap3-Classes-CSharp.pdf"
+  - 1. הורשה: 
+    - 1. פתיחה: "/oop/01inheritance"
+    - 1b. הורשה המשך: "/oop/01inheritc"
+    - 1c. שרשור בנאים: "/oop/01inheritdconstructors"
+    - מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11C-abstract/index.html"
+  - 2. פולימורפיזם: 
+    # - 2. פולימורפיזם: "02Polymorphism"
+    # - 2. עץ החלטה. מבגרות 25: "02Polymorphism2Bag25"
+    # - 2. מתי נקבע הטיפוס: "02Polymorphism3"
+    # - 2. מה קורה עם ToString?: "02Polymorphism4CwToString"
+    #   - פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
   - בגרויות: "/oop/Bagruyot"
 
 
   א יסודות:
+  - סרטוני AppSchool: "https://appschoolfront.web.app/course/learn/wmdWWTs17sLTO8N20HtO"
   - פתיח והתקנה:
     - 02 היכרות עם אנדרואיד: "/android/alon/02.Intro.pdf"
     - Ctrl K D: "/android/projectSteps/012androidCodeFormatting"

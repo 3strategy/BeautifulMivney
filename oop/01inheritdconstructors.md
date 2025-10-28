@@ -1,8 +1,8 @@
 ---
 layout: page
-title: "ירושה - בנאים Constructors"
-subtitle: "היכרות עם העמסת בנאים, וסדר הקריאה בירושה"
-tags: [ירושה, OOP,בנאים, העמסת בנאים, שרשור בנאים, CSharp]
+title: "הורשה - בנאים Constructors"
+subtitle: "היכרות עם העמסת בנאים, וסדר הקריאה בהורשה"
+tags: [הורשה, OOP,בנאים, העמסת בנאים, שרשור בנאים, CSharp]
 mathjax: true
 lang: he
 ---
