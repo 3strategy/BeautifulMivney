@@ -53,10 +53,11 @@ navbar-links:
   #   - תרגול: "/mivney/3node/Links"
 
   מחסנית:
+    - אנימציית מחסנית: "/mivney/4stack/StackAnimation.html"
   #   - תרגול: "/mivney/4stack/Links"
 
   תור:
-  #   - אנימציית תור: "/mivney/5queue/QueueAnimation.html"
+    - אנימציית תור: "/mivney/5queue/QueueAnimation.html"
   #   - תרגול: "/mivney/5queue/Links"
 
   עץ בינארי:
