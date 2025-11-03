@@ -39,21 +39,29 @@ navbar-links:
 
   רקורסיה ויעילות:
     - רקורסיה:
-      - 1. רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"
-      - 1. טענת יציאה (מטרת הפונקציה): "/mivney/1recursionAndComplexity/Chapter1ExTracking"
-      - 1. המרת בסיסים ברקורסיה: "mivney/1recursionAndComplexity/Chapter1b.BaseConversions"
-      - 1. react (by anonymous): "https://chatgpt.com/canvas/shared/68bc38badd14819190331b8447918d4f"
+      - 1.1 רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"
+      - 1.2 מעקב ומטרת הפונקציה: "/mivney/1recursionAndComplexity/Chapter1ExTracking"
+      - 1.3 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS02-recursion_new/index.html"
+      - 1.4 המרת בסיסים ברקורסיה: "mivney/1recursionAndComplexity/Chapter1b.BaseConversions"
+      - 1.5 basic excercises (by anonymous): "https://chatgpt.com/canvas/shared/68bc38badd14819190331b8447918d4f"
+      - 1.6 האוניברסיטה העברית: "mivney/1recursionAndComplexity/chap4-Recursion-CSharp.pdf"
+
     - יעילות:
-      - 2. יעילות וסיבוכיות: "mivney/1recursionAndComplexity/Chapter2"
-      - 2. שרשרת - לבדיקה.וכיות: "/mivney/3node/Chapter3"
+      - 2.1 יעילות וסיבוכיות: "mivney/1recursionAndComplexity/Chapter2"
+      - 2.2 האוניברסיטה העברית: "mivney/1recursionAndComplexity/chap5-Effic-CS.pdf"
+      - 2.3 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS01-runTime/index.html"
 
   שרשרת חוליות:
-    - 3. שרשרת חוליות: "/mivney/3node/Chapter3"
-    - 3. האוניברסיה העברית: "/mivney/3node/chap7-collection-CSharp"
+    - 3.1 שרשרת חוליות: "/mivney/3node/Chapter3"
+    - 3.2 האוניברסיה העברית: "/mivney/3node/chap7-collection-CSharp.pdf"
+    - 3.3 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS05-intNode_new/index.html"
   #   - תרגול: "/mivney/3node/Links"
 
   מחסנית:
-    - אנימציית מחסנית: "/mivney/4stack/StackAnimation.html"
+    - 4.1 מחסנית: "/mivney/4stack/Chapter4"
+    - 4.2 אנימציית מחסנית: "/mivney/4stack/StackAnimation.html"
+    - 4.3 האוניברסיטה העברית: "/mivney/5queue/chap8-Stack-CSharp.pdf"
+    - 4.4 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS04-stack_new/index.html"
   #   - תרגול: "/mivney/4stack/Links"
 
   תור:
