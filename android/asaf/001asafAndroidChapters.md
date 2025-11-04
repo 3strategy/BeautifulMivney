@@ -39,152 +39,153 @@ lang: en
 ### 1.4,5 תגובה ללחיצה על הכפתור
 - [קישור לAppSchool יש לגשת ידנית ל-2 פרק 1(תכנות בסיסי) שיעור 5](https://appschoolfront.web.app/course/learn/wmdWWTs17sLTO8N20HtO)
 
-    <details markdown="1"><summary>example 1</summary>
+<details markdown="1"><summary>example 1</summary>
 
-    ```java
-    public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+```java
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-        int counter;
-        TextView tvDisplay;
-        Button btnPlus;
-        Button btnMinus;
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            EdgeToEdge.enable(this);
-            setContentView(R.layout.activity_main);
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;
-            });
-
-            // XML - התחברות לכפתורים מה
-            btnPlus= findViewById(R.id.btnPlus);
-            btnMinus= findViewById(R.id.btnMinus);
-            tvDisplay= findViewById(R.id.tvDisplay);
-
-            btnPlus.setOnClickListener(this);
-            btnMinus.setOnClickListener(this);
-
-        }
-
-        @Override
-        public void onClick(View v) {
-            if(v==btnPlus)        {
-                counter++;
-            } else if (v==btnMinus) {
-                counter--;
-            }
-            tvDisplay.setText("Total Points " + counter);
-        }
-    }
-    ```
-
-    </details>
-
-
-    <details markdown="1"><summary>simpler way כאשר אין צורך לטפל באופן אחיד במספר כפתורים שונים</summary>
-
-    ```java
+    int counter;
+    TextView tvDisplay;
+    Button btnPlus;
+    Button btnMinus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
-        // XML - התחברות לכפתורים מה
-        etFname = findViewById(R.id.etFname);
-        etLname = findViewById(R.id.etLname);
-        btnSave = findViewById(R.id.btnSave);
-        tvDisplay = findViewById(R.id.tvDisplay);
-        
-        btnSave.setOnClickListener(v -> {
-            tvDisplay.setText(etFname.getText() + " " + etLname.getText());
-        });
-    }
-    ```
-    
-    </details>
-
-    <details markdown="1"><summary>מה מותר ואסור למחוק</summary>
-
-    **הסבר פקודות ב-`onCreate` - מה אפשר למחוק ומתי**
-
-    1. `super.onCreate(savedInstanceState)`
-        ```java
-        super.onCreate(savedInstanceState);
-        ```
-        **מה זה עושה:** קורא לבנאי של המחלקה האב (`AppCompatActivity`)
-
-        **האם אפשר למחוק?** ❌ **לעולם לא!**
-        - זו פקודה חובה בכל Activity
-        - בלעדיה האפליקציה תקרוס
-        - חייבת להיות הפקודה הראשונה ב-`onCreate`
-
-    
-    2. `EdgeToEdge.enable(this)`
-        ```java
         EdgeToEdge.enable(this);
-        ```
-        **מה זה עושה:** מפעיל תצוגה מקצה לקצה (edge-to-edge) - התוכן עולה מתחת לסטטוס בר ולניווט בר
-
-        **האם אפשר למחוק?** ✅ **כן, בהחלט**
-        - זו תכונה חדשה שנוספה ב-Android Studio החדש (2023+)
-        - אם תמחק אותה, האפליקציה תעבוד רגיל עם המרווחים הסטנדרטיים
-        - **מתי למחוק:** כשאתה לא רוצה עיצוב edge-to-edge, או כשזה מסבך לך את העיצוב
-
-    
-
-    3. `setContentView(R.layout.activity_main)`
-        ```java
         setContentView(R.layout.activity_main);
-        ```
-        **מה זה עושה:** טוען את קובץ ה-XML של הממשק (layout) למסך
-
-        **האם אפשר למחוק?** ❌ **לא!**
-        - בלעדיה לא יהיה לך ממשק משתמש
-        - כל ה-`findViewById` יחזירו `null`
-        - **חובה** לכל Activity עם ממשק גרפי
-
-        
-
-    4. `(...)ViewCompat.setOnApplyWindowInsetsListener`
-        ```java
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        ```
-        **מה זה עושה:** מוסיף padding כדי שהתוכן לא יוסתר על ידי הסטטוס בר/ניווט בר במצב edge-to-edge
 
-        **האם אפשר למחוק?** ✅ **כן, במקרים רבים**
+        // XML - התחברות לכפתורים מה
+        btnPlus= findViewById(R.id.btnPlus);
+        btnMinus= findViewById(R.id.btnMinus);
+        tvDisplay= findViewById(R.id.tvDisplay);
 
-        **מתי למחוק:**
-        - אם מחקת את `EdgeToEdge.enable(this)` - אז אין צורך בזה
-        - אם הוספת padding ידני ב-XML (בתוך ה-ConstraintLayout עם `android:padding="16dp"`)
-        - אם התוכן שלך לא צריך להימנע מהסטטוס בר
+        btnPlus.setOnClickListener(this);
+        btnMinus.setOnClickListener(this);
 
-        **מתי לשמור:**
-        - אם את.ה רוצה edge-to-edge אבל לא רוצה שהתוכן יוסתר
-        - אם העיצוב שלך דינמי ומשתנה
+    }
 
-        ---
+    @Override
+    public void onClick(View v) {
+        if(v==btnPlus)        {
+            counter++;
+        } else if (v==btnMinus) {
+            counter--;
+        }
+        tvDisplay.setText("Total Points " + counter);
+    }
+}
+```
+
+</details>
 
 
-    **סיכום מהיר**
+<details markdown="1"><summary>simpler way כאשר אין צורך לטפל באופן אחיד במספר כפתורים שונים</summary>
 
-    | מותר למחוק?| מתי למחוק |
-    |-------|-----------|
-    | אף פעם ❌   | `super.onCreate()` | 
-    |  ❌ אף פעם (אלא אם אין UI) |`setContentView()` |
-    |  אופציונלי  ✅ edge-to-edge |`EdgeToEdge.enable()` | 
-    |  אופציונלי  ✅  EdgeToEdge או יש padding ב-XML |  `ViewCompat.setOnApplyWindowInsetsListener()` |
-    {: .table-rl}
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    
+    // XML - התחברות לכפתורים מה
+    etFname = findViewById(R.id.etFname);
+    etLname = findViewById(R.id.etLname);
+    btnSave = findViewById(R.id.btnSave);
+    tvDisplay = findViewById(R.id.tvDisplay);
+    
+    btnSave.setOnClickListener(v -> {
+        tvDisplay.setText(etFname.getText() + " " + etLname.getText());
+    });
+}
+```
 
-    </details>
+</details>
 
-- **להכין דוגמאות של פניה טיפוסית ל-setOnClickListener**
+<details markdown="1"><summary>מה מותר ואסור למחוק</summary>
+
+**הסבר פקודות ב-`onCreate` - מה אפשר למחוק ומתי**
+
+1. `super.onCreate(savedInstanceState)`
+    ```java
+    super.onCreate(savedInstanceState);
+    ```
+    **מה זה עושה:** קורא לבנאי של המחלקה האב (`AppCompatActivity`)
+
+    **האם אפשר למחוק?** ❌ **לעולם לא!**
+    - זו פקודה חובה בכל Activity
+    - בלעדיה האפליקציה תקרוס
+    - חייבת להיות הפקודה הראשונה ב-`onCreate`
+
+
+2. `EdgeToEdge.enable(this)`
+    ```java
+    EdgeToEdge.enable(this);
+    ```
+    **מה זה עושה:** מפעיל תצוגה מקצה לקצה (edge-to-edge) - התוכן עולה מתחת לסטטוס בר ולניווט בר
+
+    **האם אפשר למחוק?** ✅ **כן, בהחלט**
+    - זו תכונה חדשה שנוספה ב-Android Studio החדש (2023+)
+    - אם תמחק אותה, האפליקציה תעבוד רגיל עם המרווחים הסטנדרטיים
+    - **מתי למחוק:** כשאתה לא רוצה עיצוב edge-to-edge, או כשזה מסבך לך את העיצוב
+
+
+
+3. `setContentView(R.layout.activity_main)`
+    ```java
+    setContentView(R.layout.activity_main);
+    ```
+    **מה זה עושה:** טוען את קובץ ה-XML של הממשק (layout) למסך
+
+    **האם אפשר למחוק?** ❌ **לא!**
+    - בלעדיה לא יהיה לך ממשק משתמש
+    - כל ה-`findViewById` יחזירו `null`
+    - **חובה** לכל Activity עם ממשק גרפי
+
+    
+
+4. `(...)ViewCompat.setOnApplyWindowInsetsListener`
+    ```java
+    ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+        return insets;
+    });
+    ```
+    **מה זה עושה:** מוסיף padding כדי שהתוכן לא יוסתר על ידי הסטטוס בר/ניווט בר במצב edge-to-edge
+
+    **האם אפשר למחוק?** ✅ **כן, במקרים רבים**
+
+    **מתי למחוק:**
+    - אם מחקת את `EdgeToEdge.enable(this)` - אז אין צורך בזה
+    - אם הוספת padding ידני ב-XML (בתוך ה-ConstraintLayout עם `android:padding="16dp"`)
+    - אם התוכן שלך לא צריך להימנע מהסטטוס בר
+
+    **מתי לשמור:**
+    - אם את.ה רוצה edge-to-edge אבל לא רוצה שהתוכן יוסתר
+    - אם העיצוב שלך דינמי ומשתנה
+
+    ---
+
+
+**סיכום מהיר**
+
+| מותר למחוק?| מתי למחוק |
+|-------|-----------|
+| אף פעם ❌   | `super.onCreate()` | 
+|  ❌ אף פעם (אלא אם אין UI) |`setContentView()` |
+|  אופציונלי  ✅ edge-to-edge |`EdgeToEdge.enable()` | 
+|  אופציונלי  ✅  EdgeToEdge או יש padding ב-XML |  `ViewCompat.setOnApplyWindowInsetsListener()` |
+{: .table-rl}
+
+</details>
+
+
+
 
 ### 1.6 הדגמת תכונות נוספות של פקדים (ש6 דוגמא 2 חלק 1)
 - העתקה של תמונה ל- drawable
@@ -291,8 +292,104 @@ lang: en
 
 ## [פרק 2.סוגי האזנות בתכנות לאנדרואיד](../android02.pdf)
 
-<!-- <details markdown="1"><summary>פירוט והערות</summary>
-</details> -->
+<details markdown="1"><summary>פירוט והערות</summary>
+
+בפרק, אסף מדגים כיצד ליצור האזנות לפקדים מסוגים שונים. בכל הדוגמאות הטכניקה שלו היא כתיבת פונקציה מלאה, והרפרנס ששולחים הוא `this` שהוא `Activity` כלומר:
+1. במחלקה של ה- `Activity` מכריזים על מימוש ממשק `onClickListener` (או באופן כללי `onWhateverListener`)
+1. `myObject.setOnSomethingListener(this);`
+1. ממשים פונקציה מלאה ובתוכה **שואלים** אם העצם שקיבלנו הוא **כך וכך**, ופועלים בהתאם.
+
+**ברוב המקרים לא נזדקק למימוש מהסוג הזה.**
+- ה-`Activity` לא יוגדר ככזה שממש את ה-`listener`
+- נשתמש בפונקציות אנונימיות, ונגדיר את התגובה לאירוע ישירות בתוך הקריאה ל-`listener` כפי שמודגם כאן:
+
+<details markdown="1">
+<summary>טיפול ישיר באירועים באמצעות פונקציות אנונימיות (Lambda Expressions)</summary>
+
+## פונקציות Lambda בטיפול באירועים
+
+הצורה `v -> { ... }` היא דרך מקוצרת לכתיבת **פונקציה אנונימית** (Lambda Expression) שמטפלת באירועים. (פונקציה אנונימית היא פונקציה עם תוכן אך ללא שם)
+
+במקום לכתוב:
+```java
+btnSave.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        // קוד
+    }
+});
+```
+
+**כותבים בצורה מקוצרת:**
+```java
+btnSave.setOnClickListener(v -> {
+    tvDisplay.setText(etFname.getText() + " " + etLname.getText());
+});
+```
+
+### דוגמה עם מספר פרמטרים - ListView
+
+כאשר הפונקציה מקבלת **יותר מפרמטר אחד**, נשתמש בסוגריים סביב כל הפרמטרים:
+```java
+ListView listView = findViewById(R.id.listView);
+TextView tvSelected = findViewById(R.id.tvSelected);
+
+// פונקציה אנונימית עם 4 פרמטרים
+listView.setOnItemClickListener((parent, view, position, id) -> {
+    // parent - the AdapterView (הרשימה עצמה)
+    // view - the View של הפריט שנלחץ
+    // position - מיקום הפריט ברשימה (0, 1, 2...)
+    // id - מזהה ייחודי של הפריט
+    
+    String item = (String) parent.getItemAtPosition(position);
+    tvSelected.setText("בחרת: " + item + " במיקום " + position);
+});
+```
+### דוגמה עם מספר פונקציה ומספר פרמטרים - SeekBar
+
+כאשר רוצים לקבל **יותר מפרמטר אחד**, נשתמש בסוגריים:
+
+```java
+SeekBar seekBar = findViewById(R.id.seekBar);
+TextView tvProgress = findViewById(R.id.tvProgress);
+
+seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        // פרמטר 1: seekBar - הפקד עצמו
+        // פרמטר 2: progress - הערך הנוכחי
+        // פרמטר 3: fromUser - האם השינוי בוצע על ידי המשתמש
+        
+        tvProgress.setText("ערך: " + progress);
+        
+        if (fromUser) {
+            // פעולה רק אם המשתמש שינה את הערך
+            seekBar.setBackgroundColor(Color.BLUE);
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        tvProgress.setText("מתחיל לגעת...");
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        tvProgress.setText("סיים לגעת");
+    }
+});
+```
+
+### הסבר על הפרמטרים:
+- **seekBar** - הפקד SeekBar עצמו
+- **progress** - מספר שלם המייצג את המיקום הנוכחי (0-100 או לפי הגדרת max)
+- **fromUser** - ערך boolean שמציין אם המשתמש הזיז את הסרגל או שהשינוי בוצע בקוד
+
+</details>
+
+    
+
+</details>
 
 ## [פרק 3. סידורי מסך](../android03.pdf)
 
