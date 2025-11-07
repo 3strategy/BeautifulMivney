@@ -35,7 +35,9 @@ navbar-links:
     - מה מותר ומה אסור: "https://docs.google.com/document/d/1_38kIc1UwK7Eiz673KyBjqGdkJeqa-I5kGCDOMckHqc/edit?usp=sharing"
   פתיחת שנה: 
     - 0. פתיחת שנה: "/mivney/0minhalot/0YearOpening"
-    - 0. עבודה בקמפוס: "/mivney/0minhalot/ChapterCampus"
+    - 0.1 עבודה בקמפוס: "/mivney/0minhalot/ChapterCampus"
+    - 0.2 מבנה ניקוד: "/mivney/0minhalot/0YearOpening#idGradeStructure"
+    - 0.3 מערכת שעות: "/mivney/0minhalot/0YearOpening#idschedule"
 
   רקורסיה ויעילות:
     - רקורסיה:
