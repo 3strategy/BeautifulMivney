@@ -26,6 +26,16 @@ lang: he
 
 ### דוגמאות:
 
+
+```mermaid
+    flowchart TB
+      A[5] --> B[3]
+      A --> C[8]
+      B --> D[1]:::leaf
+      C --> E[4]:::leaf
+ ```
+
+
 1. עבור העץ: 5
      / \ 
      3 8 
