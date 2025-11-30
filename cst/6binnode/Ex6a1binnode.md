@@ -76,6 +76,15 @@ lang: he
 
 1. עבור העץ:
 
+```mermaid
+flowchart TB
+  A[5] --> B[3]
+  A --> C[8]:::leaf
+  B --> D[1]:::leaf
+  B --> E[4]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.2-example1 -->
+
 5
 / \
 3 8
@@ -88,12 +97,28 @@ lang: he
 10
 / \
 2 7
+
+```mermaid
+flowchart TB
+  A[10] --> B[2]:::leaf
+  A --> C[7]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.2-example2 -->
+
 הפונקציה תחזיר: 10
 
 3. עבור העץ:
 -1
 / \
 -5 -2
+
+```mermaid
+flowchart TB
+  A[-1] --> B[-5]:::leaf
+  A --> C[-2]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.2-example3 -->
+
 הפונקציה תחזיר: -1
 
 
@@ -122,6 +147,15 @@ lang: he
 
 1. עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[5] --> B[2]
+  A --> C[8]:::leaf
+  B --> D[1]:::leaf
+  B --> E[9]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.3-example1 -->
+
 5
 / \
 2 8
@@ -131,6 +165,14 @@ lang: he
 
 1. עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[10] --> B[5]
+  A --> C[15]:::leaf
+  B --> D[3]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.3-example2 -->
+
 10
 / \
 5 15
@@ -139,6 +181,13 @@ lang: he
 הפונקציה תחזיר 1 (הבן היחיד הוא 5).
 
 1. עבור העץ הבא:
+
+```mermaid
+flowchart TB
+  A[1] --> B[2]:::leaf
+  A --> C[3]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.3-example3 -->
 
 1
 / \
@@ -170,14 +219,39 @@ lang: he
 
 1. עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[2] --> B[4]
+  A --> C[5]:::leaf
+  B --> D[1]:::leaf
+  B --> E[6]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.4-example1 -->
+
 2
 / \
 4 5
+```mermaid
+flowchart TB
+  A[1] --> B[2]
+  A --> C[3]
+  B --> D[4]:::leaf
+  C --> E[5]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.12-example3 -->
+
 / \
 1 6
 הפונקציה תחזיר 3 (הצמתים 2, 4, 6 זוגיים).
 
 1. עבור העץ הבא:
+
+```mermaid
+flowchart TB
+  A[1] --> B[3]:::leaf
+  A --> C[5]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.4-example2 -->
 
 1
 / \
@@ -234,14 +308,39 @@ lang: he
 ### דוגמאות:
 
 עבור העץ:
+
+```mermaid
+flowchart TB
+  A[4] --> B[2]
+  A --> C[5]:::leaf
+  B --> D[1]:::leaf
+  B --> E[2]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.7-example1 -->
 1. 4 / \ 2 5 / \ 1 2
 
 והמספר X = 2, הפונקציה תחזיר 2.
 עבור העץ:
+
+```mermaid
+flowchart TB
+  A[10] --> B[20]
+  A --> C[30]:::leaf
+  B --> D[40]:::leaf
+  B --> E[50]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.7-example2 -->
 1. 10 / \ 20 30 / \ 40 50
 
 והמספר X = 10, הפונקציה תחזיר 1.
 עבור העץ:
+
+```mermaid
+flowchart TB
+  A[7] --> B[7]:::leaf
+  A --> C[7]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.7-example3 -->
 1. 7 / \ 7 7
 
 והמספר X = 7, הפונקציה תחזיר 3.
@@ -278,6 +377,15 @@ lang: he
 
 עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[5] --> B[2]
+  A --> C[8]:::leaf
+  B --> D[1]:::leaf
+  B --> E[7]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.8-example1 -->
+
 1. 
 
 5
@@ -302,6 +410,17 @@ lang: he
 
 עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[10] --> B[5]
+  A --> C[15]
+  B --> D[2]:::leaf
+  B --> E[7]:::leaf
+  C --> F[12]:::leaf
+  C --> G[18]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.8-example2 -->
+
 10
 / \
 5 15
@@ -314,6 +433,12 @@ lang: he
 2. 
 
 עבור עץ המכיל צומת בודד (לדוגמה: 42), הפונקציה תחזיר: 1
+
+```mermaid
+flowchart TB
+  A[42]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.8-example3 -->
 
 1.
 
@@ -345,6 +470,15 @@ lang: he
 
 1. עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[5] --> B[3]
+  A --> C[8]:::leaf
+  B --> D[6]:::leaf
+  B --> E[9]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.9-example1 -->
+
 5
 / \
 3 8
@@ -358,6 +492,15 @@ lang: he
 4. הצומת 8 אינו קטן מאף אחד מילדיו (8 > 6, 8 < 9 - אבל הוא לא קטן מלפחות אחד מילדיו).
 5. עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[10] --> B[4]
+  A --> C[15]:::leaf
+  B --> D[2]:::leaf
+  B --> E[6]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.9-example2 -->
+
 10
 / \\
 4 15
@@ -369,6 +512,13 @@ lang: he
 2. הצומת 10 אינו קטן מאף אחד מילדיו (10 > 4, 10 < 15 - אבל הוא לא קטן מלפחות אחד מילדיו).
 3. עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[1] --> B[2]:::leaf
+  A --> C[3]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.9-example3 -->
+
 1
 / \
 2 3
@@ -376,6 +526,12 @@ lang: he
 
 1. הצומת 1 אינו קטן מאף אחד מילדיו (1 < 2, 1 < 3 - אבל הוא לא קטן מלפחות אחד מילדיו).
 2. עבור עץ עם צומת בודד (לדוגמה, 7):
+
+```mermaid
+flowchart TB
+  A[7]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.9-example4 -->
 
 7
 הפלט יהיה: 0 (אין לו ילדים).
@@ -408,6 +564,17 @@ lang: he
 
 עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[10] --> B[5]
+  A --> C[15]
+  B --> D[3]:::leaf
+  B --> E[4]:::leaf
+  C --> F[12]:::leaf
+  C --> G[18]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.10-example1 -->
+
 10
 / \
 5 15
@@ -418,9 +585,27 @@ lang: he
 
 עבור העץ הבא:
 
+```mermaid
+flowchart TB
+  A[20] --> B[10]
+  A --> C[30]
+  B --> D[5]:::leaf
+  B --> E[15]:::leaf
+  C --> F[25]:::leaf
+  C --> G[35]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.10-example2 -->
+
 20
 / \
 10 30
+```mermaid
+flowchart TB
+  A[20] --> B[10]
+  A --> C[30]
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.12-example2 -->
+
 / \ / \
 5 15 25 35
 1. הצומת 30 (אב 20) גדול מאביו. (ספירה: 1)
@@ -455,6 +640,15 @@ lang: he
 1. עבור העץ הבא: 10 / \ 5 20
 
 /     /3     15
+```mermaid
+flowchart TB
+  A[10] --> B[5]
+  A --> C[20]
+  B --> D[3]:::leaf
+  C --> E[15]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.11-example1 -->
+
 
 הצמתים היחידים הם 3 (בן יחיד של 5) ו-15 (בן יחיד של 20). שניהם אי-זוגיים. הפלט יהיה: 18 (3 + 15)
 
@@ -462,6 +656,15 @@ lang: he
 1
 /
 2   3/   /4   5
+```mermaid
+flowchart TB
+  A[1] --> B[2]
+  A --> C[3]
+  B --> D[4]:::leaf
+  C --> E[5]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.11-example2 -->
+
 
 הצמתים היחידים הם 4 (בן יחיד של 2) ו-5 (בן יחיד של 3). שניהם אי-זוגיים. הפלט יהיה: 9 (4 + 5)
 
@@ -469,6 +672,13 @@ lang: he
 10
 /
 2    4
+```mermaid
+flowchart TB
+  A[10] --> B[2]:::leaf
+  A --> C[4]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.11-example3 -->
+
 
 אין צמתים יחידים. הפלט יהיה: 0
 
@@ -509,6 +719,17 @@ lang: he
 5 15
 / \ / \
 2 7 12 17
+```mermaid
+flowchart TB
+  A[10] --> B[5]
+  A --> C[15]
+  B --> D[2]:::leaf
+  B --> E[7]:::leaf
+  C --> F[12]:::leaf
+  C --> G[17]:::leaf
+```
+<!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.12-example1 -->
+
 הצומת 10 הוא סב (יש לו נכדים: 2, 7, 12, 17). הפונקציה תחזיר 1.
 
 1. עבור העץ הבא:
@@ -528,6 +749,3 @@ lang: he
 הצומת 1 הוא סב (יש לו נכדים: 4, 5). הפונקציה תחזיר 1.
 
 
-
-- [בואו נצייר עלה. עבודה על SVG (ונכון זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown)
-- [בואו נצייר עלה - אינטגרציה באתר מבוסס markdown (ונכון גם זה לא לגמרי קשור)](/cst/6binnode/svg_leaf_mini_guide_kramdown2)
