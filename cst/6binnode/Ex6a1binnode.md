@@ -1,8 +1,10 @@
 ---
 layout: page
 title: "ex6a1 עצים בינאריים BinNode⟨T⟩"
-subtitle: "עצים בינריים: BinNode⟨T⟩ תרגילים ראשונים"
+subtitle: "עצים בינאריים: BinNode⟨T⟩ תרגילים ראשונים"
 tags: []
+courseName: "מבני נתונים"
+unitTopic: "עצים בינאריים"
 lang: he
 ---
 

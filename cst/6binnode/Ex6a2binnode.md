@@ -1,8 +1,10 @@
 ---
 layout: page
 title: "ex6a2 עצים בינאריים BinNode⟨T⟩"
-subtitle: "עצים בינריים: BinNode⟨T⟩ תרגול 6a2"
+subtitle: "עצים בינאריים: BinNode⟨T⟩ תרגול 6a2"
 tags: []
+courseName: "מבני נתונים"
+unitTopic: "עצים בינאריים"
 lang: he
 ---
 
