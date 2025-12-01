@@ -65,36 +65,9 @@ Perfect  ⊂  Complete  ⊂  Full (Strict)
 
 *כל עץ מושלם הוא גם כמעט‑מושלם ומלא, אך ההפך אינו נכון.*
 
-## 5. דוגמאות תכנות (Python Pseudocode)
+## Unit4.dll
 
-```python
-class Node:
-    def __init__(self, key, left=None, right=None):
-        self.key = key
-        self.left = left
-        self.right = right
-
-def is_full(node):
-    if not node:
-        return True
-    if bool(node.left) ^ bool(node.right):       # XOR → בדיוק ילד אחד
-        return False
-    return is_full(node.left) and is_full(node.right)
-
-def is_complete(root):
-    # BFS עם דגל "נתקלנו בחסר" – טכניקה נפוצה
-    queue = [root]
-    seen_null = False
-    while queue:
-        node = queue.pop(0)
-        if not node:
-            seen_null = True
-            continue
-        if seen_null:
-            return False            # נמצא צומת אחרי פער
-        queue.extend([node.left, node.right])
-    return True
-```
+**הערת ספרייה**: אם אתם כותבים ב-VS הוסיפו בתחילת הקובץ `using Unit4.CollectionsLib;` (לא נדרש באפליקציה). את Unit4 ניתן [להוריד מכאן](/assets/Unit4.dll).
 
 ## 6. מקורות מומלצים
 
