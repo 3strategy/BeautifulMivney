@@ -30,26 +30,35 @@ lang: he
 
 1. עבור העץ:
 
-1
-/ \
-3 5
-הפונקציה תחזיר: true
+    ```mermaid
+    flowchart TB
+      A[1] --> B[3]:::leaf
+      A --> C[5]:::leaf
+    ```
+
+    הפונקציה תחזיר: true
 
 1. עבור העץ:
 
-1
-/ \
-2 5
-הפונקציה תחזיר: false (בגלל הערך 2)
+    ```mermaid
+    flowchart TB
+      A[1] --> B[2]:::leaf
+      A --> C[5]:::leaf
+    ```
+
+    הפונקציה תחזיר: false (בגלל הערך 2)
 
 1. עבור העץ:
 
-7
-/ \
-9 11
-/ \
-13 15
-הפונקציה תחזיר: true
+    ```mermaid
+    flowchart TB
+      A[7] --> B[9]
+      A --> C[11]:::leaf
+      B --> D[13]:::leaf
+      B --> E[15]:::leaf
+    ```
+
+    הפונקציה תחזיר: true
 
 
 
@@ -82,41 +91,69 @@ lang: he
 
 ### דוגמאות
 
-קלט: Tree:           10
-               /  \
-              /    \
-             5      5
-            / \    / \
-           1   2  3   4
-פלט : true 
+1. קלט: Tree:
 
-קלט: Tree:           10
-               /  \
-              /    \
-             5      8
-            / \    / \
-           1   2  3   4
-פלט : false 
+    ```mermaid
+    flowchart TB
+      A[10] --> B[5]
+      A --> C[5]
+      B --> D[1]:::leaf
+      B --> E[2]:::leaf
+      C --> F[3]:::leaf
+      C --> G[4]:::leaf
+    ```
 
-קלט: Tree:           10
-               /  \
-              /    \
-             5      6
-            / \    / \
-           1   1  3   4
-פלט : true 
+    פלט : true 
 
-קלט: Tree:           10
-               /  \
-              /    \
-             5      6
-פלט : false 
+1. קלט: Tree:
 
-קלט: Tree:           10
-פלט : false 
+    ```mermaid
+    flowchart TB
+      A[10] --> B[5]
+      A --> C[8]
+      B --> D[1]:::leaf
+      B --> E[2]:::leaf
+      C --> F[3]:::leaf
+      C --> G[4]:::leaf
+    ```
 
-קלט: Tree:           null
-פלט : false
+    פלט : false 
+
+1. קלט: Tree:
+
+    ```mermaid
+    flowchart TB
+      A[10] --> B[5]
+      A --> C[6]
+      B --> D[1]:::leaf
+      B --> E[1]:::leaf
+      C --> F[3]:::leaf
+      C --> G[4]:::leaf
+    ```
+
+    פלט : true 
+
+1. קלט: Tree:
+
+    ```mermaid
+    flowchart TB
+      A[10] --> B[5]:::leaf
+      A --> C[6]:::leaf
+    ```
+
+    פלט : false 
+
+1. קלט: Tree:
+
+    ```mermaid
+    flowchart TB
+      A[10]:::leaf
+    ```
+
+    פלט : false 
+
+1. קלט: Tree: null  
+    פלט : false
 
 
 
@@ -152,50 +189,44 @@ lang: he
 
 1. עץ שבו כל עלה שווה לערך אביו:
 
-10
+    ```mermaid
+    flowchart TB
+      A[10] --> B[5]
+      A --> C[10]
+      B --> D[5]:::leaf
+      B --> E[5]:::leaf
+      C --> F[10]:::leaf
+    ```
 
-/ \
-
-5 10
-
-/ \ /
-
-5 5 10
-
-הפונקציה תחזיר: true
+    הפונקציה תחזיר: true
 
 1. עץ שבו עלה אחד אינו שווה לערך אביו:
 
-10
+    ```mermaid
+    flowchart TB
+      A[10] --> B[5]
+      A --> C[10]
+      B --> D[5]:::leaf
+      B --> E[6]:::leaf
+      C --> F[10]:::leaf
+    ```
 
-/ \
-
-5 10
-
-/ \ /
-
-5 6 10
-
-הפונקציה תחזיר: false
+    הפונקציה תחזיר: false
 
 1. עץ עם עלה בודד שהוא גם השורש (אין לו אב):
 
-7
+    ```mermaid
+    flowchart TB
+      A[7]:::leaf
+    ```
 
-הפונקציה תחזיר: true (אין עלים שאינם השורש, ולכן התנאי מתקיים באופן טריוויאלי).
+    הפונקציה תחזיר: true (אין עלים שאינם השורש, ולכן התנאי מתקיים באופן טריוויאלי).
 
 1. עץ ריק:
 
-null
+    עץ: null
 
-הפונקציה תחזיר: true (אין עלים לבדוק).
-
-
-
-
-
-
-
+    הפונקציה תחזיר: true (אין עלים לבדוק).
 
 
 ## 6a2.4. עץ אריאל {#id6a2.4.}
@@ -374,13 +405,6 @@ using Unit4.CollectionsLib;
 
 
 
-
-
-
-
-
-
-## 6a2.111 {#id6a2.111}
 
 
 
