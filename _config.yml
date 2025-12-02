@@ -73,7 +73,9 @@ navbar-links:
   #   - תרגול: "/mivney/5queue/Links"
 
   עץ בינארי:
-  #   - תרגול: "/mivney/6binnode/Links"
+    - 6.1 עץ בינארי: "/mivney/6binnode/Chapter6"
+
+  #  - תרגול: "/mivney/6binnode/Links"
   #   - סוגי עצים: "/mivney/6binnode/binary_tree_full_complete_perfect"
   #   - עץ בינארי לעומת עץ חיפוש: "/mivney/6binnode/binnode1"
     

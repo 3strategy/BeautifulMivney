@@ -32,9 +32,9 @@ lang: he
 
 
 <details markdown="1">
-<summary>מימוש אפשרי</summary>
+<summary>מימוש אפשרי עם תכונת C# אמיתיות. (אסור לשימוש)</summary>
 
-ב‑#C ניתן לממש מחלקה גנרית עבור עץ בינארי באופן הבא:
+ב‑#C ניתן היה לממש מחלקה גנרית עבור עץ בינארי באופן הבא:
 
 ```csharp
 public class BinNode<T>
@@ -193,23 +193,114 @@ graph TD
 
 {: .subq}
 א. עצים בינאריים של חיפוש דורשים שסדר ההכנסה ישמור על כך שכל ערך בצד השמאלי קטן מהשורש וכל ערך בצד הימני גדול ממנו.  
+
 {: .subq}
-ב. גובה עץ מאוזן הוא בערך \(\log_2 n\), ולכן פעולות חיפוש והכנסה בעץ מאוזן הן O(log n). אם העץ אינו מאוזן, פעולות אלו עלולות לרדת ל‑O(n).  
+ב. גובה עץ מאוזן הוא בערך $$log_2n$$, ולכן פעולות חיפוש והכנסה בעץ מאוזן הן $$O(log n)$$. אם העץ אינו מאוזן, פעולות אלו עלולות להתדרדר ל‑$$O(n)$$.  
+
 {: .subq}
-ג. ניתן להשתמש במחסנית או תור כדי לבצע טרוורסות בצורה איטרטיבית.  
+ג. ניתן להשתמש במחסנית או תור כדי לבצע טרוורסות בצורה איטרטיבית.  לא בטוח למה שמישהו יעשה כזה דבר
+
+<details markdown="1">
+<summary>טרוורסה איטרטיבית (בלי רקורסיה)</summary>
+
+
+נראה שני סוגים של טרוורסה איטרטיבית (בלי רקורסיה)
+
+---
+
+1. טרוורסה ברוחב (Level-Order / BFS) בעזרת Queue
+
+הרעיון:
+שמים את השורש בתור, ואז כל פעם מוציאים חוליה מהתור, מדפיסים את הערך שלה, ומכניסים את ילדיה (שמאל, ימין) לסוף התור.
+
+```csharp
+public static void BfsTraverse<T>(BinNode<T> root)
+{
+    if (root == null)
+        return;
+
+    Queue<BinNode<T>> q = new Queue<BinNode<T>>();
+    q.Insert(root); // מכניסים את השורש לתור
+
+    while (!q.IsEmpty())
+    {
+        BinNode<T> node = q.Remove();   // מוציאים חוליה מהתור
+        Console.WriteLine(node.GetValue());
+
+        if (node.HasLeft())
+            q.Insert(node.GetLeft());   // מכניסים בן שמאל
+        if (node.HasRight())
+            q.Insert(node.GetRight());  // מכניסים בן ימין
+    }
+}
+```
+
+זה עובר על העץ לפי שכבות: קודם שורש, אחר כך כל הילדים שלו, אחר כך הנכדים, וכו’.
+
+---
+
+2. טרוורסה בעומק (DFS Pre-Order) בעזרת Stack
+
+כאן נעשה Pre-Order (שורש → שמאל → ימין), אבל **איטרטיבי**.
+
+הרעיון:
+שמים את השורש במחסנית; כל פעם מוציאים חוליה מהמחסנית, מדפיסים אותה, ואז דוחפים קודם את הימני ואחר כך את השמאלי – כדי שהשמאלי ייצא ראשון.
+
+```csharp
+public static void PreOrderIterative<T>(BinNode<T> root)
+{
+    if (root == null)
+        return;
+
+    Stack<BinNode<T>> s = new Stack<BinNode<T>>();
+    s.Push(root);
+
+    while (!s.IsEmpty())
+    {
+        BinNode<T> node = s.Pop();
+        Console.WriteLine(node.GetValue()); // "שורש"
+
+        if (node.HasRight())
+            s.Push(node.GetRight()); // דוחפים קודם ימין
+        if (node.HasLeft())
+            s.Push(node.GetLeft());  // ואז שמאל – ייצא ראשון
+    }
+}
+```
+
+
+
+3. טרוורסה In-Order איטרטיבית בעזרת Stack
+
+In-Order קלאסי (שמאל → שורש → ימין):
+
+```csharp
+public static void InOrderIterative<T>(BinNode<T> root)
+{
+    Stack<BinNode<T>> s = new Stack<BinNode<T>>();
+    BinNode<T> curr = root;
+
+    while (curr != null || !s.IsEmpty())
+    {
+        while (curr != null)
+        {
+            s.Push(curr);
+            curr = curr.GetLeft();  // יורדים שמאלה עד הסוף
+        }
+
+        curr = s.Pop();
+        Console.WriteLine(curr.GetValue()); // שורש
+
+        curr = curr.GetRight(); // עוברים לתת־עץ ימני
+    }
+}
+```
+
+</details>
+
+
 
 ## תרגול וקישורים
 
-נסו לממש פונקציות המחדירות ערך לעץ בינארי ושמירתו כעץ חיפוש. נסו גם לכתוב פונקציה שמחזירה את מספר העלים בעץ. תרגילים נוספים תוכלו למצוא בקישורים הבאים:
+נסו לממש פונקציות המחדירות ערך לעץ בינארי ושמירתו כעץ חיפוש. נסו גם לכתוב פונקציה שמחזירה את מספר העלים בעץ. תרגילים נוספים תוכלו למצוא במערכת ההגשות
 
-{: .leafify}
-- [⬅ עברו לתרגיל עץ בינארי בסיסי]({% link cst/6binnode/Ex6a1binnode.md %}#id6a1.3)
-- [⬅ עברו לתרגיל הוספה בעץ]({% link cst/6binnode/Ex6a2binnode.md %}#id6a2.2)
-- [⬅ עברו לתרגיל חיפוש בעץ]({% link cst/6binnode/Ex6a3binnode.md %}#id6a3.5)
-
-<details markdown="1">
-<summary>מקום לפתרון</summary>
-
-כתבו פונקציה שמחזירה את סכום הערכים בכל הצמתים בעץ בינארי. השתמשו ברקורסיה לביקור בכל צומת.
-
-</details>
