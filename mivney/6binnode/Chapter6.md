@@ -148,9 +148,9 @@ public static void Inorder<T>(BinNode<T> root)
 {
     if (root == null)
         return;
-    Inorder(root.Left);
-    Console.WriteLine(root.Value);
-    Inorder(root.Right);
+    Inorder(root.GetLeft());
+    Console.WriteLine(root.GetValue());
+    Inorder(root.GetRight());
 }
 ```
 
@@ -203,98 +203,92 @@ graph TD
 <details markdown="1">
 <summary>טרוורסה איטרטיבית (בלי רקורסיה)</summary>
 
-
-נראה שני סוגים של טרוורסה איטרטיבית (בלי רקורסיה)
-
----
+נראה כמה סוגים של טרוורסה איטרטיבית (בלי רקורסיה). למרות כל הדוגמאות - עדיף ברקורסיה.
 
 1. טרוורסה ברוחב (Level-Order / BFS) בעזרת Queue
+    הרעיון:
+    שמים את השורש בתור, ואז כל פעם מוציאים חוליה מהתור, מדפיסים את הערך שלה, ומכניסים את ילדיה (שמאל, ימין) לסוף התור.
 
-הרעיון:
-שמים את השורש בתור, ואז כל פעם מוציאים חוליה מהתור, מדפיסים את הערך שלה, ומכניסים את ילדיה (שמאל, ימין) לסוף התור.
-
-```csharp
-public static void BfsTraverse<T>(BinNode<T> root)
-{
-    if (root == null)
-        return;
-
-    Queue<BinNode<T>> q = new Queue<BinNode<T>>();
-    q.Insert(root); // מכניסים את השורש לתור
-
-    while (!q.IsEmpty())
+    ```csharp
+    public static void BfsTraverse<T>(BinNode<T> root)
     {
-        BinNode<T> node = q.Remove();   // מוציאים חוליה מהתור
-        Console.WriteLine(node.GetValue());
+        if (root == null)
+            return;
 
-        if (node.HasLeft())
-            q.Insert(node.GetLeft());   // מכניסים בן שמאל
-        if (node.HasRight())
-            q.Insert(node.GetRight());  // מכניסים בן ימין
+        Queue<BinNode<T>> q = new Queue<BinNode<T>>();
+        q.Insert(root); // מכניסים את השורש לתור
+
+        while (!q.IsEmpty())
+        {
+            BinNode<T> node = q.Remove();   // מוציאים חוליה מהתור
+            Console.WriteLine(node.GetValue());
+
+            if (node.HasLeft())
+                q.Insert(node.GetLeft());   // מכניסים בן שמאל
+            if (node.HasRight())
+                q.Insert(node.GetRight());  // מכניסים בן ימין
+        }
     }
-}
-```
+    ```
 
-זה עובר על העץ לפי שכבות: קודם שורש, אחר כך כל הילדים שלו, אחר כך הנכדים, וכו’.
+    זה עובר על העץ לפי שכבות: קודם שורש, אחר כך כל הילדים שלו, אחר כך הנכדים, וכו’.
 
----
+    ---
 
 2. טרוורסה בעומק (DFS Pre-Order) בעזרת Stack
 
-כאן נעשה Pre-Order (שורש → שמאל → ימין), אבל **איטרטיבי**.
+    כאן נעשה Pre-Order (שורש → שמאל → ימין), אבל **איטרטיבי**.
 
-הרעיון:
-שמים את השורש במחסנית; כל פעם מוציאים חוליה מהמחסנית, מדפיסים אותה, ואז דוחפים קודם את הימני ואחר כך את השמאלי – כדי שהשמאלי ייצא ראשון.
+    הרעיון:
+    שמים את השורש במחסנית; כל פעם מוציאים חוליה מהמחסנית, מדפיסים אותה, ואז דוחפים קודם את הימני ואחר כך את השמאלי – כדי שהשמאלי ייצא ראשון.
 
-```csharp
-public static void PreOrderIterative<T>(BinNode<T> root)
-{
-    if (root == null)
-        return;
-
-    Stack<BinNode<T>> s = new Stack<BinNode<T>>();
-    s.Push(root);
-
-    while (!s.IsEmpty())
+    ```csharp
+    public static void PreOrderIterative<T>(BinNode<T> root)
     {
-        BinNode<T> node = s.Pop();
-        Console.WriteLine(node.GetValue()); // "שורש"
+        if (root == null)
+            return;
 
-        if (node.HasRight())
-            s.Push(node.GetRight()); // דוחפים קודם ימין
-        if (node.HasLeft())
-            s.Push(node.GetLeft());  // ואז שמאל – ייצא ראשון
+        Stack<BinNode<T>> s = new Stack<BinNode<T>>();
+        s.Push(root);
+
+        while (!s.IsEmpty())
+        {
+            BinNode<T> node = s.Pop();
+            Console.WriteLine(node.GetValue()); // "שורש"
+
+            if (node.HasRight())
+                s.Push(node.GetRight()); // דוחפים קודם ימין
+            if (node.HasLeft())
+                s.Push(node.GetLeft());  // ואז שמאל – ייצא ראשון
+        }
     }
-}
-```
-
-
+    ```
 
 3. טרוורסה In-Order איטרטיבית בעזרת Stack
 
-In-Order קלאסי (שמאל → שורש → ימין):
+    In-Order קלאסי (שמאל → שורש → ימין):
 
-```csharp
-public static void InOrderIterative<T>(BinNode<T> root)
-{
-    Stack<BinNode<T>> s = new Stack<BinNode<T>>();
-    BinNode<T> curr = root;
-
-    while (curr != null || !s.IsEmpty())
+    ```csharp
+    public static void InOrderIterative<T>(BinNode<T> root)
     {
-        while (curr != null)
+        Stack<BinNode<T>> s = new Stack<BinNode<T>>();
+        BinNode<T> curr = root;
+
+        while (curr != null || !s.IsEmpty())
         {
-            s.Push(curr);
-            curr = curr.GetLeft();  // יורדים שמאלה עד הסוף
+            while (curr != null)
+            {
+                s.Push(curr);
+                curr = curr.GetLeft();  // יורדים שמאלה עד הסוף
+            }
+
+            curr = s.Pop();
+            Console.WriteLine(curr.GetValue()); // שורש
+
+            curr = curr.GetRight(); // עוברים לתת־עץ ימני
         }
-
-        curr = s.Pop();
-        Console.WriteLine(curr.GetValue()); // שורש
-
-        curr = curr.GetRight(); // עוברים לתת־עץ ימני
     }
-}
-```
+    ```
 
 </details>
 
@@ -302,5 +296,4 @@ public static void InOrderIterative<T>(BinNode<T> root)
 
 ## תרגול וקישורים
 
-נסו לממש פונקציות המחדירות ערך לעץ בינארי ושמירתו כעץ חיפוש. נסו גם לכתוב פונקציה שמחזירה את מספר העלים בעץ. תרגילים נוספים תוכלו למצוא במערכת ההגשות
-
+**ממש אל תנסו** לממש פונקציות המחדירות ערך לעץ בינארי ושמירתו כעץ חיפוש. נסו לכתוב פונקציה שמחזירה את מספר העלים בעץ. תרגילים נוספים תוכלו למצוא במערכת ההגשות
