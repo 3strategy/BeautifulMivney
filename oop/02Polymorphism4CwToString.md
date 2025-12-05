@@ -7,6 +7,7 @@ mathjax: true
 lang: he
 ---
 
+{: .box-note}
 ניקח את הדוגמא הבאה: `Console.WriteLine(myInstance.ToString())` מדוע תופעל הפעולה מהמחלקה היורשת גם אם אין override?
 
 

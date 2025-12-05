@@ -94,11 +94,13 @@ navbar-links:
     - 1c. שרשור בנאים: "/oop/01inheritdconstructors"
     - מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11C-abstract/index.html"
   - 2. פולימורפיזם: 
-    # - 2. פולימורפיזם: "02Polymorphism"
-    # - 2. עץ החלטה. מבגרות 25: "02Polymorphism2Bag25"
-    # - 2. מתי נקבע הטיפוס: "02Polymorphism3"
-    # - 2. מה קורה עם ToString?: "02Polymorphism4CwToString"
-    #   - פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
+    - 2. מצגת: "/oop/02-polymorphism-cs.pptx"
+    - 2. פולימורפיזם: "/oop/02Polymorphism"
+    - 2. עץ החלטה + מבגרות 25: "/oop/02Polymorphism2Bag25"
+    - 2. מתי נקבע הטיפוס: "/oop/02Polymorphism3"
+    - 2. מה קורה עם ToString?: "/oop/02Polymorphism4CwToString"
+    - 2. פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
+    - מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11B-polymorphism/index.html"
   - בגרויות: "/oop/Bagruyot"
 
 
