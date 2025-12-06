@@ -587,13 +587,18 @@ pre code span.c1 {
 
 /* Catch-all for any marker paths */
 .mermaid marker path {
-  fill: var(--text-col) !important;
+  fill: none !important;
   stroke: var(--text-col) !important;
 }
 
-/* Target composition markers specifically */
+/* Keep aggregation diamonds hollow while matching the line color */
 .mermaid marker[id$="aggregationStart"] path,
-.mermaid marker[id$="aggregationEnd"] path,
+.mermaid marker[id$="aggregationEnd"] path {
+  fill: none !important;
+  stroke: var(--text-col) !important;
+}
+
+/* Fill composition diamonds so they stay solid */
 .mermaid marker[id$="compositionStart"] path,
 .mermaid marker[id$="compositionEnd"] path {
   fill: var(--text-col) !important;
