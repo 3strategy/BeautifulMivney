@@ -44,7 +44,7 @@ public class Dog : Animal   // Dog inherits Animal
 
 לעיתים נציג מחלקות בתרשים UML. החץ כלפי מעלה - מהיורשת אל מחלקת הבסיס. על צורת הכתיבה של UML יוסבר בהמשך
 
-<div class="mermaid" style="direction:ltr">
+```mermaid
 classDiagram
     direction TB
     class Organism {
@@ -66,8 +66,7 @@ classDiagram
     Organism <|-- Mammal : חץ מנגזרת לבסיס
     Mammal <|-- Dog : ראש חץ חלול לציון הורשה
 
-
-</div>
+```
 
 
 

@@ -7,40 +7,34 @@ mathjax: true
 lang: he
 ---
 
-{: .box-note}
+{: .box-note #idIntro}
 רקורסיה היא טכניקה מרכזית במדעי המחשב שבה פונקציה פותרת בעיה על ידי פירוקה לגרסה קטנה יותר של אותה בעיה. חשוב להבדיל בין **מקרה בסיסי** שבו הפונקציה עוצרת, לבין **מקרה רקורסיבי** שבו היא קוראת לעצמה. הבנת עקרונות אלו תלווה אתכם לאורך הקורס .
-
 
 <!-- Source: UMBC CMSC 202 – Recursion lecture notes -->
 
 ## מבוא לרקורסיה
 
-
 {: .box-success}
 רקורסיה מתארת תהליך שבו פונקציה קוראת לעצמה לצורך פתרון בעיה. למשל, קביעת סכום של מערך יכולה להתבצע על ידי סכימת האיבר הראשון עם סכום המערך החל מהאיבר השני. כדי להבטיח שהאלגוריתם מסתיים, עלינו להגדיר **מקרה בסיס** – תנאי, **שבו הפונקציה מחזירה תוצאה ללא קריאה נוספת.**
 
-
 ## עדי גרין מסבירה לנו מהי רקורסיה
 
-{% include youtube.html id="L1leVOHE4nc" %} 
+{% include youtube.html id="L1leVOHE4nc" %}
 
-
-
-<details markdown="1">
+<details markdown="1" id=idSumArrayRec>
 <summary>דוגמא לרקורסיה - סכום איברי מערך?</summary>
 
 {% highlight csharp linenos %}// סכום אלמנטים במערך באמצעות רקורסיה
 public static int Sum(int[] arr, int index)
 {
-    // מקרה בסיס – הגענו לסוף המערך
-    if (index == arr.Length)
-        return 0;
+  // מקרה בסיס – הגענו לסוף המערך
+  if (index == arr.Length)
+      return 0;
 
-    // מקרה רקורסיבי – מוסיפים את הערך הנוכחי לסכום שאר האיברים
-    return arr[index] + Sum(arr, index + 1);
+  // מקרה רקורסיבי – מוסיפים את הערך הנוכחי לסכום שאר האיברים
+  return arr[index] + Sum(arr, index + 1);
 }
 {% endhighlight %}
-
 
 <details markdown="1"><summary>הבנת מחסנית הקריאות. או שלא...</summary>
 
@@ -48,7 +42,7 @@ public static int Sum(int[] arr, int index)
 
 כל קריאה לפונקציה יוצרת רשומת קריאה חדשה במחסנית. כאשר אנחנו קוראים לפונקציה ברקורסיה, נוצרת שרשרת רשומות עד שמגיעים למקרה הבסיס. לאחר מכן הקריאות מסתיימות בסדר הפוך (LIFO), כמו במחסנית.
 
-<div class="mermaid">
+<div class="mermaid" id="idCallStack">
 graph TD
     A["Sum(arr, 0)"] --> B["Sum(arr, 1)"]
     B --> C["Sum(arr, 2)"]
@@ -65,15 +59,17 @@ graph TD
 
 </details>
 
-
 ### סיכום הרעיון. אז מה זה רקורסיה?
+
 אלגוריתם רקורסיבי הוא אלגוריתם אשר על מנת לפתור בעיה מסוימת, מפעיל את עצמו על מקרים פשוטים יותר של הבעיה.
 
 בכל אלגוריתם רקורסיבי **תמיד יש**:
+
 - תנאי עצירה
 - זימון רקורסיבי על קלט קטן יותר
 
 ## אז למה להשתמש ברקורסיה?
+
 - בהרבה מקרים ההגדרה הרקורסיבית **קצרה בהרבה** מההגדרה האיטרטיבית.
 - במקרים מסויימים, ההגדרה הרקורסיבית היא ההגדרה **הטבעית והנוחה ביותר** של מה שרוצים לחשב.
 - במבני נתונים מסויימים אין ברירה.
@@ -92,9 +88,9 @@ graph TD
 {: .subq}
 ג. חשוב לזהות את מקרה הבסיס כפתרון הבעיה הפשוטה ביותר האפשרית.  
 
+## דוגמא 1/תרגול: מכפלה של שני מספרים באופן רקורסיבי {#idMulRec}
 
-## דוגמא 1/תרגול: מכפלה של שני מספרים באופן רקורסיבי
-כתבו את הפונקציה `Mul(int a, int b)` המחשבת כפל של $$a·b$$ ברקורסיה. 
+כתבו את הפונקציה `Mul(int a, int b)` המחשבת כפל של $$a·b$$ ברקורסיה.
 
 הרעיון: $$a⨯b = a+a+ ... b פעמים$$ נניח ש-$$b$$ אינו שלילי.
 
@@ -102,23 +98,20 @@ graph TD
 
 כיצד נחשב כפל של 4 ב-2 אם אנחנו יודעים כמה זה כפל ב-1?
 
-
-
 <details markdown="1"><summary>פתרון</summary>
 
 {% highlight csharp linenos %}public static int Mul(int a, int b)
 {
-  if (b == 0) 
+  if (b == 0)
     return 0; // תנאי עצירה
 
-  return a + Mul(a, b - 1); // b חזרה עם הקטנת 
+  return a + Mul(a, b - 1); // b חזרה עם הקטנת
 }
 {% endhighlight %}
 
 </details>
 
-<details markdown="1"><summary>מעקב בשיטת המלבנים</summary>
-
+<details markdown="1" id="idRectanglesMethod"><summary>מעקב בשיטת המלבנים</summary>
 
 <div class="mermaid">
 
@@ -135,12 +128,10 @@ C -->|קריאה רקורסיבית| D["Mul(4,0)
 (b==0? true)
 return 0"]
 
-
 D -.->|חזרה: 0| C
 C -.->|חזרה: 4| B
 B -.->|חזרה: 8| A
 A -.->|תוצאה: 12| OUT(("Mul(4,3) = 12"))
-
 
 </div>
 
@@ -148,10 +139,7 @@ A -.->|תוצאה: 12| OUT(("Mul(4,3) = 12"))
 **מעקב רקורסיה** בשיטת המלבנים: בשורה העליונה – שם הפונקציה והארגומנטים, בשורה האמצעית – תנאי העצירה, ובשורה השלישית – ביטוי ה־ `return`.  
 בחיצים: **→** (חץ מלא) מציין *קריאה רקורסיבית (הלוך)*, ו־**-.->** (חץ מקווקו) מציין *החזרת ערך (חזור)*. במעקב שלהלן הכפל $$4·3$$
 
-
 </details>
-
-
 
 ## ❌ טעויות נפוצות ברקורסיה
 
@@ -164,37 +152,29 @@ A -.->|תוצאה: 12| OUT(("Mul(4,3) = 12"))
 {: .subq}
 ג. כתיבת קוד רקורסיבי כאשר פתרון איטרטיבי פשוט וברור יותר. לא רלוונטי עבורנו. ביקשו רקורסיה - יקבלו רקורסיה.
 
-
-
-## דוגמא 2/תרגול: מנה של חלוקה שלמה בחיסור חוזר : $$\lfloor (9/4) \rfloor = 2$$
+## דוגמא 2/תרגול: מנה של חלוקה שלמה בחיסור חוזר : $$\lfloor (9/4) \rfloor = 2$$ {#idDivRec}
 
 רעיון: כמה פעמים ניתן לחסר את b מתוך a עד שהמספר קטן מ־b.
-
-
-
 
 <details markdown="1"><summary>פתרון</summary>
 
 {% highlight csharp linenos %}public static int Div(int a, int b)
 {
-    if (a < b) 
-        return 0;       // תנאי עצירה
+  if (a < b)
+      return 0;       // תנאי עצירה
 
-    return 1 + Div(a - b, b);  // b חזרה עם חיסור 
+  return 1 + Div(a - b, b);  // b חזרה עם חיסור
 }
 {% endhighlight %}
 
 </details>
 
-
-
 <details markdown="1"><summary>מעקב בשיטת המלבנים</summary>
-
 
 <div class="mermaid">
 
 flowchart TD
-X["Div(9,4) 
+X["Div(9,4)
 (a < b? false)
 return 1 + Div(5,4)"] -->|קריאה רקורסיבית| Y["Div(5,4)
 (a < b? false)
@@ -214,6 +194,7 @@ return 0"]
 **שיטת המלבנים (סיכום קצר):**
 
 {: .leafify}
+
 - שורה עליונה: שם הפונקציה והארגומנטים שקיבלה.
 - שורה אמצעית: תנאי העצירה (כאן עד ההגעה לבסיס הוא **false**).
 - שורה שלישית: `return` עם הקריאה הרקורסיבית/הביטוי.
@@ -239,35 +220,34 @@ return 0"]
 
   else
     {
-      if (n % 3 == 0) // n הקריאות הרקורסיביות מקטינות את 
+      if (n % 3 == 0) // n הקריאות הרקורסיביות מקטינות את
         return Mystery (n - 1) + n;
-      else 
+      else
         return Mystery (n - 1);
     }
 }
 {% endhighlight %}
-
 
 <details markdown="1">
 <summary>תרשים המלבנים של Mystery(3)</summary>
 <div class="mermaid">
 
 flowchart TD
-A["Mystery(3) 
-(n <= 0? false) 
-(n % 3 == 0? true) 
-return Mystery(2) + 3"] -->|קריאה רקורסיבית| B["Mystery(2) 
-(n <= 0? false) 
-(n % 3 == 0? false) 
+A["Mystery(3)
+(n <= 0? false)
+(n % 3 == 0? true)
+return Mystery(2) + 3"] -->|קריאה רקורסיבית| B["Mystery(2)
+(n <= 0? false)
+(n % 3 == 0? false)
 return Mystery(1)"]
 
-B -->|קריאה רקורסיבית| C["Mystery(1) 
-(n <= 0? false) 
-(n % 3 == 0? false) 
+B -->|קריאה רקורסיבית| C["Mystery(1)
+(n <= 0? false)
+(n % 3 == 0? false)
 return Mystery(0)"]
 
-C -->|קריאה רקורסיבית| D["Mystery(0) 
-(n <= 0? true) 
+C -->|קריאה רקורסיבית| D["Mystery(0)
+(n <= 0? true)
 return 0"]
 
 D -.->|חזרה: 0| C
@@ -284,56 +264,56 @@ A -.->|תוצאה: 3| OUT(("Mystery(3) = 3"))
 <div class="mermaid">
 
 flowchart TD
-A["Mystery(10) 
-(n <= 0? false) 
-(n % 3 == 0? false) 
-return Mystery(9)"] -->|קריאה רקורסיבית| B["Mystery(9) 
-(n <= 0? false) 
-(n % 3 == 0? true) 
+A["Mystery(10)
+(n <= 0? false)
+(n % 3 == 0? false)
+return Mystery(9)"] -->|קריאה רקורסיבית| B["Mystery(9)
+(n <= 0? false)
+(n % 3 == 0? true)
 return Mystery(8) + 9"]
 
-B -->|קריאה רקורסיבית| C["Mystery(8) 
-(n <= 0? false) 
-(n % 3 == 0? false) 
+B -->|קריאה רקורסיבית| C["Mystery(8)
+(n <= 0? false)
+(n % 3 == 0? false)
 return Mystery(7)"]
 
-C -->|קריאה רקורסיבית| D["Mystery(7) 
-(n <= 0? false) 
-(n % 3 == 0? false) 
+C -->|קריאה רקורסיבית| D["Mystery(7)
+(n <= 0? false)
+(n % 3 == 0? false)
 return Mystery(6)"]
 
-D -->|קריאה רקורסיבית| E["Mystery(6) 
-(n <= 0? false) 
-(n % 3 == 0? true) 
+D -->|קריאה רקורסיבית| E["Mystery(6)
+(n <= 0? false)
+(n % 3 == 0? true)
 return Mystery(5) + 6"]
 
-E -->|קריאה רקורסיבית| F["Mystery(5) 
-(n <= 0? false) 
-(n % 3 == 0? false) 
+E -->|קריאה רקורסיבית| F["Mystery(5)
+(n <= 0? false)
+(n % 3 == 0? false)
 return Mystery(4)"]
 
-F -->|קריאה רקורסיבית| G["Mystery(4) 
-(n <= 0? false) 
-(n % 3 == 0? false) 
+F -->|קריאה רקורסיבית| G["Mystery(4)
+(n <= 0? false)
+(n % 3 == 0? false)
 return Mystery(3)"]
 
-G -->|קריאה רקורסיבית| H["Mystery(3) 
-(n <= 0? false) 
-(n % 3 == 0? true) 
+G -->|קריאה רקורסיבית| H["Mystery(3)
+(n <= 0? false)
+(n % 3 == 0? true)
 return Mystery(2) + 3"]
 
-H -->|קריאה רקורסיבית| I["Mystery(2) 
-(n <= 0? false) 
-(n % 3 == 0? false) 
+H -->|קריאה רקורסיבית| I["Mystery(2)
+(n <= 0? false)
+(n % 3 == 0? false)
 return Mystery(1)"]
 
-I -->|קריאה רקורסיבית| J["Mystery(1) 
-(n <= 0? false) 
-(n % 3 == 0? false) 
+I -->|קריאה רקורסיבית| J["Mystery(1)
+(n <= 0? false)
+(n % 3 == 0? false)
 return Mystery(0)"]
 
-J -->|קריאה רקורסיבית| K["Mystery(0) 
-(n <= 0? true) 
+J -->|קריאה רקורסיבית| K["Mystery(0)
+(n <= 0? true)
 return 0"]
 
 %% חיצי החזרה
@@ -352,13 +332,12 @@ A -.->|תוצאה: 18| OUT(("Mystery(10) = 18"))
 </div>
 </details>
 
-
-
-
 ## סרטון על טכניקות לחשיבה רקורסיבית
-{% include youtube.html id="ngCos392W4w" %} 
+
+{% include youtube.html id="ngCos392W4w" %}
 
 ## השלבים של Reductible
+
 1. מה המקרה הפשוט ביותר? הוא ישמש כתנאי העצירה
 1. עבודה עם דוגמאות פשוטות, סמוכות למקרה הבסיס, ויזואליציה של הבעיה
 1. קישור בין בעיה גדולה לבעיות קטנות יותר. כיצד ניתן לפתור מקרה אם ידוע מקרה קטן יותר?
@@ -366,12 +345,13 @@ A -.->|תוצאה: 18| OUT(("Mystery(10) = 18"))
 1. כתיבת קוד: תנאי העצירה ואחריו הקריאה הרקורסיבית.
 1. עם הזמן מתגבשת חשיבה / אמונה, שאני (הפונקציה) רק צריכה לעשות את השלב שלי, והקריאה הרקורסיבית תחזיר תשובה נכונה.
 
-
 ## רקורסיה מול איטרציה
 
 בפעמים רבות ניתן לפתור בעיה הן בשיטה רקורסיבית והן בשיטה איטרטיבית. בשיטה רקורסיבית מקבלים קוד קריא ופשוט לעיתים, אך הוא עלול לבזבז זיכרון עקב שימור מצבי הקריאה במחסנית. אלגוריתם איטרטיבי משתמש בלולאות ויכול להיות יעיל יותר בזיכרון, במיוחד כאשר העומק הרקורסיבי גדול.
 
 ### טבלה – השוואה בין רקורסיה לאיטרציה
+
+{: .table-he}
 
 | מאפיין | רקורסיה | איטרציה |
 | --- | --- | --- |
@@ -379,9 +359,6 @@ A -.->|תוצאה: 18| OUT(("Mystery(10) = 18"))
 | קריאות חוזרות | קריאה חוזרת לפונקציה עצמה | לולאה (for / while) |
 | קריאות מקרה בסיס | חיוני לעצירת הקריאות | אין צורך במקרה בסיס |
 | בהירות קוד | לעיתים קריא יותר | לעיתים נדרשים משתנים נוספים |
-{: .table-he}
-
-
 
 <details markdown="1"><summary>דוגמא לרקורסיה במחרוזת: הפיכת מחרוזת</summary>
 
@@ -395,7 +372,6 @@ public static string StrReverse(string str)
    return StrReverse(str.Substring(1)) + str[0];
 }
 ```
-
 
 <details markdown="1"><summary>מעקב</summary>
 
@@ -411,30 +387,28 @@ B -->|קריאה רקורסיבית| C["StrReverse(c)
 (len < 2? true)
 return c"]
 
-
 C -.->|חזרה: c| B
 B -.->|חזרה: cb| A
 A -.->|תוצאה: cba| OUT(("StrReverse(abc) = cba"))
-
 
 </div>
 
 </details>
 </details>
 
-
 <details id="idRevNumRec" markdown="1"><summary>דוגמא לרקורסיה: הפיכת מספר - ללא שימוש במחרוזת. כיוון לפתרון</summary>
 
-הפיכת מחרוזת  - קשה יותר מהפיכת מספר. 
-הטכניקה שעליכם לחשוב עליה היא שימוש במשתנה עזר, והעברה שלו בתוך הקריאה הרקורסיבית. 
+הפיכת מחרוזת  - קשה יותר מהפיכת מספר.
+הטכניקה שעליכם לחשוב עליה היא שימוש במשתנה עזר, והעברה שלו בתוך הקריאה הרקורסיבית.
 חישבו על מצב שבו עובדים עם 2 מספרים:
 
 - המספר שאתם מחלקים ב-10
 - והתוצאה שאנחנו בונים: זו שכופלים ב-10.
 
-```csharp
-public static Rev(int num, int result = 0)
-```
+    ```csharp
+    public static Rev(int num, int result = 0)
+    ```
+
 שימוש: `int rev = Rev(1234);`  (כלומר, בקריאה מבחוץ לא מתייחסים לפרמטר הנוסף והוא יתחיל כ-0)
 
 בקריאה הראשונה נקרא ל-: `Rev(123, 4)`
@@ -444,7 +418,6 @@ public static Rev(int num, int result = 0)
 מכאן ניתן לחשוב גם על תנאי עצירה...
 
 </details>
-
 
 ## תרגול וקישורים
 
@@ -456,12 +429,10 @@ public static Rev(int num, int result = 0)
 
 [קישור לתרגול בקמפוס](https://app.campus.gov.il/learning/course/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@sequential+block@544f0df2068641c6a70929278aa4b772/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@vertical+block@ee0013d1d833495bbe888bb2f693f803){:target="_blank"}
 
-
 ## סרטונים
 
 [פלייליסט רקורסיה בקמפוס](https://www.youtube.com/playlist?list=PLnVUJu2KuoA31IAsWsbeP81gYvWoj3jGM){:target="_blank"}
 
+[מעקב באמצעות עץ מעקב. **לא מומלץ**](https://youtu.be/VZYNNvX0tEU?si=YeQVuG8eRAw2eZQG){:target="_blank"}
 
-
-[מעקב באמצעות עץ מעקב. לא מומלץ](https://youtu.be/VZYNNvX0tEU?si=YeQVuG8eRAw2eZQG){:target="_blank"}
-
+[מעקב בשיטת המלבנים](/mivney/1recursionAndComplexity/Chapter1ExTracking)
