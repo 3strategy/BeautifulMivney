@@ -187,6 +187,35 @@ details {
     margin-top:1.5em;
 }
 
+details > summary {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1.1;
+    list-style: none;
+    position: relative;
+    padding-inline-start: 1.4em;
+}
+
+details > summary::-webkit-details-marker {
+    display: none;
+}
+
+details > summary::before {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0.1em;
+    width: 1em;
+    height: 1em;
+    background: no-repeat center/contain url('/assets/img/simple_leaf_half.svg');
+    transform: rotate(90deg);
+    transition: transform 0.2s ease;
+}
+
+details[open] > summary::before {
+    transform: rotate(0deg);
+}
+
 pre {
     direction: ltr !important;
     text-align: left !important;
