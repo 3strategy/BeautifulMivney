@@ -29,8 +29,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[3]:::leaf
-      A --> C[5]:::leaf
+      A((1)) --> B((3)):::leaf
+      A --> C((5)):::leaf
     ```
 
     הפונקציה תחזיר: true
@@ -39,8 +39,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]:::leaf
-      A --> C[5]:::leaf
+      A((1)) --> B((2)):::leaf
+      A --> C((5)):::leaf
     ```
 
     הפונקציה תחזיר: false (בגלל הערך 2)
@@ -49,10 +49,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[7] --> B[9]
-      A --> C[11]:::leaf
-      B --> D[13]:::leaf
-      B --> E[15]:::leaf
+      A((7)) --> B((9))
+      A --> C((11)):::leaf
+      B --> D((13)):::leaf
+      B --> E((15)):::leaf
     ```
 
     הפונקציה תחזיר: true
@@ -84,12 +84,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[5]
-      B --> D[1]:::leaf
-      B --> E[2]:::leaf
-      C --> F[3]:::leaf
-      C --> G[4]:::leaf
+      A((10)) --> B((5))
+      A --> C((5))
+      B --> D((1)):::leaf
+      B --> E((2)):::leaf
+      C --> F((3)):::leaf
+      C --> G((4)):::leaf
     ```
 
       פלט : true
@@ -98,12 +98,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[8]
-      B --> D[1]:::leaf
-      B --> E[2]:::leaf
-      C --> F[3]:::leaf
-      C --> G[4]:::leaf
+      A((10)) --> B((5))
+      A --> C((8))
+      B --> D((1)):::leaf
+      B --> E((2)):::leaf
+      C --> F((3)):::leaf
+      C --> G((4)):::leaf
     ```
 
     פלט : false
@@ -112,12 +112,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[6]
-      B --> D[1]:::leaf
-      B --> E[1]:::leaf
-      C --> F[3]:::leaf
-      C --> G[4]:::leaf
+      A((10)) --> B((5))
+      A --> C((6))
+      B --> D((1)):::leaf
+      B --> E((1)):::leaf
+      C --> F((3)):::leaf
+      C --> G((4)):::leaf
     ```
 
     פלט : true
@@ -126,8 +126,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]:::leaf
-      A --> C[6]:::leaf
+      A((10)) --> B((5)):::leaf
+      A --> C((6)):::leaf
     ```
 
     פלט : false
@@ -136,7 +136,7 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10]:::leaf
+      A((10)):::leaf
     ```
 
     פלט : false
@@ -168,11 +168,11 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[10]
-      B --> D[5]:::leaf
-      B --> E[5]:::leaf
-      C --> F[10]:::leaf
+      A((10)) --> B((5))
+      A --> C((10))
+      B --> D((5)):::leaf
+      B --> E((5)):::leaf
+      C --> F((10)):::leaf
     ```
 
     הפונקציה תחזיר: true
@@ -181,11 +181,11 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[10]
-      B --> D[5]:::leaf
-      B --> E[6]:::leaf
-      C --> F[10]:::leaf
+      A((10)) --> B((5))
+      A --> C((10))
+      B --> D((5)):::leaf
+      B --> E((6)):::leaf
+      C --> F((10)):::leaf
     ```
 
     הפונקציה תחזיר: false
@@ -194,7 +194,7 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[7]:::leaf
+      A((7)):::leaf
     ```
 
     הפונקציה תחזיר: true (אין עלים שאינם השורש, ולכן התנאי מתקיים באופן טריוויאלי).
@@ -243,8 +243,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]:::leaf
-      A --> C[8]:::leaf
+      A((10)) --> B((5)):::leaf
+      A --> C((8)):::leaf
     ```
 
     הפונקציה תחזיר: `true` (הילדים 5 ו־8 שונים).
@@ -253,8 +253,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[4] --> B[4]:::leaf
-      A --> C[4]:::leaf
+      A((4)) --> B((4)):::leaf
+      A --> C((4)):::leaf
     ```
 
     הפונקציה תחזיר: `false` (אין צומת עם שני בנים שונים).
@@ -275,8 +275,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[7] --> B[7]:::leaf
-      A --> C[7]:::leaf
+      A((7)) --> B((7)):::leaf
+      A --> C((7)):::leaf
     ```
 
     הפונקציה תחזיר: `true` (הילדים בכל צומת זהים או חסרים).
@@ -285,8 +285,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[3] --> B[1]:::leaf
-      A --> C[9]:::leaf
+      A((3)) --> B((1)):::leaf
+      A --> C((9)):::leaf
     ```
 
     הפונקציה תחזיר: `false` (לשורש שני בנים שונים).

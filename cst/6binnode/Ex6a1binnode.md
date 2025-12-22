@@ -37,10 +37,10 @@ lang: he
 
     ```mermaid
         flowchart TB
-          A[5] --> B[3]
-          A --> C[8]
-          B --> D[1]:::leaf
-          C --> E[4]:::leaf
+          A((5)) --> B((3))
+          A --> C((8))
+          B --> D((1)):::leaf
+          C --> E((4)):::leaf
     ```
 
    הפונקציה תחזיר: 21 (5 + 3 + 8 + 1 + 4)
@@ -49,8 +49,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[-2]:::leaf
-      A --> C[7]:::leaf
+      A((10)) --> B(("-2")):::leaf
+      A --> C((7)):::leaf
     ```
 
     הפונקציה תחזיר: 15 (10 + (-2) + 7)
@@ -76,10 +76,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[5] --> B[3]
-      A --> C[8]:::leaf
-      B --> D[1]:::leaf
-      B --> E[4]:::leaf
+      A((5)) --> B((3))
+      A --> C((8)):::leaf
+      B --> D((1)):::leaf
+      B --> E((4)):::leaf
     ```
 
    הפונקציה תחזיר: 8
@@ -88,8 +88,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[2]:::leaf
-      A --> C[7]:::leaf
+      A((10)) --> B((2)):::leaf
+      A --> C((7)):::leaf
     ```
 
    הפונקציה תחזיר: 10
@@ -98,8 +98,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[-1] --> B[-5]:::leaf
-      A --> C[-2]:::leaf
+      A(("-1")) --> B(("-5")):::leaf
+      A --> C(("-2")):::leaf
     ```
 
    הפונקציה תחזיר: -1
@@ -121,10 +121,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[5] --> B[2]
-      A --> C[8]
-      B --> D[1]:::leaf
-      C --> E[9]:::leaf
+      A((5)) --> B((2))
+      A --> C((8))
+      B --> D((1)):::leaf
+      C --> E((9)):::leaf
     ```
   
     הפונקציה תחזיר 2 (הבנים היחידים הם 2 ו-8).
@@ -133,9 +133,9 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]:::leaf
-      B --> D[3]:::leaf
+      A((10)) --> B((5))
+      A --> C((15)):::leaf
+      B --> D((3)):::leaf
     ```
 
     הפונקציה תחזיר 1 (הבן היחיד הוא 5).
@@ -144,8 +144,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]:::leaf
-      A --> C[3]:::leaf
+      A((1)) --> B((2)):::leaf
+      A --> C((3)):::leaf
     ```
 
     הפונקציה תחזיר 0 (אין בנים יחידים).
@@ -169,10 +169,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[2] --> B[4]
-      A --> C[5]:::leaf
-      B --> D[1]:::leaf
-      B --> E[6]:::leaf
+      A((2)) --> B((4))
+      A --> C((5)):::leaf
+      B --> D((1)):::leaf
+      B --> E((6)):::leaf
     ```
 
     הפונקציה תחזיר 3 (הצמתים 2, 4, 6 זוגיים).
@@ -181,8 +181,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[3]:::leaf
-      A --> C[5]:::leaf
+      A((1)) --> B((3)):::leaf
+      A --> C((5)):::leaf
     ```
     <!-- TEXT-TREE-TO-REMOVE-AFTER-VERIFY 6a1.4-example2 -->
     הפונקציה תחזיר 0 (אין צמתים זוגיים).
@@ -222,10 +222,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[4] --> B[2]
-      A --> C[5]:::leaf
-      B --> D[1]:::leaf
-      B --> E[2]:::leaf
+      A((4)) --> B((2))
+      A --> C((5)):::leaf
+      B --> D((1)):::leaf
+      B --> E((2)):::leaf
     ```
 
     והמספר X = 2, הפונקציה תחזיר 2.
@@ -234,10 +234,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[20]
-      A --> C[30]:::leaf
-      B --> D[40]:::leaf
-      B --> E[50]:::leaf
+      A((10)) --> B((20))
+      A --> C((30)):::leaf
+      B --> D((40)):::leaf
+      B --> E((50)):::leaf
     ```
 
     והמספר X = 10, הפונקציה תחזיר 1.
@@ -246,8 +246,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[7] --> B[7]:::leaf
-      A --> C[7]:::leaf
+      A((7)) --> B((7)):::leaf
+      A --> C((7)):::leaf
     ```
 
     והמספר X = 7, הפונקציה תחזיר 3.
@@ -270,10 +270,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[5] --> B[2]
-      A --> C[8]:::leaf
-      B --> D[1]:::leaf
-      B --> E[7]:::leaf
+      A((5)) --> B((2))
+      A --> C((8)):::leaf
+      B --> D((1)):::leaf
+      B --> E((7)):::leaf
     ```
 
     העלים הם 1, 7, 8. הפונקציה תחזיר: 3
@@ -282,12 +282,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]
-      B --> D[2]:::leaf
-      B --> E[7]:::leaf
-      C --> F[12]:::leaf
-      C --> G[18]:::leaf
+      A((10)) --> B((5))
+      A --> C((15))
+      B --> D((2)):::leaf
+      B --> E((7)):::leaf
+      C --> F((12)):::leaf
+      C --> G((18)):::leaf
     ```
 
     העלים הם 2, 7, 12, 18. הפונקציה תחזיר: 4
@@ -296,7 +296,7 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[42]:::leaf
+      A((42)):::leaf
     ```
 
 ## 6a1.9 צמתים שקטנים מילדם {#id6a1.9}
@@ -317,10 +317,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[5] --> B[3]
-      A --> C[8]:::leaf
-      B --> D[6]:::leaf
-      B --> E[9]:::leaf
+      A((5)) --> B((3))
+      A --> C((8)):::leaf
+      B --> D((6)):::leaf
+      B --> E((9)):::leaf
     ```
 
     הפלט יהיה: 2
@@ -333,10 +333,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[4]
-      A --> C[15]:::leaf
-      B --> D[2]:::leaf
-      B --> E[6]:::leaf
+      A((10)) --> B((4))
+      A --> C((15)):::leaf
+      B --> D((2)):::leaf
+      B --> E((6)):::leaf
     ```
 
     הפלט יהיה: 2
@@ -348,8 +348,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]:::leaf
-      A --> C[3]:::leaf
+      A((1)) --> B((2)):::leaf
+      A --> C((3)):::leaf
     ```
 
     הפלט יהיה: 1
@@ -360,7 +360,7 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[7]:::leaf
+      A((7)):::leaf
     ```
 
     הפלט יהיה: 0 (אין לו ילדים).
@@ -386,12 +386,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]
-      B --> D[3]:::leaf
-      B --> E[4]:::leaf
-      C --> F[12]:::leaf
-      C --> G[18]:::leaf
+      A((10)) --> B((5))
+      A --> C((15))
+      B --> D((3)):::leaf
+      B --> E((4)):::leaf
+      C --> F((12)):::leaf
+      C --> G((18)):::leaf
     ```
 
     - הצומת 15 (אב 10) גדול מאביו. (ספירה: 1)
@@ -401,12 +401,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[20] --> B[10]
-      A --> C[30]
-      B --> D[5]:::leaf
-      B --> E[15]:::leaf
-      C --> F[25]:::leaf
-      C --> G[35]:::leaf
+      A((20)) --> B((10))
+      A --> C((30))
+      B --> D((5)):::leaf
+      B --> E((15)):::leaf
+      C --> F((25)):::leaf
+      C --> G((35)):::leaf
     ```
 
     הפונקציה תחזיר 3.
@@ -428,10 +428,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[20]
-      B --> D[3]:::leaf
-      C --> E[15]:::leaf
+      A((10)) --> B((5))
+      A --> C((20))
+      B --> D((3)):::leaf
+      C --> E((15)):::leaf
     ```
 
     הצמתים היחידים הם 3 (בן יחיד של 5) ו-15 (בן יחיד של 20). שניהם אי-זוגיים. הפלט יהיה: 18 (3 + 15)
@@ -440,10 +440,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]
-      A --> C[3]
-      B --> D[4]:::leaf
-      C --> E[5]:::leaf
+      A((1)) --> B((2))
+      A --> C((3))
+      B --> D((4)):::leaf
+      C --> E((5)):::leaf
     ```
 
     הצמתים היחידים הם 4 (בן יחיד של 2) ו-5 (בן יחיד של 3). שניהם אי-זוגיים. הפלט יהיה: 9 (4 + 5)
@@ -452,8 +452,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[2]:::leaf
-      A --> C[4]:::leaf
+      A((10)) --> B((2)):::leaf
+      A --> C((4)):::leaf
     ```
 
     אין צמתים יחידים. הפלט יהיה: 0
@@ -480,12 +480,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]
-      B --> D[2]:::leaf
-      B --> E[7]:::leaf
-      C --> F[12]:::leaf
-      C --> G[17]:::leaf
+      A((10)) --> B((5))
+      A --> C((15))
+      B --> D((2)):::leaf
+      B --> E((7)):::leaf
+      C --> F((12)):::leaf
+      C --> G((17)):::leaf
     ```
 
     הצומת 10 הוא סב (יש לו נכדים: 2, 7, 12, 17). הפונקציה תחזיר 1.
@@ -494,8 +494,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[20] --> B[10]:::leaf
-      A --> C[30]:::leaf
+      A((20)) --> B((10)):::leaf
+      A --> C((30)):::leaf
     ```
 
     אין סבים בעץ זה. הפונקציה תחזיר 0.
@@ -504,10 +504,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]
-      A --> C[3]
-      B --> D[4]:::leaf
-      C --> E[5]:::leaf
+      A((1)) --> B((2))
+      A --> C((3))
+      B --> D((4)):::leaf
+      C --> E((5)):::leaf
     ```
 
     הצומת 1 הוא סב (יש לו נכדים: 4, 5). הפונקציה תחזיר 1.

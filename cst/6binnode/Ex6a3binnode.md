@@ -28,10 +28,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[5] --> B[3]
-      A --> C[8]
-      B --> D[1]:::leaf
-      C --> E[7]:::leaf
+      A((5)) --> B((3))
+      A --> C((8))
+      B --> D((1)):::leaf
+      C --> E((7)):::leaf
     ```
 
     הפונקציה תחזיר: 2 (הגובה נמדד לפי מספר הקשתות מהשורש לצומת העמוק ביותר)
@@ -54,10 +54,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]
-      A --> C[3]:::leaf
-      B --> D[4]:::leaf
-      B --> E[5]:::leaf
+      A((1)) --> B((2))
+      A --> C((3)):::leaf
+      B --> D((4)):::leaf
+      B --> E((5)):::leaf
     ```
 
     הפלט יהיה:
@@ -74,8 +74,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[20]:::leaf
-      A --> C[30]:::leaf
+      A((10)) --> B((20)):::leaf
+      A --> C((30)):::leaf
     ```
 
     הפלט יהיה:
@@ -106,12 +106,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]
-      B --> D[2]:::leaf
-      B --> E[7]:::leaf
-      C --> F[12]:::leaf
-      C --> G[18]:::leaf
+      A((10)) --> B((5))
+      A --> C((15))
+      B --> D((2)):::leaf
+      B --> E((7)):::leaf
+      C --> F((12)):::leaf
+      C --> G((18)):::leaf
     ```
 
     הפלט יהיה:
@@ -128,11 +128,11 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]
-      A --> C[3]
-      B --> D[4]:::leaf
-      C --> E[5]:::leaf
-      C --> F[6]:::leaf
+      A((1)) --> B((2))
+      A --> C((3))
+      B --> D((4)):::leaf
+      C --> E((5)):::leaf
+      C --> F((6)):::leaf
     ```
 
     הפלט יהיה:
@@ -164,11 +164,11 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]
-      B --> D[2]:::leaf
-      B --> E[7]:::leaf
-      C --> F[12]:::leaf
+      A((10)) --> B((5))
+      A --> C((15))
+      B --> D((2)):::leaf
+      B --> E((7)):::leaf
+      C --> F((12)):::leaf
     ```
 
     הפלט יהיה: 2 7 12
@@ -177,10 +177,10 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]
-      A --> C[3]:::leaf
-      B --> D[4]:::leaf
-      B --> E[5]:::leaf
+      A((1)) --> B((2))
+      A --> C((3)):::leaf
+      B --> D((4)):::leaf
+      B --> E((5)):::leaf
     ```
 
     הפלט יהיה: 4 5
@@ -189,7 +189,7 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[20]:::leaf
+      A((20)):::leaf
     ```
 
     הפלט יהיה: 20
@@ -212,12 +212,12 @@ lang: he
 
 ```mermaid
 flowchart TB
-  A[10] --> B[5]
-  A --> C[15]
-  B --> D[3]:::leaf
-  B --> E[7]:::leaf
-  C --> F[12]:::leaf
-  C --> G[18]:::leaf
+  A((10)) --> B((5))
+  A --> C((15))
+  B --> D((3)):::leaf
+  B --> E((7)):::leaf
+  C --> F((12)):::leaf
+  C --> G((18)):::leaf
 ```
 
 הפלט יהיה:
@@ -274,12 +274,12 @@ tree.GetRight().SetRight(new BinNode)
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]
-      B --> D[2]:::leaf
-      B --> E[7]:::leaf
-      C --> F[12]:::leaf
-      C --> G[18]:::leaf
+      A((10)) --> B((5))
+      A --> C((15))
+      B --> D((2)):::leaf
+      B --> E((7)):::leaf
+      C --> F((12)):::leaf
+      C --> G((18)):::leaf
     ```
 
     1. עבור הצומת 10: יש לו 2 בנים (5, 15). 10 > 5, 10 < 15. התנאי מתקיים (10 גדול מ-5).
@@ -298,12 +298,12 @@ tree.GetRight().SetRight(new BinNode)
 
     ```mermaid
     flowchart TB
-      A[20] --> B[10]
-      A --> C[30]
-      B --> D[5]:::leaf
-      B --> E[8]:::leaf
-      C --> F[25]:::leaf
-      C --> G[35]:::leaf
+      A((20)) --> B((10))
+      A --> C((30))
+      B --> D((5)):::leaf
+      B --> E((8)):::leaf
+      C --> F((25)):::leaf
+      C --> G((35)):::leaf
     ```
 
     1. עבור הצומת 20: יש לו 2 בנים (10, 30). 20 > 10, 20 < 30. התנאי מתקיים (20 גדול מ-10).

@@ -34,16 +34,16 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]:::leaf
-      A --> C[3]:::leaf
+      A((1)) --> B((2)):::leaf
+      A --> C((3)):::leaf
     ```
 
     עץ 2:
 
     ```mermaid
     flowchart TB
-      D[1] --> E[2]:::leaf
-      D --> F[3]:::leaf
+      D((1)) --> E((2)):::leaf
+      D --> F((3)):::leaf
     ```
 
     ההערך שיוחזר יהיה: `True`
@@ -54,16 +54,16 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]:::leaf
-      A --> C[3]:::leaf
+      A((1)) --> B((2)):::leaf
+      A --> C((3)):::leaf
     ```
 
     עץ 2:
 
     ```mermaid
     flowchart TB
-      D[1] --> E[2]:::leaf
-      D --> F[4]:::leaf
+      D((1)) --> E((2)):::leaf
+      D --> F((4)):::leaf
     ```
 
     ההערך שיוחזר יהיה: `False`
@@ -74,15 +74,15 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]:::leaf
-      A --> C[3]:::leaf
+      A((1)) --> B((2)):::leaf
+      A --> C((3)):::leaf
     ```
 
     עץ 2:
 
     ```mermaid
     flowchart TB
-      D[1] --> E[2]:::leaf
+      D((1)) --> E((2)):::leaf
     ```
 
     ההערך שיוחזר יהיה: `False`
@@ -93,14 +93,14 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[null]:::leaf
+      A((null)):::leaf
     ```
 
     עץ 2:
 
     ```mermaid
     flowchart TB
-      B[null]:::leaf
+      B((null)):::leaf
     ```
 
     ההערך שיוחזר יהיה `True`
@@ -189,12 +189,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]
-      B --> D[2]:::leaf
-      B --> E[7]:::leaf
-      C --> F[12]:::leaf
-      C --> G[18]:::leaf
+      A((10)) --> B((5))
+      A --> C((15))
+      B --> D((2)):::leaf
+      B --> E((7)):::leaf
+      C --> F((12)):::leaf
+      C --> G((18)):::leaf
     ```
 
     לאחר הפעלת הפונקציה, העלים (2, 7, 12, 18) יקבלו את ערכי הוריהם:
@@ -208,20 +208,20 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]
-      B --> D[5]:::leaf
-      B --> E[5]:::leaf
-      C --> F[15]:::leaf
-      C --> G[15]:::leaf
+      A((10)) --> B((5))
+      A --> C((15))
+      B --> D((5)):::leaf
+      B --> E((5)):::leaf
+      C --> F((15)):::leaf
+      C --> G((15)):::leaf
     ```
 
 2. עבור העץ:
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]:::leaf
-      A --> C[3]:::leaf
+      A((1)) --> B((2)):::leaf
+      A --> C((3)):::leaf
     ```
 
     לאחר הפעלת הפונקציה, העלים (2, 3) יקבלו את ערכי הוריהם:
@@ -233,8 +233,8 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[1] --> B[1]:::leaf
-      A --> C[1]:::leaf
+      A((1)) --> B((1)):::leaf
+      A --> C((1)):::leaf
     ```
 
 ## 6a4.4 מחיקת צמתי בן יחיד מעץ בינארי {#id6a4.4}
@@ -261,15 +261,15 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      B --> C[3]:::leaf
+      A((10)) --> B((5))
+      B --> C((3)):::leaf
     ```
 
     **אחרי:**
 
     ```mermaid
     flowchart TB
-      A[3]:::leaf
+      A((3)):::leaf
     ```
 
     **הסבר:**
@@ -284,23 +284,23 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[20] --> B[10]
-      A --> C[30]
-      B --> D[5]
-      D --> E[3]:::leaf
-      D --> F[7]:::leaf
-      C --> G[40]
-      G --> H[50]:::leaf
+      A((20)) --> B((10))
+      A --> C((30))
+      B --> D((5))
+      D --> E((3)):::leaf
+      D --> F((7)):::leaf
+      C --> G((40))
+      G --> H((50)):::leaf
     ```
 
     **אחרי:**
 
     ```mermaid
     flowchart TB
-      A[20] --> B[5]
-      A --> C[50]
-      B --> D[3]:::leaf
-      B --> E[7]:::leaf
+      A((20)) --> B((5))
+      A --> C((50))
+      B --> D((3)):::leaf
+      B --> E((7)):::leaf
     ```
 
     **הסבר:**
@@ -316,17 +316,17 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[20]
-      B --> C[15]:::leaf
-      B --> D[25]:::leaf
+      A((10)) --> B((20))
+      B --> C((15)):::leaf
+      B --> D((25)):::leaf
     ```
 
     **אחרי:**
 
     ```mermaid
     flowchart TB
-      A[20] --> B[15]:::leaf
-      A --> C[25]:::leaf
+      A((20)) --> B((15)):::leaf
+      A --> C((25)):::leaf
     ```
 
     **הסבר:**
@@ -339,18 +339,18 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[50] --> B[40]
-      B --> C[30]
-      C --> D[25]:::leaf
-      C --> E[35]:::leaf
+      A((50)) --> B((40))
+      B --> C((30))
+      C --> D((25)):::leaf
+      C --> E((35)):::leaf
     ```
 
     **אחרי:**
 
     ```mermaid
     flowchart TB
-      A[30] --> B[25]:::leaf
-      A --> C[35]:::leaf
+      A((30)) --> B((25)):::leaf
+      A --> C((35)):::leaf
     ```
 
     **הסבר:**
@@ -365,12 +365,12 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[15] --> B[10]
-      A --> C[20]
-      B --> D[5]:::leaf
-      B --> E[12]:::leaf
-      C --> F[18]:::leaf
-      C --> G[25]:::leaf
+      A((15)) --> B((10))
+      A --> C((20))
+      B --> D((5)):::leaf
+      B --> E((12)):::leaf
+      C --> F((18)):::leaf
+      C --> G((25)):::leaf
     ```
 
     **הסבר:**
@@ -407,24 +407,24 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]:::leaf
-      B --> D[2]:::leaf
-      B --> E[7]:::leaf
+      A((10)) --> B((5))
+      A --> C((15)):::leaf
+      B --> D((2)):::leaf
+      B --> E((7)):::leaf
     ```
 
     העלים הם 2, 7, 15. לאחר הפעלת הפונקציה, העץ יהיה:
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]
-      B --> D[2]
-      B --> E[7]
-      C --> F[15]
-      D --> G[2]:::leaf
-      E --> H[7]:::leaf
-      F --> I[15]:::leaf
+      A((10)) --> B((5))
+      A --> C((15))
+      B --> D((2))
+      B --> E((7))
+      C --> F((15))
+      D --> G((2)):::leaf
+      E --> H((7)):::leaf
+      F --> I((15)):::leaf
     ```
 
     ```text
@@ -435,23 +435,23 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[20] --> B[10]:::leaf
-      A --> C[30]
-      C --> D[25]:::leaf
-      C --> E[35]:::leaf
+      A((20)) --> B((10)):::leaf
+      A --> C((30))
+      C --> D((25)):::leaf
+      C --> E((35)):::leaf
     ```
 
     העלים הם 10, 25, 35. לאחר הפעלת הפונקציה, העץ יהיה:
 
     ```mermaid
     flowchart TB
-      A[20] --> B[10]
-      A --> C[30]
-      B --> D[10]:::leaf
-      C --> E[25]
-      C --> F[35]
-      E --> G[25]:::leaf
-      F --> H[35]:::leaf
+      A((20)) --> B((10))
+      A --> C((30))
+      B --> D((10)):::leaf
+      C --> E((25))
+      C --> F((35))
+      E --> G((25)):::leaf
+      F --> H((35)):::leaf
     ```
 
     (הבן השמאלי של 10 הוא 10, של 25 הוא 25, ושל 35 הוא 35)
@@ -476,44 +476,44 @@ lang: he
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]:::leaf
+      A((10)) --> B((5)):::leaf
     ```
 
     לאחר הפעלת הפונקציה, העץ יהיה:
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]:::leaf
-      A --> C[4]:::leaf
+      A((10)) --> B((5)):::leaf
+      A --> C((4)):::leaf
     ```
 
 1. עבור העץ הבא:
 
     ```mermaid
     flowchart TB
-      A[20] --> C[15]:::leaf
+      A((20)) --> C((15)):::leaf
     ```
 
     לאחר הפעלת הפונקציה, העץ יהיה:
 
     ```mermaid
     flowchart TB
-      A[20] --> B[14]:::leaf
-      A --> C[15]:::leaf
+      A((20)) --> B((14)):::leaf
+      A --> C((15)):::leaf
     ```
 
 1. עבור העץ הבא:
 
     ```mermaid
     flowchart TB
-      A[30]:::leaf
+      A((30)):::leaf
     ```
 
     לאחר הפעלת הפונקציה, העץ יישאר:
 
     ```mermaid
     flowchart TB
-      A[30]:::leaf
+      A((30)):::leaf
     ```
 
 ## 6a4.7 כמות צמתים ברמה בעץ בינארי {#id6a4.7}
@@ -534,11 +534,11 @@ lang: he
 
 ```mermaid
 flowchart TB
-  A[10] --> B[5]
-  A --> C[15]
-  B --> D[2]:::leaf
-  B --> E[7]:::leaf
-  C --> F[12]:::leaf
+  A((10)) --> B((5))
+  A --> C((15))
+  B --> D((2)):::leaf
+  B --> E((7)):::leaf
+  C --> F((12)):::leaf
 ```
 
 1. עבור רמה L = 0, ההערך שיוחזר יהיה: 1 (הצומת 10)
@@ -636,10 +636,10 @@ flowchart TB
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]
-      A --> C[3]
-      B --> D[4]:::leaf
-      C --> E[5]:::leaf
+      A((1)) --> B((2))
+      A --> C((3))
+      B --> D((4)):::leaf
+      C --> E((5)):::leaf
     ```
 
     ```csharp
@@ -659,10 +659,10 @@ flowchart TB
 
     ```mermaid
     flowchart TB
-      A[5] --> B[2]
-      A --> C[8]
-      B --> D[1]:::leaf
-      C --> E[7]:::leaf
+      A((5)) --> B((2))
+      A --> C((8))
+      B --> D((1)):::leaf
+      C --> E((7)):::leaf
     ```
 
     ```csharp
@@ -682,10 +682,10 @@ flowchart TB
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]
-      A --> C[0]:::leaf
-      B --> D[3]:::leaf
-      B --> E[4]:::leaf
+      A((1)) --> B((2))
+      A --> C((0)):::leaf
+      B --> D((3)):::leaf
+      B --> E((4)):::leaf
     ```
 
     ```csharp
@@ -717,10 +717,10 @@ flowchart TB
 
     ```mermaid
     flowchart TB
-      A[10] --> B[5]
-      A --> C[15]:::leaf
-      B --> D[2]:::leaf
-      B --> E[7]:::leaf
+      A((10)) --> B((5))
+      A --> C((15)):::leaf
+      B --> D((2)):::leaf
+      B --> E((7)):::leaf
     ```
 
     הערך שיוחזר: 30
@@ -730,8 +730,8 @@ flowchart TB
 
     ```mermaid
     flowchart TB
-      A[-10] --> B[-5]:::leaf
-      A --> C[-15]:::leaf
+      A(("-10")) --> B(("-5")):::leaf
+      A --> C(("-15")):::leaf
     ```
 
     הערך שיוחזר: -15
@@ -741,10 +741,10 @@ flowchart TB
 
     ```mermaid
     flowchart TB
-      A[1] --> B[2]:::leaf
-      A --> C[3]
-      C --> D[4]:::leaf
-      C --> E[5]:::leaf
+      A((1)) --> B((2)):::leaf
+      A --> C((3))
+      C --> D((4)):::leaf
+      C --> E((5)):::leaf
     ```
 
     הערך שיוחזר: 9
@@ -754,7 +754,7 @@ flowchart TB
 
     ```mermaid
     flowchart TB
-      A[null]:::leaf
+      A((null)):::leaf
     ```
 
     הערך שיוחזר: 2147483648-
