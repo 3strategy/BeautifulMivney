@@ -131,6 +131,7 @@ lang: he
       A((1)) --> B((2))
       A --> C((3))
       B --> D((4)):::leaf
+      B --> I[ ]:::invisible
       C --> E((5)):::leaf
       C --> F((6)):::leaf
     ```
