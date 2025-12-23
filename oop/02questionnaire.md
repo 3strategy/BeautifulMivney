@@ -1,29 +1,102 @@
 ---
 layout: page
 title: C# Inheritance Quiz
-subtitle: "אז למה אם אין override מגיעים רק לפעמים לפעולה במחלקה האם?"
+subtitle: "attempt to host it here..."
 tags: [פולימורפיזם, ToString]
 mathjax: true
 lang: he
 ---
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>שאלון אינטראקטיבי – ירושה ופולימורפיזם ב־C#</title>
+
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-  <script>
-    window.tailwind = window.tailwind || {};
-    window.tailwind.config = {
-      corePlugins: { preflight: false, visibility: false },
-      important: "#quiz-root",
-    };
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
+
+<style>
+  /* === Answer buttons: scoped to quiz only === */
+  #quiz-root .answers-grid{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(110px, 1fr));
+    gap:12px;
+    margin-top:12px;
+  }
+
+  @media (max-width: 780px){
+    #quiz-root .answers-grid{ grid-template-columns:repeat(2, minmax(140px, 1fr)); }
+  }
+  @media (max-width: 420px){
+    #quiz-root .answers-grid{ grid-template-columns:1fr; }
+  }
+
+  #quiz-root .answer-btn{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+
+    padding:12px 10px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    background:#fff;
+    cursor:pointer;
+
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+
+    transition:transform .06s ease, box-shadow .12s ease, background .12s ease;
+    min-height:62px;
+  }
+
+  #quiz-root .answer-btn:hover{
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+    transform:translateY(-1px);
+    background:#f9fafb;
+  }
+
+  #quiz-root .answer-btn:active{
+    transform:translateY(0);
+    box-shadow:none;
+  }
+
+  #quiz-root .answer-letter{
+    font-weight:800;
+    font-size:15px;
+    line-height:1;
+  }
+
+  #quiz-root .answer-text{
+    font-weight:600;
+    font-size:13px;
+    line-height:1.15;
+    opacity:.9;
+    text-align:center;
+  }
+
+  /* מצב נבחר / נכון / שגוי — אם תרצה */
+  #quiz-root .answer-btn.is-selected{
+    border-color:#111827;
+    box-shadow:0 0 0 3px rgba(17,24,39,.10);
+  }
+  #quiz-root .answer-btn.is-correct{
+    border-color:#16a34a;
+    box-shadow:0 0 0 3px rgba(22,163,74,.12);
+  }
+  #quiz-root .answer-btn.is-wrong{
+    border-color:#dc2626;
+    box-shadow:0 0 0 3px rgba(220,38,38,.12);
+  }
+
+  /* אם יש לך disable בזמן בדיקה */
+  #quiz-root .answer-btn:disabled{
+    cursor:default;
+    opacity:.65;
+    transform:none;
+    box-shadow:none;
+  }
+</style>
+
+
   <div id="quiz-root"></div>
 
   <script type="text/babel">
@@ -612,26 +685,21 @@ class SubData : Data
       const isCorrect = showCorrect && choice.key === correctKey;
       const isWrongSelected = showCorrect && isSelected && choice.key !== correctKey;
 
-      const baseCls = "w-full rounded-2xl border px-4 py-3 transition shadow-sm hover:shadow disabled:opacity-60 disabled:cursor-not-allowed";
-      const ring = isCorrect || isWrongSelected || isSelected ? " ring-2 ring-offset-2" : "";
-      const textAlign = dir === "rtl" ? " text-right" : " text-left";
+      const classNames = ["answer-btn"];
+      if (isSelected) classNames.push("is-selected");
+      if (isCorrect) classNames.push("is-correct");
+      if (isWrongSelected) classNames.push("is-wrong");
 
       return (
         <button
           dir={dir}
-          className={baseCls + ring + textAlign}
+          className={classNames.join(" ")}
           disabled={disabled}
           onClick={() => onPick(choice.key)}
           type="button"
         >
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <div className="font-semibold">{choice.key})</div>
-              <div className="mt-1 whitespace-pre-wrap">{choice.text}</div>
-            </div>
-            {showCorrect && isCorrect && <Pill>נכון</Pill>}
-            {showCorrect && isWrongSelected && <Pill>לא</Pill>}
-          </div>
+          <div className="answer-letter">{choice.key}</div>
+          <div className="answer-text">{choice.text}</div>
         </button>
       );
     }
@@ -733,7 +801,7 @@ class SubData : Data
 
               {q.code ? <CodeBlock code={q.code} /> : null}
 
-              <div className="grid gap-3">
+              <div className="answers-grid">
                 {q.choices.map((c) => (
                   <ChoiceButton
                     key={c.key}
@@ -792,4 +860,4 @@ class SubData : Data
 
     ReactDOM.render(<Questionnaire />, document.getElementById('quiz-root'));
   </script>
-</body>
+
