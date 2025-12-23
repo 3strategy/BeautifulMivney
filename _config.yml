@@ -89,9 +89,10 @@ navbar-links:
     - באוניברסיטה העברית - עצמים: "/oop/chap2-Objects-CSharp.pdf"
     - באוניברסיטה העברית - מחלקות: "/oop/chap3-Classes-CSharp.pdf"
   - 1. הורשה: 
-    - 1. פתיחה: "/oop/01inheritance"
-    - 1b. הורשה המשך: "/oop/01inheritc"
-    - 1c. שרשור בנאים: "/oop/01inheritdconstructors"
+    - 1.1 פתיחה: "/oop/01inheritance"
+    - 1.2 הורשה המשך: "/oop/01inheritc"
+    - 1.3 שרשור בנאים: "/oop/01inheritdconstructors"
+    - 1.4 קריאות ל-base: "/oop/01inheritEbase"
     - מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11C-abstract/index.html"
   - 2. פולימורפיזם: 
     - 2. מצגת: "/oop/02-polymorphism-cs.pptx"
