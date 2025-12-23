@@ -1,8 +1,7 @@
 ---
 layout: page
-title: C# Inheritance Quiz
-subtitle: "attempt to host it here..."
-tags: [פולימורפיזם, ToString]
+title: שאלון - ירושה ופולימורפיזם
+tags: [פולימורפיזם, constructors, בנאי, base, this, בנאים]
 mathjax: true
 lang: he
 ---
@@ -728,19 +727,21 @@ class SubData : Data
       }, [answers, quizQuestions]);
 
       const pick = (key) => {
+        const isCorrect = key === q.correctKey;
         setAnswers((prev) => ({
           ...prev,
           [q.id]: { ...(prev[q.id] || {}), selectedKey: key, revealed: false, isCorrect: undefined },
         }));
-      };
-
-      const reveal = () => {
-        if (!a.selectedKey) return;
-        const isCorrect = a.selectedKey === q.correctKey;
-        setAnswers((prev) => ({
-          ...prev,
-          [q.id]: { ...(prev[q.id] || {}), revealed: true, isCorrect },
-        }));
+        setTimeout(() => {
+          setAnswers((prev) => {
+            const current = prev[q.id];
+            if (!current || current.selectedKey !== key) return prev;
+            return {
+              ...prev,
+              [q.id]: { ...current, revealed: true, isCorrect },
+            };
+          });
+        }, 250);
       };
 
       const next = () => {
@@ -764,21 +765,23 @@ class SubData : Data
       return (
         <div dir="rtl" className="min-h-screen p-4 md:p-8">
           <div className="max-w-4xl mx-auto space-y-4">
-            <header className="rounded-2xl border p-4 md:p-6 shadow-sm">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                <div>
-                  <h1 className="text-2xl md:text-3xl font-bold">שאלון אינטראקטיבי – ירושה ופולימורפיזם ב־C#</h1>
-                  <p className="mt-1 text-sm opacity-80">
-                    התקדמות: {progress.done}/{progress.total} · נכון: {progress.correct}
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <button type="button" className="rounded-2xl border px-4 py-2 shadow-sm" onClick={resetAll}>
-                    איפוס
-                  </button>
-                </div>
-              </div>
-            </header>
+<header className="rounded-2xl border p-4 md:p-6 shadow-sm">
+  <div className="md:flex-row md:items-center md:justify-between gap-6 text-sm opacity-80">
+    <div>
+      התקדמות: {progress.done}/{progress.total} · נכון: {progress.correct}
+    </div>
+
+    <button
+      className="btn btn-sm"
+      onClick={resetAll}
+    >
+      איפוס
+    </button>
+  </div>
+</header>
+
+
+
 
             <main className="rounded-2xl border p-4 md:p-6 shadow-sm space-y-4">
               <div className="flex items-start justify-between gap-4">
@@ -834,14 +837,6 @@ class SubData : Data
                   הבא
                 </button>
                 <div className="flex-1" />
-                <button
-                  type="button"
-                  className="rounded-2xl border px-4 py-2 shadow-sm disabled:opacity-60"
-                  onClick={reveal}
-                  disabled={!a.selectedKey || a.revealed}
-                >
-                  בדיקה
-                </button>
               </div>
 
               {a.revealed && (
