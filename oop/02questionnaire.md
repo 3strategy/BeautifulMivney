@@ -14,10 +14,17 @@ lang: he
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <script>
+    window.tailwind = window.tailwind || {};
+    window.tailwind.config = {
+      corePlugins: { preflight: false, visibility: false },
+      important: "#quiz-root",
+    };
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="quiz-root"></div>
 
   <script type="text/babel">
     const { useState, useEffect, useMemo } = React;
@@ -783,6 +790,6 @@ class SubData : Data
       );
     }
 
-    ReactDOM.render(<Questionnaire />, document.getElementById('root'));
+    ReactDOM.render(<Questionnaire />, document.getElementById('quiz-root'));
   </script>
 </body>
