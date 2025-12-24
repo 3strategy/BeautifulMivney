@@ -605,9 +605,9 @@ class SubData : Data
 {
     private int val = 3;
 
-    public SubData()
+    public SubData() : ___ // קוד חסר
     {
-        // קוד חסר
+
     }
 
     public SubData(int x)
