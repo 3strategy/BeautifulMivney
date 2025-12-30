@@ -68,16 +68,21 @@ navbar-links:
   #   - תרגול: "/mivney/4stack/Links"
 
   תור:
-    - אנימציית תור: "/mivney/5queue/QueueAnimation.html"
+    - 5.0 אנימציית תור: "/mivney/5queue/QueueAnimation.html"
     - 5.1 תור: "/mivney/5queue/Chapter5"
+    - 5.2 מעקב רקורסיה בתורים: "/mivney/5queue/QueueRecurrsionTrackingHila.pdf"
+    - 5.3 האוניברסיטה העברית: "/5queue/chap8-Stack-CSharp.pdf"
+    - 5.4 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS03-queue/index.html"
   #   - תרגול: "/mivney/5queue/Links"
 
   עץ בינארי:
     - 6.1 עץ בינארי: "/mivney/6binnode/Chapter6"
-
+    - סוגי עצים: "/mivney/6binnode/binary_tree_full_complete_perfect"
+    - עץ בינארי לעומת עץ חיפוש: "/mivney/6binnode/binnode1"
+    - 6.3 האוניברסיטה העברית: "/mivney/6binnode/chap10-Tree-CSharp.pdf"
+    - 6.4 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS06-trees/index.html"
   #  - תרגול: "/mivney/6binnode/Links"
-  #   - סוגי עצים: "/mivney/6binnode/binary_tree_full_complete_perfect"
-  #   - עץ בינארי לעומת עץ חיפוש: "/mivney/6binnode/binnode1"
+
     
   תמ"ע:
 
