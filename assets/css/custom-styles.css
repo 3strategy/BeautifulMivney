@@ -456,6 +456,14 @@ button:hover {
   page-break-before: always;
 }
 
+
+/*support cell highlighting in tables*/
+td:has(i), th:has(i) {
+    background-color: var(--backs-col) !important;
+}
+
+
+
 .table-en {
     direction: ltr;
 }
