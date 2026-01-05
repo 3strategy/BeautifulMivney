@@ -98,11 +98,12 @@ navbar-links:
     - 1.2 הורשה המשך: "/oop/01inheritc"
     - 1.3 שרשור בנאים: "/oop/01inheritdconstructors"
     - 1.4 קריאות ל-base, this: "/oop/01inheritEbase"
+    - 1.5 תרגול אינטרקטיבי: "oop/01questionnaire"
     - מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11C-abstract/index.html"
   - 2. פולימורפיזם: 
     - 2.1 מצגת: "/oop/02-polymorphism-cs.pptx"
     - 2.2 פולימורפיזם: "/oop/02Polymorphism"
-    - 2.3 תרגול אינטרקטיבי: "oop/02questionnaire"
+    - 2.3a אינטרקטיבי מתקדם: "oop/02questionnairePolymAdv"
     - 2.3b אינטרקטיבי JAVA: "https://gemini.google.com/share/cc9b583ee06b"
     - 2.4 עץ החלטה + מבגרות 25: "/oop/02Polymorphism2Bag25"
     - 2.5 מתי נקבע הטיפוס: "/oop/02Polymorphism3"
