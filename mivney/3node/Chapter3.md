@@ -2,7 +2,7 @@
 layout: page 
 title: "פרק 3 – מחלקת Node⟨T⟩ – רשימות מקושרות"
 subtitle: "מבנה חוליות, חיבור חוליות וג'נריקס"
-tags: [Node,Bea, רשימה מקושרת, ג'נריקס, חוליות,Generics, רשימת מחרוזות, מבנה נתונים]
+tags: [Node,Bea, רשימה מקושרת, ג'נריקס,Unit4, חוליות,Generics, רשימת מחרוזות, מבנה נתונים]
 mathjax: true
 lang: he
 ---

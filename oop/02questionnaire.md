@@ -1,11 +1,12 @@
 ---
 layout: page
 title: שאלון - ירושה ופולימורפיזם
-tags: [פולימורפיזם, constructors, בנאי, base, this, בנאים]
+tags: [פולימורפיזם, אינטרקטיבי,interactive, constructors, בנאי, base, this, בנאים]
 mathjax: true
 lang: he
 ---
 
+<!-- interactive -->
 
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
