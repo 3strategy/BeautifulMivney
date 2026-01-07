@@ -155,6 +155,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 ```
 
+**הוספת משתנים בתוך מחלקת ה-JAVA**
+```
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+```
+
 **עדכון `onCreate`:**
 
 <div class="two-columns">
