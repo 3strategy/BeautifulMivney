@@ -145,6 +145,7 @@ navbar-links:
     - 015 עדכוני גרסאות: "/android/projectSteps/015versionUpdates"
     - 011 הוספת Activities: "/android/projectSteps/011addingActivities"
     - 013 הוספת Activity לתפריט: "/android/projectSteps/013addingActivityToMenu"
+    - 014 תפריט פרגמנטים: "/android/projectSteps/014creatingFragmentsMenu"
     - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
     - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
 
