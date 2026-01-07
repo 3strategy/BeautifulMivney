@@ -9,6 +9,49 @@ lang: en
 
 ## שלב ראשון - הפיכת Activity ל- Launcher (לא חובה)
 
+<div class="two-columns">
+  <div markdown="1" class="column">
+
+    {% highlight xml mark_lines="3 6 7 8 9 10" %}
+    <activity
+        android:name=".activities.MenuActivity"
+        android:exported="false" />
+    <activity
+        android:name=".MainActivity"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+    {% endhighlight %}
+
+</div>
+<div markdown="1" class="column">
+
+    {% highlight diff %}
+    <activity
+        android:name=".activities.MenuActivity"
+        android:exported="true">
+-       <intent-filter>
+-           <action android:name="android.intent.action.MAIN" />
+
+-           <category android:name="android.intent.category.LAUNCHER" />
+-       </intent-filter>
+    </activity>
+    <activity
+        android:name=".activities.MainActivity"
+        android:exported="false" />
+    {% endhighlight %}
+
+</div>
+</div>
+
+## הפיכת MenuActivity ל-drawer
+
+### תוספות UI ב- activity_menu.xml:
+
+
 נשנה בקובץ ה-`manifest.xml` את האקטיביטי שמבצעת `export`:
 
 1. נשנה מ- `constraintlayout` ל- `drawerlayout`
@@ -51,50 +94,8 @@ lang: en
         app:menu="@menu/menu_drawer" />
     ```
 
-<div class="two-columns">
-  <div markdown="1" class="column">
 
-    {% highlight xml mark_lines="3 6 7 8 9 10" %}
-    <activity
-        android:name=".activities.MenuActivity"
-        android:exported="false" />
-    <activity
-        android:name=".MainActivity"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    {% endhighlight %}
-
-</div>
-<div markdown="1" class="column">
-
-    {% highlight diff %}
-    <activity
-        android:name=".activities.MenuActivity"
-        android:exported="true">
--       <intent-filter>
--           <action android:name="android.intent.action.MAIN" />
-
--           <category android:name="android.intent.category.LAUNCHER" />
--       </intent-filter>
-    </activity>
-    <activity
-        android:name=".activities.MainActivity"
-        android:exported="false" />
-    {% endhighlight %}
-
-</div>
-</div>
-
-## הפיכת MenuActivity ל-drawer
-
-תוספות UI ב- activity_menu.xml:
-
-
-
+### שינוי JAVA
 
 שינוי בקובץ `MenuActivity.java`
 
