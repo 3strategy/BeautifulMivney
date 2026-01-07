@@ -163,7 +163,7 @@ class B : A
       {
         id: 3,
         title: "Overload + override vs dynamic binding",
-        promptHe: "מה יהיה הפלט של הקוד הבא?",
+        promptHe: "לא בחומר: מה יהיה הפלט של הקוד הבא?",
         codeLang: "csharp",
         code: `class Base
 {
@@ -226,7 +226,7 @@ class B : A
       {
         id: 5,
         title: "Explicit interface implementation vs override",
-        promptHe: "מה יהיה הפלט של הקוד הבא?",
+        promptHe: "לא בחומר: מה יהיה הפלט של הקוד הבא?",
         codeLang: "csharp",
         code: `interface I
 {
@@ -291,7 +291,7 @@ class B : A
       {
         id: 7,
         title: "sealed override: can it be overridden again?",
-        promptHe: "מה נכון לגבי קטע הקוד הבא?",
+        promptHe: "לא בחומר: מה נכון לגבי קטע הקוד הבא?",
         codeLang: "csharp",
         code: `class A
 {
@@ -377,7 +377,7 @@ switch (o)
       {
         id: 10,
         title: "Extension method vs instance method (resolved by static type)",
-        promptHe: "מה יהיה הפלט של הקוד הבא?",
+        promptHe: "לא בחומר: מה יהיה הפלט של הקוד הבא?",
         codeLang: "csharp",
         code: `static class Ext
 {
@@ -439,7 +439,7 @@ class C : B
       {
         id: 12,
         title: "dynamic can reach hidden members",
-        promptHe: "מה יהיה הפלט של הקוד הבא?",
+        promptHe: "לא בחומר: מה יהיה הפלט של הקוד הבא?",
         codeLang: "csharp",
         code: `class A
 {
@@ -561,7 +561,7 @@ object o = new A();
       {
         id: 16,
         title: "Overload resolution with null: ambiguous call",
-        promptHe: "מה נכון לגבי הקוד הבא?",
+        promptHe: "לא בחומר: מה נכון לגבי הקוד הבא?",
         codeLang: "csharp",
         code: `static void F(string s) { Console.Write("S"); }
 static void F(System.Text.StringBuilder sb) { Console.Write("B"); }
