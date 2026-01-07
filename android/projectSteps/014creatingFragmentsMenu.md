@@ -230,10 +230,16 @@ import com.google.android.material.navigation.NavigationView;
 
 **מדריך זה פונה ל-`MainActivity` כדי להריץ אותו מתוך ה-menu.**
 
-**לכן חשוב להוסיף :**
+** לכן חשוב להוסיף בקובץ `activity_main.xml` :**
 - `android:id="@+id/main"`
 
 
 **וגם ב- `activity_menu.xml` חשוב שיופיע:**
 
 - `android:id="@+id/drawer_layout"`
+
+## עוד דבר קטן:
+
+ בשלב זה נותר רק לחזור לקובץ `MenuActivity.Java` ולגלות שהנסיון להפעיל Intent (מה שהולך להריץ את MainActivity) עדיין מופיע באדום.
+
+ אם תשימו את העכבר על זה תוכלו להוסיף באופן אוטומטי `import` למחלקה, ואז לא יהיו יותר הערות באדום.
