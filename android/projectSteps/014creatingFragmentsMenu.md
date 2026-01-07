@@ -10,34 +10,18 @@ lang: en
 ## שלב ראשון - הפיכת Activity ל- Launcher (לא חובה)
 
 <div class="two-columns">
-  <div markdown="1" class="column">
-
-    {% highlight xml mark_lines="3 6 7 8 9 10" %}
-    <activity
-        android:name=".activities.MenuActivity"
-        android:exported="false" />
-    <activity
-        android:name=".MainActivity"
-        android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    {% endhighlight %}
-
-</div>
+  
 <div markdown="1" class="column">
 
-    {% highlight diff %}
+    {% highlight diff mark_lines="3" %}
     <activity
         android:name=".activities.MenuActivity"
-        android:exported="true">
--       <intent-filter>
--           <action android:name="android.intent.action.MAIN" />
++        android:exported="true">
++       <intent-filter>
++           <action android:name="android.intent.action.MAIN" />
 
--           <category android:name="android.intent.category.LAUNCHER" />
--       </intent-filter>
++           <category android:name="android.intent.category.LAUNCHER" />
++       </intent-filter>
     </activity>
     <activity
         android:name=".activities.MainActivity"
@@ -45,7 +29,63 @@ lang: en
     {% endhighlight %}
 
 </div>
+<div markdown="1" class="column">
+
+    {% highlight diff mark_lines="3 6" %}
+    <activity
+        android:name=".activities.MenuActivity"
+        android:exported="false" />
+    <activity
+        android:name=".MainActivity"
+        android:exported="true">
+-        <intent-filter>
+-            <action android:name="android.intent.action.MAIN" />
+-            <category android:name="android.intent.category.LAUNCHER" />
+-        </intent-filter>
+    </activity>
+    {% endhighlight %}
+
 </div>
+</div>
+
+## הוספת מגירה `menu_drawer.xml`
+
+יש להוסיף את הקובץ תחת `res\menu\` . צריך ליצור את הנתיב הזה באופן הבא:
+1. right click on `res` that is relatively at the bottom (the one that has `layouts`)
+1. create new Android Resource Directory, and call it `menu`
+1. right click this `menu` folder and select XML and then **create xml layout file**. call it `menu_drawer`
+1. copy the content below into the file. You'll get quite a few error because of non-existing string reference. ==Add these strings as instructed below==.
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_main"
+        android:title="@string/menu_local_game" />
+
+</menu>
+```
+
+## הוספת מחרוזות.
+
+במדריך זה נוספות די הרבה מחרוזות שכדאי שכבר יהיו לכם:
+
+open your `res/values/strings.xml` and add the missing strings or copy this entirely:
+
+```
+<resources>
+    <string name="app_name">TicTacMenu</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_local_game">Local Game</string>
+    <string name="menu_profile">Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
+```
+
 
 ## הפיכת MenuActivity ל-drawer
 
@@ -179,17 +219,15 @@ import com.google.android.material.navigation.NavigationView;
 </div>
 </div>
 
-## הוספת מגירה `menu_drawer.xml`
 
-יש להוסיף את הקובץ תחת `res\menu\`
+## Did you add an +id to your main activity? 
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+**מדריך זה פונה ל-`MainActivity` כדי להריץ אותו מתוך ה-menu.**
 
-    <item
-        android:id="@+id/nav_main"
-        android:title="@string/menu_local_game" />
+**לכן חשוב להוסיף :**
+- `android:id="@+id/main"`
 
-</menu>
-```
+
+**וגם ב- `activity_menu.xml` חשוב שיופיע:**
+
+- `android:id="@+id/drawer_layout"`
