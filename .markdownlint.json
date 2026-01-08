@@ -2,7 +2,7 @@
   "default": true,
   "MD013": false,
   "MD033": {
-    "allowed_elements": [ "div", "details", "summary", "br" ]
+    "allowed_elements": [ "div", "details", "summary", "br", "i" ]
   },
   "MD046": { "style": "fenced" }
 }
