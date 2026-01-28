@@ -147,11 +147,13 @@ navbar-links:
     - SQLite בסיסי: "/android/amjad/5.DbWorkSqlite"
 
   - ניהול פרויקט:
-    - 015 עדכוני גרסאות: "/android/projectSteps/015versionUpdates"
+    - 017 עדכוני גרסאות: "/android/projectSteps/017versionUpdates"
     - 011 הוספת Activities: "/android/projectSteps/011addingActivities"
     - 013 ישן - הוספת Activity לתפריט: "/android/projectSteps/013addingActivityToMenu"
     - 014a תפריט פרגמנטים: "/android/projectSteps/014a.creatingFragmentsMenu"
     - 014b תפריט - הוספת פרגמנטים: "/android/projectSteps/014b.AddingFragmentsToMenu"
+    - 015a: "/android/projectSteps/015a.creatingTicTacToeModel"
+    - 015b: "/android/projectSteps/015b.AddingTicTacToeToMainActivity"
     - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
     - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
 
