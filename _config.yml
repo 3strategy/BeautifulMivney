@@ -34,6 +34,8 @@ navbar-links:
     - בגרויות: "/bagruyot"
     - בגרויות משרד החינוך: "https://meyda.education.gov.il/bagmgr/default.html#/"
     - מה מותר ומה אסור: "https://docs.google.com/document/d/1_38kIc1UwK7Eiz673KyBjqGdkJeqa-I5kGCDOMckHqc/edit?usp=sharing"
+    - בחינות מה"ט: "https://data.labor.gov.il/Mahat/mahat_tests_search.aspx"
+
   פתיחת שנה: 
     - 0. פתיחת שנה: "/mivney/0minhalot/0YearOpening"
     - 0.1 עבודה בקמפוס: "/mivney/0minhalot/ChapterCampus"
@@ -111,8 +113,10 @@ navbar-links:
     - 2. פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
     - 2.8 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11B-polymorphism/index.html"
     - פתרון מבחן 26.1.26: "/mivney/7testSols/tstxSol260126/"
-  - בגרויות: "/oop/Bagruyot"
+    - מקבץ מהט 25: "/oop/02qmahat_tests_search.aspx.pdf"
 
+  - בגרויות: "/oop/Bagruyot"
+  - בחינות מה"ט: "https://data.labor.gov.il/Mahat/mahat_tests_search.aspx"
 
   א יסודות:
   - סרטוני AppSchool: "https://appschoolfront.web.app/course/learn/wmdWWTs17sLTO8N20HtO"
