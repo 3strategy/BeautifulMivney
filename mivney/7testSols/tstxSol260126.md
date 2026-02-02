@@ -504,15 +504,15 @@ public partial class Program
 
 </details>
 
-- line 1 תקין
-- **line 2:**
-  - `Car.color` isn't accessible due to its protection level
-  - `speed` isn't accessible due to its protection level
-  - correct fix is to **keep it private and add getters and setters.** some would shortcut and make it protected instead of private. this breaks the encapsulation principal.
-  - note that the actual usage of `Class.field` is correct when accessing a static field or property. but if it's protected - you could get to it without `Class.` syntax (but It's not appropriate). On the contrary, those accessing from the outside would need to use `Car.` syntax since they are not referencing an instance. the error on a proper public static would be `Member 'Car.Color' cannot be accessed with an instance reference; qualify it with a type name instead`. (see demo code below)
-- line 3: תקין
-- **line 4:** לא תקין:
-  - Cannot implicitly convert type 'Car' to 'SportCar'. An explicit conversion exists (are you missing a cast?)
+* line 1 תקין
+* **line 2:**
+  * `Car.color` isn't accessible due to its protection level
+  * `speed` isn't accessible due to its protection level
+  * correct fix is to **keep it private and add getters and setters.** some would shortcut and make it protected instead of private. this breaks the encapsulation principal.
+  * note that the actual usage of `Class.field` is correct when accessing a static field or property. but if it's protected - you could get to it without `Class.` syntax (but It's not appropriate). On the contrary, those accessing from the outside would need to use `Car.` syntax since they are not referencing an instance. the error on a proper public static would be `Member 'Car.Color' cannot be accessed with an instance reference; qualify it with a type name instead`. (see demo code below)
+* line 3: תקין
+* **line 4:** לא תקין:
+  * Cannot implicitly convert type 'Car' to 'SportCar'. An explicit conversion exists (are you missing a cast?)
 
 <details markdown="1"><summary>finer neuances about atual C# static property access</summary>
 
