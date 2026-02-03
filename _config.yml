@@ -152,14 +152,14 @@ navbar-links:
     - 013 ישן - הוספת Activity לתפריט: "/android/projectSteps/013addingActivityToMenu"
     - 014a תפריט פרגמנטים: "/android/projectSteps/014a.creatingFragmentsMenu"
     - 014b תפריט - הוספת פרגמנטים: "/android/projectSteps/014b.AddingFragmentsToMenu"
-    - 015a: "/android/projectSteps/015a.creatingTicTacToeModel"
-    - 015b: "/android/projectSteps/015b.AddingTicTacToeToMainActivity"
+    - 015a הוספת מודל: "/android/projectSteps/015a.creatingTicTacToeModel"
+    - 015b הוספת מודל. המשך: "/android/projectSteps/015b.AddingTicTacToeToMainActivity"
+    - 016 multiplayer: "/android/projectSteps/016.TicTacToeSignalR"
     - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
     - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
 
   א מתקדם:
   - תקשורת ונתונים:
-    - 05 SignalR TicTacToe: "/android/alon/05.TicTacToeSignalR"
     - 08 Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
     - 181 חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
     - 185 Firebase FBRef (חדש): "/android/projectSteps/185newFBref"
