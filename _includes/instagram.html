@@ -1,0 +1,15 @@
+{% if include.url %}
+  {% assign insta_url = include.url %}
+{% else %}
+  {% assign insta_url = "https://www.instagram.com/reel/" | append: include.id | append: "/" %}
+{% endif %}
+
+<div style="display: flex; justify-content: center;">
+  <blockquote class="instagram-media"
+              data-instgrm-permalink="{{ insta_url }}"
+              data-instgrm-version="14"
+              style="background:#FFF; border:0; margin:1px; max-width:540px; width:calc(100% - 2px);">
+    <a href="{{ insta_url }}" target="_blank" rel="noopener">View this reel on Instagram</a>
+  </blockquote>
+</div>
+<script async src="https://www.instagram.com/embed.js"></script>

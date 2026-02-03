@@ -1,0 +1,12 @@
+<video
+  controls
+  preload="metadata"
+  playsinline
+  style="width:100%; max-width:100%; border-radius:12px; background:#000;"
+>
+  <source
+    src="{{ '/assets/video/' | append: include.id | relative_url }}"
+    type="video/mp4"
+  >
+  Your browser does not support the video tag.
+</video>

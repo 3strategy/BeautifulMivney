@@ -336,6 +336,17 @@ ul, ol {
     display: flex;
     flex-direction: column;
     gap: 0.6em;
+    list-style-position: outside;
+    padding-inline-start: 2em;
+}
+
+/* Hebrew alphabetic list markers (א, ב, ג, ...) */
+@counter-style alefbet {
+    system: alphabetic;
+    symbols: "\05D0" "\05D1" "\05D2" "\05D3" "\05D4" "\05D5" "\05D6" "\05D7" "\05D8" "\05D9"
+             "\05DB" "\05DC" "\05DE" "\05E0" "\05E1" "\05E2" "\05E4" "\05E6" "\05E7" "\05E8"
+             "\05E9" "\05EA";
+    suffix: ". ";
 }
 
 /* Keep footer social links horizontal despite global UL rule */
@@ -353,10 +364,10 @@ footer .list-inline {
     padding-inline-start: 1.5em;
 }
 
-.hebrew-list {
+ol.hebrew-list,
+ol.alefbet {
     list-style-type: hebrew;
-    margin-inline-start: 2em;
-    list-style-position: inside;
+    list-style-type: alefbet;
 }
 
 #canvas-container {
@@ -510,6 +521,134 @@ td:has(i), th:has(i) {
   text-align: left;
 }
 
+/* eh: English, Hebrew (opposite of table-rl) */
+.table-eh td:first-child,
+.table-eh th:first-child {
+  text-align: left;
+  direction: ltr;
+}
+
+.table-eh td:nth-child(2),
+.table-eh th:nth-child(2) {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Mixed-language tables by column (h=Hebrew, e=English) */
+.table-heh th:first-child,
+.table-heh td:first-child {
+  text-align: right;
+  direction: rtl;
+}
+
+.table-heh th:nth-child(2),
+.table-heh td:nth-child(2) {
+  text-align: left;
+  direction: ltr;
+}
+
+.table-heh th:nth-child(3),
+.table-heh td:nth-child(3) {
+  text-align: right;
+  direction: rtl;
+}
+
+/* hhe: Hebrew, Hebrew, English */
+.table-hhe th:first-child,
+.table-hhe td:first-child,
+.table-hhe th:nth-child(2),
+.table-hhe td:nth-child(2) {
+  text-align: right;
+  direction: rtl;
+}
+
+.table-hhe th:nth-child(3),
+.table-hhe td:nth-child(3) {
+  text-align: left;
+  direction: ltr;
+}
+
+/* hee: Hebrew, English, English */
+.table-hee th:first-child,
+.table-hee td:first-child {
+  text-align: right;
+  direction: rtl;
+}
+
+.table-hee th:nth-child(2),
+.table-hee td:nth-child(2),
+.table-hee th:nth-child(3),
+.table-hee td:nth-child(3) {
+  text-align: left;
+  direction: ltr;
+}
+
+/* ehe: English, Hebrew, English */
+.table-ehe th:first-child,
+.table-ehe td:first-child,
+.table-ehe th:nth-child(3),
+.table-ehe td:nth-child(3) {
+  text-align: left;
+  direction: ltr;
+}
+
+.table-ehe th:nth-child(2),
+.table-ehe td:nth-child(2) {
+  text-align: right;
+  direction: rtl;
+}
+
+/* ehhe: English, Hebrew, Hebrew, English */
+.table-ehhe th:first-child,
+.table-ehhe td:first-child,
+.table-ehhe th:nth-child(4),
+.table-ehhe td:nth-child(4) {
+  text-align: left;
+  direction: ltr;
+}
+
+.table-ehhe th:nth-child(2),
+.table-ehhe td:nth-child(2),
+.table-ehhe th:nth-child(3),
+.table-ehhe td:nth-child(3) {
+  text-align: right;
+  direction: rtl;
+}
+
+/* heeh: Hebrew, English, English, Hebrew */
+.table-heeh th:first-child,
+.table-heeh td:first-child,
+.table-heeh th:nth-child(4),
+.table-heeh td:nth-child(4) {
+  text-align: right;
+  direction: rtl;
+}
+
+.table-heeh th:nth-child(2),
+.table-heeh td:nth-child(2),
+.table-heeh th:nth-child(3),
+.table-heeh td:nth-child(3) {
+  text-align: left;
+  direction: ltr;
+}
+
+/* hhee: Hebrew, Hebrew, English, English */
+.table-hhee th:first-child,
+.table-hhee td:first-child,
+.table-hhee th:nth-child(2),
+.table-hhee td:nth-child(2) {
+  text-align: right;
+  direction: rtl;
+}
+
+.table-hhee th:nth-child(3),
+.table-hhee td:nth-child(3),
+.table-hhee th:nth-child(4),
+.table-hhee td:nth-child(4) {
+  text-align: left;
+  direction: ltr;
+}
+
 .table-he th,
 .table-he td {
   text-align: right;
@@ -598,6 +737,230 @@ pre code span.c1 {
 }
 .two-columns .column {
   flex: 1;
+}
+
+/* highligting with the ruby custom plugin */
+mark {
+  background-color: #fcf8e3; /* A pleasant cream-yellow */
+  border-bottom: 1px solid #fbeed5;
+  color: #8a6d3b;
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+}
+
+/* Logic painter shared styles */
+.interactive-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --accent-col: var(--link-col);
+    --muted-col: var(--code-comments-col);
+    --panel-col: var(--backn-col);
+    --panel-border-col: var(--navbar-border-col);
+    --danger-col: var(--backe-col);
+    --success-col: var(--backs-col);
+
+    background-color: var(--page-col);
+    color: var(--text-col);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    margin: 0;
+    border-radius: 8px;
+    padding: 20px;
+    direction: rtl;
+    position: relative;
+}
+
+.interactive-container h1 { margin: 5px 0; color: var(--accent-col); font-size: 2em; }
+.interactive-container p { margin-bottom: 10px; font-size: 1.1em; color: var(--muted-col); }
+
+.interactive-container .code-box {
+    background-color: var(--code-back-col);
+    border: 2px solid var(--accent-col);
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    direction: ltr;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.35);
+}
+
+.interactive-container .variable { color: var(--code-met-col); }
+.interactive-container .operator { color: var(--code-types-col); }
+.interactive-container .number { color: var(--code-numbers-col); }
+
+.interactive-container .game-area {
+    display: grid;
+    grid-template-columns: 80px auto;
+    grid-template-rows: 80px auto;
+    direction: ltr;
+    gap: 5px;
+}
+
+.interactive-container .axis-label {
+    color: var(--code-met-col);
+    font-size: 1.6em;
+    font-weight: bold;
+    font-family: monospace;
+    text-shadow: 0px 1px 2px rgba(0,0,0,0.35);
+}
+
+.interactive-container .axis-label-col {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.interactive-container .axis-label-row {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    margin-left: 5px;
+}
+
+.interactive-container .header-numbers {
+    font-size: 1.1em;
+    color: var(--text-col);
+    font-weight: bold;
+    font-family: 'Segoe UI', sans-serif;
+    opacity: 0.9;
+}
+
+.interactive-container .col-numbers {
+    grid-column: 2;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(5, 55px);
+    gap: 5px;
+    align-items: end;
+    justify-items: center;
+    margin-bottom: 5px;
+}
+
+.interactive-container .row-numbers {
+    grid-column: 1;
+    grid-row: 2;
+    display: grid;
+    grid-template-rows: repeat(5, 55px);
+    gap: 5px;
+    align-items: center;
+    justify-items: end;
+    margin-right: 10px;
+}
+
+.interactive-container .grid-container {
+    grid-column: 2;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(5, 55px);
+    grid-template-rows: repeat(5, 55px);
+    gap: 5px;
+    padding: 8px;
+    border: 2px dashed var(--panel-border-col);
+    border-radius: 10px;
+    background-color: var(--panel-col);
+}
+
+.interactive-container .cell {
+    width: 55px;
+    height: 55px;
+    background-color: var(--backw-col);
+    border: 2px solid var(--panel-border-col);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.interactive-container .cell:hover { background-color: var(--backn-col); transform: scale(1.05); }
+
+.interactive-container .cell.selected {
+    background-color: var(--accent-col);
+    border-color: var(--text-col);
+    box-shadow: 0 0 10px var(--accent-col);
+}
+
+.interactive-container .cell.wrong {
+    background-color: var(--danger-col) !important;
+    animation: shake 0.5s;
+}
+
+.interactive-container .coords-hint {
+    font-size: 10px;
+    color: var(--text-col);
+    opacity: 0.35;
+    position: absolute;
+    bottom: 2px;
+    right: 4px;
+    pointer-events: none;
+}
+
+.interactive-container .btn {
+    background-color: var(--success-col);
+    color: var(--text-col);
+    border: none;
+    padding: 10px 30px;
+    font-size: 1.2em;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 15px;
+    box-shadow: 0 3px 0 var(--panel-border-col);
+    transition: transform 0.1s;
+}
+.interactive-container .btn:hover { background-color: var(--backw-col); }
+.interactive-container .btn:active { transform: translateY(3px); box-shadow: none; }
+
+.interactive-container #logic-painter-message {
+    height: 30px;
+    margin-top: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.35);
+}
+
+.interactive-container .logic-toast {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    padding: 8px 18px;
+    border-radius: 999px;
+    background-color: var(--panel-col);
+    color: var(--text-col);
+    border: 1px solid var(--panel-border-col);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 999;
+    font-size: 1em;
+}
+
+.interactive-container .logic-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(5px); }
+    50% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
 }
 
 /* ================= Mermaid node styling =============== 
