@@ -46,11 +46,44 @@ function toggleSize() {
 // Convert fenced ```mermaid code blocks to <div class="mermaid"> before Mermaid runs
 document.addEventListener('DOMContentLoaded', function () {
   try {
-    const codeBlocks = document.querySelectorAll('pre > code.language-mermaid');
+    const codeBlocks = document.querySelectorAll('pre > code[class*="language-mermaid"]');
+
+    const getMermaidDirClass = (code, pre) => {
+      const classes = new Set();
+      if (code && code.classList) {
+        code.classList.forEach((cls) => classes.add(cls));
+      }
+      if (pre && pre.classList) {
+        pre.classList.forEach((cls) => classes.add(cls));
+      }
+
+      if (classes.has('mermaid-rtl') || classes.has('language-mermaid-rtl')) return 'mermaid-rtl';
+      if (classes.has('mermaid-ltr') || classes.has('language-mermaid-ltr')) return 'mermaid-ltr';
+
+      for (const cls of classes) {
+        if (!cls.startsWith('language-mermaid-')) continue;
+        const suffix = cls.slice('language-mermaid-'.length).toLowerCase();
+        if (suffix === 'rtl' || suffix === 'ltr') return `mermaid-${suffix}`;
+      }
+
+      const dataDir = (code && code.dataset && code.dataset.mermaidDir) ||
+        (pre && pre.dataset && pre.dataset.mermaidDir);
+      if (dataDir === 'rtl' || dataDir === 'ltr') return `mermaid-${dataDir}`;
+
+      const src = code && code.textContent ? code.textContent : '';
+      const dirMatch = src.match(/^\s*%%\s*dir\s*:\s*(rtl|ltr)\s*%%/im);
+      if (dirMatch) return `mermaid-${dirMatch[1].toLowerCase()}`;
+
+      if (/^\s*classDiagram\b/m.test(src) && /[A-Za-z]/.test(src)) return 'mermaid-ltr';
+
+      return '';
+    };
+
     codeBlocks.forEach((code) => {
       const pre = code.parentElement;
       const container = document.createElement('div');
-      container.className = 'mermaid';
+      const dirClass = getMermaidDirClass(code, pre);
+      container.className = dirClass ? `mermaid ${dirClass}` : 'mermaid';
       // textContent decodes any HTML entities into raw Mermaid source
       container.textContent = code.textContent;
       // Replace the whole <pre> block with the Mermaid container

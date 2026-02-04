@@ -2,7 +2,7 @@
 layout: page
 title: "הורשה - הרחבה"
 subtitle: "היכרות ראשונית עם הורשה ומבני מחלקות"
-tags: [הורשה, OOP, CSharp]
+tags: [הורשה, OOP, CSharp, הכלה, קומפוזיציה]
 mathjax: true
 lang: he
 ---

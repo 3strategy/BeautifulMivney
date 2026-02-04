@@ -965,6 +965,33 @@ mark {
 
 /* ================= Mermaid node styling =============== 
 ==========================================================*/
+/* Mermaid direction helpers */
+.mermaid.mermaid-ltr {
+  direction: ltr;
+}
+
+.mermaid.mermaid-rtl {
+  direction: rtl;
+}
+
+.mermaid .classDiagram text,
+.mermaid .classDiagram tspan {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+.mermaid.mermaid-ltr svg text,
+.mermaid.mermaid-ltr svg tspan {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+.mermaid.mermaid-rtl svg text,
+.mermaid.mermaid-rtl svg tspan {
+  direction: rtl;
+  unicode-bidi: embed;
+}
+
 /* Additional arrow targeting for dark mode */
 .mermaid .arrowheadPath {
   fill: none !important;

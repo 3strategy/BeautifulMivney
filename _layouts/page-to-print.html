@@ -10,6 +10,10 @@ layout: base
     box-shadow: none !important;
     outline: none !important;
   }
+  /* hide page title in print layout */
+  .page-heading h1 {
+    display: none !important;
+  }
 </style>
 
 <main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
