@@ -234,7 +234,8 @@ section finals
 
 ## שאלות❓
 
-## חלוקת הניקוד בבגרות {#idGradeStructure}
+## חלוקת הניקוד בבגרות
+
 ![alt text](/assets/img/0year/CSgradeComposition.jpg)
 
 ## מערכת שעות: {#idschedule}
