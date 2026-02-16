@@ -24,6 +24,7 @@ author: גיא סידס
 navbar-links:
 
   חיצוני:
+    - מערכת הגשות: "https://הגשות.שלי.com"
     - אתר יסודות: "https://יסודות.שלי.com"
     - אתר מתמטיקה: "https://מתמטיקה.com"
     - אתר הגשות: "https://הגשות.שלי.com"
@@ -43,6 +44,7 @@ navbar-links:
     - 0.3 מערכת שעות: "/mivney/0minhalot/0YearOpening/#idschedule"
 
   רקורסיה ויעילות:
+    - מערכת הגשות: "https://הגשות.שלי.com"
     - רקורסיה:
       - 1.1 רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"
       - 1.2 מעקב ומטרת הפונקציה: "/mivney/1recursionAndComplexity/Chapter1ExTracking"

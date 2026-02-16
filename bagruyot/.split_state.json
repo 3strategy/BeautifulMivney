@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "updated_at": "2026-02-16T06:01:11+00:00",
+  "config_hash": "9a7e81490c9d3267b1061e35566d384621c9c55327106b1b2fb07aa8331d95e5",
+  "files": [
+    "2024.6.271.pdf"
+  ],
+  "processed": {
+    "2024.6.271.pdf": {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\stra\\repos\\BeautifulMivney\\bagruyot\\2024.6.271\\full.pdf",
+      "source_hash_sha256": "817b05adc157b2f71b94e9037e29bbffe38d84d19ae8752faa9f92d0fc09c82d",
+      "question_count": 16,
+      "detected_marker_count": 16,
+      "warnings": [],
+      "processed_at": "2026-02-16T06:01:11+00:00"
+    },
+    "2024.6.271/full.pdf": {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\stra\\repos\\BeautifulMivney\\bagruyot\\2024.6.271\\full.pdf",
+      "source_hash_sha256": "817b05adc157b2f71b94e9037e29bbffe38d84d19ae8752faa9f92d0fc09c82d",
+      "question_count": 16,
+      "detected_marker_count": 16,
+      "warnings": [],
+      "processed_at": "2026-02-16T06:01:11+00:00"
+    }
+  }
+}
