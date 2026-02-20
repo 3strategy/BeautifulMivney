@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "updated_at": "2026-02-20T06:41:24+00:00",
+  "config_hash": "58bd8ae20c6bb92b096861a11f1e8155c3c3c0aa1047137d33a53eb337a9247e",
+  "files": [
+    "full.pdf"
+  ],
+  "processed": {
+    "full.pdf": {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\stra\\repos\\BeautifulMivney\\bagruyot\\2025.6.271\\full.pdf",
+      "source_hash_sha256": "987e8b3a8a75596cdaf072313574324419cc7c93cea49cd3eb45a6d1d9f03acf",
+      "question_count": 12,
+      "detected_marker_count": 12,
+      "warnings": [
+        "auto marker strategy used: auto_retry_multi_markers"
+      ],
+      "processed_at": "2026-02-20T06:41:24+00:00"
+    }
+  }
+}
