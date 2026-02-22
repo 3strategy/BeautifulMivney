@@ -161,8 +161,10 @@ navbar-links:
     - 015b הוספת מודל. המשך: "/android/projectSteps/015b.AddingTicTacToeToMainActivity"
     - 016 multiplayer: "/android/projectSteps/016.TicTacToeSignalR"
     - 017 duplicate-add activity: "/android/projectSteps/017DuplicateAndAddActivityToMenu"
-    - 018a עמוד לוגין: "/android/projectSteps/android/018a.LoginActivityFromGui"
-    - 018b יצירת פיירבייס: "/android/projectSteps/android/018b.FirebaseProjectRtdbAuthSetup"
+    - 018a עמוד לוגין: "/android/projectSteps/018a.LoginActivityFromGui"
+    - 018b יצירת פיירבייס: "/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup"
+    - 018c לוגין לפיירבייס: "/android/projectSteps/018c.EmailPasswordLoginAndFBRef"
+    - 018d Google OAuth Login and SHA1: "/android/projectSteps/018d.GoogleOAuthLoginAndSHA1"
     - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
     - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
 
