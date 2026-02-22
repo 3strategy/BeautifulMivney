@@ -95,6 +95,67 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// Clean copy for diff blocks: if the user copies only added (+) lines, strip the leading diff marker.
+// This keeps tutorial `diff` blocks readable while allowing direct paste into source files.
+document.addEventListener('copy', function (event) {
+  try {
+    const selection = window.getSelection && window.getSelection();
+    if (!selection || selection.rangeCount === 0 || selection.isCollapsed) return;
+
+    const toElement = (node) => {
+      if (!node) return null;
+      return node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+    };
+
+    const findDiffContainer = (el) => {
+      if (!el || !el.closest) return null;
+      return el.closest(
+        '.language-diff, .highlighter-rouge.language-diff, code.language-diff, pre code[class*="language-diff"]'
+      );
+    };
+
+    const anchorContainer = findDiffContainer(toElement(selection.anchorNode));
+    const focusContainer = findDiffContainer(toElement(selection.focusNode));
+    if (!anchorContainer || !focusContainer || anchorContainer !== focusContainer) return;
+
+    const selectedText = selection.toString();
+    if (!selectedText || selectedText.indexOf('+') === -1) return;
+
+    const normalized = selectedText.replace(/\r\n/g, '\n');
+    const lines = normalized.split('\n');
+    const nonEmptyLines = lines.filter((line) => line.length > 0);
+    if (nonEmptyLines.length === 0) return;
+
+    // Keep full patch copies intact (headers/hunks/metadata should remain raw).
+    const hasPatchMetadata = nonEmptyLines.some((line) =>
+      /^(diff --git|index |@@|--- |\+\+\+ )/.test(line)
+    );
+    if (hasPatchMetadata) return;
+
+    // Only rewrite clipboard when the user selected pure "added" lines.
+    const allAddedLines = nonEmptyLines.every((line) => line.startsWith('+') && !line.startsWith('+++ '));
+    if (!allAddedLines) return;
+
+    const cleaned = lines.map((line) => (line.startsWith('+') ? line.slice(1) : line)).join('\n');
+    if (cleaned === normalized) return;
+
+    if (event.clipboardData && event.clipboardData.setData) {
+      event.clipboardData.setData('text/plain', cleaned);
+      event.preventDefault();
+      return;
+    }
+
+    // Fallback for browsers that do not expose clipboardData on the copy event.
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(cleaned).catch(() => {});
+      event.preventDefault();
+    }
+  } catch (e) {
+    // Fail-safe: never break normal copy behavior.
+    console && console.warn && console.warn('Diff copy cleanup failed:', e);
+  }
+});
+
 // on load, restore both theme & size
 window.onload = function() {
   // existing theme restore

@@ -116,6 +116,8 @@ navbar-links:
     - 2.8 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11B-polymorphism/index.html"
     - פתרון מבחן 26.1.26: "/mivney/7testSols/tstxSol260126/"
     - מקבץ מהט 25: "/oop/02qmahat_tests_search.aspx.pdf"
+    - מעקב עצמים דיתה: "oop/ExByOthers/DitaOOPTrackingObjects.pdf"
+    - מעקב אריאל על דיתה: "https://www.youtube.com/watch?v=gqc_WCIRO5I&list=PLNLf5_3sUeLzoAqJKLTKM_BgSqq-DaUS5&index=15"
 
   - בגרויות תמ"ע: "/bagruyot/IndexQuestionsByTopicOOP/"
   - בגרויות מבני נתונים: "/bagruyot/index/"
@@ -159,6 +161,8 @@ navbar-links:
     - 015b הוספת מודל. המשך: "/android/projectSteps/015b.AddingTicTacToeToMainActivity"
     - 016 multiplayer: "/android/projectSteps/016.TicTacToeSignalR"
     - 017 duplicate-add activity: "/android/projectSteps/017DuplicateAndAddActivityToMenu"
+    - 018a עמוד לוגין: "/android/projectSteps/android/018a.LoginActivityFromGui"
+    - 018b יצירת פיירבייס: "/android/projectSteps/android/018b.FirebaseProjectRtdbAuthSetup"
     - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
     - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
 
