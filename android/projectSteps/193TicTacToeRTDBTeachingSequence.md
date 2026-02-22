@@ -41,7 +41,7 @@ This keeps cognitive load low and makes debugging easier.
 
 ## Step File Numbering Plan
 
-- This RTDB series will use `018a`, `018a3`, `018b`, `018c`, and follow-up letters.
+- This RTDB series will use `018a`, `018b`, `018c`, and follow-up letters.
 - Existing `181connectDatabase.md` and `185newFBref.md` are considered deprecated for this track unless a specific section is a perfect fit and is explicitly referenced.
 
 ## Interoperability Strategy (Critical)
@@ -126,19 +126,13 @@ Teaching implication:
 
 ## Lesson Sequence (High-Level)
 
-### 018a: Intro to RTDB (concepts only)
+### 018a: LoginActivity shell from GUI + short RTDB/Auth roadmap (pre-Firebase auth wiring)
 
-- Explain RTDB mental model and why this flow is different from SignalR.
-- Clarify identity terms: OAuth vs Firebase Auth vs UID.
-- Present target architecture (lobby, room, game, realtime updates).
-- Keep this as a conceptual kickoff with no implementation.
-
-Success target:
-
-- Students understand the full roadmap and terminology.
-
-### 018a3: LoginActivity shell from GUI (pre-Firebase auth wiring)
-
+- Start with a short conceptual kickoff (2-5 minutes):
+  - RTDB mental model and why this flow is different from SignalR.
+  - Identity terms: OAuth vs Firebase Auth vs UID.
+  - Target architecture (lobby, room, game, realtime updates).
+- Keep the kickoff short; defer the full schema workshop until after first auth wiring and first RTDB writes.
 - Create `LoginActivity` from Android Studio GUI as `Empty Views Activity`.
 - Select `Launcher Activity` in the wizard to save manifest wiring time.
 - Add login UI shell (username/email, password, login button, Google button).
@@ -146,7 +140,7 @@ Success target:
 
 Success target:
 
-- App starts in `LoginActivity`, then auto-navigates to menu after short delay.
+- App starts in `LoginActivity`, then auto-navigates to menu after short delay, and students know the RTDB/Auth roadmap.
 
 ### 018b: Firebase project + RTDB + Email/Password setup (no-code)
 
@@ -170,7 +164,18 @@ Success target:
 
 - Login screen authenticates with Firebase and app enters menu with user context.
 
-### 018d: Lobby + first data flow (manual refresh) + `FBRef` usage
+### 018d: Google OAuth login upgrade + SHA1 setup (optional/advanced)
+
+- Add Google Sign-In on top of the Email/Password login screen.
+- Explain SHA1 requirement for Android Google Sign-In (and why Email/Password/Anonymous do not need it).
+- Cover emulator/device prerequisites and classroom SHA1 strategies.
+- Keep this as an auth upgrade step; game/lobby logic remains unchanged.
+
+Success target:
+
+- Google login works on emulator/device with Firebase Authentication.
+
+### 018e: Lobby + first data flow (manual refresh) + `FBRef` usage
 
 - Build `LobbyFragment` with visible rooms list.
 - Create room/join room with 2-player cap and status flow.
@@ -181,7 +186,7 @@ Success target:
 
 - One student creates room, another joins from lobby, both enter same room.
 
-### 018e: `Main2Activity` Game + Rules + Random Starter + `FBRef` expansion
+### 018f: `Main2Activity` Game + Rules + Random Starter + `FBRef` expansion
 
 - Move from `LobbyFragment` into `Main2Activity.java` (from step `017DuplicateAndAddActivityToMenu.md`).
 - Enforce legal moves and turn ownership.
@@ -192,7 +197,7 @@ Success target:
 
 - Two players complete a full game with valid turns and deterministic final state.
 
-### 018f: Realtime Subscriptions
+### 018g: Realtime Subscriptions
 
 - Add listeners to room state, board, and turn fields.
 - Remove normal manual refresh behavior.
@@ -202,12 +207,12 @@ Success target:
 
 - Moves and room changes appear live on both devices.
 
-### 018g (Bonus): Leaderboard
+### 018h (Bonus): Leaderboard
 
 - Add wins/losses/draw counters per UID.
 - Update leaderboard at game end.
 
-### 018h (Bonus): Security Rules
+### 018i (Bonus): Security Rules
 
 - Replace open rules with UID-based access controls.
 - Explain how chosen schema enables simple and safe rule expressions.
@@ -374,8 +379,8 @@ Cons:
 
 Recommended classroom choice:
 
-- Start with Option 1 in `018d`.
-- Refactor toward Option 2 in `018h` when introducing security rules.
+- Start with Option 1 in `018e`.
+- Refactor toward Option 2 in `018i` when introducing security rules.
 
 ## Classroom "Done" Checklist
 
