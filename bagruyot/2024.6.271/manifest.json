@@ -1,10 +1,13 @@
 {
-  "source_pdf": "\\\\wsl.localhost\\Ubuntu\\home\\stra\\repos\\BeautifulMivney\\bagruyot\\2024.6.271.pdf",
+  "source_pdf": "\\\\wsl.localhost\\Ubuntu\\home\\stra\\repos\\BeautifulMivney\\bagruyot\\2024.6.271\\full.pdf",
   "source_hash_sha256": "817b05adc157b2f71b94e9037e29bbffe38d84d19ae8752faa9f92d0fc09c82d",
   "tool_version": "0.1.0",
-  "question_count": 16,
-  "detected_marker_count": 16,
-  "warnings": [],
+  "question_count": 17,
+  "detected_marker_count": 17,
+  "warnings": [
+    "auto marker strategy used: auto_retry_multi_markers",
+    "manual_splits_mode=merge overrides applied"
+  ],
   "questions": [
     {
       "output_name": "q1.pdf",
@@ -166,15 +169,15 @@
       "output_name": "q7.pdf",
       "output_number": 7,
       "original_number": 7,
-      "detection_method": "marker_regex",
+      "detection_method": "manual",
       "segments": [
         {
           "page": 10,
           "rect": [
             22.67716535433071,
-            85.02534484863281,
+            85.0,
             572.5988356222318,
-            672.8492585429996
+            282.0173188457339
           ],
           "pad_top_pt": 19.84251968503937,
           "pad_bottom_pt": 19.84251968503937
@@ -187,6 +190,28 @@
     {
       "output_name": "q8.pdf",
       "output_number": 8,
+      "original_number": 8,
+      "detection_method": "manual",
+      "segments": [
+        {
+          "page": 10,
+          "rect": [
+            22.67716535433071,
+            316.0,
+            572.5988356222318,
+            803.1746369609683
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        10
+      ]
+    },
+    {
+      "output_name": "q9.pdf",
+      "output_number": 9,
       "original_number": 9,
       "detection_method": "marker_regex",
       "segments": [
@@ -207,8 +232,8 @@
       ]
     },
     {
-      "output_name": "q9.pdf",
-      "output_number": 9,
+      "output_name": "q10.pdf",
+      "output_number": 10,
       "original_number": 10,
       "detection_method": "marker_regex",
       "segments": [
@@ -229,8 +254,8 @@
       ]
     },
     {
-      "output_name": "q10.pdf",
-      "output_number": 10,
+      "output_name": "q11.pdf",
+      "output_number": 11,
       "original_number": 11,
       "detection_method": "marker_regex",
       "segments": [
@@ -251,8 +276,8 @@
       ]
     },
     {
-      "output_name": "q11.pdf",
-      "output_number": 11,
+      "output_name": "q12.pdf",
+      "output_number": 12,
       "original_number": 12,
       "detection_method": "marker_regex",
       "segments": [
@@ -285,8 +310,8 @@
       ]
     },
     {
-      "output_name": "q12.pdf",
-      "output_number": 12,
+      "output_name": "q13.pdf",
+      "output_number": 13,
       "original_number": 13,
       "detection_method": "marker_regex",
       "segments": [
@@ -319,8 +344,8 @@
       ]
     },
     {
-      "output_name": "q13.pdf",
-      "output_number": 13,
+      "output_name": "q14.pdf",
+      "output_number": 14,
       "original_number": 14,
       "detection_method": "marker_regex",
       "segments": [
@@ -353,8 +378,8 @@
       ]
     },
     {
-      "output_name": "q14.pdf",
-      "output_number": 14,
+      "output_name": "q15.pdf",
+      "output_number": 15,
       "original_number": 15,
       "detection_method": "marker_regex",
       "segments": [
@@ -387,8 +412,8 @@
       ]
     },
     {
-      "output_name": "q15.pdf",
-      "output_number": 15,
+      "output_name": "q16.pdf",
+      "output_number": 16,
       "original_number": 16,
       "detection_method": "marker_regex",
       "segments": [
@@ -421,8 +446,8 @@
       ]
     },
     {
-      "output_name": "q16.pdf",
-      "output_number": 16,
+      "output_name": "q17.pdf",
+      "output_number": 17,
       "original_number": 17,
       "detection_method": "marker_regex",
       "segments": [
