@@ -1,0 +1,778 @@
+{
+  "source_pdf": "/home/stra/repos/BeautifulMivney/bagruyot/2013.6.205.pdf",
+  "source_hash_sha256": "e29f444036ec45d2ae704b64979ac53541742b2707fabf93166ee949904fa5f3",
+  "tool_version": "0.1.0",
+  "question_count": 24,
+  "detected_marker_count": 24,
+  "warnings": [],
+  "questions": [
+    {
+      "output_name": "q1.pdf",
+      "output_number": 1,
+      "original_number": 1,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 2,
+          "rect": [
+            22.67716535433071,
+            194.43910217285156,
+            445.03984514371615,
+            608.5720825195312
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 3,
+          "rect": [
+            22.67716535433071,
+            45.906883239746094,
+            445.03984514371615,
+            564.7770539531558
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 4,
+          "rect": [
+            22.67716535433071,
+            45.906883239746094,
+            445.03984514371615,
+            598.2920075664371
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 5,
+          "rect": [
+            22.67716535433071,
+            48.83624637033057,
+            445.03984514371615,
+            514.0291901836246
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "output_name": "q2.pdf",
+      "output_number": 2,
+      "original_number": 2,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 6,
+          "rect": [
+            22.67716535433071,
+            52.42481994628906,
+            445.03984514371615,
+            610.83740234375
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 7,
+          "rect": [
+            22.67716535433071,
+            45.906883239746094,
+            445.03984514371615,
+            606.904296875
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        6,
+        7
+      ]
+    },
+    {
+      "output_name": "q3.pdf",
+      "output_number": 3,
+      "original_number": 3,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 8,
+          "rect": [
+            22.67716535433071,
+            73.7021713256836,
+            445.03984514371615,
+            536.9541169414371
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        8
+      ]
+    },
+    {
+      "output_name": "q4.pdf",
+      "output_number": 4,
+      "original_number": 4,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 9,
+          "rect": [
+            22.67716535433071,
+            58.09413146972656,
+            445.03984514371615,
+            562.3460236797183
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 10,
+          "rect": [
+            22.67716535433071,
+            67.73372650146484,
+            445.03984514371615,
+            363.98567211721826
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 11,
+          "rect": [
+            22.67716535433071,
+            45.906883239746094,
+            445.03984514371615,
+            502.16679394339013
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 12,
+          "rect": [
+            22.67716535433071,
+            63.198204040527344,
+            445.03984514371615,
+            394.4501801738589
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 13,
+          "rect": [
+            22.67716535433071,
+            81.1980209350586,
+            445.03984514371615,
+            193.449966550812
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    {
+      "output_name": "q5.pdf",
+      "output_number": 5,
+      "original_number": 5,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 13,
+          "rect": [
+            22.67716535433071,
+            215.45799255371094,
+            445.03984514371615,
+            599.4580078125
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        13
+      ]
+    },
+    {
+      "output_name": "q6.pdf",
+      "output_number": 6,
+      "original_number": 6,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 14,
+          "rect": [
+            22.67716535433071,
+            70.00142669677734,
+            445.03984514371615,
+            338.08537304495263
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 15,
+          "rect": [
+            22.67716535433071,
+            63.269126892089844,
+            445.03984514371615,
+            588.3530427226871
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        14,
+        15
+      ]
+    },
+    {
+      "output_name": "q7.pdf",
+      "output_number": 7,
+      "original_number": 7,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 16,
+          "rect": [
+            22.67716535433071,
+            66.35041046142578,
+            445.03984514371615,
+            499.8333894023745
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        16
+      ]
+    },
+    {
+      "output_name": "q8.pdf",
+      "output_number": 8,
+      "original_number": 8,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 17,
+          "rect": [
+            22.67716535433071,
+            55.82832336425781,
+            445.03984514371615,
+            367.0242768535464
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        17
+      ]
+    },
+    {
+      "output_name": "q9.pdf",
+      "output_number": 9,
+      "original_number": 9,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 18,
+          "rect": [
+            22.67716535433071,
+            84.64723205566406,
+            445.03984514371615,
+            533.0517731914371
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 19,
+          "rect": [
+            22.67716535433071,
+            53.844116090789555,
+            445.03984514371615,
+            491.9200593242495
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        18,
+        19
+      ]
+    },
+    {
+      "output_name": "q10.pdf",
+      "output_number": 10,
+      "original_number": 10,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 20,
+          "rect": [
+            22.67716535433071,
+            70.56832122802734,
+            445.03984514371615,
+            613.1942749023438
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        20
+      ]
+    },
+    {
+      "output_name": "q11.pdf",
+      "output_number": 11,
+      "original_number": 11,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 21,
+          "rect": [
+            22.67716535433071,
+            63.922851442352055,
+            445.03984514371615,
+            606.1667634258121
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        21
+      ]
+    },
+    {
+      "output_name": "q12.pdf",
+      "output_number": 12,
+      "original_number": 12,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 22,
+          "rect": [
+            22.67716535433071,
+            48.17481994628906,
+            445.03984514371615,
+            606.3936767578125
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 23,
+          "rect": [
+            22.67716535433071,
+            45.906883239746094,
+            445.03984514371615,
+            605.5468139648438
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 24,
+          "rect": [
+            22.67716535433071,
+            59.805847047820805,
+            445.03984514371615,
+            411.7493745097964
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        22,
+        23,
+        24
+      ]
+    },
+    {
+      "output_name": "q13.pdf",
+      "output_number": 13,
+      "original_number": 13,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 25,
+          "rect": [
+            22.67716535433071,
+            99.96998596191406,
+            445.03984514371615,
+            601.9619294414371
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 26,
+          "rect": [
+            22.67716535433071,
+            69.05648040771484,
+            445.03984514371615,
+            504.14045727346826
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        25,
+        26
+      ]
+    },
+    {
+      "output_name": "q14.pdf",
+      "output_number": 14,
+      "original_number": 14,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 27,
+          "rect": [
+            22.67716535433071,
+            68.5841293334961,
+            445.03984514371615,
+            451.8360749492495
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 28,
+          "rect": [
+            22.67716535433071,
+            45.906883239746094,
+            445.03984514371615,
+            354.1747741699219
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        27,
+        28
+      ]
+    },
+    {
+      "output_name": "q15.pdf",
+      "output_number": 15,
+      "original_number": 15,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 28,
+          "rect": [
+            22.67716535433071,
+            354.1747741699219,
+            445.03984514371615,
+            408.9987641582339
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        28
+      ]
+    },
+    {
+      "output_name": "q16.pdf",
+      "output_number": 16,
+      "original_number": 16,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 29,
+          "rect": [
+            22.67716535433071,
+            55.26142883300781,
+            445.03984514371615,
+            560.0732575664371
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        29
+      ]
+    },
+    {
+      "output_name": "q17.pdf",
+      "output_number": 17,
+      "original_number": 17,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 30,
+          "rect": [
+            22.67716535433071,
+            105.93177795410156,
+            445.03984514371615,
+            343.93916332815576
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 31,
+          "rect": [
+            22.67716535433071,
+            53.93170535470557,
+            445.03984514371615,
+            605.3006591796875
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        30,
+        31
+      ]
+    },
+    {
+      "output_name": "q18.pdf",
+      "output_number": 18,
+      "original_number": 18,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 32,
+          "rect": [
+            22.67716535433071,
+            67.4661253681333,
+            445.03984514371615,
+            525.5420686015933
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 33,
+          "rect": [
+            22.67716535433071,
+            62.914817810058594,
+            445.03984514371615,
+            585.3667145976871
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        32,
+        33
+      ]
+    },
+    {
+      "output_name": "q19.pdf",
+      "output_number": 19,
+      "original_number": 19,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 34,
+          "rect": [
+            22.67716535433071,
+            48.17481994628906,
+            445.03984514371615,
+            589.3667145976871
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 35,
+          "rect": [
+            22.67716535433071,
+            62.914817810058594,
+            445.03984514371615,
+            600.5667268047183
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        34,
+        35
+      ]
+    },
+    {
+      "output_name": "q20.pdf",
+      "output_number": 20,
+      "original_number": 20,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 36,
+          "rect": [
+            22.67716535433071,
+            53.84413146972656,
+            445.03984514371615,
+            607.8441162109375
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        36
+      ]
+    },
+    {
+      "output_name": "q21.pdf",
+      "output_number": 21,
+      "original_number": 21,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 37,
+          "rect": [
+            22.67716535433071,
+            103.30067443847656,
+            445.03984514371615,
+            382.04936230276513
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 38,
+          "rect": [
+            22.67716535433071,
+            46.89245974923682,
+            445.03984514371615,
+            607.0854035625308
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        37,
+        38
+      ]
+    },
+    {
+      "output_name": "q22.pdf",
+      "output_number": 22,
+      "original_number": 22,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 39,
+          "rect": [
+            22.67716535433071,
+            68.88342273141456,
+            445.03984514371615,
+            548.1273347148746
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 40,
+          "rect": [
+            22.67716535433071,
+            62.914817810058594,
+            445.03984514371615,
+            594.1667634258121
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        39,
+        40
+      ]
+    },
+    {
+      "output_name": "q23.pdf",
+      "output_number": 23,
+      "original_number": 23,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 41,
+          "rect": [
+            22.67716535433071,
+            62.914817810058594,
+            445.03984514371615,
+            594.1667634258121
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 0.0
+        },
+        {
+          "page": 42,
+          "rect": [
+            22.67716535433071,
+            63.765220642089844,
+            445.03984514371615,
+            613.4251708984375
+          ],
+          "pad_top_pt": 0.0,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        41,
+        42
+      ]
+    },
+    {
+      "output_name": "q24.pdf",
+      "output_number": 24,
+      "original_number": 24,
+      "detection_method": "marker_regex",
+      "segments": [
+        {
+          "page": 43,
+          "rect": [
+            22.67716535433071,
+            45.906883239746094,
+            445.03984514371615,
+            591.5656892070621
+          ],
+          "pad_top_pt": 19.84251968503937,
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        43
+      ]
+    }
+  ]
+}
