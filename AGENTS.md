@@ -55,6 +55,19 @@
   - `wsl bash -lc "find /mnt/c/Users/3stra/AndroidStudioProjects -name FBRef.java"`
 - This fallback should be used for read/search operations across sibling projects when UNC or mounted-path access is blocked from the current shell context.
 
+## WSL login-shell commands (important)
+
+- When a command depends on the user's interactive Ubuntu shell environment or PATH setup, prefer:
+  - `wsl.exe -d Ubuntu bash -lic "<command>"`
+- This is especially important for Ruby/Bundler/Jekyll commands, because plain `wsl bash -lc` may not expose `bundle` even when it works in the Ubuntu terminal UI.
+- Preferred Jekyll pattern for this repo:
+  - `wsl.exe -d Ubuntu bash -lic "cd /home/stra/repos/BeautifulMivney && bundle exec jekyll build"`
+  - `wsl.exe -d Ubuntu bash -lic "cd /home/stra/repos/BeautifulMivney && bundle exec jekyll serve --port 4000"`
+- If port `4000` is already in use, try another explicit port such as `4001`.
+- Practical rule:
+  - Use `wsl bash -lc` for simple read/search filesystem operations.
+  - Use `wsl.exe -d Ubuntu bash -lic` for commands that rely on shell init files, gem-installed binaries, or project dev environments.
+
 ## RTDB reference projects (guidance, not strict lock-in)
 
 - Principle:
