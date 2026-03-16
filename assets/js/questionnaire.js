@@ -50,6 +50,30 @@
     return <span className="quiz-tag">{children}</span>;
   }
 
+  function FormattedText({ text }) {
+    if (typeof text !== "string") return text;
+    // 1. Split by user-provided backticks first
+    const parts = text.split(/`([^`]+)`/g);
+    return parts.map((part, i) => {
+      if (i % 2 === 1) {
+        return <code key={i} dir="ltr">{part}</code>; // Explicit backticks
+      }
+      // 2. Auto-detect English words and C# code patterns in remaining text.
+      // This regex surgically matches exact C# tokens, optionally followed by a semicolon (;): 
+      // - Option 1: Variables, methods, `new Object()`, `this.property++`, etc.
+      // - Option 2: "String literals" or 'char literals'
+      // This strictly avoids swallowing surrounding Hebrew punctuation or standalone parenthesis like "(base())".
+      const codeRegex = /((?:(?:new\s+)?[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*(?:<[^>]+>)?(?:\([^)]*\))?(?:\+\+|--)?|"[^"]*"|'[^']*');?)/g;
+      const subParts = part.split(codeRegex);
+      return subParts.map((sub, j) => {
+        if (j % 2 === 1) {
+          return <code key={i + "-" + j} dir="ltr">{sub}</code>;
+        }
+        return sub;
+      });
+    });
+  }
+
   function ChoiceButton({ choice, selectedKey, disabled, onPick, showCorrect, correctKey, dir }) {
     const isSelected = selectedKey === choice.key;
     const isCorrect = showCorrect && choice.key === correctKey;
@@ -69,7 +93,7 @@
         type="button"
       >
         <div className="quiz-answer-letter">{choice.key}</div>
-        <div className="quiz-answer-text">{choice.text}</div>
+        <div className="quiz-answer-text"><FormattedText text={choice.text} /></div>
       </button>
     );
   }
@@ -184,7 +208,7 @@
             </div>
           ) : null}
 
-          {q.promptHe ? <div className="quiz-prompt">{q.promptHe}</div> : null}
+          {q.promptHe ? <div className="quiz-prompt"><FormattedText text={q.promptHe} /></div> : null}
 
           {q.code ? <CodeBlock code={q.code} /> : null}
 
@@ -227,7 +251,7 @@
             <div className="quiz-explanation">
               <div className="quiz-explanation-title">{ui.explanationTitle}</div>
               <div className="quiz-explanation-text">
-                {q.explanationHe || "Explanation missing in QUESTIONS."}
+                <FormattedText text={q.explanationHe || "Explanation missing in QUESTIONS."} />
               </div>
             </div>
           )}
