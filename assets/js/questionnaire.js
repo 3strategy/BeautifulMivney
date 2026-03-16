@@ -47,7 +47,7 @@
   }
 
   function Pill({ children }) {
-    return <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs">{children}</span>;
+    return <span className="quiz-tag">{children}</span>;
   }
 
   function ChoiceButton({ choice, selectedKey, disabled, onPick, showCorrect, correctKey, dir }) {
@@ -55,7 +55,7 @@
     const isCorrect = showCorrect && choice.key === correctKey;
     const isWrongSelected = showCorrect && isSelected && choice.key !== correctKey;
 
-    const classNames = ["answer-btn"];
+    const classNames = ["quiz-answer-btn"];
     if (isSelected) classNames.push("is-selected");
     if (isCorrect) classNames.push("is-correct");
     if (isWrongSelected) classNames.push("is-wrong");
@@ -68,17 +68,17 @@
         onClick={() => onPick(choice.key)}
         type="button"
       >
-        <div className="answer-letter">{choice.key}</div>
-        <div className="answer-text">{choice.text}</div>
+        <div className="quiz-answer-letter">{choice.key}</div>
+        <div className="quiz-answer-text">{choice.text}</div>
       </button>
     );
   }
 
   function CodeBlock({ code }) {
     return (
-      <pre dir="ltr" className="rounded-2xl border p-4 overflow-auto text-sm leading-6 text-left">
-        <code>{code}</code>
-      </pre>
+      <div className="quiz-code-block" dir="ltr">
+        <pre><code>{code}</code></pre>
+      </div>
     );
   }
 
@@ -151,94 +151,87 @@
     };
 
     if (!q) {
-      return <div className="rounded-2xl border p-4 md:p-6 shadow-sm">{ui.emptyMessage}</div>;
+      return <div className="quiz-main">{ui.emptyMessage}</div>;
     }
 
     return (
-      <div dir={rootDir} className="min-h-screen p-4 md:p-8">
-        <div className="max-w-4xl mx-auto space-y-4">
-          <header className="rounded-2xl border p-4 md:p-6 shadow-sm">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold">{ui.title}</h1>
-                <p className="mt-1 text-sm opacity-80">
-                  {ui.progressAnswered}: {progress.done}/{progress.total} | {ui.progressCorrect}: {progress.correct}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <button type="button" className="rounded-2xl border px-4 py-2 shadow-sm" onClick={resetAll}>
-                  {ui.resetLabel}
-                </button>
-              </div>
-            </div>
-          </header>
+      <div dir={rootDir} className="quiz-container">
+        <header className="quiz-header">
+          <div>
+            <h1 className="quiz-header-title">{ui.title}</h1>
+            <p className="quiz-header-stats">
+              {ui.progressAnswered}: {progress.done}/{progress.total} | {ui.progressCorrect}: {progress.correct}
+            </p>
+          </div>
+          <div>
+            <button type="button" className="quiz-btn" onClick={resetAll}>
+              {ui.resetLabel}
+            </button>
+          </div>
+        </header>
 
-          <main className="rounded-2xl border p-4 md:p-6 shadow-sm space-y-4">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <div className="text-sm opacity-80">
-                  {ui.questionLabel} {qIndex + 1} {ui.ofLabel} {quizQuestions.length}
-                </div>
-                <h2 className="text-xl md:text-2xl font-semibold mt-1">{q.title}</h2>
-                {q.tags?.length ? (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {q.tags.map((t) => (
-                      <Pill key={t}>{t}</Pill>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            </div>
-
-            {q.promptHe ? <div className="whitespace-pre-wrap leading-7">{q.promptHe}</div> : null}
-
-            {q.code ? <CodeBlock code={q.code} /> : null}
-
-            <div className="answers-grid">
-              {q.choices.map((c) => (
-                <ChoiceButton
-                  key={c.key}
-                  choice={c}
-                  selectedKey={a.selectedKey}
-                  disabled={a.revealed}
-                  onPick={pick}
-                  showCorrect={a.revealed}
-                  correctKey={q.correctKey}
-                  dir={q.choicesDir || "ltr"}
-                />
+        <main className="quiz-main">
+          <div className="quiz-question-meta">
+            {ui.questionLabel} {qIndex + 1} {ui.ofLabel} {quizQuestions.length}
+          </div>
+          <h2 className="quiz-question-title">{q.title}</h2>
+          
+          {q.tags?.length ? (
+            <div className="quiz-tags">
+              {q.tags.map((t) => (
+                <Pill key={t}>{t}</Pill>
               ))}
             </div>
+          ) : null}
 
-            <div className="flex flex-wrap items-center gap-2 pt-2">
-              <button
-                type="button"
-                className="rounded-2xl border px-4 py-2 shadow-sm disabled:opacity-60"
-                onClick={prev}
-                disabled={qIndex === 0}
-              >
-                {ui.prevLabel}
-              </button>
-              <button
-                type="button"
-                className="rounded-2xl border px-4 py-2 shadow-sm disabled:opacity-60"
-                onClick={next}
-                disabled={qIndex === quizQuestions.length - 1}
-              >
-                {ui.nextLabel}
-              </button>
-              <div className="flex-1" />
-            </div>
+          {q.promptHe ? <div className="quiz-prompt">{q.promptHe}</div> : null}
 
-            {a.revealed && (
-              <div className="rounded-2xl border p-4 mt-2">
-                <div className="font-semibold">{ui.explanationTitle}</div>
-                <div className="mt-2 whitespace-pre-wrap leading-7">
-                  {q.explanationHe || "Explanation missing in QUESTIONS."}
-                </div>
+          {q.code ? <CodeBlock code={q.code} /> : null}
+
+          <div className="quiz-answers-grid">
+            {q.choices.map((c) => (
+              <ChoiceButton
+                key={c.key}
+                choice={c}
+                selectedKey={a.selectedKey}
+                disabled={a.revealed}
+                onPick={pick}
+                showCorrect={a.revealed}
+                correctKey={q.correctKey}
+                dir={q.choicesDir || "ltr"}
+              />
+            ))}
+          </div>
+
+          <div className="quiz-controls">
+            <button
+              type="button"
+              className="quiz-btn"
+              onClick={prev}
+              disabled={qIndex === 0}
+            >
+              {ui.prevLabel}
+            </button>
+            <button
+              type="button"
+              className="quiz-btn"
+              onClick={next}
+              disabled={qIndex === quizQuestions.length - 1}
+            >
+              {ui.nextLabel}
+            </button>
+            <div className="quiz-controls-spacer" />
+          </div>
+
+          {a.revealed && (
+            <div className="quiz-explanation">
+              <div className="quiz-explanation-title">{ui.explanationTitle}</div>
+              <div className="quiz-explanation-text">
+                {q.explanationHe || "Explanation missing in QUESTIONS."}
               </div>
-            )}
-          </main>
-        </div>
+            </div>
+          )}
+        </main>
       </div>
     );
   }
