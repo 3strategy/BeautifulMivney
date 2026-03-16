@@ -1203,7 +1203,6 @@ mark {
     line-height: 1.3;
     opacity: 0.95;
     text-align: center;
-    direction: ltr; /* Ensures text inside answers doesn't flip */
 }
 
 /* Interaction States */
@@ -1269,7 +1268,11 @@ mark {
 .quiz-explanation-title {
     font-weight: bold;
     font-size: 1.3em;
-    color: var(--backs-col);
+    display: inline-block;
+    padding: 0.2em 0.6em;
+    border-radius: 999px;
+    background-color: var(--backs-col);
+    color: var(--text-col);
     margin-bottom: 0.5em;
 }
 .quiz-explanation-text {
