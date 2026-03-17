@@ -36,7 +36,7 @@ lang: he
 </style>
 
 {: .box-note}
-השאלון הזה מבוסס על המחלקות `A / B / C / D` ועל `Tester.Main` מבגרות 2021 שאלה 16.
+השאלון הזה מבוסס על המחלקות `A / B / C / D` ועל `Tester.Main` מבגרות 2021 נבצרים שאלה 16.
 מומלץ לקרוא משמאל את השאלה המקורית ואז לענות כאן.
 
 השאלות כאן מתמקדות גם במפת ההיררכיה וגם במעקב אחרי הקריאות ל-`Foo`, `IsEqual`, `Func` ו-`count`.
@@ -56,7 +56,7 @@ lang: he
   class="questionnaire-source-viewer"
   data="https://יסודות.שלי.com/bagruyot/2021.5.381/q16.pdf"
   type="application/pdf"
-  aria-label="בגרות 2021 שאלה 16">
+  aria-label="בגרות 2021 נבצרים שאלה 16">
   <p>
     אם ה-PDF לא נטען בתוך הדף, פתחו את
     <a href="https://יסודות.שלי.com/bagruyot/2021.5.381/q16.pdf" target="_blank" rel="noopener">q16.pdf</a>.

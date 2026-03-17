@@ -36,7 +36,7 @@ lang: he
 </style>
 
 {: .box-note}
-השאלון הזה מבוסס על בגרות 2021 שאלה 17, שיש בה שני סעיפים בלי קשר ביניהם:
+השאלון הזה מבוסס על בגרות 2021 נבצרים שאלה 17, שיש בה שני סעיפים בלי קשר ביניהם:
 `C / D` וגם `AA / BB`.
 מומלץ לקרוא משמאל את השאלה המקורית ואז לענות כאן.
 
@@ -70,7 +70,7 @@ public void Dolt(Object o) { Console.WriteLine("o"); }
   class="questionnaire-source-viewer"
   data="https://יסודות.שלי.com/bagruyot/2021.5.381/q17.pdf"
   type="application/pdf"
-  aria-label="בגרות 2021 שאלה 17">
+  aria-label="בגרות 2021 נבצרים שאלה 17">
   <p>
     אם ה-PDF לא נטען בתוך הדף, פתחו את
     <a href="https://יסודות.שלי.com/bagruyot/2021.5.381/q17.pdf" target="_blank" rel="noopener">q17.pdf</a>.

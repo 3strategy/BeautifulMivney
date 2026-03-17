@@ -106,7 +106,15 @@
 - Pages under `interactive/` use the repo's wide-page mode (`full-width: true`) by default so questionnaires can use most of the screen width without presentation scaling.
 - If a specific interactive page should go back to normal centered width, override it in front matter with `full-width: false`.
 - For safety on pages that must stay wide even if moved later, it is fine to also set `full-width: true` explicitly in the page front matter.
-- For bagrut-based questionnaires, prefer linking directly to the relevant local PDF/page so students can inspect the given source material.
+- For question-specific bagrut questionnaires, prefer the pre-split single-question PDF rather than re-extracting from a full exam booklet.
+- For bagruyot `381`, the canonical split-question source is the live BeautifulYesodot site and its sibling repo:
+  - live URL pattern: `https://יסודות.שלי.com/bagruyot/<exam-id>/qNN.pdf`
+  - sibling repo path: `/home/stra/repos/BeautifulYesodot/bagruyot/<exam-id>/qNN.pdf`
+- For bagruyot `205` and `271`, the canonical split-question PDFs are stored in this repo under:
+  - `/home/stra/repos/BeautifulMivney/bagruyot/<exam-id>/qNN.pdf`
+- Prefer embedding the canonical split-question URL/path directly in the questionnaire page instead of duplicating the split PDFs across repos.
+- Rationale: keep a single source of truth for split questions so fixes/improvements accumulate in one place over time and questionnaires do not drift from the maintained split source.
+- For bagrut-based questionnaires, keep the source question directly visible/linked so students can inspect the original material beside the quiz.
 - When the source question and the interactive quiz should be visible together, use the `two-columns` pattern with the PDF/source on the left and the quiz on the right.
 - Important in this repo's RTL layout: inside `two-columns`, the first child renders on the right and the second child renders on the left.
 - Therefore, for `quiz right / PDF left`, place the quiz as the first column and the PDF/source as the second column.
@@ -117,6 +125,13 @@
 - Shared split-render pattern:
   - add `quiz-header-root`, `quiz-main-root`, and a host `quiz-root`
   - call `window.renderQuestionnaire({ mountId: "quiz-root", headerMountId: "quiz-header-root", mainMountId: "quiz-main-root", ... })`
+- Efficient questionnaire workflow:
+  - start from a recent questionnaire page such as `interactive/02questionnaire2022q17.md` or another split-render page and reuse the structure
+  - inspect/extract the split PDF text with Python `pypdf` when needed rather than working from the full exam booklet
+  - in the intro note, explicitly say which section each cluster of quiz questions assumes
+  - when a bagrut question has unrelated subparts, keep the questionnaire grouped in the same order as the PDF before adding any summary/synthesis question
+  - for specific-question pages, keep the source visible via the split layout instead of paraphrasing the whole prompt into markdown
+  - after creating/updating a questionnaire, add the `_config.yml` nav link and run `wsl.exe -d Ubuntu bash -lic "cd /home/stra/repos/BeautifulMivney && bundle exec jekyll build"`
 - Reusable questionnaire pattern:
 
 ```html

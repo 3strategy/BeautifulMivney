@@ -124,8 +124,9 @@ navbar-links:
   - תרגול אינטרקטיבי:
     - אינטראקטיבי מעורב: "/interactive/02questionnairePolymCore"
     - ממוקד בגרות 2022/17: "/interactive/02questionnaire2022q17"
-    - ממוקד בגרות 2021/17: "/interactive/02questionnaire2021q17"
-    - ממוקד בגרות 2021/16: "/interactive/02questionnaire2021q16"
+    - ממוקד בגרות 2022/16: "/interactive/02questionnaire2022q16"
+    - ממוקד בגרות 2021-5/17: "/interactive/02questionnaire2021.5q17"
+    - ממוקד בגרות 2021-5/16: "/interactive/02questionnaire2021.5q16"
     - אינטראקטיבי מתקדם: "/interactive/02questionnairePolymAdv"
     - אינטראקטיבי JAVA: "https://gemini.google.com/share/cc9b583ee06b"
 
