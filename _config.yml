@@ -31,10 +31,9 @@ navbar-links:
     - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
     - קמפוס יסודות: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceA_HE+2023_1/course/"
     - קמפוס מבני נתונים: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/"
-    - בגרויות: "/bagruyot"
-    - בגרויות משרד החינוך: "https://meyda.education.gov.il/bagmgr/default.html#/"
     - מה מותר ומה אסור: "https://docs.google.com/document/d/1_38kIc1UwK7Eiz673KyBjqGdkJeqa-I5kGCDOMckHqc/edit?usp=sharing"
     - בחינות מה"ט: "https://data.labor.gov.il/Mahat/mahat_tests_search.aspx"
+    - בגרויות משרד החינוך: "https://meyda.education.gov.il/bagmgr/default.html#/"
     - אתר מפמ"ר: "https://pop.education.gov.il/tchumey_daat/computer-science-software-engineering-cyber/high-school/pedagogy-of/high-school-software-cyber-engineering/"
     - ספר פרוייקט: "https://meyda.education.gov.il/files/CSIT/Smartphones-Project.pdf"
     - מחוון פרוייקט: "https://meyda.education.gov.il/files/CSIT/smartphonesProject-5.pdf"
@@ -108,10 +107,10 @@ navbar-links:
   - 2. פולימורפיזם: 
     - 2.1 מצגת: "/oop/02-polymorphism-cs.pptx"
     - 2.2 פולימורפיזם: "/oop/02Polymorphism"
-    - 2.3a אינטרקטיבי לבגרות: "oop/02questionnairePolymCore"
-    - 2.3b ממוקד בגרות 2022/17: "oop/02questionnaire2022q17"
-    - 2.3c אינטרקטיבי מתקדם: "oop/02questionnairePolymAdv"
-    - 2.3d אינטרקטיבי JAVA: "https://gemini.google.com/share/cc9b583ee06b"
+    # - 2.3a אינטרקטיבי לבגרות: "oop/02questionnairePolymCore"
+    # - 2.3b ממוקד בגרות 2022/17: "oop/02questionnaire2022q17"
+    # - 2.3c אינטרקטיבי מתקדם: "oop/02questionnairePolymAdv"
+    # - 2.3d אינטרקטיבי JAVA: "https://gemini.google.com/share/cc9b583ee06b"
     - 2.4 עץ החלטה + מבגרות 25: "/oop/02Polymorphism2Bag25"
     - 2.5 מתי נקבע הטיפוס: "/oop/02Polymorphism3"
     - 2.6 מה קורה עם ToString?: "/oop/02Polymorphism4CwToString"
@@ -121,6 +120,12 @@ navbar-links:
     - מקבץ מהט 25: "/oop/02qmahat_tests_search.aspx.pdf"
     - מעקב עצמים דיתה: "oop/ExByOthers/DitaOOPTrackingObjects.pdf"
     - מעקב אריאל על דיתה: "https://www.youtube.com/watch?v=gqc_WCIRO5I&list=PLNLf5_3sUeLzoAqJKLTKM_BgSqq-DaUS5&index=15"
+  
+  - תרגול אינטרקטיבי:
+    - 3.1 אינטראקטיבי מעורב: "oop/03questionnaireCore"
+    - 3.2 ממוקד בגרות 2022/17: "oop/02questionnaire2022q17"
+    - 3.3 אינטראקטיבי מתקדם: "oop/03questionnaireAdv"
+    - 3.4 אינטראקטיבי JAVA: "https://gemini.google.com/share/cc9b583ee06b"
 
   - בגרויות תמ"ע: "/bagruyot/IndexQuestionsByTopicOOP/"
   - בגרויות מבני נתונים: "/bagruyot/index/"

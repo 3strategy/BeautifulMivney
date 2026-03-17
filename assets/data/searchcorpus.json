@@ -42,7 +42,7 @@ layout: null
         {
           "title"    : "{{ child_text | strip_html | escape }}",
           "desc"     : "קישור מתפריט חיצוני: {{ child_text | strip_html | escape }}",
-          "category" : "חיצוני, קישורים, קישורים חיצוניים, חינוך, מדמח, מדעי המחשב, משרד החינוך, קמפוס, בגרויות, הגשות, מהט",
+          "category" : "{{ top_text | strip_html | escape }}, קישור חיצוני",
           "url"      : "{{ child_item | relative_url | escape }}",
           "date"     : "January 1, 1970"
         }

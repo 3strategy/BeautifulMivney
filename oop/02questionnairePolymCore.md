@@ -105,7 +105,7 @@ animals[2] = new Parrot("brown", 12, true, true);`,
   {
     id: 4,
     title: "שאלה 4: איך מתקנים את `Hello(Animal[] arr)`?",
-    promptHe: "בבגרות 2025 נתונה הפעולה הבאה. איך מתקנים אותה לפי OOP, בלי `is` ובלי `as`?",
+    promptHe: "בג(2) של בגרות 2025 אסור לשנות את המחלקות עצמן. איך מתקנים את הפעולה כך שהפונקציה תהיה תקינה?",
     codeLang: "csharp",
     code: `public static void Hello(Animal[] arr)
 {
@@ -116,14 +116,14 @@ animals[2] = new Parrot("brown", 12, true, true);`,
 }`,
     choicesDir: "rtl",
     choices: [
-      { key: "A", text: "להוסיף `virtual Zoo()` ב-`Animal` ולבצע `override` במחלקות המתאימות" },
-      { key: "B", text: "להחליף את `Animal[]` ב-`object[]`" },
-      { key: "C", text: "לעשות cast בתוך הלולאה לכל מחלקה אפשרית" },
+      { key: "A", text: "להשתמש בבדיקת טיפוס בתוך הלולאה, למשל `if (arr[i] is Bird b) b.Zoo();`" },
+      { key: "B", text: "להוסיף `virtual Zoo()` ב-`Animal` ולבצע `override` במחלקות המתאימות" },
+      { key: "C", text: "להחליף את `Animal[]` ב-`object[]`" },
       { key: "D", text: "להפוך את `Zoo()` לפעולה `static`" },
     ],
     correctKey: "A",
-    explanationHe: "כדי שהקריאה `arr[i].Zoo()` תהיה תקינה עבור מערך מטיפוס `Animal[]`, הפעולה צריכה להיות מוכרת כבר ב-`Animal`, ואז להידרס לפי הצורך במחלקות היורשות.",
-    tags: ["virtual", "override", "zoo"],
+    explanationHe: "בנוסח של סעיף ג(2) אסור לשנות את המחלקות, ולכן הפתרון צריך להיות בתוך הפונקציה. בדיקת טיפוס (`is`, `as`, או pattern matching) היא הדרך הנכונה כאן. בדיקה מול `Bird` תתפוס גם `Parrot`, כי `Parrot` יורשת מ-`Bird`.",
+    tags: ["pattern-matching", "casting", "zoo"],
   },
   {
     id: 5,
