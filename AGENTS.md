@@ -125,6 +125,13 @@
 - Shared split-render pattern:
   - add `quiz-header-root`, `quiz-main-root`, and a host `quiz-root`
   - call `window.renderQuestionnaire({ mountId: "quiz-root", headerMountId: "quiz-header-root", mainMountId: "quiz-main-root", ... })`
+- Answer layout convention:
+  - treat answer-grid layout as shared renderer behavior, not page-local CSS, unless a page has a truly unique visual requirement
+  - `assets/js/questionnaire.js` supports per-question `answerColumns: 1` for long answer options that should be shown one below the other
+  - prefer setting `answerColumns: 1` on the specific long-answer question objects rather than copying custom grid CSS into each page
+  - important for split-render pages: the visible live question card is rendered into `quiz-main-root` via portals, so selectors that only target `#quiz-root .quiz-answers-grid` or `#quiz-root .quiz-answer-*` do not affect the live answers
+  - therefore, do not rely on `#quiz-root`-scoped page CSS for answer-button layout on split questionnaires; use the shared questionnaire CSS/JS instead
+  - practical rule: default to the shared 2-column answer grid, and switch only the long-text questions to `answerColumns: 1`
 - Efficient questionnaire workflow:
   - start from a recent questionnaire page such as `interactive/02questionnaire2022q17.md` or another split-render page and reuse the structure
   - inspect/extract the split PDF text with Python `pypdf` when needed rather than working from the full exam booklet

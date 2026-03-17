@@ -119,6 +119,7 @@ a.Foo(2);`,
     code: `A a = new A();
 B b = a;
 b.Foo(2);`,
+    answerColumns: 1,
     choicesDir: "rtl",
     choices: [
       { key: "A", text: "יודפסו `ctor A` ואז `B Foo int 2`" },

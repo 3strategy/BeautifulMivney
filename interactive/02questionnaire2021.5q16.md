@@ -182,6 +182,7 @@ Console.WriteLine(y4.IsEqual(y3));`,
 B y5 = y3;
 y5.SetNum(0);
 Console.WriteLine(y3.IsEqual(y5));`,
+    answerColumns: 1,
     choicesDir: "rtl",
     choices: [
       { key: "A", text: "תופעל `B.IsEqual(B)` ויודפס `True`, כי שני המשתנים מצביעים לאותו אובייקט" },

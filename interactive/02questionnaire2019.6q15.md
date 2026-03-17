@@ -93,6 +93,7 @@ A a2 = new A(5);
 A ab = new B();
 B b1 = new B("B", 1);
 B b2 = new B("B", 5);`,
+    answerColumns: 1,
     choicesDir: "rtl",
     choices: [
       { key: "A", text: "`a1.val = 1`, `a2.val = 5`, `ab` הוא בפועל `B` עם `val = 1` ו-`st = \"B\"`, `b1` הוא `(\"B\",1)`, `b2` הוא `(\"B\",5)`" },
