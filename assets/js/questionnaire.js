@@ -1,5 +1,6 @@
 (function () {
   const { useState, useMemo } = React;
+  const { createPortal } = ReactDOM;
 
   const LETTERS = ["A", "B", "C", "D"];
 
@@ -106,7 +107,7 @@
     );
   }
 
-  function Questionnaire({ questions, labels, revealDelayMs, dir }) {
+  function Questionnaire({ questions, labels, revealDelayMs, dir, headerMountId, mainMountId }) {
     const ui = {
       title: "Quiz",
       progressAnswered: "Answered",
@@ -174,97 +175,132 @@
       reshuffle();
     };
 
-    if (!q) {
-      return <div className="quiz-main">{ui.emptyMessage}</div>;
+    const headerNode = (
+      <header className="quiz-header">
+        <div>
+          <h1 className="quiz-header-title">{ui.title}</h1>
+          <p className="quiz-header-stats">
+            {ui.progressAnswered}: {progress.done}/{progress.total} | {ui.progressCorrect}: {progress.correct}
+          </p>
+        </div>
+        <div>
+          <button type="button" className="quiz-btn" onClick={resetAll}>
+            {ui.resetLabel}
+          </button>
+        </div>
+      </header>
+    );
+
+    const mainNode = !q ? (
+      <main className="quiz-main">{ui.emptyMessage}</main>
+    ) : (
+      <main className="quiz-main">
+        <div className="quiz-question-meta">
+          {ui.questionLabel} {qIndex + 1} {ui.ofLabel} {quizQuestions.length}
+        </div>
+        <h2 className="quiz-question-title">{q.title}</h2>
+
+        {q.tags?.length ? (
+          <div className="quiz-tags">
+            {q.tags.map((t) => (
+              <Pill key={t}>{t}</Pill>
+            ))}
+          </div>
+        ) : null}
+
+        {q.promptHe ? <div className="quiz-prompt"><FormattedText text={q.promptHe} /></div> : null}
+
+        {q.code ? <CodeBlock code={q.code} /> : null}
+
+        <div className="quiz-answers-grid">
+          {q.choices.map((c) => (
+            <ChoiceButton
+              key={c.key}
+              choice={c}
+              selectedKey={a.selectedKey}
+              disabled={a.revealed}
+              onPick={pick}
+              showCorrect={a.revealed}
+              correctKey={q.correctKey}
+              dir={q.choicesDir || "ltr"}
+            />
+          ))}
+        </div>
+
+        <div className="quiz-controls">
+          <button
+            type="button"
+            className="quiz-btn"
+            onClick={prev}
+            disabled={qIndex === 0}
+          >
+            {ui.prevLabel}
+          </button>
+          <button
+            type="button"
+            className="quiz-btn"
+            onClick={next}
+            disabled={qIndex === quizQuestions.length - 1}
+          >
+            {ui.nextLabel}
+          </button>
+          <div className="quiz-controls-spacer" />
+        </div>
+
+        {a?.revealed && (
+          <div className="quiz-explanation">
+            <div className="quiz-explanation-title">{ui.explanationTitle}</div>
+            <div className="quiz-explanation-text">
+              <FormattedText text={q.explanationHe || "Explanation missing in QUESTIONS."} />
+            </div>
+          </div>
+        )}
+      </main>
+    );
+
+    const headerMount = headerMountId ? document.getElementById(headerMountId) : null;
+    const mainMount = mainMountId ? document.getElementById(mainMountId) : null;
+    const useSplitMounts = !!(createPortal && headerMount && mainMount);
+
+    if (!useSplitMounts) {
+      return (
+        <div dir={rootDir} className="quiz-container">
+          {headerNode}
+          {mainNode}
+        </div>
+      );
     }
 
     return (
-      <div dir={rootDir} className="quiz-container">
-        <header className="quiz-header">
-          <div>
-            <h1 className="quiz-header-title">{ui.title}</h1>
-            <p className="quiz-header-stats">
-              {ui.progressAnswered}: {progress.done}/{progress.total} | {ui.progressCorrect}: {progress.correct}
-            </p>
-          </div>
-          <div>
-            <button type="button" className="quiz-btn" onClick={resetAll}>
-              {ui.resetLabel}
-            </button>
-          </div>
-        </header>
-
-        <main className="quiz-main">
-          <div className="quiz-question-meta">
-            {ui.questionLabel} {qIndex + 1} {ui.ofLabel} {quizQuestions.length}
-          </div>
-          <h2 className="quiz-question-title">{q.title}</h2>
-          
-          {q.tags?.length ? (
-            <div className="quiz-tags">
-              {q.tags.map((t) => (
-                <Pill key={t}>{t}</Pill>
-              ))}
-            </div>
-          ) : null}
-
-          {q.promptHe ? <div className="quiz-prompt"><FormattedText text={q.promptHe} /></div> : null}
-
-          {q.code ? <CodeBlock code={q.code} /> : null}
-
-          <div className="quiz-answers-grid">
-            {q.choices.map((c) => (
-              <ChoiceButton
-                key={c.key}
-                choice={c}
-                selectedKey={a.selectedKey}
-                disabled={a.revealed}
-                onPick={pick}
-                showCorrect={a.revealed}
-                correctKey={q.correctKey}
-                dir={q.choicesDir || "ltr"}
-              />
-            ))}
-          </div>
-
-          <div className="quiz-controls">
-            <button
-              type="button"
-              className="quiz-btn"
-              onClick={prev}
-              disabled={qIndex === 0}
-            >
-              {ui.prevLabel}
-            </button>
-            <button
-              type="button"
-              className="quiz-btn"
-              onClick={next}
-              disabled={qIndex === quizQuestions.length - 1}
-            >
-              {ui.nextLabel}
-            </button>
-            <div className="quiz-controls-spacer" />
-          </div>
-
-          {a.revealed && (
-            <div className="quiz-explanation">
-              <div className="quiz-explanation-title">{ui.explanationTitle}</div>
-              <div className="quiz-explanation-text">
-                <FormattedText text={q.explanationHe || "Explanation missing in QUESTIONS."} />
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
+      <>
+        {createPortal(
+          <div dir={rootDir} className="quiz-container quiz-container-fragment">
+            {headerNode}
+          </div>,
+          headerMount
+        )}
+        {createPortal(
+          <div dir={rootDir} className="quiz-container quiz-container-fragment">
+            {mainNode}
+          </div>,
+          mainMount
+        )}
+      </>
     );
   }
 
-  window.renderQuestionnaire = function ({ mountId, questions, labels, revealDelayMs, dir }) {
+  window.renderQuestionnaire = function ({ mountId, questions, labels, revealDelayMs, dir, headerMountId, mainMountId }) {
     const mount = document.getElementById(mountId || "quiz-root");
     if (!mount) return;
     ReactDOM.render(
-      <Questionnaire questions={questions || []} labels={labels} revealDelayMs={revealDelayMs} dir={dir} />,
+      <Questionnaire
+        questions={questions || []}
+        labels={labels}
+        revealDelayMs={revealDelayMs}
+        dir={dir}
+        headerMountId={headerMountId}
+        mainMountId={mainMountId}
+      />,
       mount
     );
   };

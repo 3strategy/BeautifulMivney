@@ -35,10 +35,6 @@ lang: he
 }
 </style>
 
-<!-- In the site's RTL layout, the first column renders on the right and the second on the left. -->
-<div class="two-columns questionnaire-source-layout">
-  <div markdown="1" class="column">
-
 {: .box-note}
 השאלון הזה מבוסס על `Mammal / Antelope / Beaver`.
 מומלץ לקרוא משמאל את השאלה המקורית ואז לענות כאן.
@@ -52,23 +48,25 @@ Beaver b1 = new Beaver(10);
 Mammal b2 = new Beaver(10);
 ```
 
+<div id="quiz-header-root"></div>
 <div id="quiz-root"></div>
 
+<!-- In the site's RTL layout, the first column renders on the right and the second on the left. -->
+<div class="two-columns questionnaire-source-layout">
+  <div markdown="1" class="column">
+<div id="quiz-main-root"></div>
   </div>
 
   <div markdown="1" class="column">
 
-{: .box-note}
-משמאל מופיעה השאלה המקורית מתוך [בגרות 2022/381, עמוד 30]({{ '/bagruyot/2022.6.381.pdf' | relative_url }}#page=30).
-
 <object
   class="questionnaire-source-viewer"
-  data="{{ '/bagruyot/2022.6.381.pdf' | relative_url }}#page=30&zoom=page-width&pagemode=none"
+  data="https://יסודות.שלי.com/bagruyot/2022.6.381/q17.pdf"
   type="application/pdf"
   aria-label="בגרות 2022 שאלה 17">
   <p>
     אם ה-PDF לא נטען בתוך הדף, פתחו את
-    <a href="{{ '/bagruyot/2022.6.381.pdf' | relative_url }}#page=30" target="_blank" rel="noopener">בגרות 2022/381 עמוד 30</a>.
+    <a href="https://יסודות.שלי.com/bagruyot/2022.6.381/q17.pdf" target="_blank" rel="noopener">q17.pdf</a>.
   </p>
 </object>
 
@@ -285,6 +283,8 @@ window.QUIZ_LABELS = {
 <script type="text/babel">
   window.renderQuestionnaire({
     mountId: "quiz-root",
+    headerMountId: "quiz-header-root",
+    mainMountId: "quiz-main-root",
     questions: window.QUIZ_QUESTIONS,
     labels: window.QUIZ_LABELS,
     revealDelayMs: 250,

@@ -110,14 +110,26 @@
 - When the source question and the interactive quiz should be visible together, use the `two-columns` pattern with the PDF/source on the left and the quiz on the right.
 - Important in this repo's RTL layout: inside `two-columns`, the first child renders on the right and the second child renders on the left.
 - Therefore, for `quiz right / PDF left`, place the quiz as the first column and the PDF/source as the second column.
+- If the side-by-side layout causes the question to start too low, prefer splitting the questionnaire rendering:
+  - put the intro note / given code / questionnaire header above the two columns
+  - render only the live question card inside the quiz column
+  - keep ordinary single-column questionnaires on the default single `quiz-root` mount
+- Shared split-render pattern:
+  - add `quiz-header-root`, `quiz-main-root`, and a host `quiz-root`
+  - call `window.renderQuestionnaire({ mountId: "quiz-root", headerMountId: "quiz-header-root", mainMountId: "quiz-main-root", ... })`
 - Reusable questionnaire pattern:
 
 ```html
+{: .box-note}
+...intro note and given declarations...
+
+<div id="quiz-header-root"></div>
+<div id="quiz-root"></div>
+
 <div class="two-columns questionnaire-source-layout">
 <div markdown="1" class="column">
 
-{: .box-note}
-...interactive questionnaire...
+<div id="quiz-main-root"></div>
 </div>
 <div markdown="1" class="column">
 
