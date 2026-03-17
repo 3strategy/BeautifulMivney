@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "updated_at": "2026-02-20T06:41:24+00:00",
-  "config_hash": "58bd8ae20c6bb92b096861a11f1e8155c3c3c0aa1047137d33a53eb337a9247e",
+  "updated_at": "2026-03-17T06:35:49+00:00",
+  "config_hash": "2039f44e53a9535edea5233604fbd33eba4ab386ce50f5f541d522090e9709b5",
   "files": [
     "full.pdf"
   ],
@@ -9,12 +9,14 @@
     "full.pdf": {
       "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\stra\\repos\\BeautifulMivney\\bagruyot\\2025.6.271\\full.pdf",
       "source_hash_sha256": "987e8b3a8a75596cdaf072313574324419cc7c93cea49cd3eb45a6d1d9f03acf",
-      "question_count": 12,
+      "question_count": 15,
       "detected_marker_count": 12,
       "warnings": [
-        "auto marker strategy used: auto_retry_multi_markers"
+        "auto marker strategy used: auto_retry_multi_markers",
+        "mixed language variants detected in questions: 2, 10, 11, 12",
+        "language variant splits applied to questions: 10, 11, 12"
       ],
-      "processed_at": "2026-02-20T06:41:24+00:00"
+      "processed_at": "2026-03-17T06:35:49+00:00"
     }
   }
 }

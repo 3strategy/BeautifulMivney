@@ -2,10 +2,12 @@
   "source_pdf": "\\\\wsl.localhost\\Ubuntu\\home\\stra\\repos\\BeautifulMivney\\bagruyot\\2025.6.271\\full.pdf",
   "source_hash_sha256": "987e8b3a8a75596cdaf072313574324419cc7c93cea49cd3eb45a6d1d9f03acf",
   "tool_version": "0.1.0",
-  "question_count": 12,
+  "question_count": 15,
   "detected_marker_count": 12,
   "warnings": [
-    "auto marker strategy used: auto_retry_multi_markers"
+    "auto marker strategy used: auto_retry_multi_markers",
+    "mixed language variants detected in questions: 2, 10, 11, 12",
+    "language variant splits applied to questions: 10, 11, 12"
   ],
   "questions": [
     {
@@ -255,10 +257,10 @@
       ]
     },
     {
-      "output_name": "q10.pdf",
+      "output_name": "q10java.pdf",
       "output_number": 10,
       "original_number": 10,
-      "detection_method": "marker_regex",
+      "detection_method": "marker_regex+language_variant_split",
       "segments": [
         {
           "page": 14,
@@ -280,8 +282,20 @@
             774.8212890625
           ],
           "pad_top_pt": 0.0,
-          "pad_bottom_pt": 0.0
-        },
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        14,
+        15
+      ]
+    },
+    {
+      "output_name": "q10.pdf",
+      "output_number": 10,
+      "original_number": 10,
+      "detection_method": "marker_regex+language_variant_split",
+      "segments": [
         {
           "page": 16,
           "rect": [
@@ -290,7 +304,7 @@
             572.5988356222318,
             748.0932770976871
           ],
-          "pad_top_pt": 0.0,
+          "pad_top_pt": 19.84251968503937,
           "pad_bottom_pt": 0.0
         },
         {
@@ -306,17 +320,15 @@
         }
       ],
       "pages_used": [
-        14,
-        15,
         16,
         17
       ]
     },
     {
-      "output_name": "q11.pdf",
+      "output_name": "q11java.pdf",
       "output_number": 11,
       "original_number": 11,
-      "detection_method": "marker_regex",
+      "detection_method": "marker_regex+language_variant_split",
       "segments": [
         {
           "page": 18,
@@ -338,8 +350,20 @@
             684.9561921367496
           ],
           "pad_top_pt": 0.0,
-          "pad_bottom_pt": 0.0
-        },
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        18,
+        19
+      ]
+    },
+    {
+      "output_name": "q11.pdf",
+      "output_number": 11,
+      "original_number": 11,
+      "detection_method": "marker_regex+language_variant_split",
+      "segments": [
         {
           "page": 20,
           "rect": [
@@ -348,7 +372,7 @@
             572.5988356222318,
             743.7625886211246
           ],
-          "pad_top_pt": 0.0,
+          "pad_top_pt": 19.84251968503937,
           "pad_bottom_pt": 0.0
         },
         {
@@ -364,17 +388,15 @@
         }
       ],
       "pages_used": [
-        18,
-        19,
         20,
         21
       ]
     },
     {
-      "output_name": "q12.pdf",
+      "output_name": "q12java.pdf",
       "output_number": 12,
       "original_number": 12,
-      "detection_method": "marker_regex",
+      "detection_method": "marker_regex+language_variant_split",
       "segments": [
         {
           "page": 22,
@@ -396,8 +418,20 @@
             513.0171967754214
           ],
           "pad_top_pt": 0.0,
-          "pad_bottom_pt": 0.0
-        },
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        22,
+        23
+      ]
+    },
+    {
+      "output_name": "q12.pdf",
+      "output_number": 12,
+      "original_number": 12,
+      "detection_method": "marker_regex+language_variant_split",
+      "segments": [
         {
           "page": 24,
           "rect": [
@@ -406,7 +440,7 @@
             572.5988356222318,
             696.8491975078433
           ],
-          "pad_top_pt": 0.0,
+          "pad_top_pt": 19.84251968503937,
           "pad_bottom_pt": 0.0
         },
         {
@@ -422,8 +456,6 @@
         }
       ],
       "pages_used": [
-        22,
-        23,
         24,
         25
       ]
