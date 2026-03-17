@@ -122,10 +122,10 @@ navbar-links:
     - מעקב אריאל על דיתה: "https://www.youtube.com/watch?v=gqc_WCIRO5I&list=PLNLf5_3sUeLzoAqJKLTKM_BgSqq-DaUS5&index=15"
   
   - תרגול אינטרקטיבי:
-    - 3.1 אינטראקטיבי מעורב: "oop/03questionnaireCore"
-    - 3.2 ממוקד בגרות 2022/17: "oop/02questionnaire2022q17"
-    - 3.3 אינטראקטיבי מתקדם: "oop/03questionnaireAdv"
-    - 3.4 אינטראקטיבי JAVA: "https://gemini.google.com/share/cc9b583ee06b"
+    - אינטראקטיבי מעורב: "/interactive/02questionnairePolymCore"
+    - ממוקד בגרות 2022/17: "/interactive/02questionnaire2022q17"
+    - אינטראקטיבי מתקדם: "/interactive/02questionnairePolymAdv"
+    - אינטראקטיבי JAVA: "https://gemini.google.com/share/cc9b583ee06b"
 
   - בגרויות תמ"ע: "/bagruyot/IndexQuestionsByTopicOOP/"
   - בגרויות מבני נתונים: "/bagruyot/index/"
