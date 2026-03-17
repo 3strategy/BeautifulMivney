@@ -737,6 +737,20 @@ pre code span.c1 {
 }
 .two-columns .column {
   flex: 1;
+  min-width: 0;
+}
+
+.questionnaire-source-layout {
+  align-items: flex-start;
+}
+
+.questionnaire-source-viewer {
+  display: block;
+  width: 100%;
+  height: clamp(480px, 92vh, 1200px);
+  border: 1px solid var(--navbar-border-col);
+  border-radius: 12px;
+  background: #fff;
 }
 
 /* highligting with the ruby custom plugin */

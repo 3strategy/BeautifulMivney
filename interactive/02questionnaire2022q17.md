@@ -1,24 +1,14 @@
 ---
 layout: page
 title: שאלון - בגרות 2022 שאלה 17
+share-description: שאלון אינטראקטיבי על בגרות 2022 שאלה 17 עם השאלה המקורית והתרגול זה לצד זה.
+full-width: true
 tags: [פולימורפיזם, שאלון, אינטראקטיבי, bagrut, 2022, IsSame, Mammal, Antelope, Beaver]
 mathjax: true
 lang: he
 ---
 
 <!-- interactive -->
-
-{: .box-note}
-השאלון הזה מבוסס על [בגרות 2022 שאלה 17 - `Mammal / Antelope / Beaver`](https://יסודות.שלי.com/bagruyot/2022.6.381/full.pdf#page=30).
-
-בכל השאלות מניחים שכבר הופיעו השורות הבאות:
-
-```csharp
-Antelope a1 = new Antelope(10);
-Object a2 = new Antelope(10);
-Beaver b1 = new Beaver(10);
-Mammal b2 = new Beaver(10);
-```
 
 <style>
 #quiz-root .quiz-answers-grid {
@@ -45,11 +35,49 @@ Mammal b2 = new Beaver(10);
 }
 </style>
 
+<!-- In the site's RTL layout, the first column renders on the right and the second on the left. -->
+<div class="two-columns questionnaire-source-layout">
+  <div markdown="1" class="column">
+
+{: .box-note}
+השאלון הזה מבוסס על `Mammal / Antelope / Beaver`.
+מומלץ לקרוא משמאל את השאלה המקורית ואז לענות כאן.
+
+בכל השאלות מניחים שכבר הופיעו השורות הבאות:
+
+```csharp
+Antelope a1 = new Antelope(10);
+Object a2 = new Antelope(10);
+Beaver b1 = new Beaver(10);
+Mammal b2 = new Beaver(10);
+```
+
+<div id="quiz-root"></div>
+
+  </div>
+
+  <div markdown="1" class="column">
+
+{: .box-note}
+משמאל מופיעה השאלה המקורית מתוך [בגרות 2022/381, עמוד 30]({{ '/bagruyot/2022.6.381.pdf' | relative_url }}#page=30).
+
+<object
+  class="questionnaire-source-viewer"
+  data="{{ '/bagruyot/2022.6.381.pdf' | relative_url }}#page=30&zoom=page-width&pagemode=none"
+  type="application/pdf"
+  aria-label="בגרות 2022 שאלה 17">
+  <p>
+    אם ה-PDF לא נטען בתוך הדף, פתחו את
+    <a href="{{ '/bagruyot/2022.6.381.pdf' | relative_url }}#page=30" target="_blank" rel="noopener">בגרות 2022/381 עמוד 30</a>.
+  </p>
+</object>
+
+  </div>
+</div>
+
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-
-<div id="quiz-root"></div>
 
 <script>
 window.QUIZ_QUESTIONS = [

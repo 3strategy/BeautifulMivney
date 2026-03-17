@@ -97,6 +97,45 @@
   3. Apply and validate on `TicTacMenu` with controlled commit phases.
   4. Keep terminology consistent across BeautifulMivney and BeautifulYesodot when lessons are parallel.
 
+## Questionnaire location convention
+
+- Interactive questionnaires in BeautifulMivney now live under:
+  - `/home/stra/repos/BeautifulMivney/interactive`
+- When creating new questionnaire pages, prefer `interactive/*.md` rather than placing them under `oop/`.
+- Keep `_config.yml` menu links for questionnaires pointed at `/interactive/...`.
+- Pages under `interactive/` use the repo's wide-page mode (`full-width: true`) by default so questionnaires can use most of the screen width without presentation scaling.
+- If a specific interactive page should go back to normal centered width, override it in front matter with `full-width: false`.
+- For safety on pages that must stay wide even if moved later, it is fine to also set `full-width: true` explicitly in the page front matter.
+- For bagrut-based questionnaires, prefer linking directly to the relevant local PDF/page so students can inspect the given source material.
+- When the source question and the interactive quiz should be visible together, use the `two-columns` pattern with the PDF/source on the left and the quiz on the right.
+- Important in this repo's RTL layout: inside `two-columns`, the first child renders on the right and the second child renders on the left.
+- Therefore, for `quiz right / PDF left`, place the quiz as the first column and the PDF/source as the second column.
+- Reusable questionnaire pattern:
+
+```html
+<div class="two-columns questionnaire-source-layout">
+<div markdown="1" class="column">
+
+{: .box-note}
+...interactive questionnaire...
+</div>
+<div markdown="1" class="column">
+
+{: .box-note}
+מקור השאלה:
+[PDF]({{ '/bagruyot/example.pdf' | relative_url }}#page=1)
+
+<object
+  class="questionnaire-source-viewer"
+  data="{{ '/bagruyot/example.pdf' | relative_url }}#page=1"
+  type="application/pdf">
+  <p><a href="{{ '/bagruyot/example.pdf' | relative_url }}#page=1">פתחו את ה-PDF</a></p>
+</object>
+
+</div>
+</div>
+```
+
 ## Tutorial language/style convention
 
 - Default language direction for this repo should lean Hebrew unless explicitly decided otherwise for a specific page.
