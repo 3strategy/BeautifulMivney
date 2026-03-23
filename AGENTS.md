@@ -173,6 +173,16 @@
 ## Tutorial language/style convention
 
 - Default language direction for this repo should lean Hebrew unless explicitly decided otherwise for a specific page.
+- For Hebrew lettered sub-question lists, prefer a real ordered list with `{: .alefbet}` and ordinary Markdown numbering (`1.`, `2.`, `3.`) rather than hand-writing `א.`, `ב.`, `ג.` as separate `{: .subq}` paragraphs.
+- Reusable pattern:
+
+```md
+{: .alefbet}
+1. ...
+2. ...
+3. ...
+```
+
 - For English markdown tutorials, add this block near the top (after frontmatter and initial note):
 
 ```html
