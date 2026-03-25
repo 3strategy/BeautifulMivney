@@ -115,6 +115,9 @@
 - Prefer embedding the canonical split-question URL/path directly in the questionnaire page instead of duplicating the split PDFs across repos.
 - Rationale: keep a single source of truth for split questions so fixes/improvements accumulate in one place over time and questionnaires do not drift from the maintained split source.
 - For bagrut-based questionnaires, keep the source question directly visible/linked so students can inspect the original material beside the quiz.
+- Prefer embedding the source via the hosted PDF.js `viewer2.html` inside an `<object>` rather than pointing the `<object>` directly at the PDF.
+- Use the viewer URL pattern `https://יסודות.שלי.com/assets/pdfjs/web/viewer2.html?file=<encoded-pdf-url>` with the PDF URL percent-encoded for the `file` query parameter.
+- In that pattern, the `<object>` should use `type="text/html"` and the fallback content should include both a direct `viewer2` link and a direct PDF link.
 - When the source question and the interactive quiz should be visible together, use the `two-columns` pattern with the PDF/source on the left and the quiz on the right.
 - Important in this repo's RTL layout: inside `two-columns`, the first child renders on the right and the second child renders on the left.
 - Therefore, for `quiz right / PDF left`, place the quiz as the first column and the PDF/source as the second column.
@@ -161,9 +164,14 @@
 
 <object
   class="questionnaire-source-viewer"
-  data="{{ '/bagruyot/example.pdf' | relative_url }}#page=1"
-  type="application/pdf">
-  <p><a href="{{ '/bagruyot/example.pdf' | relative_url }}#page=1">פתחו את ה-PDF</a></p>
+  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2Fexample.pdf"
+  type="text/html">
+  <p>
+    אם התצוגה לא נטענת בתוך הדף, פתחו את
+    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2Fexample.pdf" target="_blank" rel="noopener">viewer2</a>
+    או את
+    <a href="{{ '/bagruyot/example.pdf' | relative_url }}">ה-PDF</a>.
+  </p>
 </object>
 
 </div>

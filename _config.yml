@@ -37,6 +37,9 @@ navbar-links:
     - אתר מפמ"ר: "https://pop.education.gov.il/tchumey_daat/computer-science-software-engineering-cyber/high-school/pedagogy-of/high-school-software-cyber-engineering/"
     - ספר פרוייקט: "https://meyda.education.gov.il/files/CSIT/Smartphones-Project.pdf"
     - מחוון פרוייקט: "https://meyda.education.gov.il/files/CSIT/smartphonesProject-5.pdf"
+    - חוקי מענה - הקלות שאגת הארי: "https://meyda.education.gov.il/files/portal_talmidim/maane_2026/computer_2026.pdf"
+    - מיקוד תשפ"ו: "https://meyda.education.gov.il/files/portal_talmidim/mikud/2026/computers.pdf"
+
   פתיחת שנה: 
     - 0. פתיחת שנה: "/mivney/0minhalot/0YearOpening"
     - 0.1 עבודה בקמפוס: "/mivney/0minhalot/ChapterCampus"
@@ -114,6 +117,7 @@ navbar-links:
     - 2.4 עץ החלטה + מבגרות 25: "/oop/02Polymorphism2Bag25"
     - 2.5 מתי נקבע הטיפוס: "/oop/02Polymorphism3"
     - 2.6 מה קורה עם ToString?: "/oop/02Polymorphism4CwToString"
+    - 2.7 סוגי שגיאות - שירה ב: "/oop/error.types.shira.bakal.pptx"
     - 2. פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
     - 2.8 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11B-polymorphism/index.html"
     - פתרון מבחן 26.1.26: "/mivney/7testSols/tstxSol260126/"

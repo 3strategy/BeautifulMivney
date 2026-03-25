@@ -69,11 +69,13 @@ t.Add(s1);
 
 <object
   class="questionnaire-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2019.6.381/q16.pdf"
-  type="application/pdf"
+  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2019.6.381%2Fq16.pdf"
+  type="text/html"
   aria-label="בגרות 2019 קיץ שאלה 16">
   <p>
-    אם ה-PDF לא נטען בתוך הדף, פתחו את
+    אם התצוגה לא נטענת בתוך הדף, פתחו את
+    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2019.6.381%2Fq16.pdf" target="_blank" rel="noopener">viewer2</a>
+    או את
     <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2019.6.381/q16.pdf" target="_blank" rel="noopener">q16.pdf</a>.
   </p>
 </object>
