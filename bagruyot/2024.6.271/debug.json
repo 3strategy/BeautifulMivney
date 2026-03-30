@@ -89,9 +89,28 @@
   },
   "noise_patterns": {
     "directive_count": 19,
-    "footer_count": 9,
+    "footer_count": 13,
     "header_count": 2
   },
+  "mixed_language_questions": {
+    "3": [
+      {
+        "page": 5,
+        "y0": 99.64125061035156,
+        "y1": 120.02925109863281,
+        "text": "Java  לפותרים בשפת"
+      },
+      {
+        "page": 6,
+        "y0": 80.90821838378906,
+        "y1": 99.59722137451172,
+        "text": "C#  לפותרים בשפת"
+      }
+    ]
+  },
+  "applied_language_variant_questions": [
+    3
+  ],
   "markers": [
     {
       "page": 2,

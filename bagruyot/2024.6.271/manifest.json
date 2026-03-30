@@ -2,11 +2,13 @@
   "source_pdf": "\\\\wsl.localhost\\Ubuntu\\home\\stra\\repos\\BeautifulMivney\\bagruyot\\2024.6.271\\full.pdf",
   "source_hash_sha256": "817b05adc157b2f71b94e9037e29bbffe38d84d19ae8752faa9f92d0fc09c82d",
   "tool_version": "0.1.0",
-  "question_count": 17,
+  "question_count": 18,
   "detected_marker_count": 17,
   "warnings": [
     "auto marker strategy used: auto_retry_multi_markers",
-    "manual_splits_mode=merge overrides applied"
+    "manual_splits_mode=merge overrides applied",
+    "mixed language variants detected in questions: 3",
+    "language variant splits applied to questions: 3"
   ],
   "questions": [
     {
@@ -66,10 +68,10 @@
       ]
     },
     {
-      "output_name": "q3.pdf",
+      "output_name": "q3java.pdf",
       "output_number": 3,
       "original_number": 3,
-      "detection_method": "marker_regex",
+      "detection_method": "marker_regex+language_variant_split",
       "segments": [
         {
           "page": 5,
@@ -80,8 +82,19 @@
             771.8491975078433
           ],
           "pad_top_pt": 19.84251968503937,
-          "pad_bottom_pt": 0.0
-        },
+          "pad_bottom_pt": 19.84251968503937
+        }
+      ],
+      "pages_used": [
+        5
+      ]
+    },
+    {
+      "output_name": "q3.pdf",
+      "output_number": 3,
+      "original_number": 3,
+      "detection_method": "marker_regex+language_variant_split",
+      "segments": [
         {
           "page": 6,
           "rect": [
@@ -90,12 +103,11 @@
             572.5988356222318,
             778.8491975078433
           ],
-          "pad_top_pt": 0.0,
+          "pad_top_pt": 19.84251968503937,
           "pad_bottom_pt": 19.84251968503937
         }
       ],
       "pages_used": [
-        5,
         6
       ]
     },
