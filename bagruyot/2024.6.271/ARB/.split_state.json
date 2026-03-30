@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "updated_at": "2026-03-30T04:55:07+00:00",
+  "config_hash": "fbc253088e045212aa0e510cecacc84fbaaaae8a6116b9b6505741478de8808c",
+  "files": [
+    "full.pdf"
+  ],
+  "processed": {
+    "full.pdf": {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\stra\\repos\\BeautifulMivney\\bagruyot\\2024.6.271\\ARB\\full.pdf",
+      "source_hash_sha256": "580cbe18e4f764d1185548458f26faf18e474b4dcaeec1fa7e8996f7adf37e1f",
+      "question_count": 18,
+      "detected_marker_count": 17,
+      "warnings": [
+        "auto marker strategy used: auto_retry_multi_markers",
+        "manual_splits_mode=merge overrides applied",
+        "mixed language variants detected in questions: 3",
+        "language variant splits applied to questions: 3"
+      ],
+      "processed_at": "2026-03-30T04:55:07+00:00"
+    }
+  }
+}
