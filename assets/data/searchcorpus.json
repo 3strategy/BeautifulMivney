@@ -3,6 +3,7 @@ layout: null
 ---
 [
 {% assign first_search_item = true %}
+{% assign menu_asset_exts = '|pdf|doc|docx|ppt|pptx|' %}
 
 {% for post in site.posts %}
   {% unless first_search_item %},{% endunless %}
@@ -49,6 +50,73 @@ layout: null
         {% assign first_search_item = false %}
       {% endfor %}
     {% endfor %}
+  {% elsif top_item.first %}
+    {% for childlink in top_item %}
+      {% for linkparts in childlink %}
+        {% assign child_text = linkparts[0] %}
+        {% assign child_item = linkparts[1] %}
+        {% if child_item.first %}
+          {% for subchild in child_item %}
+            {% for subparts in subchild %}
+              {% assign sub_text = subparts[0] %}
+              {% assign sub_item = subparts[1] | strip %}
+              {% assign sub_path = sub_item | split: '#' | first | split: '?' | first | downcase %}
+              {% assign sub_ext = sub_path | split: '.' | last %}
+              {% assign sub_ext_marker = '|' | append: sub_ext | append: '|' %}
+              {% unless sub_item contains '://' or sub_item contains 'javascript:' or sub_item contains 'mailto:' or sub_item contains 'tel:' %}
+                {% if sub_path contains '.' and menu_asset_exts contains sub_ext_marker %}
+                  {% unless first_search_item %},{% endunless %}
+                  {
+                    "title"    : "{{ sub_text | strip_html | escape }}",
+                    "desc"     : "קובץ מתפריט {{ top_text | strip_html | escape }} / {{ child_text | strip_html | escape }}: {{ sub_text | strip_html | escape }}",
+                    "category" : "{{ top_text | strip_html | escape }}, {{ child_text | strip_html | escape }}, קישור קובץ, {{ sub_ext }}",
+                    "url"      : "{{ sub_item | relative_url | escape }}",
+                    "date"     : "January 1, 1970"
+                  }
+                  {% assign first_search_item = false %}
+                {% endif %}
+              {% endunless %}
+            {% endfor %}
+          {% endfor %}
+        {% else %}
+          {% assign child_item_path = child_item | strip | split: '#' | first | split: '?' | first | downcase %}
+          {% assign child_ext = child_item_path | split: '.' | last %}
+          {% assign child_ext_marker = '|' | append: child_ext | append: '|' %}
+          {% assign normalized_child_item = child_item | strip %}
+          {% unless normalized_child_item contains '://' or normalized_child_item contains 'javascript:' or normalized_child_item contains 'mailto:' or normalized_child_item contains 'tel:' %}
+            {% if child_item_path contains '.' and menu_asset_exts contains child_ext_marker %}
+              {% unless first_search_item %},{% endunless %}
+              {
+                "title"    : "{{ child_text | strip_html | escape }}",
+                "desc"     : "קובץ מתפריט {{ top_text | strip_html | escape }}: {{ child_text | strip_html | escape }}",
+                "category" : "{{ top_text | strip_html | escape }}, קישור קובץ, {{ child_ext }}",
+                "url"      : "{{ normalized_child_item | relative_url | escape }}",
+                "date"     : "January 1, 1970"
+              }
+              {% assign first_search_item = false %}
+            {% endif %}
+          {% endunless %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% else %}
+    {% assign top_item_path = top_item | strip | split: '#' | first | split: '?' | first | downcase %}
+    {% assign top_ext = top_item_path | split: '.' | last %}
+    {% assign top_ext_marker = '|' | append: top_ext | append: '|' %}
+    {% assign normalized_top_item = top_item | strip %}
+    {% unless normalized_top_item contains '://' or normalized_top_item contains 'javascript:' or normalized_top_item contains 'mailto:' or normalized_top_item contains 'tel:' %}
+      {% if top_item_path contains '.' and menu_asset_exts contains top_ext_marker %}
+        {% unless first_search_item %},{% endunless %}
+        {
+          "title"    : "{{ top_text | strip_html | escape }}",
+          "desc"     : "קובץ מתפריט: {{ top_text | strip_html | escape }}",
+          "category" : "קישור קובץ, {{ top_ext }}",
+          "url"      : "{{ normalized_top_item | relative_url | escape }}",
+          "date"     : "January 1, 1970"
+        }
+        {% assign first_search_item = false %}
+      {% endif %}
+    {% endunless %}
   {% endif %}
 {% endfor %}
 ]
