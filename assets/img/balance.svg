@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="473" height="255" viewBox="0 0 473 255">
+  <defs>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0.6" result="blur"/>
+      <feOffset dx="0" dy="0.5" result="off"/>
+      <feMerge>
+        <feMergeNode in="off"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="tray" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e7e7e7"/>
+      <stop offset="100%" stop-color="#cfcfcf"/>
+    </linearGradient>
+  </defs>
+
+
+
+  <!-- base, moved a bit right -->
+  <path d="M185 214 L302 214 L294 198 L198 198 Z" fill="#2f3537" filter="url(#soft)"/>
+
+  <!-- support -->
+  <rect x="229" y="144" width="28" height="60" rx="12" fill="#4e5658"/>
+
+  <!-- pivot circles, moved lower -->
+  <circle cx="243" cy="185" r="13" fill="#6e7476"/>
+
+
+  <!-- beam, shortened on right side -->
+  <line x1="109" y1="167" x2="377" y2="206" stroke="#33383b" stroke-width="5" stroke-linecap="round"/>
+    <!-- red circle -->
+  <circle cx="243" cy="185" r="7.3" fill="#d96b5f"/>
+  <!-- left hanger -->
+  <line x1="108" y1="166" x2="108" y2="104" stroke="#33383b" stroke-width="4" stroke-linecap="round"/>
+
+  <circle cx="108" cy="166" r="8" fill="#33383b"/>
+
+  <!-- right hanger, moved a bit right -->
+  <line x1="377" y1="206" x2="377" y2="134" stroke="#33383b" stroke-width="4" stroke-linecap="round"/>
+
+  <circle cx="377" cy="206" r="8" fill="#33383b"/>
+
+  <!-- left tray -->
+  <g filter="url(#soft)">
+    <path d="M14 98 L203 98 L192 107 L25 107 Z" fill="url(#tray)"/>
+    <path d="M25 107 L192 107 L183 112 L34 112 Z" fill="#b8b8b8" opacity="0.9"/>
+  </g>
+
+  <!-- right tray, moved a bit right -->
+  <g filter="url(#soft)">
+    <path d="M284 129 L469 129 L458 138 L295 138 Z" fill="url(#tray)"/>
+    <path d="M295 138 L458 138 L449 143 L304 143 Z" fill="#b8b8b8" opacity="0.9"/>
+  </g>
+</svg>

@@ -1,14 +1,22 @@
 # _plugins/highlight.rb
 module HighlightEquals
   FENCE_RE = /^(\s{0,3})(`{3,}|~{3,})/
+  RAW_BLOCK_TAGS = %w[script style].freeze
 
   def self.process(content)
     in_fence = false
     fence_char = nil
     fence_len = 0
+    in_raw_block = nil
     out_lines = []
 
     content.each_line do |line|
+      if in_raw_block
+        out_lines << line
+        in_raw_block = nil if closes_raw_block?(line, in_raw_block)
+        next
+      end
+
       if (match = line.match(FENCE_RE))
         fence = match[2]
         if in_fence
@@ -29,10 +37,24 @@ module HighlightEquals
         next
       end
 
+      if (tag = opens_raw_block?(line))
+        out_lines << line
+        in_raw_block = tag unless closes_raw_block?(line, tag)
+        next
+      end
+
       out_lines << highlight_outside_inline_code(line)
     end
 
     out_lines.join
+  end
+
+  def self.opens_raw_block?(line)
+    RAW_BLOCK_TAGS.find { |tag| line.match?(%r{<#{tag}\b}i) }
+  end
+
+  def self.closes_raw_block?(line, tag)
+    line.match?(%r{</#{tag}\s*>}i)
   end
 
   def self.highlight_outside_inline_code(line)
