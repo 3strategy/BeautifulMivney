@@ -63,8 +63,11 @@ flowchart TB
   A((6)) --> B((4))
   A --> C((4))
   B --> D((2)):::leaf
+  B --- NB[ ]:::invisible
   C --> F((5)):::leaf
   C --> G((2)):::leaf
+  
+  linkStyle 3 stroke-opacity:0
 ```
 
 ## 6a5.3 IsBalanced {#id6a5.3}
@@ -82,6 +85,9 @@ flowchart TB
   B --> D((3)):::leaf
   B --> E((8)):::leaf
   C --> F((12)):::leaf
+  C --- NC[ ]:::invisible
+  
+  linkStyle 5 stroke-opacity:0
 ```
 
 העץ הבא אינו מאוזן:
@@ -89,8 +95,13 @@ flowchart TB
 ```mermaid
 flowchart TB
   A((10)) --> B((6))
+  A --- NA[ ]:::invisible
   B --> C((3))
+  B --- NB[ ]:::invisible
   C --> D((1)):::leaf
+  C --- NC[ ]:::invisible
+  
+  linkStyle 1,3,5 stroke-opacity:0
 ```
 
 ## 6a5.4 HasChildrenSumProperty {#id6a5.4}
@@ -106,8 +117,11 @@ flowchart TB
   A((10)) --> B((4))
   A --> C((6))
   B --> D((4)):::leaf
+  B --- NB[ ]:::invisible
   C --> E((2)):::leaf
   C --> F((4)):::leaf
+  
+  linkStyle 3 stroke-opacity:0
 ```
 
 העץ הבא אינו מקיים את התכונה:
@@ -117,8 +131,11 @@ flowchart TB
   A((10)) --> B((4))
   A --> C((5))
   B --> D((4)):::leaf
+  B --- NB[ ]:::invisible
   C --> E((2)):::leaf
   C --> F((4)):::leaf
+  
+  linkStyle 3 stroke-opacity:0
 ```
 
 ## 6a5.5 NodesAtDistanceK {#id6a5.5}
