@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "ex6a5 עצים בינאריים BinNode⟨T⟩"
+title: "ex6a5 עצים בינאריים מתקדם"
 subtitle: "עצים בינאריים: BinNode⟨T⟩ תרגול 6a5"
 tags: []
 courseName: "מבני נתונים"
