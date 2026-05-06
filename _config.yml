@@ -41,7 +41,8 @@ navbar-links:
     - מחוון פרוייקט: "https://meyda.education.gov.il/files/CSIT/smartphonesProject-5.pdf"
     - חוקי מענה - הקלות שאגת הארי: "https://meyda.education.gov.il/files/portal_talmidim/maane_2026/computer_2026.pdf"
     - מיקוד תשפ"ו: "https://meyda.education.gov.il/files/portal_talmidim/mikud/2026/computers.pdf"
-
+    - שאלון מותאם: "https://meyda.education.gov.il/files/CSIT/AdaptedExams-31-07-22.pdf"
+    
   פתיחת שנה: 
     - 0. פתיחת שנה: "/mivney/0minhalot/0YearOpening"
     - 0.1 עבודה בקמפוס: "/mivney/0minhalot/ChapterCampus"
@@ -92,7 +93,9 @@ navbar-links:
     - 6.4 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS06-trees/index.html"
   #  - תרגול: "/mivney/6binnode/Links"
 
+  סיכום פעולות:
     
+
   תמ"ע:
 
 
