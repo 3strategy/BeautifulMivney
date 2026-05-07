@@ -93,7 +93,9 @@ navbar-links:
     - 6.4 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS06-trees/index.html"
   #  - תרגול: "/mivney/6binnode/Links"
 
-  סיכום פעולות:
+  סיכום:
+    - סיכום פעולות: "mivney/8summary/unit4-methods"
+    - תבניות, פעולות עזר גיא אלרם: mivney/8summary/PeulotEzerGuyElram.pdf
     
 
   תמ"ע:
