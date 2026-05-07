@@ -519,6 +519,8 @@ td:has(i), th:has(i) {
 .table-rl td:nth-child(2),
 .table-rl th:nth-child(2) {
   text-align: left;
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 /* eh: English, Hebrew (opposite of table-rl) */
@@ -677,6 +679,8 @@ code {
     color: var(--code-col) !important;
     font-size: 110%;
     background-color: var(--codeback-col) !important;
+    direction: ltr;
+    unicode-bidi: isolate;
 }
 
 /* JavaScript Code formatting */
