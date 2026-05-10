@@ -332,6 +332,19 @@ body {
   }
 }
 
+/* --- Desktop navbar: compact long menus without changing the breakpoint --- */
+@media (min-width: 1200px) {
+  .navbar-custom .navbar-nav .nav-item {
+    font-size: 0.68rem;
+    letter-spacing: 0;
+  }
+
+  .navbar-expand-xl .navbar-nav .nav-link {
+    padding-left: 0.42rem;
+    padding-right: 0.42rem;
+  }
+}
+
 ul, ol {
     display: flex;
     flex-direction: column;
