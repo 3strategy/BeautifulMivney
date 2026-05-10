@@ -201,6 +201,19 @@ navbar-links:
     - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
 
   א מתקדם:
+  - Agentic Engineering:
+    - 00 פתיחה למורים: "/agentic/00-opener"
+    # - 01 Online מול Agentic: "/agentic/01-online-vs-agentic"
+    # - 02 Git ו-GitHub: "/agentic/02-git-github"
+    # - 03 AGENTS ו-Markdown: "/agentic/03-specifications-markdown"
+    - 04 Google Sheets ו-clasp: "/agentic/04-apps-script-clasp-sheets"
+    # - 05 Hosting: "/agentic/05-hosting"
+    # - 06 TDD ובדיקות: "/agentic/06-tdd-long-running-agents"
+    # - 07 Playwright ודפדפן Codex: "/agentic/07-playwright-browser"
+    # - 08 Firebase מפרומפט ראשון: "/agentic/08-firebase-first-prompt"
+    # - 09 התראות PushBullet: "/agentic/09-notifications-pushbullet"
+    - 10 סדנה ושאלון: "/agentic/10-workshop-quiz"
+    
   - תקשורת ונתונים:
     - 08 Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
     - 181 חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
