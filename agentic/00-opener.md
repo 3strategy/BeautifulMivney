@@ -97,10 +97,7 @@ Harness הוא הרתמה שמחזיקה את ה־agent בתוך מסלול עב
 
 <div class="two-columns">
 
-<div markdown="1" class="column">
-![alt text](assets/img/agentic00/image.png)
-</div>
-<div class="column, box-note" markdown="1">
+<div class="col-md-10 box-note" markdown="1">
 כתוב 5-12 עמודי markdown kramdown תחת תיקיה agentic, שמטרתם ללמד מורים את הנושא Agentic Engineering / Harness Engineering. 
 ראשית עמוד - ברמה תחילית לחשיפה ראשונה במשך 30 דקות. 
 ושאר העמודים תוך מיקוד על תתי נושאים. 
@@ -146,19 +143,34 @@ Sub-topics (so many things I need to teach):
 mermaid,  ושאר יכולות שכבר יש באתר כגון שאלונים אינטרקטיביים.
 
 </div>
+<div class="col-md-2" markdown="1">
+![צילום מסך של פרומפט לדוגמה]({{ '/assets/img/agentic00/image.png' | relative_url }})
+</div>
 
 </div>
 
 ## שאלת יציאה
 
-```text
+
 איזה חלק בעבודה עם agent הוא הכי מסוכן בכיתה?
-א. כתיבת קוד
-ב. מחיקת קבצים
-ג. קבלת תשובה בלי בדיקה
-ד. שימוש ב-Markdown
-```
+
+{: .alefbet}
+
+1. כתיבת קוד
+1. מחיקת קבצים
+1. קבלת תשובה בלי בדיקה
+1. שימוש ב-Markdown
+
 
 התשובה הרצויה היא **ג**. הבעיה אינה שה־agent כותב קוד. הבעיה היא שמקבלים תוצר בלי מסלול בדיקה, בלי Git, ובלי הגדרת אחריות.
+## על מה נדבר בסדנה
 
-
+- Online מול Agentic - מה ההבדל בין שיחה עם מודל לבין עבודה עם agent בתוך פרויקט אמיתי.
+- Git ו-GitHub - איך שומרים נקודות חזרה, בודקים שינויים, ומלמדים עבודה אחראית עם קוד.
+- AGENTS ו-Markdown - איך כותבים הוראות עבודה, מסמכי משימה ותיעוד שה-agent מסוגל לבצע לפיהם.
+- Google Sheets ו-clasp - איך מחברים עבודה agentic לכלי בית ספר מוכרים כמו Sheets ו-Apps Script.
+- Hosting - איך מעלים תוצר לרשת ומבינים את ההבדל בין קוד מקומי לשירות חי.
+- TDD ובדיקות - איך נותנים ל-agent לרוץ יותר זמן בלי לאבד שליטה: בדיקות, build וקריטריוני סיום.
+- Playwright ודפדפן Codex - איך בודקים ממשק בדפדפן ומקבלים ראיות ויזואליות שהתוצר עובד.
+- Firebase מפרומפט ראשון - איך ניגשים לשירותי backend בלי להפוך את הפרומפט לקסם לא מבוקר.
+- התראות PushBullet - איך מקבלים סימן כשה-agent סיים, במיוחד במשימות ארוכות.

@@ -212,7 +212,7 @@ navbar-links:
     # - 07 Playwright ודפדפן Codex: "/agentic/07-playwright-browser"
     # - 08 Firebase מפרומפט ראשון: "/agentic/08-firebase-first-prompt"
     # - 09 התראות PushBullet: "/agentic/09-notifications-pushbullet"
-    - 10 סדנה ושאלון: "/agentic/10-workshop-quiz"
+    - 10 שאלון עירנות: "/agentic/10-workshop-quiz"
     
   - תקשורת ונתונים:
     - 08 Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
