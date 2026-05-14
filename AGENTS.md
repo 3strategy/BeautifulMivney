@@ -1,5 +1,11 @@
 # AGENTS Context Map
 
+## Quick WSL locations
+
+- BeautifulMivney: `/home/stra/repos/BeautifulMivney`
+- BeautifulYesodot: `/home/stra/repos/BeautifulYesodot`
+- mathBeautifulFork: `/home/stra/sites/mathBeautifulFork`
+
 ## Current project
 
 - Repo (WSL): `/home/stra/repos/BeautifulMivney`

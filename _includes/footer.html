@@ -17,14 +17,12 @@
       {% endif %}
       {{ site.time | date: '%Y' }}
 
-      {% if site.url-pretty %}
+      &nbsp;&bull;&nbsp;
+      <span class="author-site">
+        <a href="https://xn--8dbhdsa0dr.com/">מתמטיקה.com</a>
         &nbsp;&bull;&nbsp;
-        <span class="author-site">
-          <a href="{% if site.url-canonical %}{{ site.url-canonical }}{% else %}{{ '/' | absolute_url }}{% endif %}">{{ site.url-pretty }}</a>
-          &nbsp;&bull;&nbsp;
-          <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com">מתמטיקה.com</a>
-        </span>
-      {% endif %}
+        <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/">יסודות.שלי.com</a>
+      </span>
 
       {% if site.matomo %}
         {% if site.matomo.opt-out %}
