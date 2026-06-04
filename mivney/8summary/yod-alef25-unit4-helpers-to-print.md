@@ -7,6 +7,37 @@ lang: he
 ---
 
 
+<style>
+.externalpdf-source-viewer {
+  display: none !important;
+}
+.print-question-source {
+  direction: rtl;
+  text-align: right;
+  border: 1px solid #ddd;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0 1rem;
+  background: #fff;
+}
+.print-pdf-source {
+  direction: rtl;
+  text-align: right;
+  font-size: 0.9rem;
+  margin: 0.25rem 0 0.75rem;
+}
+@media print {
+  .externalpdf-source-viewer {
+    display: none !important;
+  }
+  .print-question-source {
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+}
+</style>
+
+
+
 
 ```csharp
 // Assumptions for the A helpers:
@@ -382,20 +413,10 @@ Selected tasks: 47
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 740px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq1.pdf"
-  type="text/html"
-  aria-label="בגרות 2023 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq1.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q1.pdf" target="_blank" rel="noopener">q1.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q1.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                        פרק ראשון 
                      “איבר קסם" הוא איבר בתור של מספרים שערכו שווה לסכום הערכים של האיבר שלפניו והאיבר שאחריו .           .1  
                                                     הערה  : המספר הראשון בתור והמספר האחרון בתור אינם "איברי קסם" .  
@@ -428,7 +449,7 @@ Selected tasks: 47
                                    עבור   n = 3 הפעולה תחזיר   false מכיוון שהאיבר במקום ה־   3 אינו “איבר קסם" .  
 
   / המשך בעמוד  /3  
-</details>
+</div>
 
 #### School Solution
 
@@ -517,20 +538,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 740px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq2.pdf"
-  type="text/html"
-  aria-label="בגרות 2023 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq2.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q2.pdf" target="_blank" rel="noopener">q2.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q2.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                                    נתונה המחלקה    – Patient חולה בחדר מיון  , ולה שתי תכונות :                .2  
                                                                                       – id מספר הזהות של החולה  , מטיפוס שלם            • 
       – priority רמת הדחיפות של הטיפול בחולה  . רמת הדחיפות מיוצגת במספר מטיפוס שלם בין     1 ל־   . 10 ככל שהמספר                          • 
@@ -588,7 +599,7 @@ public class Solution
  הפעולה תעדכן את התכונה     priority של החולה ותמקם אותו בתור לטיפול במקום המתאים לו (בהתאם לרמת הדחיפות 
    המעודכנת –   .)pri אם בתור כבר יש חולים אחרים באותה רמת דחיפות –   , pri החולה הנוכחי –    id יוצב אחריהם כאילו 
                                                                                     הגיע אחריהם לחדר המיון .  
-</details>
+</div>
 
 #### School Solution
 
@@ -700,20 +711,10 @@ public class PriorQueue
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 640px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq4.pdf"
-  type="text/html"
-  aria-label="בגרות 2023 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq4.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q4.pdf" target="_blank" rel="noopener">q4.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q4.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                      נתונה המחלקה    – BusStation תחנת אוטובוס  , ולה שלוש תכונות :           .4  
                                                                                – num מספר התחנה  , מטיפוס שלם          • 
       – arr מערך מטיפוס שלם בגודל    , 10 המכיל את מספרי קווי האוטובוס שעוצרים בתחנה  . בתחנה עוצרים עד   10 קווים ,         • 
@@ -733,7 +734,7 @@ public class PriorQueue
      הפעולה מחזירה שרשרת חוליות מטיפוס שלם שבכל חוליה מופיע אחד ממספרי הקווים שעוצרים בכל התחנות בעיר 
                                                                     (כל קו כזה יופיע פעם אחת בלבד בשרשרת) .  
                                                                      הערה  : אין חשיבות לסדר הקווים בשרשרת .  
-</details>
+</div>
 
 #### School Solution
 
@@ -860,20 +861,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 940px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq5.pdf"
-  type="text/html"
-  aria-label="בגרות 2023 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
        “תת־סדרה נגדית" היא רצף של מספרים המתחיל במספר כלשהו ומסתיים במספר הנגדי והשווה לו בערך המוחלט שלהם                   .5  
           (כלומר מתחיל במספר חיובי ומסתיים במספר השלילי המקביל לו או מתחיל במספר שלילי ומסתיים במספר החיובי 
                                                                        המקביל לו)  . הרצף נמצא בתוך סדרה של מספרים .  
@@ -907,7 +898,7 @@ public class Solution
 
                                                       לדוגמה  : עבור השרשרת   lst שבדוגמה לעיל הפעולה תחזיר  . 7  
   הסבר  : ה"תת־סדרה נגדית" המתחילה במספר   - 9 ומסתיימת במספר   9 מכילה שבעה מספרים והיא הגדולה ביותר .  
-</details>
+</div>
 
 #### School Solution
 
@@ -983,21 +974,11 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1240px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq15.pdf"
-  type="text/html"
-  aria-label="בגרות 2023 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq15.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q15.pdf" target="_blank" rel="noopener">q15.pdf</a>.
-  </p>
-</object>
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q15.pdf)
 
-<details style="display:none" dir="rtl">
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                                                              תכנות מונחה עצמים בשפת  C#  
                                         .15 בחברה להשכרת כלֵ י רכב "סעו לשלום" פותחה מערכת ממוחשבת שבה המחלקות האלה :  
                        –  Contract חוזה  –  Vehicle  , כלִ י רכב  –  Car  , מכונית  –  Truck  , משאית  –  Motorcycle  , אופנוע .  
@@ -1042,7 +1023,7 @@ public class Solution
                                                                 לפי העקרונות של תכנות מונחה עצמים .  
  הערה  : אין להשתמש בפעולות     is ו־    as בסעיף זה ובפעולות של המחלקה     Object ואין לשנות את תכונות המחלקות .  
                                                               פתרון הכולל שימושים כאלה לא יזוכה בנקודות .  
-</details>
+</div>
 
 #### School Solution
 
@@ -1170,21 +1151,11 @@ public class Motorcycle : Vehicle
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 740px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq16.pdf"
-  type="text/html"
-  aria-label="בגרות 2023 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.271%2Fq16.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q16.pdf" target="_blank" rel="noopener">q16.pdf</a>.
-  </p>
-</object>
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.271/q16.pdf)
 
-<details style="display:none" dir="rtl">
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                            .   והתכונות שלהן BB  , AA    לפניכם כותרות המחלקות .16
                              .) הפעולות הבונות של המחלקות מסומנות ב־ *** (תיתכן יותר מפעולה בונה אחת למחלקה 
 public class AA
@@ -1230,7 +1201,7 @@ public class AA
 
                                                                                  AA           AA  
                                                                                  x=2          x=8  
-</details>
+</div>
 
 #### School Solution
 
@@ -1290,21 +1261,10 @@ public class BB : AA
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 740px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2025.6.271%2Fq1.pdf"
-  type="text/html"
-  aria-label="בגרות 2025 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2025.6.271%2Fq1.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2025.6.271/q1.pdf" target="_blank" rel="noopener">q1.pdf</a>.
-  </p>
-</object>
-<!-- BAGRUT-HIDDEN-SOURCE-START -->
-<details style="display:none" data-bagrut-hidden="true">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2025.6.271/q1.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 ענו על שתיים מן השאלות (1–3) (לכל שאלה: 25 נקודות).
 
 **1.** נתונה המחלקה `Game` (משחק מחשב), ולה שתי תכונות:
@@ -1527,7 +1487,7 @@ flowchart LR
   N41Val --> G41["Game<br/>name: v<br/>price: 99"]
   N42Val --> G42["Game<br/>name: p<br/>price: 30"]
 </div>
-</details>
+</div>
 <!-- BAGRUT-HIDDEN-SOURCE-END -->
 
 #### School Solution
@@ -1725,21 +1685,10 @@ public class Store
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 740px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2025.6.271%2Fq3.pdf"
-  type="text/html"
-  aria-label="בגרות 2025 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2025.6.271%2Fq3.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2025.6.271/q3.pdf" target="_blank" rel="noopener">q3.pdf</a>.
-  </p>
-</object>
-<!-- BAGRUT-HIDDEN-SOURCE-START -->
-<details style="display:none" data-bagrut-hidden="true">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2025.6.271/q3.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 3. "עץ K־שמאלי" הוא עץ בינרי ובו כל מסלול משורש העץ לעלה כלשהו מכיל לכל היותר K קשתות הפונות שמאלה (כלומר
 מקסימום K בנים שמאליים).
 שימו לב: ב"עץ K ־שמאלי" ייתכן שאין שום מסלול המכיל K קשתות הפונות שמאלה (כלומר ייתכן שבכל אחד מן המסלולים
@@ -1772,7 +1721,7 @@ flowchart TD
   C1 -- "yes" --> F["false"]
   C1 -- "no" --> C2["check left (+1) and right (+0)"]
 </div>
-</details>
+</div>
 <!-- BAGRUT-HIDDEN-SOURCE-END -->
 
 #### School Solution
@@ -1796,21 +1745,10 @@ public static bool IsLeftK(BinNode<int> t, int k)
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 740px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2025.6.271%2Fq10.pdf"
-  type="text/html"
-  aria-label="בגרות 2025 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2025.6.271%2Fq10.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2025.6.271/q10.pdf" target="_blank" rel="noopener">q10.pdf</a>.
-  </p>
-</object>
-<!-- BAGRUT-HIDDEN-SOURCE-START -->
-<details style="display:none" data-bagrut-hidden="true">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2025.6.271/q10.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 לכל שאלה נוסח בשפת Java ונוסח בשפת C#.
 10. לשאלה זו שני נוסחים: בשפת Java בעמודים 14–15 ובשפת C# בעמודים 16–17.
 Java לפותרים בשפת
@@ -2002,7 +1940,7 @@ flowchart TD
   Animals --> A3["Snake(gray,2,6,true)"]
   Animals --> A4["Snake(black,3,4,false)"]
 </div>
-</details>
+</div>
 <!-- BAGRUT-HIDDEN-SOURCE-END -->
 
 #### School Solution
@@ -2115,23 +2053,12 @@ public class Snake : Animal
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 740px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2025.6.271%2Fq11.pdf"
-  type="text/html"
-  aria-label="בגרות 2025 קיץ שאלה 2">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2025.6.271%2Fq11.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2025.6.271/q11.pdf" target="_blank" rel="noopener">q11.pdf</a>.
-  </p>
-</object>
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2025.6.271/q11.pdf)
 
 
-<!-- BAGRUT-HIDDEN-SOURCE-START -->
-<details style="display:none" data-bagrut-hidden="true">
+
+<div markdown="1" class="print-question-source" dir="rtl">
 11. לשאלה זו שני נוסחים: בשפת Java בעמודים 18–19 ובשפת C# בעמודים 20–21.
 Java לפותרים בשפת
 נתונות המחלקות One , Two , Three :
@@ -2280,7 +2207,7 @@ classDiagram
 flowchart TB
   O0["4, 1 Fast"] --> O1["4, 2 Fast Car"] --> O2["4, 3 Fast Horse"] --> O3["4, 15 Small"] --> O4["4, 15 Tall"] --> O5["4, 4"]
 </div>
-</details>
+</div>
 <!-- BAGRUT-HIDDEN-SOURCE-END -->
 
 #### School Solution
@@ -2376,20 +2303,10 @@ public class Test
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2016.6.381%2Fq4.pdf"
-  type="text/html"
-  aria-label="בגרות 2016 קיץ שאלה 4">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2016.6.381%2Fq4.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2016.6.381/q4.pdf" target="_blank" rel="noopener">q4.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2016.6.381/q4.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 .)‫ נקודות‬25 — ‫ (לכל שאלה‬6-4 ‫ענה על שתיים מהשאלות‬
                                        :‫ שלה שתי תכונות‬Ring — ‫לפניך המחלקה טבעת‬     .4
                   ;)‫" – טבעת גדולה‬L" ,‫" – טבעת קטנה‬S"( ‫גודל הטבעת מטיפוס מחרוזת‬
@@ -2450,7 +2367,7 @@ public class Ring                          public class Ring
            ‫אתה יכול להשתמש בפעולות הנוספות של המחלקה ‪  Pole‬בלי לממש אותן‪.‬‬
                           ‫בתשובתך השתמש רק בפעולות המחלקות  ‪  Pole‬ו־  ‪. Ring‬‬
            ‫מהי סיבוכיות זמן הריצה של הפעולה שמימשת בסעיף א? נמק את תשובתך‪.‬‬           ‫ב‪.‬‬
-</details>
+</div>
 
 #### School Solution
 
@@ -2548,20 +2465,10 @@ public class Pole
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2016.6.381%2Fq5.pdf"
-  type="text/html"
-  aria-label="בגרות 2016 קיץ שאלה 5">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2016.6.381%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2016.6.381/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2016.6.381/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 ‫מדעי המחשב ב'‪ ,‬קיץ תשע"ו‪ ,‬מס' ‪899381‬‬                    ‫‪-8-‬‬
 
                                                                                             ‫‪.5‬‬
@@ -2688,7 +2595,7 @@ public static bool What(BinNode<int> pos)
 return left.GetValue() + right.GetValue() == sum;
                                                             .‫נמק את קביעתך‬
 /12 ‫המשך בעמוד‬/
-</details>
+</div>
 
 #### School Solution
 
@@ -2715,20 +2622,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 850px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2016.6.381%2Fq6.pdf"
-  type="text/html"
-  aria-label="בגרות 2016 קיץ שאלה 6">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2016.6.381%2Fq6.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2016.6.381/q6.pdf" target="_blank" rel="noopener">q6.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2016.6.381/q6.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 ‫מדעי המחשב ב'‪ ,‬קיץ תשע"ו‪ ,‬מס' ‪899381‬‬                            ‫‪- 12 -‬‬
    ‫עץ מספרים הוא עץ בינארי לא ריק מטיפוס שלם‪ ,‬שהערכים בצמתים שלו הם מספרים שלמים‬                       ‫‪.6‬‬
                                                                     ‫וגדולים מ־ ‪  0‬השונים זה מזה‪.‬‬
@@ -2749,7 +2646,7 @@ public class Solution
                           ‫ממש ב־ ‪  Java‬או ב־ ‪  C#‬את הפעולה "מסלול‪-‬עולה" בעבור עץ מספרים ‪.tr‬‬
                ‫כותרת הפעולה ב־ ‪public static boolean upPath(BinNode<Integer> tr) :Java‬‬
                ‫)‪public static bool UpPath(BinNode<int> tr‬‬                      ‫כותרת הפעולה ב־ ‪:C#‬‬
-</details>
+</div>
 
 #### School Solution
 
@@ -2802,20 +2699,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2016.6.381%2Fq15.pdf"
-  type="text/html"
-  aria-label="בגרות 2016 קיץ שאלה 15">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2016.6.381%2Fq15.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2016.6.381/q15.pdf" target="_blank" rel="noopener">q15.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2016.6.381/q15.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 ‫‪ .15‬בשאלה זו שני סעיפים א‪-‬ב שאין קשר ביניהם‪ .‬ענה על שניהם‪.‬‬
      ‫נתונות חמש מחלקות ‪ .Run , Z , Y , X , B‬התת סעיפים (‪ )4(-)1‬שלפניך מתייחסים‬     ‫א‪.‬‬
                       ‫למחלקות אלה‪ .‬התת־סעיפים אינם קשורים זה לזה‪ .‬ענה על כולם‪.‬‬
@@ -2879,7 +2766,7 @@ public class Singer : Artist , IPerform
     ‫ את התכונות ואת הפעולות המתחייבות מהמחלקה‬,Artist ‫ את כותרת המחלקה‬C# ‫כתוב ב־‬
     .Artist ‫ אין צורך לממש את הפעולות של המחלקה‬.‫  הנתונים‬IPerform  ‫  והממשק‬Singer
                                 .IPerform ‫ ואת הממשק‬Singer ‫אין לשנות את המחלקה‬
-</details>
+</div>
 
 #### School Solution
 
@@ -2995,20 +2882,10 @@ public class Singer : Artist, IPerform
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2017.6.381%2Fq6.pdf"
-  type="text/html"
-  aria-label="&#1489;&#1490;&#1512;&#1493;&#1514; 2017 &#1511;&#1497;&#1509; &#1513;&#1488;&#1500;&#1492; 6">
-  <p>
-    &#1488;&#1501; &#1492;&#1514;&#1510;&#1493;&#1490;&#1492; &#1500;&#1488; &#1504;&#1496;&#1506;&#1504;&#1514; &#1489;&#1514;&#1493;&#1498; &#1492;&#1491;&#1507;, &#1508;&#1514;&#1495;&#1493; &#1488;&#1514;
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2017.6.381%2Fq6.pdf" target="_blank" rel="noopener">viewer2</a>
-    &#1488;&#1493; &#1488;&#1514;
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2017.6.381/q6.pdf" target="_blank" rel="noopener">q6.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2017.6.381/q6.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 899381 '‫ מס‬,‫ קיץ תשע"ז‬,‫מדעי המחשב‬                       -8-
 
 .C# ‫ ב־‬Exist ‫ או‬Java ‫ ב־‬exist ‫ממש פעולה חיצונית‬    .‫א‬   .6
@@ -3045,7 +2922,7 @@ public static Node<int> Check(BinNode<int> t1 , BinNode<int> t2 , Node<int> list
 
 .‫מה היא סיבוכיות זמן הריצה של הפעולה שמימשת בסעיף ב ? נמק את תשובתך‬       .‫ג‬
 /9 ‫המשך בעמוד‬/
-</details>
+</div>
 
 #### School Solution
 
@@ -3117,20 +2994,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2018.6.381%2Fq5.pdf"
-  type="text/html"
-  aria-label="&#1489;&#1490;&#1512;&#1493;&#1514; 2018 &#1511;&#1497;&#1509; &#1513;&#1488;&#1500;&#1492; 5">
-  <p>
-    &#1488;&#1501; &#1492;&#1514;&#1510;&#1493;&#1490;&#1492; &#1500;&#1488; &#1504;&#1496;&#1506;&#1504;&#1514; &#1489;&#1514;&#1493;&#1498; &#1492;&#1491;&#1507;, &#1508;&#1514;&#1495;&#1493; &#1488;&#1514;
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2018.6.381%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    &#1488;&#1493; &#1488;&#1514;
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2018.6.381/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2018.6.381/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 ‫מדעי המחשב‪ ,‬קיץ תשע"ח‪ ,‬מס' ‪899381‬‬                                ‫‪-8-‬‬
 ‫שים לב‪ :‬לשאלה זו נוסח אחד ב־ ‪ Java‬בעמוד ‪ ,8‬ונוסח אחר ב־ ‪ C#‬בעמוד ‪.9‬‬             ‫‪.5‬‬
 ‫לפותרים בשפת ‪Java‬‬
@@ -3207,7 +3074,7 @@ public class Solution
 ‫עליך להשתמש בפעולה ‪. Sod1‬‬
 ‫הנח שכל התווים שונים זה מזה‪.‬‬
 ‫‪/‬המשך בעמוד ‪/10‬‬
-</details>
+</div>
 
 #### School Solution
 
@@ -3256,20 +3123,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 580px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2018.6.381%2Fq6.pdf"
-  type="text/html"
-  aria-label="&#1489;&#1490;&#1512;&#1493;&#1514; 2018 &#1511;&#1497;&#1509; &#1513;&#1488;&#1500;&#1492; 6">
-  <p>
-    &#1488;&#1501; &#1492;&#1514;&#1510;&#1493;&#1490;&#1492; &#1500;&#1488; &#1504;&#1496;&#1506;&#1504;&#1514; &#1489;&#1514;&#1493;&#1498; &#1492;&#1491;&#1507;, &#1508;&#1514;&#1495;&#1493; &#1488;&#1514;
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2018.6.381%2Fq6.pdf" target="_blank" rel="noopener">viewer2</a>
-    &#1488;&#1493; &#1488;&#1514;
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2018.6.381/q6.pdf" target="_blank" rel="noopener">q6.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2018.6.381/q6.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 ‫מדעי המחשב‪ ,‬קיץ תשע"ח‪ ,‬מס' ‪899381‬‬                    ‫‪- 10 -‬‬
 ‫נתונה הפעולה‪:‬‬    ‫‪.6‬‬
 ‫ב־ ‪: Java‬‬
@@ -3285,7 +3142,7 @@ public class Solution
 ‫אם  ‪  t1‬הוא  ‪ — null‬הפעולה תחזיר  ‪  . true‬‬
 ‫אפשר להשתמש בפעולה הנתונה בלי לממש אותה‪ .‬אם אתה משתמש בפעולות אחרות‪ ,‬עליך לממש אותן‪.‬‬
 ‫מהי סיבוכיות זמן הריצה של הפעולה שכתבת בסעיף א?  נמק‪.‬‬        ‫ב‪.‬‬
-</details>
+</div>
 
 #### School Solution
 
@@ -3332,20 +3189,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2018.6.381%2Fq14.pdf"
-  type="text/html"
-  aria-label="&#1489;&#1490;&#1512;&#1493;&#1514; 2018 &#1511;&#1497;&#1509; &#1513;&#1488;&#1500;&#1492; 14">
-  <p>
-    &#1488;&#1501; &#1492;&#1514;&#1510;&#1493;&#1490;&#1492; &#1500;&#1488; &#1504;&#1496;&#1506;&#1504;&#1514; &#1489;&#1514;&#1493;&#1498; &#1492;&#1491;&#1507;, &#1508;&#1514;&#1495;&#1493; &#1488;&#1514;
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2018.6.381%2Fq14.pdf" target="_blank" rel="noopener">viewer2</a>
-    &#1488;&#1493; &#1488;&#1514;
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2018.6.381/q14.pdf" target="_blank" rel="noopener">q14.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2018.6.381/q14.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 ‫מדעי המחשב‪ ,‬קיץ תשע"ח‪ ,‬מס' ‪899381‬‬                      ‫‪- 22 -‬‬
 
 ‫‪ .14‬תשלום ִמיסי ארנונה (‪ )Property tax‬הוא תשלום לרשויות המקומיות בעבור שטח המגורים והקרקע הנוספת‬
@@ -3395,7 +3242,7 @@ public class Solution
 ‫)‪(1) public static void print(Object [] a‬‬
 ‫)‪(2) public static void print(IData [] a‬‬
 ‫)‪(3) public static void print(Resident [] a‬‬
-</details>
+</div>
 
 #### School Solution
 
@@ -3507,20 +3354,10 @@ public class VillageResident : Resident
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 890px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2019.6.381%2Fq5.pdf"
-  type="text/html"
-  aria-label="בגרות 2019 קיץ שאלה 5">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2019.6.381%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2019.6.381/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2019.6.381/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 ‫מדעי המחשב‪ ,‬קיץ תשע"ט‪ ,‬מס' ‪899381‬‬                         ‫‪-8-‬‬
 
     ‫"תור מספר" הוא תור של ספרות בין ‪ 1‬ל־ ‪( 9‬כולל)‪ ,‬המייצג מספר שלם — האיבר הראשון (ראש התור) הוא‬                 ‫א‪.‬‬   ‫‪.5‬‬
@@ -3561,7 +3398,7 @@ graph LR
     q196["תור מספר: 6 -> 9 -> 1"] --> n196["196"]
     lst691["691"] --> lst82["82"] --> lst427["427"] --> lst62["62"] --> null["null"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -3612,20 +3449,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1020px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2019.6.381%2Fq6.pdf"
-  type="text/html"
-  aria-label="בגרות 2019 קיץ שאלה 6">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2019.6.381%2Fq6.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2019.6.381/q6.pdf" target="_blank" rel="noopener">q6.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2019.6.381/q6.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 ‫מדעי המחשב‪ ,‬קיץ תשע"ט‪ ,‬מס' ‪899381‬‬                     ‫‪-9-‬‬
                                                                   ‫נתונה המחלקה ‪ Range‬שיש לה שתי תכונות‪:‬‬       ‫‪.6‬‬
                                                                                  ‫‪ — low‬מספר מטיפוס שלם‪.‬‬
@@ -3674,7 +3501,7 @@ graph TD
     n510 --> n56["5 6"]
     n510 --> n810["8 10"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -3766,20 +3593,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 490px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq4.pdf"
-  type="text/html"
-  aria-label="בגרות 2020 מועד מיוחד שאלה 4">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq4.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q4.pdf" target="_blank" rel="noopener">q4.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q4.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                        ענה על שתיים מן השאלות ( .6-4לכל שאלה —  20נקודות)
         "שרשרת מספרים שלמים חיוביים" היא שרשרת חוליות שכל חוליה בה מכילה מספר שלם הגדול מ־ . 0        •   .4
   "שרשרת ְספרות" היא שרשרת חוליות שכל חוליה בה מכילה ִספרה בין  0ל־ ( 9כולל) או את המספר ). (- 9      •
@@ -3796,7 +3613,7 @@ lst
            שאינה  nullל"שרשרת מספרים שלמים חיוביים" .הפעולה תחזיר "שרשרת ספרות" המייצגת את המספרים
                                                            שב"שרשרת מספרים שלמים חיוביים" לפי הסדר.
 
-</details>
+</div>
 
 #### School Solution
 
@@ -3850,20 +3667,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 840px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq5.pdf"
-  type="text/html"
-  aria-label="בגרות 2020 מועד מיוחד שאלה 5">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,מועד מיוחד ,אוגוסט  ,2020מס' 899381           -8-
 
                                                      נגדיר "בלוק" במחסנית כרצף של לפחות שני איברים זהים.   .5
@@ -3891,7 +3698,7 @@ public class Solution
                                                                                   -4
                                                                                    15
 
-</details>
+</div>
 
 #### School Solution
 
@@ -3932,20 +3739,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 650px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq6.pdf"
-  type="text/html"
-  aria-label="בגרות 2020 מועד מיוחד שאלה 6">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq6.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q6.pdf" target="_blank" rel="noopener">q6.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q6.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,מועד מיוחד ,אוגוסט  ,2020מס' 899381            -9-
 
                         עץ בינרי מטיפוס שלם של מספרים שאינם שליליים הוא "עץ שאריות שוויוני" במקרה הזה:        .6
@@ -3978,7 +3775,7 @@ graph TD
     left --> leftright["5"]
     right --> rightright["11"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -4014,20 +3811,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1140px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq13.pdf"
-  type="text/html"
-  aria-label="בגרות 2020 מועד מיוחד שאלה 13">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq13.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q13.pdf" target="_blank" rel="noopener">q13.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q13.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
        .13במועדון כושר "השלום" אפשר להתאמן בכל מתקני הכושר .נוסף על כך אפשר להתאמן אימון מיוחד שבו אפשר
                                               להשתמש בכל מתקני הכושר בליווי של מאמן אישי לזמן מוגדר.
                                               כדי לשמור מידע על המתרחש במועדון נבנו המחלקות שלפניך:
@@ -4066,7 +3853,7 @@ public class Solution
 כתוב פעולה פנימית במחלקה  , Managementהמחזירה את סך כל הלקוחות שהתאמנו אימון מיוחד      ד.
                                                                      לפחות פעם אחת.
 
-</details>
+</div>
 
 #### School Solution
 
@@ -4280,20 +4067,10 @@ public class Management
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq14.pdf"
-  type="text/html"
-  aria-label="בגרות 2020 מועד מיוחד שאלה 14">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq14.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q14.pdf" target="_blank" rel="noopener">q14.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q14.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,מועד מיוחד ,אוגוסט  ,2020מס' 899381        - 18 -
 
      .14בחנות הכולבו "הכול לבית" מוכרים מוצרי מזון שאינם דורשים אחסון בקירור ,מוצרי מזון הדורשים אחסון בקירור
@@ -4343,7 +4120,7 @@ Item, ElectronicItem, FoodItem, FoodRefrigerated, ItemDate.
                                               הוסף פעולות נדרשות למחלקות כדי שהפעולה תבצע את הנדרש.
                                                             ציין בעבור כל פעולה באיזו מחלקה היא מוספת.
 
-</details>
+</div>
 
 #### School Solution
 
@@ -4555,20 +4332,10 @@ public class Tester
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1140px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq15.pdf"
-  type="text/html"
-  aria-label="בגרות 2020 מועד מיוחד שאלה 15">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq15.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q15.pdf" target="_blank" rel="noopener">q15.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q15.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
        .15במועדון כושר "השלום" אפשר להתאמן בכל מתקני הכושר .נוסף על כך אפשר להתאמן אימון מיוחד שבו אפשר
                                               להשתמש בכל מתקני הכושר בליווי של מאמן אישי לזמן מוגדר.
                                               כדי לשמור מידע על המתרחש במועדון נבנו המחלקות שלפניך:
@@ -4607,7 +4374,7 @@ public class Tester
 כתוב פעולה פנימית במחלקה  , Managementהמחזירה את סך כל הלקוחות שהתאמנו אימון מיוחד     ד.
                                                                      לפחות פעם אחת.
 
-</details>
+</div>
 
 #### School Solution
 
@@ -4821,20 +4588,10 @@ public class Management
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq16.pdf"
-  type="text/html"
-  aria-label="בגרות 2020 מועד מיוחד שאלה 16">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.5.381%2Fq16.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q16.pdf" target="_blank" rel="noopener">q16.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.5.381/q16.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,מועד מיוחד ,אוגוסט  ,2020מס' 899381        - 22 -
 
      .16בחנות הכולבו "הכול לבית" מוכרים מוצרי מזון שאינם דורשים אחסון בקירור ,מוצרי מזון הדורשים אחסון בקירור
@@ -4884,7 +4641,7 @@ Item, ElectronicItem, FoodItem, FoodRefrigerated, ItemDate.
                                                    הוסף פעולות נדרשות למחלקות כדי שהפעולה תבצע את הנדרש.
                                                                    ציין בעבור כל פעולה באיזו מחלקה היא מוספת.
 
-</details>
+</div>
 
 #### School Solution
 
@@ -5099,20 +4856,10 @@ public class Tester
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.6.381%2Fq5.pdf"
-  type="text/html"
-  aria-label="בגרות 2020 קיץ שאלה 5">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.6.381%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.6.381/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.6.381/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 .המסלול את שסיים מתחרה המייצגת Competitor מחלקה הוגדרה מרתון ריצת תחרות לקראת .5
 :תכונות שלוש יש למחלקה
 .שלם מטיפוס ,) 60 ל־ מוגבל אינו הדקות (מספר המסלול את לסיים למתחרה שנדרשו הדקות מספר — minutes •
@@ -5148,7 +4895,7 @@ O(n)
 — C# בשפת
 public String rank ( int x )
 public string Rank ( int x )
-</details>
+</div>
 
 #### School Solution
 
@@ -5247,20 +4994,10 @@ public class Race
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 820px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.6.381%2Fq6.pdf"
-  type="text/html"
-  aria-label="בגרות 2020 קיץ שאלה 6">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2020.6.381%2Fq6.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.6.381/q6.pdf" target="_blank" rel="noopener">q6.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2020.6.381/q6.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מן בעץ מסלול וכל ,)(כולל 9 ל־ 1 בין ספרה מכיל בו צומת שכל ,שלם מטיפוס בינארי עץ הוא "מספרים "עץ :נגדיר .6
 השורש עד הלאה וכן העשרות ספרת את שמעליו הרמה ,האחדות ספרת את מייצג העלה :מספר מייצג לעלה השורש
 .העץ של
@@ -5287,7 +5024,7 @@ graph TD
     t2_left --> t2_left_left["6"]
     t2_left --> t2_left_right["6"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -5438,20 +5175,10 @@ private static int GetSignificantDigit(int value)
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 480px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.5.381%2Fq4.pdf"
-  type="text/html"
-  aria-label="בגרות 2021 מועד קיץ נבצרים שאלה 4">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.5.381%2Fq4.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.5.381/q4.pdf" target="_blank" rel="noopener">q4.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.5.381/q4.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                             "שרשרת מאורגנת" היא שרשרת חוליות מטיפוס שלם שמתקיימים בה התנאים האלה:          .4
                                                                     מספר החוליות בשרשרת הוא זוגי.     —
                     כל המספרים בחצי הראשון של השרשרת קטנים מכל המספרים בחצי השני של השרשרת.           —
@@ -5472,7 +5199,7 @@ private static int GetSignificantDigit(int value)
 graph LR
     lst["lst"] --> n1["3"] --> n2["-4"] --> n3["4"] --> n4["7"] --> n5["15"] --> n6["9"] --> nul["null"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -5533,20 +5260,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.5.381%2Fq5.pdf"
-  type="text/html"
-  aria-label="בגרות 2021 מועד קיץ נבצרים שאלה 5">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.5.381%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.5.381/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.5.381/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,מועד קיץ נבצרים ,תשפ"א ,2021 ,מס' 899381            -6-
 
   שרשרת החוליות  lst1היא "תת־שרשרת תחילית" של שרשרת החוליות  lst2אם כל הערכים של  lst1מופיעים           א.   .5
@@ -5632,7 +5349,7 @@ graph LR
     lst1c["lst1"] --> e1["4"] --> e2["7"] --> e3["8"] --> e4["9"] --> en["null"]
     lst2c["lst2"] --> f1["3"] --> f2["2"] --> f3["4"] --> f4["9"] --> f5["7"] --> f6["8"] --> fn["null"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -5684,20 +5401,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 620px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.5.381%2Fq6.pdf"
-  type="text/html"
-  aria-label="בגרות 2021 מועד קיץ נבצרים שאלה 6">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.5.381%2Fq6.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.5.381/q6.pdf" target="_blank" rel="noopener">q6.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.5.381/q6.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,מועד קיץ נבצרים ,תשפ"א ,2021 ,מס' 899381           -8-
 
                               נתונה המחלקה  , CovidTestהמייצגת אדם שנבדק בדיקת קורונה ,ולה  4תכונות:      .6
@@ -5719,7 +5426,7 @@ public class Solution
 
                                                  הנח שיש רק עיר אחת שבה כמות החולים היא הגדולה ביותר.
 
-</details>
+</div>
 
 #### School Solution
 
@@ -5827,20 +5534,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.6.381%2Fq4.pdf"
-  type="text/html"
-  aria-label="בגרות 2021 קיץ שאלה 4">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.6.381%2Fq4.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.6.381/q4.pdf" target="_blank" rel="noopener">q4.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.6.381/q4.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                           בשאלה זו תוכל להשתמש בפעולה החיצונית שלפניך בלי לממש אותה.      .4
 
                            כותרת הפעולה                                        תיאור הפעולה
@@ -5908,7 +5605,7 @@ graph TD
     bilist["BiList"] --> lst1["lst1: 88 -> 10 -> 13 -> null"]
     bilist --> lst2["lst2: -9 -> 0 -> 6 -> null"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -6036,20 +5733,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 650px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.6.381%2Fq5.pdf"
-  type="text/html"
-  aria-label="בגרות 2021 קיץ שאלה 5">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.6.381%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.6.381/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.6.381/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,קיץ תשפ"א ,מס' 899381                  - 14 -
 
   בשרשרת חוליות" ,העברה מעגלית של  nחוליות" היא העברת  nהחוליות האחרונות לתחילת השרשרת (בלי לשנות         .5
@@ -6084,7 +5771,7 @@ graph LR
 graph LR
     after["lst"] --> a1["8"] --> a2["4"] --> a3["5"] --> a4["1"] --> a5["2"] --> an["null"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -6124,20 +5811,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1100px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.6.381%2Fq7.pdf"
-  type="text/html"
-  aria-label="בגרות 2021 קיץ שאלה 7">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2021.6.381%2Fq7.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.6.381/q7.pdf" target="_blank" rel="noopener">q7.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2021.6.381/q7.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,קיץ תשפ"א ,מס' 899381                       - 17 -
                                                 בשאלה זו תוכל להשתמש בפעולה החיצונית שלפניך בלי לממש אותה.             .7
                           כותרת הפעולה                                           תיאור הפעולה
@@ -6184,7 +5861,7 @@ q1           5       7    4      6          ערכים
                                                    חובה להשתמש בפעולה שכתבת בסעיף א.          —     הערות:
  /המשך בעמוד /18                         אין צורך לשמור על מבנה התורים המקורי שהתקבל.         —      		
 
-</details>
+</div>
 
 #### School Solution
 
@@ -6271,20 +5948,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2022.6.381%2Fq4.pdf"
-  type="text/html"
-  aria-label="בגרות 2022 מועד קיץ שאלה 4">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2022.6.381%2Fq4.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2022.6.381/q4.pdf" target="_blank" rel="noopener">q4.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2022.6.381/q4.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                         ענו על שתיים מן השאלות ( 7–4לכל שאלה –  25נקודות).
                                                           נתונה המחלקה  – Rangeטווח ,ולה שתי תכונות:        .4
                                                                              – lowמספר מטיפוס שלם       •
@@ -6347,7 +6014,7 @@ graph LR
     lst1b["lst1"] --> b1["1"] --> b2["5"] --> b3["8"] --> b4["12"] --> bn["null"]
     lst2b["lst2"] --> s1["[-20,-10]"] --> s2["[-9,0]"] --> s3["[1,6]"] --> s4["[9,12]"] --> s5["[20,100]"] --> sn["null"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -6600,20 +6267,10 @@ public class TwoQueue
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2022.6.381%2Fq7.pdf"
-  type="text/html"
-  aria-label="בגרות 2022 מועד קיץ שאלה 7">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2022.6.381%2Fq7.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2022.6.381/q7.pdf" target="_blank" rel="noopener">q7.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2022.6.381/q7.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,קיץ תשפ"ב ,מס' 899381                       - 14 -
 
                                                                                          שאלה בנושא עץ בינארי       .7
@@ -6709,7 +6366,7 @@ graph TD
     e3 --> l3["l"]
     l3 --> p4["p"]
 ```
-</details>
+</div>
 
 #### School Solution
 
@@ -6750,20 +6407,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 660px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2023.6.381%2Fq4.pdf"
-  type="text/html"
-  aria-label="בגרות 2023 קיץ שאלה 4">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2023.6.381%2Fq4.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2023.6.381/q4.pdf" target="_blank" rel="noopener">q4.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2023.6.381/q4.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                                     ענו על שתיים מן השאלות ( 6–4לכל שאלה –  25נקודות).
                   בשאלה זו נוספה למחלקה    Queueהפעולה    size/Sizeשלפניכם .אפשר להשתמש בפעולה בלי לממש אותה.            .4
 
@@ -6787,7 +6434,7 @@ public class Solution
                                                                                      אין צורך לשמור על התור  . q    –
                                                                 אין להשתמש בשאלה זו במערך וברשימה מקושרת.           –
 
-</details>
+</div>
 
 #### School Solution
 
@@ -6831,20 +6478,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2023.6.381%2Fq5.pdf"
-  type="text/html"
-  aria-label="בגרות 2023 קיץ שאלה 5">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2023.6.381%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2023.6.381/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2023.6.381/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
 מדעי המחשב ,קיץ תשפ"ג ,מס' 899381                        -6-
 
                                                          נתונה המחלקה   – NumCountמספר ערכים ,ולה שתי תכונות:       .5
@@ -6918,7 +6555,7 @@ public class Solution
                                                   הפעולה מקבלת את המספר  , nומחזירה את "ערך המופע ה־ ." n
                                                                        הניחו ש"ערך המופע ה־  " nקיים בשרשרת.
 
-</details>
+</div>
 
 #### School Solution
 
@@ -7035,20 +6672,10 @@ public class OrderedList
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1090px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2023.6.381%2Fq6.pdf"
-  type="text/html"
-  aria-label="בגרות 2023 קיץ שאלה 6">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2023.6.381%2Fq6.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2023.6.381/q6.pdf" target="_blank" rel="noopener">q6.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2023.6.381/q6.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                  "מספר ראשוני" הוא מספר המתחלק רק בעצמו וב־ (  1גם המספרים    1ו־   2הם ראשוניים).              .6
                                       לפניכם הפעולה החיצונית   . isPrime/IsPrimeאפשר להשתמש בפעולה בלי לממש אותה.
 
@@ -7088,7 +6715,7 @@ public class OrderedList
                                                                                                     יש להראות מעקב.
                                                                             ( )2הסבירו מה מבצעת הפעולה  . what/What
 
-</details>
+</div>
 
 #### School Solution
 
@@ -7147,20 +6774,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 960px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq4.pdf"
-  type="text/html"
-  aria-label="בגרות 2024 קיץ שאלה 4">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq4.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q4.pdf" target="_blank" rel="noopener">q4.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q4.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                      ‫“איבר קסם" הוא איבר בתור של מספרים שערכו שווה לסכום הערכים של האיבר שלפניו והאיבר שאחריו‪.‬‬              ‫‪.4‬‬
                                                       ‫הערה‪ :‬המספר הראשון בתור והמספר האחרון בתור אינם "איברי קסם"‪.‬‬
                  ‫כתבו פעולה ששמה  ‪  isMagic‬בשפת  ‪  Java‬או  ‪  IsMagic‬בשפת  ‪ , C#‬המקבלת תור – ‪  q‬מטיפוס שלם‪,‬‬             ‫א‪.‬‬
@@ -7193,7 +6810,7 @@ public class Solution
                                                                                                  ‫שהם כפולה של  ‪.)4‬‬
                                     ‫עבור  ‪   n = 3‬הפעולה תחזיר  ‪  false‬מכיוון שהאיבר במקום ה־ ‪  3‬אינו “איבר קסם"‪.‬‬
 
-</details>
+</div>
 
 #### School Solution
 
@@ -7282,20 +6899,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 1200px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq5.pdf"
-  type="text/html"
-  aria-label="בגרות 2024 קיץ שאלה 5">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq5.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q5.pdf" target="_blank" rel="noopener">q5.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q5.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                                    ‫נתונה המחלקה  ‪ – Patient‬חולה בחדר מיון‪ ,‬ולה שתי תכונות‪:‬‬            ‫‪.5‬‬
                                                                                    ‫‪ – id‬מספר הזהות של החולה‪ ,‬מטיפוס שלם‬           ‫•‬
    ‫‪ – priority‬רמת הדחיפות של הטיפול בחולה‪ .‬רמת הדחיפות מיוצגת במספר מטיפוס שלם בין  ‪  1‬ל־ ‪ . 10‬ככל שהמספר‬                         ‫•‬
@@ -7353,7 +6960,7 @@ public class Solution
   ‫המעודכנת – ‪ .)pri‬אם בתור כבר יש חולים אחרים באותה רמת דחיפות – ‪ , pri‬החולה הנוכחי – ‪  id‬יוצב אחריהם כאילו‬
                                                                                    ‫הגיע אחריהם לחדר המיון‪.‬‬
 
-</details>
+</div>
 
 #### School Solution
 
@@ -7465,20 +7072,10 @@ public class PriorQueue
 
 #### Question Markdown
 
-<object
-  style="--externalpdf-height: 660px;"
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq7.pdf"
-  type="text/html"
-  aria-label="בגרות 2024 קיץ שאלה 7">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq7.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q7.pdf" target="_blank" rel="noopener">q7.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q7.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                     ‫נתונה המחלקה  ‪ – BusStation‬תחנת אוטובוס‪ ,‬ולה שלוש תכונות‪:‬‬       ‫‪.7‬‬
                                                                             ‫‪ – num‬מספר התחנה‪ ,‬מטיפוס שלם‬        ‫•‬
    ‫‪ – arr‬מערך מטיפוס שלם בגודל  ‪ , 10‬המכיל את מספרי קווי האוטובוס שעוצרים בתחנה‪ .‬בתחנה עוצרים עד ‪ 10‬קווים‪,‬‬      ‫•‬
@@ -7499,7 +7096,7 @@ public class PriorQueue
                                                                    ‫(כל קו כזה יופיע פעם אחת בלבד בשרשרת)‪.‬‬
                                                                     ‫הערה‪ :‬אין חשיבות לסדר הקווים בשרשרת‪.‬‬
 
-</details>
+</div>
 
 #### School Solution
 
@@ -7626,19 +7223,10 @@ public class Solution
 
 #### Question Markdown
 
-<object
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq14.pdf"
-  type="text/html"
-  aria-label="בגרות 2024 קיץ שאלה 14">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq14.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q14.pdf" target="_blank" rel="noopener">q14.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q14.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                                                             ‫תכנות מונחה עצמים בשפת ‪C#‬‬
                                      ‫‪ .14‬בחברה להשכרת כלֵ י רכב "סעו לשלום" פותחה מערכת ממוחשבת שבה המחלקות האלה‪:‬‬
                     ‫‪ –  Contract‬חוזה‪ –  Vehicle  ,‬כלִ י רכב‪ –  Car  ,‬מכונית‪ –  Truck  ,‬משאית‪ –  Motorcycle  ,‬אופנוע‪.‬‬
@@ -7682,7 +7270,7 @@ public class Solution
 ‫הערה‪ :‬אין להשתמש בפעולות  ‪  is‬ו־ ‪  as‬בסעיף זה ובפעולות של המחלקה  ‪  Object‬ואין לשנות את תכונות המחלקות‪.‬‬
                                                              ‫פתרון הכולל שימושים כאלה לא יזוכה בנקודות‪.‬‬
 
-</details>
+</div>
 
 #### School Solution
 
@@ -7810,19 +7398,10 @@ public class Motorcycle : Vehicle
 
 #### Question Markdown
 
-<object
-  class="externalpdf-source-viewer"
-  data="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq15.pdf"
-  type="text/html"
-  aria-label="בגרות 2024 קיץ שאלה 15">
-  <p>
-    אם התצוגה לא נטענת בתוך הדף, פתחו את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/assets/pdfjs/web/viewer2.html?file=https%3A%2F%2Fxn--7dbdbn4b5c.xn--eebf2b.com%2Fbagruyot%2F2024.6.381%2Fq15.pdf" target="_blank" rel="noopener">viewer2</a>
-    או את
-    <a href="https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q15.pdf" target="_blank" rel="noopener">q15.pdf</a>.
-  </p>
-</object>
-<details style="display:none" dir="rtl">
+{: .print-pdf-source}
+PDF source: [original question PDF](https://xn--7dbdbn4b5c.xn--eebf2b.com/bagruyot/2024.6.381/q15.pdf)
+
+<div markdown="1" class="print-question-source" dir="rtl">
                                                            .‫  והתכונות שלהן‬BB  , AA  ‫ לפניכם כותרות המחלקות‬.15
                              .)‫הפעולות הבונות של המחלקות מסומנות ב־ *** (תיתכן יותר מפעולה בונה אחת למחלקה‬
 public class AA
@@ -7867,7 +7446,7 @@ public class AA
                                                                                  ‫‪AA‬‬       ‫‪AA‬‬
                                                                                  ‫‪x=2‬‬      ‫‪x=8‬‬
 
-</details>
+</div>
 
 #### School Solution
 
