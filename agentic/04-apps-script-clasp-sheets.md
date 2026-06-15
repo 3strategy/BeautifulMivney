@@ -6,6 +6,8 @@ tags: [agentic, google-sheets, apps-script, clasp, automation]
 lang: he
 ---
 
+{% include youtube.html id="Wzr-a2HS_B8" %}
+
 ## למה דווקא Sheets?
 
 הרבה מורים כבר עובדים עם Google Sheets: ציונים, נוכחות, משימות, קבוצות, קישורים, מעקב הגשות. לכן Apps Script הוא גשר טבעי בין "כלי משרדי" לבין engineering.

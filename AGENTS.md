@@ -210,6 +210,41 @@ main {
 
 - Do not retroactively rewrite in-progress tutorials between Hebrew/English unless explicitly requested.
 
+## Media include convention
+
+- Prefer the repo's shared Jekyll includes for embedded media instead of hand-writing iframe/embed markup in lesson pages.
+- YouTube videos:
+
+```liquid
+{% include youtube.html id="VIDEO_ID" %}
+```
+
+- Looping/autoplaying YouTube background-style embeds:
+
+```liquid
+{% include youtube_loop.html id="VIDEO_ID" %}
+```
+
+- Instagram reels/posts:
+
+```liquid
+{% include instagram.html id="REEL_OR_POST_ID" %}
+```
+
+  If a full Instagram URL is more reliable, use:
+
+```liquid
+{% include instagram.html url="https://www.instagram.com/reel/..." %}
+```
+
+- Local MP4 files under `assets/video/`:
+
+```liquid
+{% include mp4.html id="filename.mp4" %}
+```
+
+- For lesson companion videos, place the YouTube include near the start of the page body, immediately after front matter or the opening note, unless the lesson has a stronger local placement.
+
 ## Tutorial layout pattern convention
 
 - When a step and a visual (screenshot/diagram) are best understood side-by-side, prefer the `two-columns` pattern instead of stacking.

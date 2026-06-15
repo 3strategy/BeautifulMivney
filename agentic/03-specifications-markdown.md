@@ -6,7 +6,10 @@ tags: [agentic, agents-md, skills, markdown, kramdown, docs]
 lang: he
 ---
 
-## הרעיון המרכזי
+{: .box-note}
+כל פרומפט שאנחנו כותבים הוא הזדמנות להפוך את העבודה לקצת יותר אייג'נטית: לא רק לבקש מה-agent לבצע פעולה נקודתית, אלא גם לכוון אותו לשפר את ה-harness שסביב העבודה. כלומר, להשאיר אחרינו הוראות ברורות יותר, דוגמאות טובות יותר, בדיקות נוחות יותר, וקבצי Markdown שמאפשרים גם לאדם וגם ל-agent הבא להבין מהר יותר מה נכון לעשות.
+
+## הרעיון המרכזי - Harness Mindset
 
 Agentic Engineering אינו "קסם פרומפטים". הוא הנדסת מפרטים:
 
@@ -52,6 +55,13 @@ flowchart TD
 - Do not rewrite unrelated lessons.
 - After editing, run the build.
 ```
+
+## חשיבה אייג'נטית (Harness mindset)
+
+{: .box-note}
+זה בדיוק הרעיון כאן: במקום לתקן רק שורה אחת או להוסיף רק קישור, אנחנו מזהים את המוסכמה של הפרויקט, מתעדים אותה במקום הקבוע, ואז משתמשים בה. כך כל פרומפט קטן יכול לשפר גם את התוצאה המיידית וגם את סביבת העבודה לפעמים הבאות.
+
+![כל דבר יכול להיות יותר harness-oriented](/assets/img/agentic/everythingCanBeMoreHarnessOriented.png)
 
 ## Skills
 
