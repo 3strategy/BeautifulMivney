@@ -216,7 +216,9 @@ navbar-links:
     - 08 Firebase מפרומפט ראשון: "/agentic/08-firebase-first-prompt"
     - 09 התראות PushBullet: "/agentic/09-notifications-pushbullet"
     - 10 שאלון עירנות: "/agentic/10-workshop-quiz"
-    
+    - Agentic workflows: "/agentic/agentic-workflows-and-harness-engineering-he"
+    - Codex switches: "/agentic/codex-switches-and-agent-environment-he"
+
   - תקשורת ונתונים:
     - 08 Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
     - 181 חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
@@ -524,6 +526,7 @@ defaults:
 
 # Exclude these files from production site
 exclude:
+  - mdx/
   - CHANGELOG.md
   - CNAME
   - Gemfile
