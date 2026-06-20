@@ -30,6 +30,17 @@ jobs:
           ruby-version: "3.2"
           bundler-cache: true
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Build MDX pages
+        run: |
+          npm ci
+          npm run build:mdx
+
       - name: Build site
         env:
           JEKYLL_ENV: production
