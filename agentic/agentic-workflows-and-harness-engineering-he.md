@@ -123,11 +123,9 @@ T2.
 
 בפרומפט ישיר אין לולאה מובנית, לכן קל להשאיר את הלמידה רק בשיחה. הוסיפו דרישה אחת: שהסוכן יזהה מידע חוזר שהיה צריך להיות ב־`AGENTS.md`, בדיקה חסרה, או פקודת אימות שאינה מתועדת — ויציע שינוי ממוקד, בלי להרחיב את ה־scope של הפיצ'ר.
 
-```text
-לאחר השלמת השינוי במוצר, זהה פער אחד חוזר ב־harness שהקשה על הגדרת
-ה־scope או על האימות. הצע עדכון מינימלי להנחיה, לבדיקה או לסקריפט האימות
-הרלוונטיים. אל תיישם אותו אלא אם הוא בתחום המשימה וניתן לאמת אותו.
-```
+{: .box-success}
+לאחר השלמת השינוי במוצר, זהה פער אחד חוזר ב־harness שהקשה על הגדרת ה־scope או על האימות. הצע עדכון מינימלי להנחיה, לבדיקה או לסקריפט האימות הרלוונטיים. אל תיישם אותו אלא אם הוא בתחום המשימה וניתן לאמת אותו.
+
 
 ### חולשה מרכזית
 
@@ -183,14 +181,15 @@ T2 during the loop, T3 before completion.
 
 ### זווית Agentic: כל כשל הוא מועמד לשיפור harness
 
+{: .box-warning}
 הבדיקה האדומה אינה רק שער למימוש; היא מידע על מה שהיה חסר ביכולת של הסוכן להגן על ההתנהגות. בקשו ממנו לבחון אם צריך להפוך את ה־fixture, כלי ה־test, נתון ה־seed או פקודת ההרצה לחלק חוזר מה־harness.
 
-```text
-לאחר הרצת ה־Red, בדוק אם השחזור חשף פער חוזר ב־harness: test helper,
-fixture, seed דטרמיניסטי, פקודת בדיקה או invariant שחסרים. הצע את השיפור
-החוזר הקטן ביותר והסבר כיצד הוא מונע תוצאה ירוקה־לכאורה דומה. השאר אותו
-נפרד מתיקון הפרודקשן, אלא אם הוא נדרש לתיקון.
-```
+
+<div markdown="1" class="box-success">
+
+**Example prompt (English):** After the Red run, determine whether the reproduction exposed a reusable harness gap: a missing test helper, fixture, deterministic seed, test command, or invariant. Propose the smallest reusable improvement and explain how it prevents a similar false-green result. Keep it separate from the production fix unless it is required.
+
+</div>
 
 ### דוגמה: duplicate email
 
@@ -221,15 +220,16 @@ Done when:
 
 <details markdown="1"><summary>Guardrails נגד “רמאות” של הסוכן</summary>
 
+<div markdown ="1" class="box-success">
 כדאי לומר במפורש:
 
-```text
 - Do not change the expected result during the Green step.
 - Do not skip the failing run.
 - Do not replace the assertion with a weaker one.
 - If the proposed test is invalid, stop and explain before rewriting it.
 - Prefer a behavior-level assertion over implementation details.
-```
+
+</div>
 
 </details>
 
@@ -309,12 +309,14 @@ Use a Green-to-Green, behavior-preserving refactoring workflow.
 
 ב־refactor הסיכון הוא לא רק שינוי קוד אלא גילוי מאוחר מדי של התנהגות לא מתועדת. דרשו מהסוכן לשאול אילו דוגמאות, golden master, invariants או characterization tests צריכים להישאר לאחר המשימה כדי שה־harness יגן גם על הפירוק הבא.
 
-```text
+<div markdown="1" class="box-success">
+
 לפני כל extraction, זהה התנהגות שעדיין אינה מפורשת. עבור כל פער חשוב,
 הצע תוספת עמידה ל־harness: characterization test, מקרה golden master,
 invariant או פקודת אימות מתועדת. השאר רק תוספות שמגינות על refactors
 עתידיים והסבר אילו מקרים הושמטו.
-```
+
+</div>
 
 ### דוגמה
 
@@ -415,12 +417,14 @@ During implementation:
 
 ב־SDD השיפור המתמשך אינו תוספת צדדית: מפרט, decision log, task template ו־validation matrix הם ה־harness שמאפשרים לסוכנים עתידיים לעבוד מאותו מקור אמת. בקשו מהסוכן לזהות מה חסר במסמכים הללו, ולא רק מה חסר בקוד.
 
-```text
+<div markdown="1" class="box-success">
+
 לכל עמימות, אימות שנכשל או החלטה שהתגלו במשימה זו: החלט אם עליהם להפוך
 לארטיפקט קבוע של ה־harness — acceptance criterion, decision record,
 שדה בתבנית משימה, פקודת אימות או תנאי עצירה. הצע את העדכון המדויק וקשר
 אותו לראיות במאגר. אל תשנה בשקט את המפרט כדי שיתאים למימוש.
-```
+
+</div>
 
 ### יתרון מרכזי
 
@@ -483,12 +487,14 @@ flowchart LR
 
 כאשר אותה עמימות, חסם או בדיקה איטית חוזרים, הבעיה אינה רק במשימה הבודדת אלא ב־harness של הלולאה. בקשו מהסוכן לשמר את הלמידה בקובץ state או בתבנית task, כך שהאיטרציה הבאה לא תגלה אותה מחדש.
 
-```text
+<div markdown="1" class="box-success">
+
 בסוף כל איטרציה, זהה חיכוך חוזר בלולאה: משימה עמומה, אימות חסר, הנחיה
 מיושנת, פקודה flaky או תנאי עצירה לא מועיל. הצע שינוי קטן ב־`TASKS.md`,
 ב־`SPEC.md` או בפרומפט האיטרציה. יישם רק שינויים תחומים, ניתנים לביקורת
 ולאימות.
-```
+
+</div>
 
 <details markdown="1"><summary>דוגמה בטוחה ומוגבלת</summary>
 
@@ -608,12 +614,14 @@ Run the required commands and verify the final diff.
 
 אם reviewer מגלה שוב ושוב אותו סוג של פער, אין די בתיקון patch נקודתי. בקשו ממנו להציע בדיקת static analysis, כלל review, test template או checklist שישמרו את הלקח עבור סוכנים ומפתחים עתידיים.
 
-```text
+<div markdown="1" class="box-success">
+
 לכל ממצא מאומת, סווג אם מדובר בפגם חד־פעמי או בראיה לפער ב־harness. עבור
 classes חוזרים, הצע guardrail מונע כגון תבנית בדיקה, כלל linter, פריט
 ב־checklist של review או פקודת אימות. קשר כל הצעה לראיות; אל תוסיף תהליך
 עבור רעש מבודד.
-```
+
+</div>
 
 <details markdown="1"><summary>שימוש ב־Codex וב־subagents</summary>
 
@@ -697,12 +705,14 @@ flowchart LR
 
 כאן שאלת השיפור אינה אופציונלית: בכל שינוי במוצר או בהתנהגות הסוכן, שאלו מה צריך למדוד, לשמר ולהשוות בפעם הבאה. דרשו שינוי אחד ב־harness בכל איטרציה — או נימוק מבוסס מדוע לא נדרש שינוי כזה.
 
-```text
+<div markdown="1" class="box-success">
+
 עבור בקשה זו, הפרד בין התנהגות המוצר להתנהגות ה־harness. ציין איזה eval,
 trace, metric, אימות, כלל routing או תצפית יש להוסיף או לשנות, כך שאיטרציות
 עתידיות יוכלו לזהות הצלחה ו־regression. שנה ממד אחד של harness בכל פעם
 והשווה מול ה־baseline.
-```
+
+</div>
 
 ### דוגמה
 
@@ -793,12 +803,14 @@ When a generated case fails:
 
 קלט שנוצר ושובר את המערכת הוא נכס ל־harness. בקשו מהסוכן להחליט אם הכשל חושף property חסר, generator צר מדי, seed שאינו נשמר או shrinker שאינו מסביר את הבעיה — ולהוסיף את הידע כך שהכשל הבא יהיה זול יותר לאבחון.
 
-```text
+<div markdown="1" class="box-success">
+
 עבור כל counterexample ממוזער, בדוק אם ה־harness צריך לשמור דוגמת regression,
 property חזק יותר, כיסוי generator רחב יותר, seed קבוע או diagnostics טובים
 יותר לכשל. הצע את השיפור הקבוע הקטן ביותר והסבר איזה מצב כשל עתידי הוא הופך
 לנצפה.
-```
+
+</div>
 
 <details markdown="1"><summary>Metamorphic Testing</summary>
 
@@ -873,11 +885,13 @@ Do not:
 
 לולאת repair שמטפלת שוב באותו class של תקלות היא סימן ל־harness חסר. בקשו מהסוכן לעדכן את מנגנון הסיווג, בדיקת preflight, הכלי לאיסוף לוגים או תנאי העצירה — רק כאשר הראיות מצביעות על דפוס חוזר.
 
-```text
+<div markdown="1" class="box-success">
+
 כאשר class של כשל חוזר, הצע שינוי מניעה אחד ב־harness: סיווג כשל טוב יותר,
 בדיקת preflight, איסוף לוגים, בדיקת regression או כלל escalation. ציין את
 סף הראיות לאימוץ השינוי; אל תוסיף retries או תסתיר שגיאות כתחליף לאבחון.
-```
+
+</div>
 
 הגבלת מספר ההשערות חשובה. בלי limit, agent יכול להמשיך לשנות קוד באופן אקראי.
 

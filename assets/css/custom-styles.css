@@ -247,6 +247,11 @@ details > summary {
     line-height: 1.1;
 }
 
+.english {
+    direction: ltr;
+    text-align: left;
+}
+
 
 pre {
     direction: ltr !important;
@@ -1023,6 +1028,25 @@ mark {
   unicode-bidi: embed;
 }
 
+/* Double labels in flowcharts without applying the rule twice to nested nodes. */
+.mermaid svg:not(.classDiagram) text,
+.mermaid svg:not(.classDiagram) .nodeLabel,
+.mermaid svg:not(.classDiagram) .nodeLabel * {
+  font-size: 32px !important;
+}
+
+/* Keep flowchart edge labels legible after SVG scaling. */
+.mermaid svg:not(.classDiagram) .edgeLabel,
+.mermaid svg:not(.classDiagram) .edgeLabel * {
+  font-size: 32px !important;
+}
+
+/* Class diagrams are dense; retain Mermaid's default typography and geometry. */
+.mermaid svg.classDiagram,
+.mermaid svg.classDiagram * {
+  font-size: 16px !important;
+}
+
 /* Additional arrow targeting for dark mode */
 .mermaid .arrowheadPath {
   fill: none !important;
@@ -1036,6 +1060,7 @@ mark {
 .mermaid marker path {
   fill: none !important;
   stroke: var(--text-col) !important;
+  stroke-width: 2px !important;
 }
 .mermaid defs marker path {
   fill: none !important;

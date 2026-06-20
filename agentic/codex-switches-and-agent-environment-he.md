@@ -9,6 +9,9 @@ date: 2026-06-17
 
 > המסמך מעודכן ל־17 ביוני 2026. פקודות Codex משתנות בין **Codex App**, תוסף ה־**IDE** וה־**CLI**, ולכן חשוב לא להניח שכל פקודה זמינה בכל ממשק.
 
+{: .box-success}
+ב־**Codex Desktop** ובתוסף **Codex ל־VS Code**, הקלידו `/` בתוך שדה ההודעה. מיד תיפתח רשימה של הפקודות הזמינות כרגע בממשק ובחשבון שלכם, עם משמעות כל פקודה; אפשר להמשיך להקליד כדי לסנן אותה. זו הדרך המהירה והאמינה לבדוק אילו switches זמינים בפועל, במקום להסתמך על רשימה ישנה במסמך.
+
 ## 1. שלוש שכבות שכדאי להפריד ביניהן
 
 בעבודה מסודרת עם Codex יש שלושה סוגי מידע:
@@ -23,19 +26,31 @@ date: 2026-06-17
 
 # חלק א: פקודות Slash שימושיות
 
-## 2. Codex App
+## 2. Codex App 
 
-אלה הפקודות המתועדות כיום ב־Codex App:
+אלה הפקודות הזמינות כיום ב־Codex App Beta נכון ל-20/6/26
 
-| פקודה | שימוש |
-|---|---|
-| `/plan` | מעבר למצב תכנון לפני ביצוע משימה מורכבת. |
-| `/goal` | הגדרת יעד מתמשך. מומלץ לתכנן קודם באמצעות `/plan`. |
-| `/review` | בקשת סקירת קוד או שינויים. |
-| `/status` | הצגת מצב הסשן והסביבה. |
-| `/init` | יצירת תשתית התחלתית של `AGENTS.md`. |
-| `/mcp` | הצגת חיבורי MCP זמינים. |
-| `/feedback` | שליחת משוב על Codex. |
+{: .table-en}
+
+| Command     | Description                                                            |
+| ----------- | ---------------------------------------------------------------------- |
+| Code review | Review unstaged changes or compare against a branch                    |
+| Compact     | Compact this thread's context (39% full)                               |
+| Fast        | 1.5x speed, increased usage                                            |
+| Feedback    | Send feedback about this chat                                          |
+| Fork        | Fork this chat into local or a new worktree                            |
+| Goal        | Set a goal that Codex will keep working towards                        |
+| IDE context | Include current selection, open files, and other context from your IDE |
+| Init        | Create an `AGENTS.md` file with instructions for Codex                 |
+| MCP         | Show MCP server status                                                 |
+| Memories    | Generate on                                                            |
+| Model       | GPT-5.5                                                                |
+| Personality | Choose how Codex responds                                              |
+| Pet         | Wake or tuck away the desktop pet                                      |
+| Plan mode   | Turn plan mode on                                                      |
+| Reasoning   | High                                                                   |
+| Side        | Start a side conversation in an ephemeral fork. **The only one that's not in the VSCode extension**        |
+| Status      | Show chat id, context usage, and rate limits                           |
 
 דוגמה:
 
@@ -56,33 +71,9 @@ date: 2026-06-17
 /goal Implement password recovery according to the approved plan.
 ```
 
-## 3. תוסף Codex ל־IDE
+## 3. תוסף Codex לVSCode - זהה לחלוטין פרט ל-1
 
-בתוסף ה־IDE רשימת הפקודות שונה. בין הפקודות המתועדות:
-
-| פקודה | שימוש |
-|---|---|
-| `/auto-context` | שליטה באיסוף הקשר אוטומטי מה־IDE. |
-| `/local` | מעבר לביצוע מקומי. |
-| `/cloud` | שליחת משימה לענן. |
-| `/cloud-environment` | בחירת סביבת ענן. |
-| `/review` | סקירת שינויים. |
-| `/status` | מידע על הסשן. |
-| `/goal` | הגדרת יעד מתמשך, כאשר הפקודה זמינה בחשבון ובגרסה. |
-| `/feedback` | משוב. |
-
-נכון למועד כתיבת המסמך, `/plan` אינו מופיע בטבלת הפקודות הרשמית של תוסף ה־IDE. אפשר עדיין לבקש במפורש:
-
-```text
-לפני כתיבת קוד, עבור על המאגר והחזר תוכנית בלבד.
-אל תשנה קבצים עד שהתוכנית כוללת:
-- קבצים שיושפעו
-- סיכונים
-- בדיקות
-- תנאי סיום
-```
-
-## 4. Codex CLI
+## 4. Codex CLI (לא ניסיתי)
 
 ב־CLI יש יותר פקודות. אלה השימושיות ביותר לעבודה יומיומית:
 
@@ -129,6 +120,8 @@ date: 2026-06-17
 ```
 
 ### מתי להשתמש ב־`/compact`
+
+אני מציע KIS. קודקס יעשה compact כשצריך. ההחלטה החשובה שלכם היא מתי להתחיל פרומפט אחר.
 
 השתמש ב־`/compact` כאשר:
 

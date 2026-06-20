@@ -15,7 +15,7 @@ lang: he
 **הערות לסרטון:**
 
 - [האתר שנולד בפרומפט הזה נמצא כאן](https://vibe180326.vercel.app/)
-- ה-deployment בוצע בפקודה לאייג'נט שיעשה deploy ל-vercel בתוספת הבהרה שאני לא מכיר את התהליך אבל יש לי חשבון. האייג'נט ביצע ואני רק התקבשתי לאשר login - לתת כמה ספרות.
+- ה-deployment בוצע בפקודה לאייג'נט שיעשה deploy ל-vercel בתוספת הבהרה שאני לא מכיר את התהליך אבל יש לי חשבון. האייג'נט ביצע ואני רק התבקשתי לאשר login - לתת כמה ספרות.
 
 
 
@@ -75,6 +75,24 @@ Harness הוא הרתמה שמחזיקה את ה־agent בתוך מסלול עב
 
 {: .box-success}
 אם ה־agent הוא "עובד", ה־harness הוא מערכת העבודה. בהוראה, אנחנו מלמדים לא רק את העובד אלא את מערכת העבודה סביבו.
+
+### דוגמת Prompt: תוצר מיידי וגם שיפור של ה־harness
+
+לא כל פרומפט צריך לבקש רק שינוי בעמוד או בקוד. אפשר לבקש גם שהתוצאה תלמד את הסוכן ואת המאגר כיצד לבצע את אותה עבודה טוב יותר בפעם הבאה.
+
+<div markdown="1" class="box-success">
+
+**דוגמת פרומפט בגישת Harness Engineering:**
+<div markdown="1" class="english">
+
+1. Write line 188 in English.
+2. In some places in your edit you used `text` code fences when a correct approach would be to use one of the design classes `box-note`, `box-success`, `box-warning`, or `box-error`. For a section rather than a one-liner, use a `div` wrapper instead of the short `{: .box-note}` syntax.
+3. Update `AGENTS.md` with this preference regarding important content highlighting and keeping it interesting and visually appealing.
+</div>
+
+הבקשה הראשונה משפרת תוצר קיים. השנייה משפרת את דרך ההצגה. השלישית הופכת את הלקח לכלל קבוע ב־harness, כך שהסוכן הבא יתחיל מנקודת פתיחה טובה יותר.
+
+</div>
 
 ## Harness - הגדרה סובייקטיבית שלי - דוגמא מפרוייקט
 

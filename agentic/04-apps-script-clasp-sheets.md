@@ -33,15 +33,29 @@ Apps Script עם clasp ו־agent:
 repo מקומי -> agent עורך קוד -> tests / lint -> git diff -> clasp push -> בדיקה ב-Sheets
 ```
 
+## הכנת פרוייקט
+
 ```mermaid
 flowchart LR
     A["Google Sheet"] --> B["Apps Script project"]
     B --> C["clasp pull"]
     C --> D["Local repo"]
-    D --> E["Agent edits"]
-    E --> F["Git diff"]
-    F --> G["clasp push"]
+    D --> E["share on github"]
+```
+
+## עבודה שוטפת
+
+```mermaid
+flowchart LR
+    D["Open local project"]
+    D --> X["User prompt"]
+    X --> E["Agent edits"]
+    E --> F["Git Commit & Sync"]
+    E --> G["clasp push"]
+    F --> G
     G --> H["Manual / automated check"]
+    H --> |agentic loop| E
+    H --> |user workflow| X
 ```
 
 ## התקנה מלאה למורים / תלמידים ב-Windows
