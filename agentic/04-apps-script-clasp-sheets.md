@@ -47,8 +47,7 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    D["Open local project"]
-    D --> X["User prompt"]
+    X["User prompt"]
     X --> E["Agent edits"]
     E --> F["Git Commit & Sync"]
     E --> G["clasp push"]

@@ -1032,19 +1032,28 @@ mark {
 .mermaid svg:not(.classDiagram) text,
 .mermaid svg:not(.classDiagram) .nodeLabel,
 .mermaid svg:not(.classDiagram) .nodeLabel * {
-  font-size: 32px !important;
+  font-size: 2rem !important;
 }
 
 /* Keep flowchart edge labels legible after SVG scaling. */
 .mermaid svg:not(.classDiagram) .edgeLabel,
 .mermaid svg:not(.classDiagram) .edgeLabel * {
-  font-size: 32px !important;
+  font-size: 2rem !important;
 }
 
 /* Class diagrams are dense; retain Mermaid's default typography and geometry. */
 .mermaid svg.classDiagram,
 .mermaid svg.classDiagram * {
-  font-size: 16px !important;
+  font-size: 1rem !important;
+}
+
+/* Protect dense UML diagrams while Mermaid calculates their SVG dimensions. */
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) text,
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) .nodeLabel,
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) .nodeLabel *,
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) .edgeLabel,
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) .edgeLabel * {
+  font-size: 1rem !important;
 }
 
 /* Additional arrow targeting for dark mode */
