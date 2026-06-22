@@ -1178,6 +1178,28 @@ mark {
     margin: 0 0 0.5em 0;
     color: var(--text-col);
 }
+.quiz-question-visual-layout {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.75fr) minmax(280px, 1.25fr);
+    align-items: start;
+    gap: 1em;
+    margin-bottom: 1em;
+}
+.quiz-question-summary {
+    min-width: 0;
+}
+.quiz-question-visual-layout .quiz-tags,
+.quiz-question-visual-layout .quiz-prompt {
+    margin-bottom: 0;
+}
+.quiz-question-visual-layout .quiz-prompt-html svg {
+    max-width: 100%;
+}
+@media (max-width: 760px) {
+    .quiz-question-visual-layout {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* Tags */
 .quiz-tags {
