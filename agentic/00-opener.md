@@ -13,10 +13,10 @@ lang: he
 
 {: .box-note}
 
-בסדנה זו, `Agent` הוא ==codex== or ==claude code== or ==chat==. אלו פלגינים ל-vscode וגם אפליקציות נפרדות. אנחנו נעבוד עם codex ומי שמנוסים ב-claude or copilot יעבדו איתם.
+בסדנה זו, `Agent` הוא coding agent, כגון ==codex== or ==claude code== or ==chat==. אלו פלגינים ל-vscode וגם אפליקציות נפרדות. אנחנו נעבוד עם codex ומי שמנוסים ב-claude or copilot יעבדו איתם.
 
 {: .box-error}
-הקושי בסדנה שלנו: בשעתיים אפשר בעיקר לראות את הכח שיש כיום ל-Agent לעשות הכל, והדרך היא להראות דוגמאות ל- `one shot prompt` שמגיע רחוק. זה יוצר **פרוייטק עם אורך חיים מוגבל.** האתגר הוא לעבור ל- harness mindset, באופן שיאפשר לבנות מוצר שניתן להגדיל ולגדול איתו בלי שהכל מתפרק.
+**הקושי בסדנה שלנו:** בשעתיים אפשר בעיקר לראות את הכח שיש כיום ל-**Agent** לעשות הכל, והדרך היא להראות דוגמאות ל- `one shot prompt` שמגיע רחוק. זה יוצר **פרוייטק עם אורך חיים מוגבל.** האתגר הוא לעבור ל- harness mindset, באופן שיאפשר לבנות מוצר שניתן להגדיל ולגדול איתו בלי שהכל מתפרק.
 
 {% include youtube.html id="LD0rePKLCyc" %}
 
@@ -24,7 +24,13 @@ lang: he
 **הערות לסרטון:**
 
 - [האתר שנולד בפרומפט הזה נמצא כאן](https://vibe180326.vercel.app/){:target="_blank"}
-- [הגיט כאן](https://github.com/3strategy/vibe180326){:target="_blank"}
+- [הגיט כאן](https://github.com/3strategy/vibe180326){:target="_blank"} קומיטס של 18/3 בשעות:
+  - 18:21 empty.
+  - 18:49 before spec (harness and infa only - to reach running site)
+  - 18:53 firebase RTDB
+  - 19:06 implement spec
+  - 19:40 (hebrew + OAuth)
+  - 19:57 (font)
 - ה-deployment בוצע בפקודה לאייג'נט שיעשה deploy ל-vercel בתוספת הבהרה שאני לא מכיר את התהליך אבל יש לי חשבון. האייג'נט ביצע ואני רק התבקשתי לאשר login - לתת כמה ספרות.
 
 
