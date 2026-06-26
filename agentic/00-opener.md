@@ -9,12 +9,22 @@ lang: he
 {: .box-success}
 **We are in a world where developers spend their days *==conversing with different agents, checking in on them, and seeing the work that they did.==***<br/>מעבר מ"שימוש בצ'אט" אל **ניהול עבודה הנדסית עם סוכנים**. הארכיטקט לא רק כותב פרומפט. הארכיטקט מגדיר סביבת עבודה, כללי בטיחות, בדיקות, תיעוד, משימות, ואופן בדיקה של התוצר.
 
+## מי זה ה-AGENT ומה עושים איתו?
+
+{: .box-note}
+
+בסדנה זו, `Agent` הוא ==codex== or ==claude code== or ==chat==. אלו פלגינים ל-vscode וגם אפליקציות נפרדות. אנחנו נעבוד עם codex ומי שמנוסים ב-claude or copilot יעבדו איתם.
+
+{: .box-error}
+הקושי בסדנה שלנו: בשעתיים אפשר בעיקר לראות את הכח שיש כיום ל-Agent לעשות הכל, והדרך היא להראות דוגמאות ל- `one shot prompt` שמגיע רחוק. זה יוצר **פרוייטק עם אורך חיים מוגבל.** האתגר הוא לעבור ל- harness mindset, באופן שיאפשר לבנות מוצר שניתן להגדיל ולגדול איתו בלי שהכל מתפרק.
+
 {% include youtube.html id="LD0rePKLCyc" %}
 
 ---
 **הערות לסרטון:**
 
-- [האתר שנולד בפרומפט הזה נמצא כאן](https://vibe180326.vercel.app/)
+- [האתר שנולד בפרומפט הזה נמצא כאן](https://vibe180326.vercel.app/){:target="_blank"}
+- [הגיט כאן](https://github.com/3strategy/vibe180326){:target="_blank"}
 - ה-deployment בוצע בפקודה לאייג'נט שיעשה deploy ל-vercel בתוספת הבהרה שאני לא מכיר את התהליך אבל יש לי חשבון. האייג'נט ביצע ואני רק התבקשתי לאשר login - לתת כמה ספרות.
 
 
@@ -49,8 +59,7 @@ lang: he
 
 ```mermaid
 flowchart LR
-    A["מורה / מפתח"] --> B["Prompt"]
-    B --> C["Agent"]
+    B["מפתח Prompt"] --> C["Agent"]
     C --> D["Codebase"]
     C --> E["Terminal"]
     C --> F["Browser / E2E"]
@@ -60,7 +69,7 @@ flowchart LR
     G --> J["Review"]
     H --> J
     I --> J
-    J --> K["Accept / Fix / Reject"]
+    J --> |"agentic loop: Accept / Fix / Reject"| C
 ```
 
 ## המונח: Harness Engineering כפי שהגדיר GPT5.5
@@ -74,7 +83,7 @@ Harness הוא הרתמה שמחזיקה את ה־agent בתוך מסלול עב
 - ניהול שינוי: Git, Pull Requests, checkpoints, review.
 
 {: .box-success}
-אם ה־agent הוא "עובד", ה־harness הוא מערכת העבודה. בהוראה, אנחנו מלמדים לא רק את העובד אלא את מערכת העבודה סביבו.
+אם ה־agent הוא "עובד", ה־harness הוא מערכת העבודה. בפרומפט, אנחנו מנחים את העובד ליצור, אך גם ליצור את סביבת העבודה שסביבו.
 
 ### דוגמת Prompt: תוצר מיידי וגם שיפור של ה־harness
 

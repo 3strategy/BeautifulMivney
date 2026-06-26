@@ -224,6 +224,11 @@ navbar-links:
     - 181 חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
     - 185 Firebase FBRef (חדש): "/android/projectSteps/185newFBref"
   - שונות:
+    - הכנה לבחינות:
+      - שאלות לדוגמה לבגרות והכנה: "/android/exam-prep/Exemplary Questions to Graduation & Preparation Exams.docx"
+      - מצגת הכנה לפני בחינה: "/android/exam-prep/prompts_before_exam.pptx"
+      - מצגת הכנה לבחינה - יוסי Y64: "/android/exam-prep/exam-prep-yossi-y64.pptx"
+      - שאלות שהמבדק עשוי לשאול: "/android/exam-prep/questions_tester_may_ask"
     - 14 BroadcastReceiver: "/android/alon/14.BroadCastReceiver.pdf"
     - 15 Fragments (מצגת): "/android/alon/15.Fragments.pptx"
     - 15b מדריך Fragments: "/android/alon/15b.FragmentsTutorial"
