@@ -1,17 +1,58 @@
-You are working in an empty folder. Create and publish a small, maintainable Hebrew educational website using Jekyll and GitHub Pages.
+---
+layout: page
+title: "03c One-shot GitHub Jekyll With Local WSL Bundle"
+subtitle: "GitHub Pages plus a working local WSL Jekyll server"
+tags: [agentic, github-pages, jekyll, wsl, prompt]
+lang: en
+---
 
-The objective is not merely to produce a page. Create a clean repository and publishing harness that a teacher can continue extending through Markdown.
+<style>
+main {
+  direction: ltr !important;
+  text-align: left !important;
+}
+</style>
+
+You are working in an empty folder that should become a full local-and-remote Jekyll teaching repository. Create and publish a small, maintainable Hebrew educational website using Jekyll and GitHub Pages.
+
+This is the advanced version of the workshop prompt. The objective is not merely to produce a page or rely only on GitHub Pages. Create a clean repository, a GitHub Pages deployment harness, and a working local WSL Jekyll harness that can be launched with:
+
+```bash
+bundle exec jekyll serve --port 4000
+```
+
+## Local WSL goal
+
+The local development goal is part of the definition of done.
+
+Set up the repository so that:
+
+* the project can be opened and edited as a normal repo;
+* the Jekyll dependencies are captured in the repo with a `Gemfile` and `Gemfile.lock`;
+* `bundle install` succeeds in WSL;
+* `bundle exec jekyll build` succeeds in WSL;
+* `bundle exec jekyll serve --port 4000` starts a working local server;
+* the local server renders the Hebrew pages, navigation, RTL styling, code blocks and internal links correctly.
+
+Prefer running WSL-dependent commands from an Ubuntu login shell when PATH or Ruby environment initialization may matter, for example:
+
+```powershell
+wsl.exe -d Ubuntu bash -lic "cd /path/to/repo && bundle exec jekyll serve --port 4000"
+```
+
+If port `4000` is already in use, try another explicit port such as `4001` and report the actual URL.
 
 ## Environment
 
 * Git is installed.
 * GitHub CLI (`gh`) is installed.
 * The user should already be authenticated with GitHub.
+* WSL Ubuntu is available and suitable for Ruby/Bundler/Jekyll work.
+* Ruby and Bundler may already be installed. If they are missing, install the smallest reasonable WSL-local dependencies needed to make the Jekyll harness work.
 * The repository name should be: `<REPOSITORY_NAME>`
 * Create the repository under the currently authenticated GitHub account.
 * The GitHub repository must be public because it will be hosted using GitHub Pages.
-* Do not install Ruby globally unless it is genuinely required.
-* Prefer building and deploying through GitHub Actions.
+* Build and deploy through GitHub Actions as well as supporting local WSL preview.
 
 ## Architecture
 
@@ -31,7 +72,7 @@ Do not:
 * depend on the theme's `main` branch;
 * add unrelated frameworks or JavaScript libraries.
 
-The repository should contain only the educational content, configuration, small local customizations, documentation and deployment harness.
+The repository should contain only the educational content, configuration, small local customizations, dependency files, documentation and deployment harness.
 
 ## Required site
 
@@ -54,6 +95,8 @@ Use suitable Jekyll front matter on every page.
 Create:
 
 * `_config.yml`
+* `Gemfile`
+* `Gemfile.lock`
 * `index.md`
 * `about.md`
 * the example lesson pages
@@ -72,13 +115,16 @@ Create:
 * that code and technical tokens remain LTR;
 * that theme source files must not be copied unnecessarily;
 * that no private student or school data may be committed;
-* that every meaningful change must leave the Pages build passing.
+* how to run the local WSL build and server;
+* that every meaningful change must leave both the local build and the GitHub Pages build passing.
 
 `README.md` should explain:
 
 * how to add a new Markdown lesson;
 * how navigation is controlled;
-* how to preview locally if Ruby and Bundler are available;
+* how to install dependencies in WSL with Bundler;
+* how to run `bundle exec jekyll build`;
+* how to run `bundle exec jekyll serve --port 4000`;
 * how GitHub Actions deployment works;
 * where to inspect a failed deployment;
 * how to change the pinned theme version deliberately;
@@ -109,9 +155,12 @@ Before finishing:
 * inspect `git status`;
 * confirm that no secrets or private data were added;
 * verify that the theme is pinned;
+* run `bundle exec jekyll build` successfully in WSL;
+* start `bundle exec jekyll serve --port 4000` successfully in WSL, or use another explicit port if needed;
+* inspect the local home page when tooling permits;
 * verify that the site builds successfully in GitHub Actions;
 * inspect the deployed home page when tooling permits;
-* confirm that internal links use the correct GitHub project-site base path;
-* report the repository URL, Pages URL, deployment status and any remaining manual step.
+* confirm that internal links work locally and on the GitHub project-site base path;
+* report the repository URL, local server URL, Pages URL, deployment status and any remaining manual step.
 
-Do not stop after merely generating files. The task is complete only when the repository has been pushed and the deployment result has been checked.
+Do not stop after merely generating files. The task is complete only when the local WSL server has been proven to run and the GitHub Pages deployment result has been checked.

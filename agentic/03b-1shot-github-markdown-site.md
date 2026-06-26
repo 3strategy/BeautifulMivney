@@ -1,16 +1,47 @@
-You are working in an empty folder. Create and publish a small, maintainable Hebrew educational website using Jekyll and GitHub Pages.
+---
+layout: page
+title: "03b One-shot GitHub Markdown Site"
+subtitle: "GitHub Pages only, without local WSL Jekyll"
+tags: [agentic, github-pages, jekyll, prompt]
+lang: en
+---
 
-The objective is not merely to produce a page. Create a clean repository and publishing harness that a teacher can continue extending through Markdown.
+<style>
+main {
+  direction: ltr !important;
+  text-align: left !important;
+}
+</style>
+
+You are working in an empty **Windows** folder. Create and publish a small, maintainable Hebrew educational website using Jekyll and GitHub Pages.
+
+The objective is not merely to produce a page. Create a clean repository and publishing harness that a teacher can continue extending through Markdown, with rendering handled by the actual GitHub Pages site.
+
+## Hard non-goals
+
+Do **not** try to make this project run locally through WSL, Ruby, Bundler or `bundle exec jekyll serve`.
+
+Specifically:
+
+* do not initialize or manage the workshop repository from WSL;
+* do not run `wsl`, `bundle`, `jekyll`, `ruby`, `gem` or `bundle exec jekyll serve`;
+* do not install Ruby, Bundler, Jekyll or Linux packages;
+* do not require a local preview server as part of the definition of done;
+* do not spend time fixing local WSL, filesystem, VS Code or Ruby environment problems.
+
+Reason: in a short teacher workshop, WSL Git permissions and local Ruby/Jekyll setup are too risky. The reliable path is: Windows folder -> GitHub repository -> GitHub Actions -> deployed GitHub Pages site.
+
+If you mention local preview in documentation, present it only as an optional advanced path for users who already have Ruby and Bundler working. It must not be required for this workshop prompt.
 
 ## Environment
 
+* Work in the current Windows folder.
 * Git is installed.
 * GitHub CLI (`gh`) is installed.
 * The user should already be authenticated with GitHub.
 * The repository name should be: `<REPOSITORY_NAME>`
 * Create the repository under the currently authenticated GitHub account.
 * The GitHub repository must be public because it will be hosted using GitHub Pages.
-* Do not install Ruby globally unless it is genuinely required.
 * Prefer building and deploying through GitHub Actions.
 
 ## Architecture
@@ -72,24 +103,25 @@ Create:
 * that code and technical tokens remain LTR;
 * that theme source files must not be copied unnecessarily;
 * that no private student or school data may be committed;
-* that every meaningful change must leave the Pages build passing.
+* that every meaningful change must leave the GitHub Pages build passing;
+* that local WSL/Bundler/Jekyll serving is not part of this workshop repository's required workflow.
 
 `README.md` should explain:
 
 * how to add a new Markdown lesson;
 * how navigation is controlled;
-* how to preview locally if Ruby and Bundler are available;
 * how GitHub Actions deployment works;
 * where to inspect a failed deployment;
 * how to change the pinned theme version deliberately;
-* that public visibility does not automatically define a reuse license for the teacher's original content.
+* that public visibility does not automatically define a reuse license for the teacher's original content;
+* that local preview with Ruby/Bundler is optional only for advanced users who already have that environment working, and is not required for the workshop.
 
 `THIRD_PARTY_NOTICES.md` must identify Just the Docs, its repository, the pinned version and its MIT license. Do not claim that the teacher's original content is MIT-licensed.
 
 ## GitHub and deployment
 
 1. Run `gh auth status`.
-2. Initialize Git with `main` as the default branch.
+2. Initialize Git with `main` as the default branch in the current Windows folder.
 3. Review all generated files before committing.
 4. Commit with a clear initial commit message.
 5. Create a new public GitHub repository using `gh repo create`.
@@ -114,4 +146,4 @@ Before finishing:
 * confirm that internal links use the correct GitHub project-site base path;
 * report the repository URL, Pages URL, deployment status and any remaining manual step.
 
-Do not stop after merely generating files. The task is complete only when the repository has been pushed and the deployment result has been checked.
+Do not stop after merely generating files. The task is complete only when the repository has been pushed and the deployment result has been checked on GitHub.
