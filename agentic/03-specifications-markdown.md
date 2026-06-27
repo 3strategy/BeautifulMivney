@@ -158,3 +158,15 @@ flowchart LR
 - [OpenAI AGENTS.md guide](https://developers.openai.com/codex/guides/agents-md)
 - [OpenAI Agent Skills](https://developers.openai.com/codex/skills)
 - [GitHub Pages and Jekyll front matter](https://docs.github.com/github/working-with-github-pages/about-github-pages-and-jekyll)
+
+
+## קישורים קשורים - אתר תוכן במארקדאון
+
+[פרומפט ליצירת אתר תוכן שכותבים במארקדאון וזמין לתלמידים ולמורים](/agentic/03b-1shot-github-markdown-site)
+
+[למתקדמים - אותו דבר - אך כולל יכולת הרצה גם על שרת מקומי לדיבוג](/agentic/03b-1shot-github-markdown-site)
+
+
+## ניקוי ה-markdown שלכם:
+
+![alt text](/assets/img/agentic/imageFixMDLinting.png)

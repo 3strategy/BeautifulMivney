@@ -250,6 +250,7 @@ details > summary {
 .english {
     direction: ltr;
     text-align: left;
+    padding-inline-start: 1.5em;
 }
 
 

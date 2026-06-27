@@ -8,7 +8,7 @@ lang: he
 
 
 {: .box-note}
-הרבה מורים כבר עובדים עם Google Sheets: ציונים, נוכחות, משימות, קבוצות, קישורים, מעקב הגשות. לכן Apps Script הוא גשר טבעי בין "כלי משרדי" לבין engineering.
+הרבה מורים כבר עובדים עם Google Sheets: ציונים, נוכחות, משימות, קבוצות, קישורים, מעקב הגשות, אוטומציות של google classroom. לכן **App Script** הוא ==גשר טבעי== בין "כלי משרדי" לבין Agentic Work (שלב בדרך ל- Agentic Engineering).
 
 {% include youtube.html id="Wzr-a2HS_B8" %}
 
@@ -22,7 +22,9 @@ lang: he
 
 | Apps Script רגיל בדפדפן | Apps Script עם clasp ו־agent|
 | --- | --- |
-| פותחים editor, כותבים קוד, מריצים ידנית | repo מקומי ⟶ agent עורך קוד ⟶ tests / lint ⟶ git diff ⟶ clasp push ⟶ בדיקה ב-Sheets |
+| פותחים appScript editor, כותבים או מעתיקים קוד, בודקים. אין אייג'נט ואין ניהול גרסאות | local repo ⟶ agent writes ⟶ tests / lint ⟶ clasp push ⟶ Sheets-בדיקה ב- ⟶ git commit push ⟶ user loop |
+
+![אינפוגרפיקה](/assets/img/agentic/clasp-flow-image-from-6a3f3e20-eee0-83eb-adc2-4766ebbbcf69.png)
 
 ## הכנת פרוייקט
 
@@ -38,22 +40,26 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    X["User prompt"]
-    X --> E["Agent edits"]
-    E --> F["Git Commit & Sync"]
+    X["User prompt"] --> E["Agent edits"]
+
     E --> G["clasp push"]
-    F --> G
-    G --> H["Manual / automated check"]
-    H --> |agentic loop| E
-    H --> |user workflow| X
+    G --> H["Test in Google Sheets"]
+
+    H --> D{"Works correctly?"}
+
+    D -->|No| E
+    D -->|Yes| F["Git commit & sync"]
+
+    F --> X
 ```
 
 ## התקנה מקוצרת - בעזרת ה-AGENT
-כיוון שעבר הרבה זמן מאז שניסחתי את אוסף הפקודות בהמשך הדף אמרתי לעצמי שאפשר לנסות לתת ל-Agent לעשות הכל
+
+כיוון שעבר הרבה זמן מאז שניסחתי את אוסף הפקודות בהמשך הדף אמרתי לעצמי שאפשר לנסות לתת ל-Agent לעשות הכל (חלק מהלמידה - לנסות **לפרוץ גבולות**)
 
 <details markdown="1" ><summary>זה הפרומפט שנתתי לו כדי לבנות harness ולא סתם עוד סקריפט</summary>
 
-<div class="english" markdown="1">
+<div class="english box-note" markdown="1">
 I want you to setup a clasp project from scratch:
 
 - this project's folder is empty,
@@ -75,9 +81,19 @@ Capabilities such as classroom interaction, google contacts interaction, calenda
 
 also, I intend to repeat this process with teachers I'll teach. If there's a better shorter promt that will achieve what we are doing here, give it to me as Starter.md as part of your output.
 
-Previously I intended to teach this thoroghly using the content I prepared here: \\wsl.localhost\Ubuntu\home\stra\repos\BeautifulMivney\agentic\04-apps-script-clasp-sheets.md but now, I have doubts and think Codex is simply capable of just doing this setup all on its own. In that sense, this prompt is also an agentic test.
+Previously I intended to teach this thoroghly using the content I prepared here: \\wsl.localhost\Ubuntu\home\stra\repos\BeautifulMivney\agentic\04-apps-script-clasp-sheets.md but now, I have doubts and **think Codex is simply capable of just doing this setup all on its own.** In that sense, this prompt is also an agentic test.
 </div>
 
+</details>
+
+<details open markdown="1" ><summary>התוצאה -starter.md</summary>
+
+<div class="english box-success" markdown="1">
+
+Create a new library-first Google Apps Script clasp harness from an empty folder.
+
+Use one standalone Apps Script project as the reusable library, one initial Google Sheet with a bound harness script, and one private GitHub repo for backup. Put reusable code in `library/`, Sheet-bound demo code in `harness/`, add README/AGENTS/Starter docs, keep scopes minimal, avoid real student data, push both clasp projects only after showing the diff, then create the first git commit and push to GitHub.
+</div>
 </details>
 
 <details markdown="1"><summary>דוגמא לפרומפט המשך</summary>
@@ -88,11 +104,11 @@ Previously I intended to teach this thoroghly using the content I prepared here:
 
 יש לגישה כזו מחירים יקרים ב-quota. במצב של מצוקה ב-quota ההתנהלות תהיה שונה לגמרי, ואשתדל לעשות מה שקל לי לעשות בעצמי, ולהשאיר לאייג'נט מה שבאמת יכול לעזור לי. הפרומפט הורץ ב-high. לגבי רמת המאמץ - בוחרים לפי אינטואיציה ונסיון.
 
-{: .english}
+{: .english .box-note}
 
 1. Create a new gogole workbook called `מאסטר 26`, with sheets יוד, יא, יב, מחיקות, פרטי, השתלמות1, מבחנים, מחיקות and attach it to the library.
 2. Port into the library the "1.add contacts" functionality from [https://docs.google.com/spreadsheets/d/1TwbWgoj6WBMOA4vUyfU4Imyhf8A_zX5U-AYukhnvo7w/edit?gid=0#gid=0](https://docs.google.com/spreadsheets/d/1TwbWgoj6WBMOA4vUyfU4Imyhf8A_zX5U-AYukhnvo7w/edit?gid=0#gid=0) that handles contacts.
-3. Add `contact pre-verifier` (qualifier) that checks if the sheet includes columns W X Y Z AA containing מגמה,	תאריך עליה,	פנימיה,	מחנך,	טלפון מחנך headers in row 3. If missing the verifier will pop and alert (asking the user to export or otherwise provide the info),and the script will add these columns manually. Verifier should also check sheet is active on user 3strategy since all my contacts are manage through this account.
+3. Add `contact pre-verifier` (qualifier) that checks if the sheet includes columns W X Y Z AA containing מגמה, תאריך עליה, פנימיה, מחנך, טלפון מחנך headers in row 3. If missing the verifier will pop and alert (asking the user to export or otherwise provide the info),and the script will add these columns manually. Verifier should also check sheet is active on user 3strategy since all my contacts are manage through this account.
 4. If needed, modify `add contacts` so that the contacts are added without address and without birthday (I believe this is already the case there)
 5. Modify `add contacts` so that (as much as supported by google) you'll add the fields מחנך from Z and טלפון מחנך from AA to the contact.
 6. Make sure add contacts tries to update and not creating duplicates for nothing. This should already be the case.
@@ -100,7 +116,9 @@ Previously I intended to teach this thoroghly using the content I prepared here:
 8. Add a `remove birdthday` that removes a birthday from selected contact row(s) from the respective google contact(s).
 9. You may write a fake data in row 4 of sheet יוד for testing your added functionality (if you think you can activate playwright or playwright cli on the menu functions you created). If not, I'll test, but alternatively you may try to fire the functions directly, headless (if that's even possible in google appscript)
 
-![alt text](image.png)
+#### התוצאה
+
+![alt text](/assets/img/agentic/image.png)
 
 **סיים אחרי 13 דקות כשהוא מציג לינקים פעילים שגם נוספו ל-README.**
 
@@ -109,14 +127,14 @@ Previously I intended to teach this thoroghly using the content I prepared here:
 - 5h from 84% ⟶ 59%
 - weekly from 98% ⟶ 94%
 
-![alt text](image-1.png)
+![alt text](/assets/img/agentic/image-1.png)
 
 **קצת הרגלים ישנים שפתאום מיותרים?!**
 קודקס כבר דחף לגוגל
-![alt text](image-2.png)
+![alt text](/assets/img/agentic/image-2.png)
 
 ועוד הרגלים ישנים (ניהול גרסאות) שעליהם אני לא מוותר
-![alt text](image-3.png)
+![alt text](/assets/img/agentic/image-3.png)
 
 </details>
 
@@ -197,6 +215,8 @@ SubmissionProcessor/
 ```
 
 ## פקודות עבודה כלליות
+
+{: .table-eh}
 
 | פקודה | שימוש |
 |---|---|
@@ -296,26 +316,48 @@ This repo contains Google Apps Script code managed with clasp.
 
 ## דוגמת משימה למורה
 
-```text
+הדוגמאות שכתבה הבינה לא מוצלחות כלל ולא מייצגות את המציאות.
+זה שוב מוכיח **שצריך פשוט לעבוד** עם הכלים כדי לראות מה כן...
+
+<details><summary>דוגמאות לא מוצלחות לפרומפט</summary>
+
 הפרויקט המקומי מחובר ל-Apps Script דרך clasp.
 קרא את Code.js ואת ClassroomIntegration.js.
 הוסף יכולת קטנה לעיבוד submissions.
 לפני שינוי הרץ clasp pull.
 אחרי שינוי הצג git diff.
 אל תריץ clasp push לפני שסיכמת לי מה השתנה.
-```
 
-דוגמה ממוקדת יותר:
+**דוגמה ממוקדת יותר:**
 
-```text
 הוסף פונקציה שמכינה משוב LLM לכל submission.
 הפונקציה תקבל נתוני submission ותייצר אובייקט feedback.
 אל תקרא ל-API אמיתי עדיין.
 כתוב פונקציית helper טהורה שאפשר לבדוק עם sample data.
 בסוף תן לי פקודות clasp/git להמשך.
-```
+
+</details>
+
+### דוגמא לפרומפט אמיתי - מתעסק בעיקר בפונקציונליות
+
+<div markdown ="1" class="english box-note">
+
+I tried creating a draft assignment with 1 question and got an error:
+
+Error: Failed to detect created response sheet in workbook 1VKk_1tGXFblnVNpwQvONJiLIjll_hhtUlYA6u3M for form 1cYNsDWfKH3TwIrb_JIZ2OMIeAfkdA_CIPgaT0-8g.
+
+No assignment is in the classroom, which is a pitty (not resilient enough. I would prefer if an assignment was created even with this error, so I can patch up the assignment).
+
+The form was created ok with the name Forms18.2.1.06. creating a response sheet and attaching to the main google workbook is secondary to completion of the classroom creation.
+
+Fix this.
+</div>
 
 ## מה חשוב ללמד
+
+חלק מה"נושאים" להלן כבר פחות חשובים מפני שה-AGENT יכול לסייע גם בהתקנות. חשוב להבין את ה-flow של העבודה.
+
+{: .table-eh}
 
 | נושא | למה הוא חשוב |
 |---|---|
@@ -323,21 +365,23 @@ This repo contains Google Apps Script code managed with clasp.
 | `npm i -g @google/clasp` | התקנת כלי הסנכרון |
 | `clasp login` | הרשאת גישה לחשבון Google |
 | `clasp pull` לפני עבודה | לא לדרוס קוד שנערך בדפדפן |
-| `clasp push` אחרי review | לא לשלוח קוד לא בדוק |
+| `clasp push` אחרי review | לא לשלוח קוד לא בדוק. **כן לשלוח. הבדיקה הכי חשובה היא מתוך sheets. תדאגו רק שיהיה לכם איך לבדוק** |
 | `.clasp.json` | קישור ל־scriptId, לא לערבב פרויקטים |
 | `appsscript.json` | הרשאות, timezone, runtime |
 | `gh auth login` | חיבור נוח ליצירת repo ודחיפה |
 | sample data | להגן על פרטיות תלמידים |
-{: .tabl-rl}
 
 ## נקודות זהירות
 
 - לא להכניס שמות תלמידים או מזהים אמיתיים לפרומפטים.
+
+### נקודות זהירות לא רלוונטיות שהבינה העלתה
+
 - לא להעלות `.clasp.json` אם מדיניות בית הספר לא מאפשרת חשיפת scriptId.
-- לא לתת ל־agent הרשאה חופשית למחוק deployments.
-- לא לדחוף בלי `git diff`.
+- לא לתת ל־agent הרשאה חופשית למחוק deployments. אני מניח שהוא המציא את זה מפרוייקטים אמיתיים של אנשים ולא מפרוייקט sheets.
+- לא לדחוף בלי `git diff`. זה הופך לפחות ופחות משמעותי. היכולות של ה-Agent מספיק טובות כדי שבסביבה עם source control ניתן יהיה לסמוך עליו. לפחות בפרוייטק של sheets. במקרה הכי גרוע חוזרים לאחור. מה שחשוב לכם זה לבדוק כל הזמן פונקציונליות. אם המימוש שביקשתם הוא משהו שאינכם יכולים לבדוק - אתם מתקדמים בחשיכה.
 - להעדיף פונקציות קטנות שמקבלות ערכים ומחזירות ערכים.
-- לא לבצע `clasp push` בלי לוודא שאתם מחוברים לפרויקט הנכון.
+- לא לבצע `clasp push` בלי לוודא שאתם מחוברים לפרויקט הנכון. אין שום דבר לוודא. אם התחלתם את התהליך נכון - הפרוייקט הלוקאלי מחובר לפרוייקט הנכון. הוא לא מכיר דבר אחר.
 
 ## מקורות
 
