@@ -9,7 +9,7 @@ lang: he
 {: .box-success}
 **We are in a world where developers spend their days ==conversing with different agents, checking in on them, and seeing the work that they did.==**<br/>מעבר מ"שימוש בצ'אט" אל **ניהול עבודה הנדסית עם סוכנים**. הארכיטקט לא רק כותב פרומפט. הארכיטקט מגדיר סביבת עבודה, כללי בטיחות, בדיקות, תיעוד, משימות, ואופן בדיקה של התוצר.
 
-## הזמנה לסדנה
+## הזמנה לסדנה {#id1invitation}
 
 <details open markdown="1" class="box-note"><summary>הזמנה</summary>
 **הי כולם**. ב-29/6 הסדנה שלנו על Agentic Engineering.
