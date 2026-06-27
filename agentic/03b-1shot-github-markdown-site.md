@@ -3,15 +3,29 @@ layout: page
 title: "03b One-shot GitHub Markdown Site"
 subtitle: "GitHub Pages only, without local WSL Jekyll"
 tags: [agentic, github-pages, jekyll, prompt]
-lang: en
+lang: he
 ---
 
-<style>
-main {
-  direction: ltr !important;
-  text-align: left !important;
-}
-</style>
+## דרישות קדם - חיבור ל-GitHub CLI
+
+**מתקינים:**
+
+```powershell
+winget install --id GitHub.cli -e
+```
+
+**מתחברים:**
+
+```powershell
+gh auth login
+```
+
+עכשיו אפשר לעבוד עם Git מקומי ו־GitHub מה־CLI. לא פחות חשוב: **גם לאייג'נט יותר קל לעבוד. עם `gh` מותקן ומאומת.** סוכנים כמו Claude Code ו-Codex יכולים לבדוק סטטוס של CI, ולתשאל issues/PRs ישירות מה-shell - בלי שתצטרך להעביר להם טוקן API בתוך ה-prompt. זה בעצם מרחיב להם את היכולות מעבר ל-git הבסיסי (commit/push/clone) לכל מה שדורש את ה-API של GitHub. שווה לבדוק שה-scopes שנבחרו ב-`gh auth login` מספיקים למה שתרצה שהסוכן יעשה.
+
+## פרומפט - one-shot ליצירת אתר מארקדאון חי וזמין לתלמידים
+
+
+<div markdown="1" class="english box-note">
 
 You are working in an empty **Windows** folder. Create and publish a small, maintainable Hebrew educational website using Jekyll and GitHub Pages.
 
@@ -105,6 +119,7 @@ Create:
 * that no private student or school data may be committed;
 * that every meaningful change must leave the GitHub Pages build passing;
 * that local WSL/Bundler/Jekyll serving is not part of this workshop repository's required workflow.
+* that agent can read the repo, but not commit/pull/push.
 
 `README.md` should explain:
 
@@ -147,3 +162,5 @@ Before finishing:
 * report the repository URL, Pages URL, deployment status and any remaining manual step.
 
 Do not stop after merely generating files. The task is complete only when the repository has been pushed and the deployment result has been checked on GitHub.
+
+</div>

@@ -245,7 +245,7 @@ winget install --id GitHub.cli -e
 gh auth login
 ```
 
-עכשיו אפשר לעבוד עם Git מקומי ו־GitHub מה־CLI.
+עכשיו אפשר לעבוד עם Git מקומי ו־GitHub מה־CLI. לא פחות חשוב **גם לאייג'נט יותר קל לעבוד. עם `gh` מותקן ומאומת,** סוכנים כמו Claude Code ו-Codex יכולים לפתוח PR-ים, לבדוק סטטוס של CI, ולתשאל issues/PRs ישירות מה-shell - בלי שתצטרך להעביר להם טוקן API בתוך ה-prompt. זה בעצם מרחיב להם את היכולות מעבר ל-git הבסיסי (commit/push/clone) לכל מה שדורש את ה-API של GitHub. שווה לבדוק שה-scopes שנבחרו ב-`gh auth login` מספיקים למה שתרצה שהסוכן יעשה.
 
 ## יצירת repo פרטי ב-GitHub ודחיפה ראשונה
 
