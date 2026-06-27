@@ -13,7 +13,8 @@
   {% endcapture %}
 
   {% capture title %}
-    {%- if site.title and site.title-on-all-pages and (site.title != pagetitle) -%}
+    {%- assign escaped_site_title = site.title | strip_html | xml_escape -%}
+    {%- if site.title and site.title-on-all-pages and (escaped_site_title != pagetitle) -%}
       {{ pagetitle }} | {{ site.title }}
     {%- else -%}
       {{ pagetitle }}
