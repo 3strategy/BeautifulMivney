@@ -636,6 +636,23 @@ td:has(i), th:has(i) {
   direction: rtl;
 }
 
+/* ehhh: English, Hebrew, Hebrew, Hebrew */
+.table-ehhh th:first-child,
+.table-ehhh td:first-child {
+  text-align: left;
+  direction: ltr;
+}
+
+.table-ehhh th:nth-child(2),
+.table-ehhh td:nth-child(2),
+.table-ehhh th:nth-child(3),
+.table-ehhh td:nth-child(3),
+.table-ehhh th:nth-child(4),
+.table-ehhh td:nth-child(4) {
+  text-align: right;
+  direction: rtl;
+}
+
 /* heeh: Hebrew, English, English, Hebrew */
 .table-heeh th:first-child,
 .table-heeh td:first-child,
