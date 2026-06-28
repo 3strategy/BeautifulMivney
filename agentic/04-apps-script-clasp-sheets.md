@@ -88,6 +88,9 @@ Previously I intended to teach this thoroghly using the content I prepared here:
 
 <details open markdown="1" ><summary>התוצאה -starter.md</summary>
 
+{: box-warning}
+הפרומפט הזה לא בדוק, ועל פניו נראה לי בעייתי בגלל הגנריות היתרה. הגדירו לעצמכם תחילה יעד פונקציונאלי - אפילו קטן, כגון, **שם של פקודה בתפריט, ומה היא תעשה**. דייקו את הדרישות. זו כנראה הזדמנות טובה להתחיל מ- **`/plan`**. don't take proposed prompts as is. **Don't just copy paste. OWN YOUR PROMPT.**
+
 <div class="english box-success" markdown="1">
 
 Create a new library-first Google Apps Script clasp harness from an empty folder.
@@ -108,7 +111,7 @@ Use one standalone Apps Script project as the reusable library, one initial Goog
 
 1. Create a new gogole workbook called `מאסטר 26`, with sheets יוד, יא, יב, מחיקות, פרטי, השתלמות1, מבחנים, מחיקות and attach it to the library.
 2. Port into the library the "1.add contacts" functionality from [https://docs.google.com/spreadsheets/d/1TwbWgoj6WBMOA4vUyfU4Imyhf8A_zX5U-AYukhnvo7w/edit?gid=0#gid=0](https://docs.google.com/spreadsheets/d/1TwbWgoj6WBMOA4vUyfU4Imyhf8A_zX5U-AYukhnvo7w/edit?gid=0#gid=0) that handles contacts.
-3. Add `contact pre-verifier` (qualifier) that checks if the sheet includes columns W X Y Z AA containing מגמה, תאריך עליה, פנימיה, מחנך, טלפון מחנך headers in row 3. If missing the verifier will pop and alert (asking the user to export or otherwise provide the info),and the script will add these columns manually. Verifier should also check sheet is active on user 3strategy since all my contacts are manage through this account.
+3. Add `contact pre-verifier` (qualifier) that checks if the sheet includes columns W X Y Z AA containing מגמה, תאריך עליה, פנימיה, מחנך, טלפון מחנך headers in row 3. If missing the verifier will pop and alert (asking the user to export or otherwise provide the info),and the script will add these columns manually. Verifier should also check sheet is active on user myUsertegy since all my contacts are manage through this account.
 4. If needed, modify `add contacts` so that the contacts are added without address and without birthday (I believe this is already the case there)
 5. Modify `add contacts` so that (as much as supported by google) you'll add the fields מחנך from Z and טלפון מחנך from AA to the contact.
 6. Make sure add contacts tries to update and not creating duplicates for nothing. This should already be the case.
@@ -259,11 +262,11 @@ git commit -m "version capable of LLM feedback on all submissions"
 יצירת repo מרוחק, הגדרת `origin`, ודחיפת הענף הנוכחי בפקודה אחת:
 
 ```powershell
-gh repo create 3strategy/AppScTalEng --private --source . --remote origin --push
+gh repo create myUsertegy/AppScTalEng --private --source . --remote origin --push
 ```
 
 {: .box-note}
-החליפו את `3strategy/AppScTalEng` בשם ה־GitHub organization/user וה־repo שלכם. לתרגול תלמידים מומלץ repo פרטי אם יש מידע רגיש או תוצרי בדיקה.
+החליפו את `myUsertegy/AppScTalEng` בשם ה־GitHub organization/user וה־repo שלכם. לתרגול תלמידים מומלץ repo פרטי אם יש מידע רגיש או תוצרי בדיקה.
 
 בהמשך העבודה:
 

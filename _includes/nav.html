@@ -29,13 +29,14 @@
                       <div class="dropdown-menu">
                         {%- for subchild in child_item -%}
                           {%- for subparts in subchild -%}
-                            <a class="dropdown-item" href="{{ subparts[1] | relative_url }}">{{ subparts[0] }}</a>
+                            {%- assign subchild_url = subparts[1] -%}
+                            <a class="dropdown-item" href="{% if subchild_url contains '://' %}{{ subchild_url }}{% else %}{{ subchild_url | relative_url }}{% endif %}"{% if subchild_url contains '://' %} target="_blank" rel="noopener"{% endif %}>{{ subparts[0] }}</a>
                           {%- endfor -%}
                         {%- endfor -%}
                       </div>
                     </div>
                   {%- else -%}
-                    <a class="dropdown-item" href="{{ child_item | relative_url }}">{{ child_text }}</a>
+                    <a class="dropdown-item" href="{% if child_item contains '://' %}{{ child_item }}{% else %}{{ child_item | relative_url }}{% endif %}"{% if child_item contains '://' %} target="_blank" rel="noopener"{% endif %}>{{ child_text }}</a>
                   {%- endif -%}
                 {%- endfor -%}
               {%- endfor -%}
@@ -43,7 +44,7 @@
           </li>
         {%- else -%}
           <li class="nav-item">
-            <a class="nav-link" href="{{ top_item | relative_url }}">{{ top_text }}</a>
+            <a class="nav-link" href="{% if top_item contains '://' %}{{ top_item }}{% else %}{{ top_item | relative_url }}{% endif %}"{% if top_item contains '://' %} target="_blank" rel="noopener"{% endif %}>{{ top_text }}</a>
           </li>
         {%- endif -%}
       {%- endfor -%}
