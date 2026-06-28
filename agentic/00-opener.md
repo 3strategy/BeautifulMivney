@@ -7,7 +7,7 @@ lang: he
 ---
 
 {: .box-success}
-**We are in a world where developers spend their days ==conversing with different agents, checking in on them, and seeing the work that they did.==**<br/>מעבר מ"שימוש בצ'אט" אל **ניהול עבודה הנדסית עם סוכנים**. הארכיטקט לא רק כותב פרומפט. הארכיטקט מגדיר סביבת עבודה, כללי בטיחות, בדיקות, תיעוד, משימות, ואופן בדיקה של התוצר.
+**We are in a world where developers spend their days ==conversing with different agents, checking in on them, and seeing the work that they did.==**<br/>מעבר מ"שימוש בצ'אט" אל **ניהול עבודה הנדסית עם סוכנים**. המהנדס לא רק כותב פרומפט. המהנדס מגדיר סביבת עבודה, כללי בטיחות, בדיקות, תיעוד, משימות, ואופן בדיקה של התוצר.
 
 ## הזמנה לסדנה {#id1invitation}
 
@@ -35,7 +35,7 @@ lang: he
 2. אתר Markdown/Jekyll שבו תוכלו ליצור תכניה הוראה הזמינים לתלמידים באתר (כמו אצלי למשל). יש שתי גרסאות - [למתחילים]({{ '/agentic/03b-1shot-github-markdown-site' | relative_url }}) ו[למתקדמים שכבר עובדים עם WSL/Bundler]({{ '/agentic/03c-1shot-github-jekyll-with-local-wsl-bundle' | relative_url }}).
 3. התנסות ב- one shot prompt for a project+git with a **full harness**, עם המשך ל-[Firebase]({{ '/agentic/08-firebase-first-prompt' | relative_url }}) ול-[live deployment]({{ '/agentic/05-hosting' | relative_url }}).
 
-המטרה שלי היא לא שתצאו עם "עוד כלי AI", אלא עם התנסות טובה בעבודה שבה אתם הארכיטקטים וה- agentעובד (קורא קבצים, כותב, מעדכן, מתקין, מריץ בדיקות, מציג ראיות).
+המטרה שלי היא לא שתצאו עם "עוד כלי AI", אלא עם התנסות טובה בעבודה שבה אתם המהנדסים וה- agentעובד (קורא קבצים, כותב, מעדכן, מתקין, מריץ בדיקות, מציג ראיות).
 
 כפי שכבר ביקשתי לפני מספר חודשים - **לא ניכנס לדיונים של "לאן פנינו" בחלון הזמנים של הסדנה.** ונשאיר זאת לארוחת הערב.
 

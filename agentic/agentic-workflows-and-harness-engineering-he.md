@@ -9,11 +9,11 @@ date: 2026-06-17
 
 מטרת המסמך היא לעבור מ־“תכתוב לי את הפיצ'ר” לעבודה שבה agent מקבל:
 
-- יעד ברור;
-- סביבת אימות;
-- לולאת משוב;
-- תנאי עצירה;
-- גבולות הרשאה;
+- יעד ברור,
+- סביבת אימות,
+- לולאת משוב,
+- תנאי עצירה,
+- גבולות הרשאה,
 - דרך מסודרת להסביר מה הושלם ומה עדיין מסוכן.
 
 המונחים באנגלית נשמרו כדי שיהיה קל לחפש חומר נוסף.
@@ -55,10 +55,10 @@ Testing level: T2 during implementation, T3 before completion.
 
 מתאים כאשר:
 
-- המשימה קטנה או בינונית;
-- הקוד הקיים מובן;
-- הסיכון נמוך;
-- יש harness קיים;
+- המשימה קטנה או בינונית,
+- הקוד הקיים מובן,
+- הסיכון נמוך,
+- יש harness קיים,
 - אין צורך לגלות דרישה עסקית חדשה.
 
 <details markdown="1"><summary>תבנית בסיסית לפרומפט ודוגמה</summary>
@@ -251,10 +251,10 @@ Done when:
 
 <details markdown="1"><summary>מתי לא לבחור Red–Green</summary>
 
-- refactor טהור שבו אין התנהגות חדשה;
-- שינוי תשתית ללא oracle ברור;
-- spike ניסויי;
-- UI חזותי שבו קודם צריך להגדיר מהי התוצאה הרצויה;
+- refactor טהור שבו אין התנהגות חדשה,
+- שינוי תשתית ללא oracle ברור,
+- spike ניסויי,
+- UI חזותי שבו קודם צריך להגדיר מהי התוצאה הרצויה,
 - מערכת שאין לה עדיין seam שניתן לבדוק — במקרה כזה לעיתים מתחילים ב־characterization tests.
 
 </details>
@@ -286,12 +286,12 @@ flowchart LR
 
 ### מתאים ל־
 
-- פירוק class גדול;
-- שינוי שמות;
-- מעבר בין ספריות עם אותה התנהגות;
-- שיפור ארכיטקטורה;
-- הסרת duplication;
-- שינוי פנימי לפני feature עתידי;
+- פירוק class גדול,
+- שינוי שמות,
+- מעבר בין ספריות עם אותה התנהגות,
+- שיפור ארכיטקטורה,
+- הסרת duplication,
+- שינוי פנימי לפני feature עתידי,
 - modernization הדרגתי.
 
 ### הלולאה
@@ -338,17 +338,17 @@ invariant או פקודת אימות מתועדת. השאר רק תוספות ש
 
 ```text
 Refactor the order-pricing service into:
-- discount policy;
-- tax calculation;
+- discount policy,
+- tax calculation,
 - total aggregation.
 
 Public behavior must remain identical.
 
 Use Green-to-Green:
-- first establish baseline results;
-- add characterization tests for boundary values and rounding;
-- extract one responsibility at a time;
-- compare outputs before and after;
+- first establish baseline results,
+- add characterization tests for boundary values and rounding,
+- extract one responsibility at a time,
+- compare outputs before and after,
 - stop if an output change is discovered.
 
 Testing level:
@@ -401,12 +401,12 @@ flowchart LR
 
 ### מתאים כאשר
 
-- המשימה חוצה כמה שירותים;
-- יש migration;
-- קיימת עמימות עסקית;
-- כמה agents או מפתחים עובדים במקביל;
-- נדרש rollout;
-- ה־API ציבורי;
+- המשימה חוצה כמה שירותים,
+- יש migration,
+- קיימת עמימות עסקית,
+- כמה agents או מפתחים עובדים במקביל,
+- נדרש rollout,
+- ה־API ציבורי,
 - אי אפשר להחזיק את כל ההחלטות בצ'אט.
 
 ### דוגמה
@@ -415,17 +415,17 @@ flowchart LR
 Read docs/specs/team-invitations.md.
 
 First:
-- identify contradictions, missing acceptance criteria, and open questions;
+- identify contradictions, missing acceptance criteria, and open questions,
 - do not implement unresolved product decisions.
 
 Then:
-- produce an implementation plan mapped to repository paths;
-- split the plan into independently verifiable tasks;
+- produce an implementation plan mapped to repository paths,
+- split the plan into independently verifiable tasks,
 - attach a test level and stop condition to each task.
 
 During implementation:
-- update the task list only when its validation passes;
-- preserve the specification as the source of truth;
+- update the task list only when its validation passes,
+- preserve the specification as the source of truth,
 - record deviations under "Decisions".
 ```
 
@@ -473,9 +473,9 @@ Open questions
 **Ralph Loop** או **Ralph Wiggum Loop** הוא דפוס שבו מפעילים agent שוב ושוב, לרוב עם הקשר טרי, מול state מתמשך במאגר כגון:
 
 - `TASKS.md`; קובץ אליו מפנים את האייג'נט. האייג'נט יעביר מ-ToDo ל- completed כאשר הוא מטפל במשימה פתוחה.
-- spec;
-- test suite;
-- commits;
+- spec,
+- test suite,
+- commits,
 - logs או artifacts.
 
 כל איטרציה משלימה יחידת עבודה קטנה ומאומתת.
@@ -495,12 +495,12 @@ flowchart LR
 
 ### עקרונות
 
-- משימה אחת מוגדרת בכל איטרציה;
+- משימה אחת מוגדרת בכל איטרציה,
 - מצב העבודה נשמר בקבצים, לא רק בצ'אט. למשל: `TASKS.md`, `SPEC.md`, decision log או קובץ תכנון לפני/אחרי מימוש.
-- test gate קובע אם מותר לסמן משימה כגמורה;
-- יש מספר איטרציות מרבי;
-- יש stop condition אובייקטיבי;
-- עבודה נעשית ב־branch או worktree מבודד;
+- test gate קובע אם מותר לסמן משימה כגמורה,
+- יש מספר איטרציות מרבי,
+- יש stop condition אובייקטיבי,
+- עבודה נעשית ב־branch או worktree מבודד,
 - אין הרשאות פרודקשן.
 
 באופן בוא אני עובד - מזוהה תחילה מקבץ מטלות שניתן לטפל בו כמקשה אחת. לאחר המימוש אני בודק את התוצר. איני מפעיל את האייג'נט בלופ על רשימת Todo. רק על באג או על משימה שדורשת הרבה איטרציות ידועות מראש.
@@ -556,15 +556,15 @@ done
 
 <details markdown="1"><summary>Guardrails חיוניים</summary>
 
-- `max iterations`;
-- timeout לכל איטרציה;
-- budget;
-- clean branch/worktree;
-- איסור force push;
-- איסור שינוי secrets;
-- no auto-deploy;
-- test gate;
-- human review לפני merge;
+- `max iterations`,
+- timeout לכל איטרציה,
+- budget,
+- clean branch/worktree,
+- איסור force push,
+- איסור שינוי secrets,
+- no auto-deploy,
+- test gate,
+- human review לפני merge,
 - קובץ `BLOCKED.md` או סימון ברור כאשר אין התקדמות.
 
 Ralph Loop אינו תחליף לפירוק נכון. אם הפרומפט אומר “המשך עד שהכול מושלם”, אין לסוכן תנאי עצירה אמיתי.
@@ -613,11 +613,11 @@ Run T2 validation.
 Reviewer:
 Review the diff read-only.
 Check:
-- behavior against the specification;
-- missing tests;
-- security and authorization;
-- backward compatibility;
-- unnecessary scope;
+- behavior against the specification,
+- missing tests,
+- security and authorization,
+- backward compatibility,
+- unnecessary scope,
 - error handling.
 Return findings ranked by severity. Do not edit files.
 
@@ -648,8 +648,8 @@ classes חוזרים, הצע guardrail מונע כגון תבנית בדיקה, 
 
 ```text
 Spawn read-only reviewers for:
-1. security and authorization;
-2. test gaps and edge cases;
+1. security and authorization,
+2. test gaps and edge cases,
 3. maintainability and unnecessary complexity.
 
 Do not let reviewers edit files.
@@ -660,11 +660,11 @@ Aggregate duplicate findings and rank them by severity.
 
 ### מתי זה מועיל
 
-- auth;
-- migrations;
-- concurrency;
-- קוד שנוצר במהירות;
-- patch גדול;
+- auth,
+- migrations,
+- concurrency,
+- קוד שנוצר במהירות,
+- patch גדול,
 - שינוי שקשה לסקור תוך כדי כתיבה.
 
 <details markdown="1"><summary>סיכון: הסכמה שגויה בין סוכנים</summary>
@@ -709,15 +709,15 @@ flowchart LR
 
 ה־harness אינו רק prompt. הוא כולל:
 
-- instructions;
-- tools;
-- routing;
-- retrieval;
-- output schema;
-- validation;
-- retry policy;
-- escalation;
-- eval runner;
+- instructions,
+- tools,
+- routing,
+- retrieval,
+- output schema,
+- validation,
+- retry policy,
+- escalation,
+- eval runner,
 - observability.
 
 ### זווית Agentic: זהו ה־workflow שבו המוצר הוא גם ה־harness
@@ -739,28 +739,28 @@ trace, metric, אימות, כלל routing או תצפית יש להוסיף או
 We have 80 labeled support tickets.
 
 Before changing the agent:
-- run the current eval set;
-- record accuracy by category;
+- run the current eval set,
+- record accuracy by category,
 - identify the five highest-impact failure clusters.
 
 Propose one harness change at a time:
-- instruction change;
-- tool routing change;
-- output validation;
+- instruction change,
+- tool routing change,
+- output validation,
 - retrieval change.
 
 After each change:
-- rerun the same eval set;
-- compare overall and per-category scores;
+- rerun the same eval set,
+- compare overall and per-category scores,
 - reject the change if it improves one category by hiding regressions elsewhere.
 ```
 
 <details markdown="1"><summary>מתי Eval-Driven Development מתאים</summary>
 
-- “עובד בדוגמה שלי” אינו מספיק;
-- הפלט הסתברותי;
-- יש הרבה edge cases;
-- משנים prompt או routing;
+- “עובד בדוגמה שלי” אינו מספיק,
+- הפלט הסתברותי,
+- יש הרבה edge cases,
+- משנים prompt או routing,
 - נדרש מעקב איכות לאורך זמן.
 
 </details>
@@ -806,15 +806,15 @@ flowchart LR
 Use property-based testing for the interval-merging function.
 
 Properties:
-- output intervals are ordered;
-- output intervals do not overlap;
-- every input point belongs to an output interval;
-- applying merge twice is idempotent;
+- output intervals are ordered,
+- output intervals do not overlap,
+- every input point belongs to an output interval,
+- applying merge twice is idempotent,
 - permutation of input intervals does not change the result.
 
 When a generated case fails:
-- preserve the minimized counterexample as a regression test;
-- fix the implementation;
+- preserve the minimized counterexample as a regression test,
+- fix the implementation,
 - rerun both property and example-based tests.
 ```
 
@@ -838,9 +838,9 @@ When a generated case fails:
 
 לדוגמה:
 
-- שינוי סדר הקלט לא אמור לשנות תוצאה;
-- הוספת whitespace לא אמורה לשנות parse;
-- scaling של כל ערכי הקלט צריך להכפיל פלט מסוים;
+- שינוי סדר הקלט לא אמור לשנות תוצאה,
+- הוספת whitespace לא אמורה לשנות parse,
+- scaling של כל ערכי הקלט צריך להכפיל פלט מסוים,
 - תרגום הלוך וחזור צריך לשמר מבנה מוגדר.
 
 זהו harness חזק מאוד לסוכן, מפני שהוא מספק oracle שאינו תלוי בכך שהמודל “יחשוב” מהי התוצאה בכל דוגמה.
@@ -896,8 +896,8 @@ flowchart LR
 
 ```text
 Input:
-- failing CI logs;
-- current diff;
+- failing CI logs,
+- current diff,
 - repository instructions.
 
 Loop:
@@ -909,9 +909,9 @@ Loop:
 6. Stop after three failed hypotheses and report evidence.
 
 Do not:
-- disable the test;
-- increase retries without evidence;
-- suppress the error;
+- disable the test,
+- increase retries without evidence,
+- suppress the error,
 - change unrelated code.
 ```
 
@@ -981,35 +981,35 @@ Green-to-Green refactor
 
 ### כן — כאשר
 
-- הדרישה עמומה או כוללת כמה מטרות;
-- יש כמה מערכות, שירותים או repositories;
-- מדובר ב־migration, auth, billing או נתונים;
-- צריך prompt חוזר לצוות;
-- רוצים workflow רב־שלבי;
-- צריך להגדיר test matrix;
-- יש הרבה non-goals וגבולות;
-- צריך handoff מסודר בין אדם, chat model ו־coding agent;
+- הדרישה עמומה או כוללת כמה מטרות,
+- יש כמה מערכות, שירותים או repositories,
+- מדובר ב־migration, auth, billing או נתונים,
+- צריך prompt חוזר לצוות,
+- רוצים workflow רב־שלבי,
+- צריך להגדיר test matrix,
+- יש הרבה non-goals וגבולות,
+- צריך handoff מסודר בין אדם, chat model ו־coding agent,
 - אתה רוצה שהמודל ישאל שאלות ויחשוף הנחות לפני שהסוכן נוגע בקוד.
 - במידה שאתה לא שולט - (תחום חדש - האייג'נט יתנסח בבירור יותר נכון ממך ומכיר את המושגים) [למשל כאן בבקשת אינפוגרפיקה](https://chatgpt.com/c/6a3f3e20-eee0-83eb-adc2-4766ebbbcf69)
 
 ### לא — כאשר
 
-- התיקון קטן וברור;
-- הסוכן יכול לקרוא את המאגר ולקבל הקשר מדויק יותר;
-- הצ'אט החיצוני אינו מכיר paths, APIs או conventions;
-- יצירת הפרומפט ארוכה יותר מהמשימה;
-- כל הדרישות כבר נמצאות ב־issue טוב;
+- התיקון קטן וברור,
+- הסוכן יכול לקרוא את המאגר ולקבל הקשר מדויק יותר,
+- הצ'אט החיצוני אינו מכיר paths, APIs או conventions,
+- יצירת הפרומפט ארוכה יותר מהמשימה,
+- כל הדרישות כבר נמצאות ב־issue טוב,
 - מדובר בעובדה שאפשר לאמת ישירות בקוד.
 
 ### סכנה מרכזית
 
 מודל מקוון שאין לו גישה למאגר עלול להמציא:
 
-- שמות קבצים;
-- APIs;
-- ספריות;
-- ארכיטקטורה;
-- פקודות בדיקה;
+- שמות קבצים,
+- APIs,
+- ספריות,
+- ארכיטקטורה,
+- פקודות בדיקה,
 - מגבלות שאינן קיימות.
 
 לכן הפרומפט שנוצר הוא **טיוטת brief**, לא מקור אמת.
@@ -1059,10 +1059,10 @@ Green-to-Green refactor
 Use the brief below as a working draft, not as repository truth.
 
 Before implementation:
-- verify every referenced path, command, API, and architectural assumption;
-- identify contradictions with AGENTS.md, the code, and CI;
-- replace invented or stale details;
-- list unresolved product questions;
+- verify every referenced path, command, API, and architectural assumption,
+- identify contradictions with AGENTS.md, the code, and CI,
+- replace invented or stale details,
+- list unresolved product questions,
 - propose a validation plan.
 
 Do not modify files until the plan is grounded in the repository.
@@ -1076,11 +1076,11 @@ Do not modify files until the plan is grounded in the repository.
 
 כאשר אתה עצמך עדיין לא יודע:
 
-- מהו ה־non-goal;
-- מהי תאימות נדרשת;
-- מה ייחשב הצלחה;
-- מהי רמת הסיכון;
-- מהו ה־rollout;
+- מהו ה־non-goal,
+- מהי תאימות נדרשת,
+- מה ייחשב הצלחה,
+- מהי רמת הסיכון,
+- מהו ה־rollout,
 - אילו מקרי קצה חשובים.
 
 פרומפט:
@@ -1088,12 +1088,12 @@ Do not modify files until the plan is grounded in the repository.
 ```text
 אל תכתוב עדיין prompt ל-agent.
 ראיין אותי עד שיש מספיק מידע כדי להגדיר:
-- goal;
-- non-goals;
-- acceptance criteria;
-- risk;
-- testing level;
-- rollout and rollback;
+- goal,
+- non-goals,
+- acceptance criteria,
+- risk,
+- testing level,
+- rollout and rollback,
 - stop conditions.
 
 בסוף החזר prompt אחד, קצר ומעשי.
