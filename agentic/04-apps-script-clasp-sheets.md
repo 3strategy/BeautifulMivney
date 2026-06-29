@@ -53,6 +53,49 @@ flowchart LR
     F --> X
 ```
 
+## דרישות קדם - חיבור ל-GitHub CLI
+
+<details open markdown="1"><summary>הוראות התקנה</summary>
+
+**פותחים cmd ומתקינים:**
+
+```powershell
+winget install --id GitHub.cli -e
+```
+
+**מתחברים:**
+
+```powershell
+gh auth login
+```
+
+![alt text](/assets/img/agentic/ghcli.png)
+
+```powershell
+git config --global --list
+```
+
+**אם לא מוגדר לכם עדיין מייל לגיט הוסיפו באופן הבא (עם השם והמייל שלכם):**
+
+```powershell
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+עכשיו אפשר לעבוד עם Git מקומי ו־GitHub מה־CLI. לא פחות חשוב: **גם לאייג'נט יותר קל לעבוד. עם `gh` מותקן ומאומת.** סוכנים כמו Claude Code ו-Codex יכולים לבדוק סטטוס של CI, ולתשאל issues/PRs ישירות מה-shell - בלי שתצטרך להעביר להם טוקן API בתוך ה-prompt. זה בעצם מרחיב להם את היכולות מעבר ל-git הבסיסי (commit/push/clone) לכל מה שדורש את ה-API של GitHub. שווה לבדוק שה-scopes שנבחרו ב-`gh auth login` מספיקים למה שתרצה שהסוכן יעשה.
+
+</details>
+
+## agent settings, and github share.
+
+- צרו תיקיה לפרוייקט במקום שנראה לכם. שימו לב שפתיחת תיקייה מתוך Codex Desktop תיצור תיקייה תחת document שעלול להיות חלק מ-OneDrive. זה לא מצב מוצלח לפרוייקט גדול
+- נעביר את האיי'נט ל-Full Access
+- נאתחל פרוייקט על ידי `/init` **ואז **
+- נשלח פרומפט איתחול לקודקס
+    {: .box-note}
+    publish on github as private
+
+
 ## התקנה מקוצרת - בעזרת ה-AGENT
 
 כיוון שעבר הרבה זמן מאז שניסחתי את אוסף הפקודות בהמשך הדף אמרתי לעצמי שאפשר לנסות לתת ל-Agent לעשות הכל (חלק מהלמידה - לנסות **לפרוץ גבולות**)
@@ -91,9 +134,17 @@ Previously I intended to teach this thoroghly using the content I prepared here:
 {: box-warning}
 הפרומפט הזה לא בדוק, ועל פניו נראה לי בעייתי בגלל הגנריות היתרה. הגדירו לעצמכם תחילה יעד פונקציונאלי - אפילו קטן, כגון, **שם של פקודה בתפריט, ומה היא תעשה**. דייקו את הדרישות. זו כנראה הזדמנות טובה להתחיל מ- **`/plan`**. don't take proposed prompts as is. **Don't just copy paste. OWN YOUR PROMPT.**
 
+<div class="english box-error" markdown="1">
+**למתקדמים - לא מתאים לסדנא**
+Create a new library-first Google Apps Script clasp harness from an empty folder.
+
+Use one standalone Apps Script project as the reusable library, one initial Google Sheet with a bound harness script, and one private GitHub repo for backup. Put reusable code in `library/`, Sheet-bound demo code in `harness/`, add README/AGENTS/Starter docs, keep scopes minimal, avoid real student data, push both clasp projects only after showing the diff, then create the first git commit and push to GitHub.
+</div>
+</details>
+
 <div class="english box-success" markdown="1">
 
-Create a new library-first Google Apps Script clasp harness from an empty folder.
+Create a new Google Apps Script clasp harness for google project ID \<add project id\>
 
 Use one standalone Apps Script project as the reusable library, one initial Google Sheet with a bound harness script, and one private GitHub repo for backup. Put reusable code in `library/`, Sheet-bound demo code in `harness/`, add README/AGENTS/Starter docs, keep scopes minimal, avoid real student data, push both clasp projects only after showing the diff, then create the first git commit and push to GitHub.
 </div>
