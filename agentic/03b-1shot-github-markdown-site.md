@@ -42,7 +42,7 @@ git config --global user.email "your.email@example.com"
 ## agent settings, and github share.
 
 - צרו תיקיה לפרוייקט במקום שנראה לכם. שימו לב שפתיחת תיקייה מתוך Codex Desktop תיצור תיקייה תחת document שעלול להיות חלק מ-OneDrive. זה לא מצב מוצלח לפרוייקט גדול
-- נעביר את האיי'נט ל-Full Access
+- נעביר את האייג'נט ל-Full Access
 - נאתחל פרוייקט על ידי `/init` **ואז**
 - נשלח פרומפט איתחול לקודקס
 
