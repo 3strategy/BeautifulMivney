@@ -86,19 +86,37 @@ git config --global user.email "your.email@example.com"
 
 </details>
 
-## agent settings, and github share.
+## agent settings, and github share
 
-- צרו תיקיה לפרוייקט במקום שנראה לכם. שימו לב שפתיחת תיקייה מתוך Codex Desktop תיצור תיקייה תחת document שעלול להיות חלק מ-OneDrive. זה לא מצב מוצלח לפרוייקט גדול
+- **צרו תיקיה** לפרוייקט במקום שנראה לכם. שימו לב שפתיחת תיקייה מתוך Codex Desktop תיצור תיקייה תחת document שעלול להיות חלק מ-OneDrive. זה לא מצב מוצלח לפרוייקט גדול
 - נעביר את האיי'נט ל-Full Access
-- נאתחל פרוייקט על ידי `/init` **ואז **
-- נשלח פרומפט איתחול לקודקס
-    {: .box-note}
-    publish on github as private
+- נאתחל פרוייקט על ידי `/init`
+- נשלח פרומפט קצר לפרסום GitHub
+- רק אחר כך נחבר clasp לפרויקט Apps Script קיים, ושם נגביל את חופש הפעולה של Git
+
+
+
+<details open markdown="1"><summary>פרומפט ראשון: Git בלבד</summary>
+
+בהנחה שקיים איזהשהו קובץ בפרוייקט
+
+<div class="english box-success" markdown="1">
+
+publish on github as private
+
+</div>
+
+</details>
 
 
 ## התקנה מקוצרת - בעזרת ה-AGENT
 
-כיוון שעבר הרבה זמן מאז שניסחתי את אוסף הפקודות בהמשך הדף אמרתי לעצמי שאפשר לנסות לתת ל-Agent לעשות הכל (חלק מהלמידה - לנסות **לפרוץ גבולות**)
+כיוון שעבר הרבה זמן מאז שניסחתי את אוסף הפקודות בהמשך הדף אמרתי לעצמי שאפשר לנסות לתת ל-Agent לעשות הכל (חלק מהלמידה - לנסות **לפרוץ גבולות**). אחרי הדמואים, לסדנה עדיף להוריד את הרף ולהפריד בין שני דברים:
+
+1. יצירת repo ופרסום ל-GitHub.
+2. חיבור clasp לפרויקט Apps Script שכבר נוצר ב-Google.
+
+כך מורים יכולים לתרגל כל שלב בנפרד, ולחזור רק על השלב שנשבר.
 
 <details markdown="1" ><summary>זה הפרומפט שנתתי לו כדי לבנות harness ולא סתם עוד סקריפט</summary>
 
@@ -129,9 +147,24 @@ Previously I intended to teach this thoroghly using the content I prepared here:
 
 </details>
 
-<details open markdown="1" ><summary>התוצאה -starter.md</summary>
 
-{: box-warning}
+<div class="english box-success" markdown="1">
+
+Set up clasp for this existing Google Apps Script project ID:
+
+`<PASTE_SCRIPT_ID_HERE>`
+
+Do not create a new Apps Script project and do not create a reusable library project.
+
+Update `README.md` and `AGENTS.md` for this clasp workflow.
+
+From now on, `AGENTS.md` should say: do not run `git commit`, `git push`, `git reset`, `git checkout`, `git switch`, or `clasp push` unless I explicitly ask.
+
+</div>
+
+<details open markdown="1" ><summary>התוצאה -starter.md שפחות מתאים לי</summary>
+
+{: .box-warning}
 הפרומפט הזה לא בדוק, ועל פניו נראה לי בעייתי בגלל הגנריות היתרה. הגדירו לעצמכם תחילה יעד פונקציונאלי - אפילו קטן, כגון, **שם של פקודה בתפריט, ומה היא תעשה**. דייקו את הדרישות. זו כנראה הזדמנות טובה להתחיל מ- **`/plan`**. don't take proposed prompts as is. **Don't just copy paste. OWN YOUR PROMPT.**
 
 <div class="english box-error" markdown="1">
@@ -142,13 +175,6 @@ Use one standalone Apps Script project as the reusable library, one initial Goog
 </div>
 </details>
 
-<div class="english box-success" markdown="1">
-
-Create a new Google Apps Script clasp harness for google project ID \<add project id\>
-
-Use one standalone Apps Script project as the reusable library, one initial Google Sheet with a bound harness script, and one private GitHub repo for backup. Put reusable code in `library/`, Sheet-bound demo code in `harness/`, add README/AGENTS/Starter docs, keep scopes minimal, avoid real student data, push both clasp projects only after showing the diff, then create the first git commit and push to GitHub.
-</div>
-</details>
 
 <details markdown="1"><summary>דוגמא לפרומפט המשך</summary>
 

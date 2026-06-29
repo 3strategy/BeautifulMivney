@@ -47,15 +47,59 @@ git config --global user.email "your.email@example.com"
 ![alt text](/assets/img/agentic/imageAgentSettigns.png)
 
 
+## מהלך סדנה מקוצר - בשלבים
+
+במקום לתת מיד פרומפט ענק, עדיף לפרק לשלושה צעדים קטנים. כך כל מורה מבין איפה הוא נמצא: קודם תיקייה, אחר כך אתחול, אחר כך פרסום.
+
+### 1. יצירת תיקייה ופתיחה בקודקס
+
+פותחים תיקייה חדשה לפרויקט באתר. כדאי לבחור שם באנגלית וללא רווחים, למשל:
+
+```powershell
+cd C:\Users\<user>\source\repos
+mkdir my-class-site
+cd my-class-site
+```
+
+פותחים את התיקייה ב-Codex.
+
+### 2. אתחול הפרויקט
+
+מריצים בקודקס:
+
+```text
+/init
+```
+
+### 3. פרסום ל-GitHub כאתר ציבורי
+
+אחרי ש-`/init` סיים, שולחים לקודקס:
+
+<div markdown="1" class="english box-success">
+
+publish on github as public, because this repo will be used for GitHub Pages
+
+</div>
+
+{: .box-note}
+בתרגיל של GitHub Pages ה-repo צריך להיות public, אלא אם עובדים עם חשבון/ארגון שבו Pages מאתר פרטי זמין. בסדנה עדיף לא להסתבך: public.
+
+### 4. פרומפט בניית האתר
+
+אחרי שיש repo ציבורי ב-GitHub, נותנים לקודקס את פרומפט בניית האתר המלא.
+
 
 ## פרומפט - one-shot ליצירת אתר מארקדאון חי וזמין לתלמידים
 
+הפרומפט הבא מניח שכבר הרצנו `/init`, וכבר פרסמנו את התיקייה כ-repo ציבורי ב-GitHub.
 
 <div markdown="1" class="english box-note">
 
-You are working in an empty **Windows** folder. Create and publish a small, maintainable Hebrew educational website using Jekyll and GitHub Pages.
+You are working in a **Windows** folder that is already an initialized public GitHub repository.
 
-The objective is not merely to produce a page. Create a clean repository and publishing harness that a teacher can continue extending through Markdown, with rendering handled by the actual GitHub Pages site.
+Create and publish a small, maintainable Hebrew educational website using Jekyll and GitHub Pages.
+
+The objective is not merely to produce a page. Complete a clean content repository and publishing harness that a teacher can continue extending through Markdown, with rendering handled by the actual GitHub Pages site.
 
 ## Hard non-goals
 
@@ -72,12 +116,6 @@ Specifically:
 Reason: in a short teacher workshop, WSL Git permissions and local Ruby/Jekyll setup are too risky. The reliable path is: Windows folder -> GitHub repository -> GitHub Actions -> deployed GitHub Pages site.
 
 If you mention local preview in documentation, present it only as an optional advanced path for users who already have Ruby and Bundler working. It must not be required for this workshop prompt.
-
-## Environment
-
-* Create the repository under the currently authenticated GitHub account.
-* The GitHub repository must be public because it will be hosted using GitHub Pages.
-* Prefer building and deploying through GitHub Actions.
 
 ## Architecture
 
@@ -140,7 +178,7 @@ Create:
 * that no private student or school data may be committed;
 * that every meaningful change must leave the GitHub Pages build passing;
 * that local WSL/Bundler/Jekyll serving is not part of this workshop repository's required workflow.
-* that agent can read the repo, but not commit/pull/push.
+* that after this initial setup, future agents can read the repo but must not commit, pull or push unless explicitly asked.
 
 `README.md` should explain:
 
@@ -157,10 +195,10 @@ Create:
 ## GitHub and deployment
 
 1. Run `gh auth status`.
-2. Initialize Git with `main` as the default branch in the current Windows folder.
-3. Review all generated files before committing.
-4. Commit with a clear initial commit message.
-5. Create a new public GitHub repository using `gh repo create`.
+2. Inspect `git status` and the configured `origin` remote.
+3. Confirm that the GitHub repository is public.
+4. Review all generated files before committing.
+5. Commit the site setup with a clear commit message.
 6. Push `main`.
 7. Configure GitHub Pages to use the custom Actions workflow. You may use the GitHub API through `gh api`.
 8. Trigger or observe the deployment workflow.
