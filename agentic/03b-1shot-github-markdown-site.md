@@ -47,7 +47,7 @@ git config --global user.email "your.email@example.com"
 - נשלח פרומפט איתחול לקודקס
 
 {: .box-note}
-publish on github as private
+publish on github as **public**
 
 
 ![alt text](/assets/img/agentic/imageAgentSettigns.png)
