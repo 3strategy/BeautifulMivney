@@ -32,9 +32,11 @@ lang: he
 **אשתדל לעבוד איתכם על שלושה *תוצרים* שימושיים לנו כמורים:**
 
 1. [clasp ו-Google Apps Script]({{ '/agentic/04-apps-script-clasp-sheets' | relative_url }}). כל מי שמשתמש באקסל או בגוגל שיטס יכול להנות מהתועלת של app script. ואם כבר, אז agentic.
+  ![alt text](/assets/img/agentic/clasp1.png)
 2. אתר Markdown/Jekyll שבו תוכלו ליצור תכניה הוראה הזמינים לתלמידים באתר (כמו אצלי למשל). יש שתי גרסאות - [למתחילים]({{ '/agentic/03b-1shot-github-markdown-site' | relative_url }}) ו[למתקדמים שכבר עובדים עם WSL/Bundler]({{ '/agentic/03c-1shot-github-jekyll-with-local-wsl-bundle' | relative_url }}).
+  ![alt text](/assets/img/agentic/imageJustTheDocs.png)
 3. התנסות ב- one shot prompt for a project+git with a **full harness**, עם המשך ל-[Firebase]({{ '/agentic/08-firebase-first-prompt' | relative_url }}) ול-[live deployment]({{ '/agentic/05-hosting' | relative_url }}).
-
+  ![alt text](/assets/img/agentic/firebaseFirst.png)
 המטרה שלי היא לא שתצאו עם "עוד כלי AI", אלא עם התנסות טובה בעבודה שבה אתם המהנדסים וה- agentעובד (קורא קבצים, כותב, מעדכן, מתקין, מריץ בדיקות, מציג ראיות).
 
 כפי שכבר ביקשתי לפני מספר חודשים - **לא ניכנס לדיונים של "לאן פנינו" בחלון הזמנים של הסדנה.** ונשאיר זאת לארוחת הערב.
