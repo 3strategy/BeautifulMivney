@@ -39,59 +39,24 @@ git config --global user.email "your.email@example.com"
 
 </details>
 
-## agent settings
+## agent settings, and github share.
 
-- נפתח את קודקס ונפתח תיקיית פרוייטק חדשה "לוקאלית"
-- נעביר את האיי'נט ל-**Full Access**
+- צרו תיקיה לפרוייקט במקום שנראה לכם. שימו לב שפתיחת תיקייה מתוך Codex Desktop תיצור תיקייה תחת document שעלול להיות חלק מ-OneDrive. זה לא מצב מוצלח לפרוייקט גדול
+- נעביר את האיי'נט ל-Full Access
+- נאתחל פרוייקט על ידי `/init` **ואז**
+- נשלח פרומפט איתחול לקודקס
+
+{: .box-note}
+publish on github as private
+
 
 ![alt text](/assets/img/agentic/imageAgentSettigns.png)
 
 
-## מהלך סדנה מקוצר - בשלבים
 
-במקום לתת מיד פרומפט ענק, עדיף לפרק לשלושה צעדים קטנים. כך כל מורה מבין איפה הוא נמצא: קודם תיקייה, אחר כך אתחול, אחר כך פרסום.
+##  פרומפט בניית האתר
 
-### 1. יצירת תיקייה ופתיחה בקודקס
-
-פותחים תיקייה חדשה לפרויקט באתר. כדאי לבחור שם באנגלית וללא רווחים, למשל:
-
-```powershell
-cd C:\Users\<user>\source\repos
-mkdir my-class-site
-cd my-class-site
-```
-
-פותחים את התיקייה ב-Codex.
-
-### 2. אתחול הפרויקט
-
-מריצים בקודקס:
-
-```text
-/init
-```
-
-### 3. פרסום ל-GitHub כאתר ציבורי
-
-אחרי ש-`/init` סיים, שולחים לקודקס:
-
-<div markdown="1" class="english box-success">
-
-publish on github as public, because this repo will be used for GitHub Pages
-
-</div>
-
-{: .box-note}
-בתרגיל של GitHub Pages ה-repo צריך להיות public, אלא אם עובדים עם חשבון/ארגון שבו Pages מאתר פרטי זמין. בסדנה עדיף לא להסתבך: public.
-
-### 4. פרומפט בניית האתר
-
-אחרי שיש repo ציבורי ב-GitHub, נותנים לקודקס את פרומפט בניית האתר המלא.
-
-
-## פרומפט - one-shot ליצירת אתר מארקדאון חי וזמין לתלמידים
-
-הפרומפט הבא מניח שכבר הרצנו `/init`, וכבר פרסמנו את התיקייה כ-repo ציבורי ב-GitHub.
+זהו פרומפט - one-shot ליצירת אתר מארקדאון חי וזמין לתלמידים. הפרומפט הבא מניח שכבר הרצנו `/init`, וכבר פרסמנו את התיקייה כ-repo ציבורי ב-GitHub.
 
 <div markdown="1" class="english box-note">
 

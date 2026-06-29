@@ -27,6 +27,56 @@ lang: he
   - 19:57 (font)
 - ה-deployment בוצע בפקודה לאייג'נט שיעשה deploy ל-vercel בתוספת הבהרה שאני לא מכיר את התהליך אבל יש לי חשבון. האייג'נט ביצע ואני רק התבקשתי לאשר login - לתת כמה ספרות.
 
+
+## דרישות קדם - חיבור ל-GitHub CLI
+
+<details open markdown="1"><summary>הוראות התקנה</summary>
+
+**פותחים cmd ומתקינים:**
+
+```powershell
+winget install --id GitHub.cli -e
+```
+
+**מתחברים:**
+
+```powershell
+gh auth login
+```
+
+![alt text](/assets/img/agentic/ghcli.png)
+
+```powershell
+git config --global --list
+```
+
+**אם לא מוגדר לכם עדיין מייל לגיט הוסיפו באופן הבא (עם השם והמייל שלכם):**
+
+```powershell
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+עכשיו אפשר לעבוד עם Git מקומי ו־GitHub מה־CLI. לא פחות חשוב: **גם לאייג'נט יותר קל לעבוד. עם `gh` מותקן ומאומת.** סוכנים כמו Claude Code ו-Codex יכולים לבדוק סטטוס של CI, ולתשאל issues/PRs ישירות מה-shell - בלי שתצטרך להעביר להם טוקן API בתוך ה-prompt. זה בעצם מרחיב להם את היכולות מעבר ל-git הבסיסי (commit/push/clone) לכל מה שדורש את ה-API של GitHub. שווה לבדוק שה-scopes שנבחרו ב-`gh auth login` מספיקים למה שתרצה שהסוכן יעשה.
+
+</details>
+
+## agent settings, and github share.
+
+- צרו תיקיה לפרוייקט במקום שנראה לכם. שימו לב שפתיחת תיקייה מתוך Codex Desktop תיצור תיקייה תחת document שעלול להיות חלק מ-OneDrive. זה לא מצב מוצלח לפרוייקט גדול
+- נעביר את האיי'נט ל-Full Access
+- נאתחל פרוייקט על ידי `/init` **ואז**
+- נשלח פרומפט איתחול לקודקס
+    {: .box-note}
+    publish on github as **public**
+
+
+![alt text](/assets/img/agentic/imageAgentSettigns.png)
+
+
+
+
+
 ## הפרומפטים בהם השתשמתי
 
 ### כאשר האתר ריק, אחרי commit and share to github.

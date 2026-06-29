@@ -86,27 +86,20 @@ git config --global user.email "your.email@example.com"
 
 </details>
 
-## agent settings, and github share
+## agent settings, and github share.
 
-- **צרו תיקיה** לפרוייקט במקום שנראה לכם. שימו לב שפתיחת תיקייה מתוך Codex Desktop תיצור תיקייה תחת document שעלול להיות חלק מ-OneDrive. זה לא מצב מוצלח לפרוייקט גדול
+- צרו תיקיה לפרוייקט במקום שנראה לכם. שימו לב שפתיחת תיקייה מתוך Codex Desktop תיצור תיקייה תחת document שעלול להיות חלק מ-OneDrive. זה לא מצב מוצלח לפרוייקט גדול
 - נעביר את האיי'נט ל-Full Access
-- נאתחל פרוייקט על ידי `/init`
-- נשלח פרומפט קצר לפרסום GitHub
-- רק אחר כך נחבר clasp לפרויקט Apps Script קיים, ושם נגביל את חופש הפעולה של Git
+- נאתחל פרוייקט על ידי `/init` **ואז **
+- נשלח פרומפט איתחול לקודקס
+    {: .box-note}
+    publish on github as private
+
+
+![alt text](/assets/img/agentic/imageAgentSettigns.png)
 
 
 
-<details open markdown="1"><summary>פרומפט ראשון: Git בלבד</summary>
-
-בהנחה שקיים איזהשהו קובץ בפרוייקט
-
-<div class="english box-success" markdown="1">
-
-publish on github as private
-
-</div>
-
-</details>
 
 
 ## התקנה מקוצרת - בעזרת ה-AGENT
@@ -116,7 +109,7 @@ publish on github as private
 1. יצירת repo ופרסום ל-GitHub.
 2. חיבור clasp לפרויקט Apps Script שכבר נוצר ב-Google.
 
-כך מורים יכולים לתרגל כל שלב בנפרד, ולחזור רק על השלב שנשבר.
+כך תתרגלו כל שלב בנפרד, ולחזור רק על השלב שנשבר.
 
 <details markdown="1" ><summary>זה הפרומפט שנתתי לו כדי לבנות harness ולא סתם עוד סקריפט</summary>
 
