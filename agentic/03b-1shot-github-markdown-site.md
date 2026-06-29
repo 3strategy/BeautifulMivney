@@ -35,7 +35,7 @@ git config --global user.name "Your Name"
 git config --global user.email "your.email@example.com"
 ```
 
-עכשיו אפשר לעבוד עם Git מקומי ו־GitHub מה־CLI. לא פחות חשוב: **גם לאייג'נט יותר קל לעבוד. עם `gh` מותקן ומאומת.** סוכנים כמו Claude Code ו-Codex יכולים לבדוק סטטוס של CI, ולתשאל issues/PRs ישירות מה-shell - בלי שתצטרך להעביר להם טוקן API בתוך ה-prompt. זה בעצם מרחיב להם את היכולות מעבר ל-git הבסיסי (commit/push/clone) לכל מה שדורש את ה-API של GitHub. שווה לבדוק שה-scopes שנבחרו ב-`gh auth login` מספיקים למה שתרצה שהסוכן יעשה.
+עכשיו אפשר לעבוד עם Git מקומי ו־GitHub מה־CLI. לא פחות חשוב: **גם לאייג'נט יותר קל לעבוד. עם `gh` מותקן ומאומת.*- סוכנים כמו Claude Code ו-Codex יכולים לבדוק סטטוס של CI, ולתשאל issues/PRs ישירות מה-shell - בלי שתצטרך להעביר להם טוקן API בתוך ה-prompt. זה בעצם מרחיב להם את היכולות מעבר ל-git הבסיסי (commit/push/clone) לכל מה שדורש את ה-API של GitHub. שווה לבדוק שה-scopes שנבחרו ב-`gh auth login` מספיקים למה שתרצה שהסוכן יעשה.
 
 </details>
 
@@ -60,23 +60,22 @@ publish on github as **public**
 
 <div markdown="1" class="english box-note">
 
-You are working in a **Windows** folder that is already an initialized public GitHub repository.
-
+```markdown
 Create and publish a small, maintainable Hebrew educational website using Jekyll and GitHub Pages.
 
 The objective is not merely to produce a page. Complete a clean content repository and publishing harness that a teacher can continue extending through Markdown, with rendering handled by the actual GitHub Pages site.
 
 ## Hard non-goals
 
-Do **not** try to make this project run locally through WSL, Ruby, Bundler or `bundle exec jekyll serve`.
+Do **not*- try to make this project run locally through WSL, Ruby, Bundler or `bundle exec jekyll serve`.
 
 Specifically:
 
-* do not initialize or manage the workshop repository from WSL;
-* do not run `wsl`, `bundle`, `jekyll`, `ruby`, `gem` or `bundle exec jekyll serve`;
-* do not install Ruby, Bundler, Jekyll or Linux packages;
-* do not require a local preview server as part of the definition of done;
-* do not spend time fixing local WSL, filesystem, VS Code or Ruby environment problems.
+- do not initialize or manage the workshop repository from WSL;
+- do not run `wsl`, `bundle`, `jekyll`, `ruby`, `gem` or `bundle exec jekyll serve`;
+- do not install Ruby, Bundler, Jekyll or Linux packages;
+- do not require a local preview server as part of the definition of done;
+- do not spend time fixing local WSL, filesystem, VS Code or Ruby environment problems.
 
 Reason: in a short teacher workshop, WSL Git permissions and local Ruby/Jekyll setup are too risky. The reliable path is: Windows folder -> GitHub repository -> GitHub Actions -> deployed GitHub Pages site.
 
@@ -94,11 +93,11 @@ remote_theme: just-the-docs/just-the-docs@v0.12.0
 
 Do not:
 
-* fork the theme;
-* clone the complete theme;
-* copy all theme layouts or assets into this repository;
-* depend on the theme's `main` branch;
-* add unrelated frameworks or JavaScript libraries.
+- fork the theme;
+- clone the complete theme;
+- copy all theme layouts or assets into this repository;
+- depend on the theme's `main` branch;
+- add unrelated frameworks or JavaScript libraries.
 
 The repository should contain only the educational content, configuration, small local customizations, documentation and deployment harness.
 
@@ -122,38 +121,38 @@ Use suitable Jekyll front matter on every page.
 
 Create:
 
-* `_config.yml`
-* `index.md`
-* `about.md`
-* the example lesson pages
-* the minimal custom Sass/CSS required for RTL
-* `.gitignore`
-* `README.md`
-* `AGENTS.md`
-* `THIRD_PARTY_NOTICES.md`
-* an official-style GitHub Actions workflow under `.github/workflows/` that builds and deploys the Jekyll site to GitHub Pages
+- `_config.yml`
+- `index.md`
+- `about.md`
+- the example lesson pages
+- the minimal custom Sass/CSS required for RTL
+- `.gitignore`
+- `README.md`
+- `AGENTS.md`
+- `THIRD_PARTY_NOTICES.md`
+- an official-style GitHub Actions workflow under `.github/workflows/` that builds and deploys the Jekyll site to GitHub Pages
 
 `AGENTS.md` should explain:
 
-* where pages and lessons belong;
-* the required front matter;
-* that the site is primarily Hebrew and RTL;
-* that code and technical tokens remain LTR;
-* that theme source files must not be copied unnecessarily;
-* that no private student or school data may be committed;
-* that every meaningful change must leave the GitHub Pages build passing;
-* that local WSL/Bundler/Jekyll serving is not part of this workshop repository's required workflow.
-* that after this initial setup, future agents can read the repo but must not commit, pull or push unless explicitly asked.
+- where pages and lessons belong;
+- the required front matter;
+- that the site is primarily Hebrew and RTL;
+- that code and technical tokens remain LTR;
+- that theme source files must not be copied unnecessarily;
+- that no private student or school data may be committed;
+- that every meaningful change must leave the GitHub Pages build passing;
+- that local WSL/Bundler/Jekyll serving is not part of this workshop repository's required workflow.
+- that after this initial setup, future agents can read the repo but must not commit, pull or push unless explicitly asked.
 
 `README.md` should explain:
 
-* how to add a new Markdown lesson;
-* how navigation is controlled;
-* how GitHub Actions deployment works;
-* where to inspect a failed deployment;
-* how to change the pinned theme version deliberately;
-* that public visibility does not automatically define a reuse license for the teacher's original content;
-* that local preview with Ruby/Bundler is optional only for advanced users who already have that environment working, and is not required for the workshop.
+- how to add a new Markdown lesson;
+- how navigation is controlled;
+- how GitHub Actions deployment works;
+- where to inspect a failed deployment;
+- how to change the pinned theme version deliberately;
+- that public visibility does not automatically define a reuse license for the teacher's original content;
+- that local preview with Ruby/Bundler is optional only for advanced users who already have that environment working, and is not required for the workshop.
 
 `THIRD_PARTY_NOTICES.md` must identify Just the Docs, its repository, the pinned version and its MIT license. Do not claim that the teacher's original content is MIT-licensed.
 
@@ -176,15 +175,15 @@ If Pages was already configured and the API returns a conflict, inspect the exis
 
 Before finishing:
 
-* inspect the repository tree;
-* inspect `git status`;
-* confirm that no secrets or private data were added;
-* verify that the theme is pinned;
-* verify that the site builds successfully in GitHub Actions;
-* inspect the deployed home page when tooling permits;
-* confirm that internal links use the correct GitHub project-site base path;
-* report the repository URL, Pages URL, deployment status and any remaining manual step.
+- inspect the repository tree;
+- inspect `git status`;
+- confirm that no secrets or private data were added;
+- verify that the theme is pinned;
+- verify that the site builds successfully in GitHub Actions;
+- inspect the deployed home page when tooling permits;
+- confirm that internal links use the correct GitHub project-site base path;
+- report the repository URL, Pages URL, deployment status and any remaining manual step.
 
 Do not stop after merely generating files. The task is complete only when the repository has been pushed and the deployment result has been checked on GitHub.
-
+```
 </div>
