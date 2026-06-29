@@ -60,7 +60,9 @@ publish on github as **public**
 
 <div markdown="1" class="english box-note">
 
-```markdown
+
+you have my permission to commit push 2-5 times as proper for reaching a full working env on github pages and setting the site on git as a pages site.
+
 Create and publish a small, maintainable Hebrew educational website using Jekyll and GitHub Pages.
 
 The objective is not merely to produce a page. Complete a clean content repository and publishing harness that a teacher can continue extending through Markdown, with rendering handled by the actual GitHub Pages site.
@@ -185,5 +187,16 @@ Before finishing:
 - report the repository URL, Pages URL, deployment status and any remaining manual step.
 
 Do not stop after merely generating files. The task is complete only when the repository has been pushed and the deployment result has been checked on GitHub.
-```
+
+</div>
+
+## continuation prompt - visual issue
+
+<div class="english box-note" markdown ="1">
+Site has a visual problem since the theme is originally LTR, and when placed in RTL the main card overlaps the menu system. See attached. 
+
+Correct, commit & push, wait 1 minute, then use playwright cli to see that your correction is working.
+
+Loop up to 3 times if needed till corrected.
+
 </div>
