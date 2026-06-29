@@ -8,7 +8,9 @@ lang: he
 
 ## דרישות קדם - חיבור ל-GitHub CLI
 
-**מתקינים:**
+<details open markdown="1"><summary>הוראות התקנה</summary>
+
+**פותחים cmd ומתקינים:**
 
 ```powershell
 winget install --id GitHub.cli -e
@@ -20,11 +22,31 @@ winget install --id GitHub.cli -e
 gh auth login
 ```
 
+![alt text](/assets/img/agentic/ghcli.png)
+
+```powershell
+git config --global --list
+```
+
+**אם לא מוגדר לכם עדיין מייל לגיט הוסיפו באופן הבא (עם השם והמייל שלכם):**
+
+```powershell
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
 עכשיו אפשר לעבוד עם Git מקומי ו־GitHub מה־CLI. לא פחות חשוב: **גם לאייג'נט יותר קל לעבוד. עם `gh` מותקן ומאומת.** סוכנים כמו Claude Code ו-Codex יכולים לבדוק סטטוס של CI, ולתשאל issues/PRs ישירות מה-shell - בלי שתצטרך להעביר להם טוקן API בתוך ה-prompt. זה בעצם מרחיב להם את היכולות מעבר ל-git הבסיסי (commit/push/clone) לכל מה שדורש את ה-API של GitHub. שווה לבדוק שה-scopes שנבחרו ב-`gh auth login` מספיקים למה שתרצה שהסוכן יעשה.
+
+</details>
 
 ## agent settings
 
+- נפתח את קודקס ונפתח תיקיית פרוייטק חדשה "לוקאלית"
+- נעביר את האיי'נט ל-**Full Access**
+
 ![alt text](/assets/img/agentic/imageAgentSettigns.png)
+
+
 
 ## פרומפט - one-shot ליצירת אתר מארקדאון חי וזמין לתלמידים
 
@@ -53,11 +75,6 @@ If you mention local preview in documentation, present it only as an optional ad
 
 ## Environment
 
-* Work in the current Windows folder.
-* Git is installed.
-* GitHub CLI (`gh`) is installed.
-* The user should already be authenticated with GitHub.
-* The repository name should be: `<REPOSITORY_NAME>`
 * Create the repository under the currently authenticated GitHub account.
 * The GitHub repository must be public because it will be hosted using GitHub Pages.
 * Prefer building and deploying through GitHub Actions.
