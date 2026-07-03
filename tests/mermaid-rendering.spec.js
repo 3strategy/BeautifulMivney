@@ -135,4 +135,11 @@ test.describe('Mermaid rendering typography', () => {
     expect(fontSizes.length).toBeGreaterThan(0);
     expect(Math.max(...fontSizes)).toBeLessThanOrEqual(20);
   });
+
+  test('defaults state diagrams to LTR on Hebrew pages', async ({ page }) => {
+    await page.goto(`${baseUrl}/modelim/matala5/matala5/`);
+
+    const stateDiagram = page.locator('.mermaid.mermaid-ltr svg.statediagram').first();
+    await expect(stateDiagram).toContainText('q0', { timeout: 20000 });
+  });
 });

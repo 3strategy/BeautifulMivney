@@ -76,7 +76,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (/^\s*classDiagram\b/m.test(src) && /[A-Za-z]/.test(src)) return 'mermaid-ltr';
 
-      return '';
+      // Mermaid syntax is code-like and its layout engines assume left-to-right text flow.
+      // Hebrew/RTL diagrams can still opt in with ```mermaid-rtl``` or %% dir: rtl %%.
+      return 'mermaid-ltr';
     };
 
     codeBlocks.forEach((code) => {
