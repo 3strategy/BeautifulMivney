@@ -187,6 +187,7 @@
 ## Tutorial language/style convention
 
 - Default language direction for this repo should lean Hebrew unless explicitly decided otherwise for a specific page.
+- In Mermaid/plain-text diagram labels for math/modeling content, prefer Unicode superscripts/subscripts such as `aⁱ`, `aʲ`, `x²` over caret notation such as `a^i`, because Mermaid renders `^` literally. Keep TeX/MathJax notation for ordinary Markdown math. This preference also applies when editing math-heavy sibling sites such as `mathBeautifulFork`.
 - For Hebrew lettered sub-question lists, prefer a real ordered list with `{: .alefbet}` and ordinary Markdown numbering (`1.`, `2.`, `3.`) rather than hand-writing `א.`, `ב.`, `ג.` as separate `{: .subq}` paragraphs.
 - Reusable pattern:
 
