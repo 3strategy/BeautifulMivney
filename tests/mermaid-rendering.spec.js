@@ -34,6 +34,40 @@ async function renderedFontSizes(locator, selector) {
   );
 }
 
+async function clippedForeignObjectLabels(locator) {
+  return locator.locator('foreignObject').evaluateAll((foreignObjects) =>
+    foreignObjects
+      .map((foreignObject, index) => {
+        const content = foreignObject.firstElementChild;
+        const label = foreignObject.querySelector('.nodeLabel') || content;
+        if (!content || !label) return null;
+
+        const foreignRect = foreignObject.getBoundingClientRect();
+        const labelRect = label.getBoundingClientRect();
+        const scrollOverflow =
+          content.scrollWidth > content.clientWidth + 1 ||
+          content.scrollHeight > content.clientHeight + 1;
+        const boundsOverflow =
+          labelRect.left < foreignRect.left - 1 ||
+          labelRect.right > foreignRect.right + 1 ||
+          labelRect.top < foreignRect.top - 1 ||
+          labelRect.bottom > foreignRect.bottom + 1;
+
+        if (!scrollOverflow && !boundsOverflow) return null;
+
+        return {
+          index,
+          text: (label.textContent || '').replace(/\s+/g, ' ').trim(),
+          foreignWidth: Math.round(foreignRect.width),
+          foreignHeight: Math.round(foreignRect.height),
+          labelWidth: Math.round(labelRect.width),
+          labelHeight: Math.round(labelRect.height),
+        };
+      })
+      .filter(Boolean)
+  );
+}
+
 test.describe('Mermaid rendering typography', () => {
   let server;
   let baseUrl;
@@ -72,23 +106,29 @@ test.describe('Mermaid rendering typography', () => {
     expect(Math.max(...fontSizes)).toBeLessThanOrEqual(20);
   });
 
-  test('keeps workshop flowchart labels large', async ({ page }) => {
+  test('does not clip workshop flowchart labels', async ({ page }) => {
     await page.goto(`${baseUrl}/agentic/04-apps-script-clasp-sheets/`);
 
     const firstFlowchart = page.locator('.mermaid svg').first();
     await expect(firstFlowchart).toContainText('Google Sheet', { timeout: 20000 });
 
-    const labelSizes = await renderedFontSizes(firstFlowchart, '.nodeLabel');
-
-    expect(labelSizes.length).toBeGreaterThan(0);
-    expect(Math.max(...labelSizes)).toBeGreaterThanOrEqual(30);
+    expect(await clippedForeignObjectLabels(firstFlowchart)).toEqual([]);
   });
 
-  test('keeps polymorphism class diagrams compact', async ({ page }) => {
-    await page.goto(`${baseUrl}/oop/02Polymorphism/`);
+  test('does not clip polymorphism decision flowchart labels', async ({ page }) => {
+    await page.goto(`${baseUrl}/oop/02Polymorphism2Bag25/`);
+
+    const decisionFlowchart = page.locator('.mermaid svg').filter({ hasText: 'האם שם הפעולה' }).first();
+    await expect(decisionFlowchart).toContainText('Overloading Resolution', { timeout: 20000 });
+
+    expect(await clippedForeignObjectLabels(decisionFlowchart)).toEqual([]);
+  });
+
+  test('keeps inheritance class diagrams compact', async ({ page }) => {
+    await page.goto(`${baseUrl}/oop/01inheritc/`);
 
     const classDiagram = page.locator('.mermaid svg').first();
-    await expect(classDiagram).toContainText('Shape', { timeout: 20000 });
+    await expect(classDiagram).toContainText('Vehicle', { timeout: 20000 });
 
     const fontSizes = await renderedFontSizes(classDiagram, 'text, tspan, .nodeLabel, .nodeLabel *');
 
