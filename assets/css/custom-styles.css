@@ -1047,15 +1047,15 @@ mark {
 }
 
 /* Double labels in flowcharts without applying the rule twice to nested nodes. */
-.mermaid svg:not(.classDiagram) text,
-.mermaid svg:not(.classDiagram) .nodeLabel,
-.mermaid svg:not(.classDiagram) .nodeLabel * {
+.mermaid svg.flowchart text,
+.mermaid svg.flowchart .nodeLabel,
+.mermaid svg.flowchart .nodeLabel * {
   font-size: 2rem !important;
 }
 
 /* Keep flowchart edge labels legible after SVG scaling. */
-.mermaid svg:not(.classDiagram) .edgeLabel,
-.mermaid svg:not(.classDiagram) .edgeLabel * {
+.mermaid svg.flowchart .edgeLabel,
+.mermaid svg.flowchart .edgeLabel * {
   font-size: 2rem !important;
 }
 
