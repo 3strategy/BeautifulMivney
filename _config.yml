@@ -159,8 +159,8 @@ navbar-links:
   - בגרויות מבני נתונים: "/bagruyot/index/"
   - בחינות מה"ט: "https://data.labor.gov.il/Mahat/mahat_tests_search.aspx"
 
-  Agentic Engineering:
-    - 00 פתיחה למורים: "/agentic/00-opener"
+  Agentic:
+    - 00 Agentic Engineering פתיחה: "/agentic/00-opener"
     - 01 Online מול Agentic: "/agentic/01-online-vs-agentic"
     - 02 Git ו-GitHub: "/agentic/02-git-github"
     - 03 AGENTS & Markdown:
