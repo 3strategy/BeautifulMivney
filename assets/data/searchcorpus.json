@@ -18,7 +18,7 @@ layout: null
 {% endfor %}
 
 {% for page in site.html_pages %}
-  {% if page.title != "{title}" and page.title != "404 - Page not found" %}
+  {% if page.title != "{title}" and page.title != "404 - Page not found" and page.search_exclude != true and page.noindex != true %}
     {% unless first_search_item %},{% endunless %}
     {
       "title"    : "{% if page.title != "" %}{{ page.title | strip_html | escape }}{% else %}{{ page.excerpt | strip_html | escape | strip }}{% endif %}",

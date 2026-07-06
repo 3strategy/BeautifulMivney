@@ -29,4 +29,16 @@ test.describe('search corpus menu links', () => {
       url: '/oop/ExByOthers/DitaOOPTrackingObjects.pdf',
     }));
   });
+
+  test('excludes protected and noindex pages', () => {
+    const corpus = loadSearchCorpus();
+
+    expect(corpus).not.toContainEqual(expect.objectContaining({
+      url: '/cs3e/tests/Test1.7.26/',
+    }));
+
+    expect(corpus).not.toContainEqual(expect.objectContaining({
+      url: '/teacher-only/cs3e/tests/Test1.7.26/',
+    }));
+  });
 });

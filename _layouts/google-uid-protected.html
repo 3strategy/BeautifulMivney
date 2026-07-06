@@ -1,0 +1,78 @@
+---
+layout: base
+---
+
+{% include header.html type="page" %}
+
+{% assign protected_status_id = page.protected_status_mount_id | default: "google-uid-protected-status" %}
+{% assign protected_account_id = page.protected_account_mount_id | default: "google-uid-protected-account" %}
+{% assign protected_content_id = page.protected_content_mount_id | default: "google-uid-protected-content" %}
+
+<style>
+#{{ protected_content_id }}.hidden {
+  display: none;
+  visibility: hidden;
+}
+</style>
+
+<main class="{% if page.full-width %} container-fluid {% else %} container-md {% endif %}">
+  <div class="row">
+    <div class="{% if page.full-width %} col {% else %} col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 {% endif %}">
+      {% if page.before-content %}
+        <div class="before-content">
+          {% for file in page.before-content %}
+            {% include {{ file }} %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div id="{{ protected_status_id }}"></div>
+      <div id="{{ protected_account_id }}"></div>
+      <div id="{{ protected_content_id }}" class="hidden">
+        {{ content }}
+      </div>
+
+      {% if page.after-content %}
+        <div class="after-content">
+          {% for file in page.after-content %}
+            {% include {{ file }} %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</main>
+
+<script>
+window.GOOGLE_UID_PROTECTED_PAGE_CONFIG = {
+  firebaseConfig: {
+    apiKey: "AIzaSyB1PN88qSK_iLk2tquUtHEr-243P9-9C8U",
+    authDomain: "guysfbfinal.firebaseapp.com",
+    databaseURL: "https://guysfbfinal-default-rtdb.firebaseio.com",
+    projectId: "guysfbfinal",
+    storageBucket: "guysfbfinal.firebasestorage.app",
+    messagingSenderId: "305446301273",
+    appId: "1:305446301273:web:87f1865be1a45edad9cb48"
+  },
+  allowedUids: {{ page.protected_allowed_uids | jsonify }},
+  statusMountId: {{ protected_status_id | jsonify }},
+  accountMountId: {{ protected_account_id | jsonify }},
+  contentMountId: {{ protected_content_id | jsonify }},
+  labels: {
+    loadingTitle: "בודקים הרשאה",
+    loadingMessage: "מתחברים ל-Google ובודקים את החשבון...",
+    signInTitle: "נדרשת התחברות",
+    signInMessage: "כדי לפתוח את הדף, התחברו עם חשבון Google המורשה.",
+    signInButtonLabel: "התחברות עם Google",
+    unauthorizedTitle: "אין הרשאה לצפייה בדף",
+    unauthorizedMessage: "החשבון הזה אינו מוגדר כחשבון מורשה לדף הזה.",
+    configErrorTitle: "שגיאת הגדרת הרשאות",
+    configErrorMessage: "אי אפשר לפתוח את הדף כי הגדרת ההרשאות חסרה או לא תקינה.",
+    authErrorTitle: "שגיאת התחברות",
+    authErrorMessage: "לא הצלחנו להשלים את ההתחברות עם Google.",
+    signOutLabel: "התנתקות",
+    accountSignedInPrefix: "מחוברים בתור"
+  }
+};
+</script>
+<script src="{{ '/assets/js/google-uid-protected-page.js' | relative_url }}"></script>
