@@ -6,12 +6,18 @@ tags: [agentic, codex, teaching, ai, harness-engineering]
 lang: he
 ---
 
-{: .box-success}
-**We are in a world where developers spend their days ==conversing with different agents, checking in on them, and seeing the work that they did.==**<br/>מעבר מ"שימוש בצ'אט" אל **ניהול עבודה הנדסית עם סוכנים**. המהנדס לא רק כותב פרומפט. המהנדס מגדיר סביבת עבודה, כללי בטיחות, בדיקות, תיעוד, משימות, ואופן בדיקה של התוצר.
+<div markdown=1 class="box-success">
+<div markdown=1 class="english">
+**We are in a world where developers spend their days conversing with different agents, ==checking in on them,== and seeing the work that they did.**
+</div>
+מעבר מ"שימוש בצ'אט" אל **ניהול עבודה הנדסית עם סוכנים**. המהנדס לא רק כותב פרומפט. המהנדס מגדיר סביבת עבודה, כללי בטיחות, בדיקות, תיעוד, משימות, ואופן בדיקה של התוצר.
 
-## הזמנה לסדנה {#id1invitation}
+</div>
 
-<details open markdown="1" class="box-note"><summary>הזמנה</summary>
+
+<!-- ## הזמנה לסדנה {#id1invitation} -->
+
+<details markdown="1" class="box-note"><summary>הזמנה לסדנה</summary>
 **הי כולם**. ב-29/6 הסדנה שלנו על Agentic Engineering.
 המשפט שמסכם את התקופה הוא זה: ~~אנחנו עוברים~~ **עברנו** מעולם שבו “שואלים את הצ’אט” לעולם שבו **מנהלים עבודה הנדסית עם סוכנים.**
 

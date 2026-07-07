@@ -636,6 +636,7 @@ td:has(i), th:has(i) {
   direction: rtl;
 }
 
+
 /* ehhh: English, Hebrew, Hebrew, Hebrew */
 .table-ehhh th:first-child,
 .table-ehhh td:first-child {
