@@ -142,3 +142,9 @@ private int idFor(int row, int col) {
 5. ודאו שניצחון או תיקו עדיין מאפסים את כל תשעת הכפתורים.
 
 אם `ActivityMainBinding` מסומן באדום, בצעו Gradle Sync ובדקו שקיים `app/src/main/res/layout/activity_main.xml`.
+
+---
+
+## השיעור הבא
+
+- [019c - View Binding ב-Fragments וב-MenuActivity]({{ '/android/projectSteps/019c.BindingForFragmentsAndMenuActivity' | relative_url }})
