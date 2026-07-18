@@ -59,6 +59,36 @@ buildFeatures {
 
 אפשר גם להשתמש ישירות ב-`binding.editServerIP`, אבל משתנה מקומי בשם `ipEdit` נשאר קריא ונוח אם משתמשים בו כמה פעמים.
 
+### חיבור כפתור Connect דרך binding
+
+אם ב-`activity_main.xml` הכפתור מכיל listener ישן:
+
+```xml
+android:onClick="onConnectClick"
+```
+
+הסירו את השורה הזאת מה-XML. לאחר יצירת ה-binding ב-`onCreate`, חברו listener מפורש:
+
+```java
+binding.buttonConnect.setOnClickListener(view -> onConnectClick());
+```
+
+מאחר שהמתודה כבר אינה נקראת אוטומטית מתוך XML, היא אינה צריכה לקבל `View` ואפשר להפוך אותה לפרטית:
+
+```diff
+-public void onConnectClick(View view) {
++private void onConnectClick() {
+```
+
+<div markdown="1" class="box-warning">
+
+`android:onClick` מחפש את המתודה לפי שמה בזמן ריצה בתוך ה-`Context` של ה-View. בפרויקט הזה `activity_main.xml` נטען גם על ידי `MainActivity` וגם על ידי `Main2Activity`, אך רק ב-`MainActivity` קיימת המתודה `onConnectClick`. אם ה-layout נטען ב-`Main2Activity`, הלחיצה מסתיימת ב-`IllegalStateException`, אף שאפשר לראות את המתודה בקובץ `MainActivity.java`. listener שמחובר דרך `binding.buttonConnect` קשור במפורש ל-Activity הנכון ונבדק בזמן קומפילציה.
+
+זהו יתרון נוסף של binding: לא רק שניגשים לאובייקט הכפתור בלי `findViewById`, אלא גם מחברים אליו התנהגות מפורשת בלי מנגנון reflection שמבוסס על מחרוזת.
+
+**כלל אצבע:** כאשר `R.id` משמש רק כדי למצוא View באמצעות `findViewById`, בדרך כלל מחליפים את כל פעולת החיפוש בשדה המתאים של `binding`. לעומת זאת, כאשר API דורש במפורש מזהה משאב מסוג `int` — למשל בזיהוי `MenuItem` או בקריאה ל-`FragmentTransaction.replace` — ממשיכים להשתמש ב-`R.id`.
+</div>
+
 ## העיקרון החשוב: `R.id` הוא מספר, binding הוא אובייקט
 
 לפני ההמרה, `R.id.button00` הוא **מזהה משאב** מסוג `int`. המזהה מתאים לפעולות כמו:
@@ -112,4 +142,3 @@ private int idFor(int row, int col) {
 5. ודאו שניצחון או תיקו עדיין מאפסים את כל תשעת הכפתורים.
 
 אם `ActivityMainBinding` מסומן באדום, בצעו Gradle Sync ובדקו שקיים `app/src/main/res/layout/activity_main.xml`.
-
