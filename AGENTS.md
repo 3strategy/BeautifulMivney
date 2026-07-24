@@ -184,6 +184,27 @@
 </div>
 ```
 
+## CollectCircles tutorial rules
+
+- The CollectCircles Android tutorial lives under `android/yoram` and is synchronized
+  with the Java/XML project at
+  `C:\Users\3stra\AndroidStudioProjects\CollectCircles`.
+- Write each chapter as the transition from the preceding runnable Android state, not
+  as a disconnected full-project dump.
+- Use Java, XML layouts, View Binding, and Android-native concepts; do not mechanically
+  translate .NET MAUI APIs or teach Jetpack Compose in this series.
+- Prefer clear high-school teaching code over extra abstractions. Explain why important
+  choices are made without commenting every obvious line.
+- Simple source comments may be in Hebrew. Keep comments with substantial inline code,
+  syntax, API names, or code-like expressions in English when that avoids RTL/LTR
+  corruption.
+- Preserve and explicitly explain the geometry distinction:
+  `distance < r1 + r2` means that two circles overlap, while
+  `distance + smallRadius <= targetRadius` means that the smaller circle is fully
+  contained by the target.
+- Never commit CollectCircles tutorial changes in `BeautifulMivney`; the repository
+  owner will commit them.
+
 ## Tutorial language/style convention
 
 - Default language direction for this repo should lean Hebrew unless explicitly decided otherwise for a specific page.

@@ -38,6 +38,7 @@ navbar-links:
     - לוח בגרויות 26 כולל שעות: "https://meyda.education.gov.il/files/Exams/HoursSumExams2026NEW.xlsx"
     - שאלוני בגרויות משרד החינוך: "https://meyda.education.gov.il/bagmgr/default.html#/"
     - אתר מפמ"ר: "https://pop.education.gov.il/tchumey_daat/computer-science-software-engineering-cyber/high-school/pedagogy-of/high-school-software-cyber-engineering/"
+    - תכנית הלימודים - טלפונים חכמים: "https://meyda.education.gov.il/files/CSIT/smartphones.pdf"
     - ספר פרוייקט: "https://meyda.education.gov.il/files/CSIT/Smartphones-Project.pdf"
     - מחוון פרוייקט טלפונים חכמים: "https://meyda.education.gov.il/files/CSIT/smartphonesProject-5.pdf"
     - "מחוון פרוייקט משולב נתונים": "https://meyda.education.gov.il/files/CSIT/web-services-asynchronous-programming-and-databases.pdf"
@@ -47,7 +48,8 @@ navbar-links:
     - שאלון מותאם: "https://meyda.education.gov.il/files/CSIT/AdaptedExams-31-07-22.pdf"
     - השתלמויות 26: "https://docs.google.com/document/d/1Wec8VVjvcz6wpuHqhuM90WHyCWacv4C62_I18nY1hXE/edit?usp=sharing"
     - השתלמויות 25: "https://docs.google.com/document/d/1FmNY8nXGh7AiW3C4ZmGSuDe9f8PPB-tEE0hFz9bGwjs/edit?usp=sharing"
-    
+
+
   פתיחת שנה: 
     - 0. פתיחת שנה: "/mivney/0minhalot/0YearOpening"
     - 0.1 עבודה בקמפוס: "/mivney/0minhalot/ChapterCampus"
