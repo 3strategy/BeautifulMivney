@@ -229,6 +229,7 @@ navbar-links:
     - 018d Google OAuth Login and SHA1: "/android/projectSteps/018d.GoogleOAuthLoginAndSHA1"
     - 019a Binding Instead of FindViewById: "/android/projectSteps/019a.BindingInsteadOfFindByID"
     - 019b View Binding ב-MainActivity: "/android/projectSteps/019bBindingsForMainActivity"
+    - 020 Touch sensors and Canvas: "/android/yoram/01.collect-circles-drawing"
     - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
     - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
 
