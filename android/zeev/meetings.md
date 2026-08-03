@@ -60,8 +60,8 @@ title: "מפגשי אנדרואיד עם זאב"
 ### Meeting#1 — למידה {#id-meeting-1-learning}
 מפת מקורות ללמידה עצמית: התיעוד הרשמי של Android, קהילת Stack Overflow, וסרטוני YouTube — עם מודעות לכך שרמת ההסבר ועדכניות החומר משתנות. ראו את [התיעוד הרשמי](https://docs.google.com/presentation/d/1JLPaat6-wgs7uiFA_Dfj8LKWlTMed-av/edit?slide=id.p2) ואת [הדיון במקורות קהילתיים ובווידאו](https://docs.google.com/presentation/d/1JLPaat6-wgs7uiFA_Dfj8LKWlTMed-av/edit?slide=id.p3).
 
-### Meeting#2 — JobScheduler {#id-meeting-2-job-scheduler}
-היכרות עם JobScheduler להרצת עבודה מחזורית ברקע תוך התחשבות ברשת ובסוללה. המצגת גם מבדילה בינו לבין AlarmManager ומסבירה את תנאי ההפעלה שמגדירים למשימה. ראו את [מתי לבחור בכל מנגנון](https://docs.google.com/presentation/d/1N4d4h_IxOts0EoOxNJ-bgCxouUD-2OIJ/edit?slide=id.p2), את [הצורך ב־BroadcastReceiver לאחר אתחול המכשיר](https://docs.google.com/presentation/d/1N4d4h_IxOts0EoOxNJ-bgCxouUD-2OIJ/edit?slide=id.p10) ואת [תנאי הרשת](https://docs.google.com/presentation/d/1N4d4h_IxOts0EoOxNJ-bgCxouUD-2OIJ/edit?slide=id.p13).
+### Meeting#2 — ~~JobScheduler~~ USE WorkManager {#id-meeting-2-job-scheduler}
+היכרות עם JobScheduler להרצת עבודה מחזורית ברקע תוך התחשבות ברשת ובסוללה. המצגת גם מבדילה בינו לבין AlarmManager ומסבירה את תנאי ההפעלה שמגדירים למשימה. ראו את [מתי לבחור בכל מנגנון](https://docs.google.com/presentation/d/1N4d4h_IxOts0EoOxNJ-bgCxouUD-2OIJ/edit?slide=id.p2), את [הצורך ב־BroadcastReceiver לאחר אתחול המכשיר](https://docs.google.com/presentation/d/1N4d4h_IxOts0EoOxNJ-bgCxouUD-2OIJ/edit?slide=id.p10) ואת [תנאי הרשת](https://docs.google.com/presentation/d/1N4d4h_IxOts0EoOxNJ-bgCxouUD-2OIJ/edit?slide=id.p13).~
 
 ### Meeting#2 — Sensors {#id-meeting-2-sensors}
 מבוא לחיישני Android: סוגי החיישנים, מגבלות השימוש בהם בפרויקט, הדמיה באמולטור ועבודה עם SensorManager ו־SensorEventListener. ראו את [דוגמאות החיישנים המובנים](https://docs.google.com/presentation/d/1aXeJl9OvDmzKVRSEuLCzM-z6peBSatgP/edit?slide=id.p3), את [Virtual sensors באמולטור](https://docs.google.com/presentation/d/1aXeJl9OvDmzKVRSEuLCzM-z6peBSatgP/edit?slide=id.p6) ואת [גישה לשירות החיישנים](https://docs.google.com/presentation/d/1aXeJl9OvDmzKVRSEuLCzM-z6peBSatgP/edit?slide=id.p9).
@@ -82,6 +82,8 @@ Service הוא רכיב שמנוהל בידי מערכת Android ויכול לה
 AlarmManager מאפשר לתזמן פעולה עתידית גם כשהאפליקציה אינה פעילה או כשהמכשיר נעול. המצגת מפרקת את המנגנון ל־AlarmManager, Intent ו־PendingIntent ומציגה הפעלות חד־פעמיות, חוזרות ומדויקות. ראו את [מטרת השירות](https://docs.google.com/presentation/d/1nV4xlUKkAcDl37nRkbZ2K6_z4Vh8SsDi/edit?slide=id.p2), את [רכיבי ההפעלה](https://docs.google.com/presentation/d/1nV4xlUKkAcDl37nRkbZ2K6_z4Vh8SsDi/edit?slide=id.p4) ואת [סוגי התזמון](https://docs.google.com/presentation/d/1nV4xlUKkAcDl37nRkbZ2K6_z4Vh8SsDi/edit?slide=id.p8).
 
 ### Meeting#4 — Notification {#id-meeting-4-notification}
+
+**שימו לב שההתראות שמוצגות כאן הן רק התראות שהטלפון שולח לעצמו (קצת מנוטרל). להודעות שמגיעות מבחוץ תעבדו עם הטוטוריאל שלי**
 בניית התראות מערכת: רכיבי ההתראה, הרשאת Android 13+, ערוץ התראות ויצירה/פרסום של ההתראה. ראו את [מרכיבי Notification](https://docs.google.com/presentation/d/1UVBAvSwJ_DhJ0z9UeoV7WRVvbTz8xFI9/edit?slide=id.p2) ואת [שלושת שלבי ההקמה](https://docs.google.com/presentation/d/1UVBAvSwJ_DhJ0z9UeoV7WRVvbTz8xFI9/edit?slide=id.p3).
 
 ### Meeting#6 — Fragments — בגרות 2023 {#id-meeting-6-bagrut-fragments}
