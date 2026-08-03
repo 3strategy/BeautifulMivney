@@ -83,7 +83,8 @@ AlarmManager מאפשר לתזמן פעולה עתידית גם כשהאפליק
 
 ### Meeting#4 — Notification {#id-meeting-4-notification}
 
-**שימו לב שההתראות שמוצגות כאן הן רק התראות שהטלפון שולח לעצמו (קצת מנוטרל). להודעות שמגיעות מבחוץ תעבדו עם הטוטוריאל שלי**
+**שימו לב שההתראות שמוצגות כאן הן רק התראות שהטלפון שולח לעצמו (קצת מנוטרל). להודעות שמגיעות מבחוץ תעבדו עם [הטוטוריאל שלי](/android/CollectCircles/05.collect-circles-local-notification)**
+
 בניית התראות מערכת: רכיבי ההתראה, הרשאת Android 13+, ערוץ התראות ויצירה/פרסום של ההתראה. ראו את [מרכיבי Notification](https://docs.google.com/presentation/d/1UVBAvSwJ_DhJ0z9UeoV7WRVvbTz8xFI9/edit?slide=id.p2) ואת [שלושת שלבי ההקמה](https://docs.google.com/presentation/d/1UVBAvSwJ_DhJ0z9UeoV7WRVvbTz8xFI9/edit?slide=id.p3).
 
 ### Meeting#6 — Fragments — בגרות 2023 {#id-meeting-6-bagrut-fragments}
