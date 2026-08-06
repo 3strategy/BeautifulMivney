@@ -463,12 +463,8 @@
       </main>
     );
 
-    const mainNode = !q ? (
-      <main className="quiz-main">{ui.emptyMessage}</main>
-    ) : submitted ? (
-      completionNode
-    ) : (
-      <main className="quiz-main">
+    const questionIntroNode = q ? (
+      <div className="quiz-question-summary">
         <div className="quiz-question-meta">
           {ui.questionLabel} {qIndex + 1} {ui.ofLabel} {quizQuestions.length}
         </div>
@@ -483,12 +479,30 @@
         ) : null}
 
         {q.promptHe ? <div className="quiz-prompt"><FormattedText text={q.promptHe} /></div> : null}
-        {q.promptHtml
-          ? <div
-              className="quiz-prompt quiz-prompt-html"
-              dangerouslySetInnerHTML={{ __html: q.promptHtml }}
-            />
-          : null}
+      </div>
+    ) : null;
+
+    const promptHtmlNode = q?.promptHtml
+      ? <div
+          className="quiz-prompt quiz-prompt-html"
+          dangerouslySetInnerHTML={{ __html: q.promptHtml }}
+        />
+      : null;
+
+    const mainNode = !q ? (
+      <main className="quiz-main">{ui.emptyMessage}</main>
+    ) : submitted ? (
+      completionNode
+    ) : (
+      <main className="quiz-main">
+        {promptHtmlNode ? (
+          <div className="quiz-question-visual-layout">
+            {questionIntroNode}
+            {promptHtmlNode}
+          </div>
+        ) : (
+          questionIntroNode
+        )}
 
         {q.code ? <CodeBlock code={q.code} /> : null}
 

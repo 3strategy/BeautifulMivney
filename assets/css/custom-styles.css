@@ -247,6 +247,12 @@ details > summary {
     line-height: 1.1;
 }
 
+.english {
+    direction: ltr;
+    text-align: left;
+    padding-inline-start: 1.5em;
+}
+
 
 pre {
     direction: ltr !important;
@@ -626,6 +632,24 @@ td:has(i), th:has(i) {
 .table-ehhe td:nth-child(2),
 .table-ehhe th:nth-child(3),
 .table-ehhe td:nth-child(3) {
+  text-align: right;
+  direction: rtl;
+}
+
+
+/* ehhh: English, Hebrew, Hebrew, Hebrew */
+.table-ehhh th:first-child,
+.table-ehhh td:first-child {
+  text-align: left;
+  direction: ltr;
+}
+
+.table-ehhh th:nth-child(2),
+.table-ehhh td:nth-child(2),
+.table-ehhh th:nth-child(3),
+.table-ehhh td:nth-child(3),
+.table-ehhh th:nth-child(4),
+.table-ehhh td:nth-child(4) {
   text-align: right;
   direction: rtl;
 }
@@ -1023,6 +1047,21 @@ mark {
   unicode-bidi: embed;
 }
 
+/* Class diagrams are dense; retain Mermaid's default typography and geometry. */
+.mermaid svg.classDiagram,
+.mermaid svg.classDiagram * {
+  font-size: 1rem !important;
+}
+
+/* Protect dense UML diagrams while Mermaid calculates their SVG dimensions. */
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) text,
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) .nodeLabel,
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) .nodeLabel *,
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) .edgeLabel,
+.mermaid-class-diagram .mermaid svg:not(.classDiagram) .edgeLabel * {
+  font-size: 1rem !important;
+}
+
 /* Additional arrow targeting for dark mode */
 .mermaid .arrowheadPath {
   fill: none !important;
@@ -1036,6 +1075,7 @@ mark {
 .mermaid marker path {
   fill: none !important;
   stroke: var(--text-col) !important;
+  stroke-width: 2px !important;
 }
 .mermaid defs marker path {
   fill: none !important;
@@ -1143,6 +1183,28 @@ mark {
     font-weight: 600;
     margin: 0 0 0.5em 0;
     color: var(--text-col);
+}
+.quiz-question-visual-layout {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.75fr) minmax(280px, 1.25fr);
+    align-items: start;
+    gap: 1em;
+    margin-bottom: 1em;
+}
+.quiz-question-summary {
+    min-width: 0;
+}
+.quiz-question-visual-layout .quiz-tags,
+.quiz-question-visual-layout .quiz-prompt {
+    margin-bottom: 0;
+}
+.quiz-question-visual-layout .quiz-prompt-html svg {
+    max-width: 100%;
+}
+@media (max-width: 760px) {
+    .quiz-question-visual-layout {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Tags */

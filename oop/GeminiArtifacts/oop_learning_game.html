@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אלופי ה-OOP: משחק היררכיית מחלקות ב-#C</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+        :root {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #10b981;
+            --accent: #f59e0b;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --field-bg: #fee2e2;
+            --field-text: #991b1b;
+            --field-border: #fca5a5;
+            --method-bg: #e0f2fe;
+            --method-text: #0369a1;
+            --method-border: #7dd3fc;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Assistant', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: block;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .stage-indicator {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* מכולה ראשית */
+        .main-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* תצוגת דמויות עליונה */
+        .characters-top-bar {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .characters-top-bar h3 {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 4px;
+        }
+
+        .char-cards-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .char-mini-card {
+            background-color: #f1f5f9;
+            border-right: 4px solid var(--primary);
+            padding: 10px 15px;
+            border-radius: 6px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .char-mini-card.enemy-card {
+            border-right-color: #ef4444;
+        }
+
+        .char-mini-card h4 {
+            font-size: 16px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .char-mini-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* אזור המשחק המרכזי המפוצל */
+        .game-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .game-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* קנבס המחלקות */
+        .workspace-canvas {
+            background-color: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 20px;
+            min-height: 550px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            align-content: start;
+        }
+
+        /* מחלקה (קופסה) */
+        .class-box {
+            background-color: var(--bg-card);
+            border: 2px solid #94a3b8;
+            border-radius: 8px;
+            width: 280px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+        }
+
+        .class-box.active-drag-over {
+            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(37, 99, 235, 0.2);
+            background-color: #f8fafc;
+        }
+
+        .class-header {
+            background-color: #eaefe7;
+            padding: 12px;
+            border-bottom: 2px solid #94a3b8;
+            text-align: center;
+            font-weight: 700;
+            color: #1e293b;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+        }
+
+        .class-box.base-class .class-header {
+            background-color: #e0f2fe;
+        }
+
+        /* בחירת ירושה */
+        .inheritance-selector {
+            padding: 8px 12px;
+            background-color: #f8fafc;
+            border-bottom: 1px dashed #cbd5e1;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .inheritance-selector select {
+            padding: 3px 8px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+            outline: none;
+            background-color: white;
+            color: var(--text-dark);
+        }
+
+        /* רשימת תכונות ופעולות בתוך המחלקה */
+        .class-body {
+            padding: 12px;
+            min-height: 120px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background-color: #fafafa;
+        }
+
+        .class-body-empty-hint {
+            color: #94a3b8;
+            font-size: 13px;
+            text-align: center;
+            margin: auto;
+            font-style: italic;
+            pointer-events: none;
+        }
+
+        /* פריט גרירה (תכונה או מתודה) */
+        .drag-member {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            cursor: grab;
+            user-select: none;
+            border: 1px solid transparent;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .drag-member:active {
+            cursor: grabbing;
+            transform: scale(0.98);
+        }
+
+        .drag-member.type-field {
+            background-color: var(--field-bg);
+            color: var(--field-text);
+            border-color: var(--field-border);
+        }
+
+        .drag-member.type-method {
+            background-color: var(--method-bg);
+            color: var(--method-text);
+            border-color: var(--method-border);
+        }
+
+        /* סרגל צדי - חלון קוד והנחיות */
+        .sidebar-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .instructions-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .instructions-card h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .instructions-card ol {
+            margin-right: 20px;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .instructions-card li {
+            margin-bottom: 6px;
+        }
+
+        /* חלון קוד דינמי */
+        .code-window-wrapper {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .code-window-header {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 10px 15px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .code-window-header .dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-window-header .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ef4444;
+        }
+        .code-window-header .dot:nth-child(2) { background-color: #f59e0b; }
+        .code-window-header .dot:nth-child(3) { background-color: #10b981; }
+
+        .code-window {
+            direction: ltr !important;
+            text-align: left !important;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            padding: 15px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            white-content: pre;
+            max-height: 400px;
+            min-height: 250px;
+        }
+
+        /* צביעת קוד בסיסית ביותר */
+        .code-kw { color: #f472b6; font-weight: bold; }
+        .code-type { color: #60a5fa; }
+        .code-method { color: #34d399; }
+        .code-comment { color: #64748b; font-style: italic; }
+
+        /* כפתור בדיקה */
+        .action-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+            width: 100%;
+        }
+
+        .action-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* מסך פתיחה חלון מודאל לאפיון הדמויות */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-title {
+            color: #1e3a8a;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 8px;
+        }
+
+        .modal-body {
+            font-size: 15px;
+            color: #334155;
+            margin-bottom: 25px;
+        }
+
+        .modal-char-box {
+            background-color: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .modal-char-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .modal-btn {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            float: left;
+        }
+
+        .modal-btn:hover {
+            background-color: #059669;
+        }
+
+        /* הודעת הצלחה/משוב */
+        .feedback-message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            display: none;
+            text-align: center;
+        }
+
+        .feedback-success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .feedback-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- כותרת ראשית -->
+    <header>
+        <h1>אלופי ה-OOP: היררכיית מחלקות ב-#C</h1>
+        <div class="stage-indicator" id="stage-label">שלב א': בסיס הירושה והכללה</div>
+    </header>
+
+    <div class="main-container">
+        
+        <!-- סרגל דמויות עליון (יוצג לאורך כל השלבים) -->
+        <div class="characters-top-bar">
+            <h3>👥 אפיון ורכיבי הדמויות במערכת</h3>
+            <div class="char-cards-container" id="top-char-container">
+                <!-- יתמלא דינמית בהתאם לשלב -->
+            </div>
+        </div>
+
+        <!-- גריד המשחק -->
+        <div class="game-grid">
+            
+            <!-- אזור קנבס המחלקות (ימין) -->
+            <div class="workspace-canvas" id="canvas">
+                <!-- מחלקות ייוצרו כאן דינמית -->
+            </div>
+
+            <!-- סרגל שמאלי: הנחיות, קוד ובדיקה -->
+            <div class="sidebar-panel">
+                
+                <div class="instructions-card">
+                    <h2>🎯 המשימה שלך</h2>
+                    <div id="stage-instructions">
+                        <!-- יתמלא דינמית -->
+                    </div>
+                    <div class="feedback-message" id="feedback-box"></div>
+                </div>
+
+                <!-- חלון הקוד הדינמי -->
+                <div class="code-window-wrapper">
+                    <div class="code-window-header">
+                        <span>GeneratedCode.cs</span>
+                        <div class="dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                    <pre class="code-window" id="code-box"><code></code></pre>
+                </div>
+
+                <button class="action-btn" id="check-btn" onclick="checkSolution()">🚀 בדוק את מבנה הקוד!</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- מודאל פתיחה ואפיון דמויות לשלב א' -->
+    <div class="modal-overlay" id="intro-modal">
+        <div class="modal-card">
+            <div class="modal-title" id="modal-title-text">ברוכים הבאים לעולם ה-Object-Oriented Programming!</div>
+            <div class="modal-body" id="modal-body-content">
+                <p>לפניכם תיאור של שתי דמויות במשחק תפקידים (RPG) חדש שאנחנו מפתחים ב-#C.</p>
+                <p>כרגע, הקוד מכיל <strong>כפילות רבה</strong>. כל התכונות והפעולות משוכפלות בשתי המחלקות בנפרד.</p>
+                
+                <div class="modal-char-box">
+                    <div class="modal-char-title">⚔️ Warrior (לוחם)</div>
+                    <div>מחזיק בשדות <code>name</code> ו-<code>hp</code>, שיטות Getter/Setter עבורם, ופעולה ייחודית: <code>Attack()</code>.</div>
+                </div>
+
+                <div class="modal-char-box">
+                    <div class="modal-char-title">🔮 Mage (קוסם)</div>
+                    <div>מחזיק בשדות <code>name</code> ו-<code>hp</code>, שיטות Getter/Setter עבורם, ופעולה ייחודית: <code>CastSpell()</code>.</div>
+                </div>
+                
+                <br>
+                <p><strong>המטרה בשלב א':</strong> לזהות את הכפילויות, לגרור את הרכיבים המשותפים למחלקת העל <code>Character</code> (דמות), ולהגדיר קשר ירושה מתאים בבנק הקשרים!</p>
+            </div>
+            <button class="modal-btn" onclick="closeModal()">הבנתי, בואו נתחיל! ←</button>
+        </div>
+    </div>
+
+    <script>
+        // הגדרת מצב המשחק
+        let currentStage = 'A'; // או 'B'
+        
+        // נתוני השלבים והמצב של המחלקות
+        const stageData = {
+            A: {
+                label: "שלב א': בסיס הירושה והכללה (Generalization)",
+                instructions: `<ol>
+                    <li>זהו את הרכיבים המשוכפלים בין הלוחם לקוסם.</li>
+                    <li><strong>גררו</strong> את הרכיבים המשותפים (Java Style Getters/Setters והשדות) אל מחלקת האב <code>Character</code>.</li>
+                    <li>הגדירו את קשר הירושה: שנו בתיבת הבחירה של <code>Warrior</code> ושל <code>Mage</code> שיורשים מ-<code>Character</code>.</li>
+                </ol>`,
+                topChars: [
+                    { name: "⚔️ Warrior (לוחם)", desc: "דמות קרב פנים אל פנים מנוסה. תכונות: שם, חיים. פעולה: התקפה." },
+                    { name: "🔮 Mage (קוסם)", desc: "מטיל כשפים מלומד. תכונות: שם, חיים. פעולה: הטלת קסם." },
+                    { name: "👤 Character (דמות)", desc: "מחלקת בסיס מופשטת שנועדה לאחד את התכונות המשותפות לכל הישויות." }
+                ],
+                classes: {
+                    Character: { name: "Character", isBase: true, parent: "", items: [] },
+                    Warrior: { name: "Warrior", isBase: false, parent: "", items: [
+                        { id: "f_name", text: "private string name", type: "field" },
+                        { id: "f_hp", text: "private int hp", type: "field" },
+                        { id: "m_gn", text: "public string GetName()", type: "method" },
+                        { id: "m_sn", text: "public void SetName(string n)", type: "method" },
+                        { id: "m_gh", text: "public int GetHp()", type: "method" },
+                        { id: "m_sh", text: "public void SetHp(int h)", type: "method" },
+                        { id: "m_atk", text: "public void Attack()", type: "method" }
+                    ]},
+                    Mage: { name: "Mage", isBase: false, parent: "", items: [
+                        { id: "m_csp", text: "public void CastSpell()", type: "method" } 
+                        // בשביל המשחקיות, התכונות הכפולות מתחילות אצל הלוחם והתלמיד מבין שהן שייכות לשניהם ומעביר ל-Character
+                    ]}
+                }
+            },
+            B: {
+                label: "שלב ב': היררכיה רב-שכבתית (Multi-level Inheritance)",
+                instructions: `<ol>
+                    <li>התווספה דמות חדשה: <code>Enemy</code> (אויב). לאויב יש שם וחיים, אך יש לו תכונה ייחודית <code>difficulty</code>.</li>
+                    <li>בנוסף, הלוחם והקוסם מוגדרים כעת כ-<code>Hero</code> (גיבורים) ויש להם שדה משותף <code>gold</code>.</li>
+                    <li><strong>סדרו את ההיררכיה התלת-שכבתית:</strong><br>
+                        - <code>Hero</code> ו-<code>Enemy</code> יורשים מ-<code>Character</code>.<br>
+                        - <code>Warrior</code> ו-<code>Mage</code> יורשים מ-<code>Hero</code>.</li>
+                    <li>גררו את השדות והשיטות למקומם המדויק ביותר כדי למנוע כפילויות!</li>
+                </ol>`,
+                topChars: [
+                    { name: "👤 Character (דמות)", desc: "בסיס לכל ישות בעולם: שם ונקודות חיים." },
+                    { name: "🛡️ Hero (גיבור)", desc: "דמות שחקן שיכולה לאסוף זהב (Gold)." },
+                    { name: "👾 Enemy (אויב)", desc: "מפלצת או יריב, בעל רמת קושי (Difficulty)." },
+                    { name: "⚔️ Warrior & 🔮 Mage", desc: "סוגי גיבורים ספציפיים בעלי פעולות לחימה ייחודיות." }
+                ],
+                classes: {
+                    Character: { name: "Character", isBase: true, parent: "", items: [] },
+                    Hero: { name: "Hero", isBase: false, parent: "", items: [] },
+                    Enemy: { name: "Enemy", isBase: false, parent: "", items: [
+                        { id: "f_diff", text: "private int difficulty", type: "field" },
+                        { id: "m_gdiff", text: "public int GetDifficulty()", type: "method" },
+                        { id: "m_sdiff", text: "public void SetDifficulty(int d)", type: "method" }
+                    ]},
+                    Warrior: { name: "Warrior", isBase: false, parent: "", items: [
+                        { id: "f_name", text: "private string name", type: "field" },
+                        { id: "f_hp", text: "private int hp", type: "field" },
+                        { id: "m_gn", text: "public string GetName()", type: "method" },
+                        { id: "m_sn", text: "public void SetName(string n)", type: "method" },
+                        { id: "m_gh", text: "public int GetHp()", type: "method" },
+                        { id: "m_sh", text: "public void SetHp(int h)", type: "method" },
+                        { id: "f_gold", text: "private int gold", type: "field" },
+                        { id: "m_ggold", text: "public int GetGold()", type: "method" },
+                        { id: "m_sgold", text: "public void SetGold(int g)", type: "method" },
+                        { id: "m_atk", text: "public void Attack()", type: "method" }
+                    ]},
+                    Mage: { name: "Mage", isBase: false, parent: "", items: [
+                        { id: "m_csp", text: "public void CastSpell()", type: "method" }
+                    ]}
+                }
+            }
+        };
+
+        let currentClasses = JSON.parse(JSON.stringify(stageData[currentStage].classes));
+
+        // אתחול והצגת השלב
+        function initStage(stageKey) {
+            currentStage = stageKey;
+            currentClasses = JSON.parse(JSON.stringify(stageData[currentStage].classes));
+            
+            // עדכון כותרות והנחיות
+            document.getElementById('stage-label').innerText = stageData[currentStage].label;
+            document.getElementById('stage-instructions').innerHTML = stageData[currentStage].instructions;
+            
+            // עדכון סרגל דמויות עליון
+            const topCharContainer = document.getElementById('top-char-container');
+            topCharContainer.innerHTML = '';
+            stageData[currentStage].topChars.forEach(char => {
+                const card = document.createElement('div');
+                card.className = `char-mini-card ${char.name.includes('Enemy') ? 'enemy-card' : ''}`;
+                card.innerHTML = `<h4>${char.name}</h4><p>${char.desc}</p>`;
+                topCharContainer.appendChild(card);
+            });
+
+            hideFeedback();
+            renderClasses();
+            updateCodeWindow();
+        }
+
+        // רינדור ויזואלי של קופסאות המחלקות
+        function renderClasses() {
+            const canvas = document.getElementById('canvas');
+            canvas.innerHTML = '';
+
+            Object.keys(currentClasses).forEach(classKey => {
+                const cls = currentClasses[classKey];
+                
+                const classBox = document.createElement('div');
+                classBox.className = `class-box ${cls.isBase ? 'base-class' : ''}`;
+                classBox.id = `box-${classKey}`;
+                
+                // כותרת המחלקה
+                const header = document.createElement('div');
+                header.className = 'class-header';
+                header.innerText = `class ${cls.name}`;
+                classBox.appendChild(header);
+
+                // בחירת ירושה (לא למחלקת הבסיס האולטימטיבית בשלב א')
+                const selectorArea = document.createElement('div');
+                selectorArea.className = 'inheritance-selector';
+                selectorArea.innerHTML = `<span>🡡 יורש מ-:</span>`;
+                
+                const select = document.createElement('select');
+                select.onchange = (e) => {
+                    cls.parent = e.target.value;
+                    updateCodeWindow();
+                };
+                
+                const optNone = document.createElement('option');
+                optNone.value = "";
+                optNone.innerText = "ללא מחלקה";
+                select.appendChild(optNone);
+
+                Object.keys(currentClasses).forEach(k => {
+                    if (k !== classKey) {
+                        const opt = document.createElement('option');
+                        opt.value = k;
+                        opt.innerText = currentClasses[k].name;
+                        if (cls.parent === k) opt.selected = true;
+                        select.appendChild(opt);
+                    }
+                });
+                
+                selectorArea.appendChild(select);
+                classBox.appendChild(selectorArea);
+
+                // גוף המחלקה (Dropzone)
+                const body = document.createElement('div');
+                body.className = 'class-body';
+                body.dataset.classKey = classKey;
+                
+                // אירועי גרירה למחלקה
+                body.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    classBox.classList.add('active-drag-over');
+                });
+
+                body.addEventListener('dragleave', () => {
+                    classBox.classList.remove('active-drag-over');
+                });
+
+                body.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    classBox.classList.remove('active-drag-over');
+                    const itemId = e.dataTransfer.getData('text/plain');
+                    const sourceClass = e.dataTransfer.getData('source-class');
+                    const targetClass = classKey;
+
+                    if (sourceClass !== targetClass) {
+                        moveItem(sourceClass, targetClass, itemId);
+                    }
+                });
+
+                if (cls.items.length === 0) {
+                    const hint = document.createElement('div');
+                    hint.className = 'class-body-empty-hint';
+                    hint.innerText = "גררו תכונות לכאן...";
+                    body.appendChild(hint);
+                } else {
+                    cls.items.forEach(item => {
+                        const itemEl = document.createElement('div');
+                        itemEl.className = `drag-member type-${item.type}`;
+                        itemEl.innerText = item.text;
+                        itemEl.draggable = true;
+                        itemEl.id = item.id;
+                        
+                        itemEl.addEventListener('dragstart', (e) => {
+                            e.dataTransfer.setData('text/plain', item.id);
+                            e.dataTransfer.setData('source-class', classKey);
+                        });
+
+                        body.appendChild(itemEl);
+                    });
+                }
+
+                classBox.appendChild(body);
+                canvas.appendChild(classBox);
+            });
+        }
+
+        // לוגיקת העברת פריט בין מחלקות במערך הנתונים
+        function moveItem(sourceClassKey, targetClassKey, itemId) {
+            const sourceArr = currentClasses[sourceClassKey].items;
+            const targetArr = currentClasses[targetClassKey].items;
+            
+            const itemIndex = sourceArr.findIndex(i => i.id === itemId);
+            if (itemIndex > -1) {
+                const [item] = sourceArr.splice(itemIndex, 1);
+                targetArr.push(item);
+                renderClasses();
+                updateCodeWindow();
+            }
+        }
+
+        // יצירת קוד #C תואם והצגתו בחלון הקוד
+        function updateCodeWindow() {
+            let codeHtml = "";
+
+            Object.keys(currentClasses).forEach(classKey => {
+                const cls = currentClasses[classKey];
+                const inheritance = cls.parent ? ` : <span class="code-type">${currentClasses[cls.parent].name}</span>` : "";
+                
+                codeHtml += `<span class="code-kw">public class</span> <span class="code-type">${cls.name}</span>${inheritance}
+{
+`;
+                
+                const fields = cls.items.filter(i => i.type === 'field');
+                const methods = cls.items.filter(i => i.type === 'method');
+
+                fields.forEach(f => {
+                    codeHtml += `    <span class="code-kw">private</span> ${f.text.replace('private ', '')};
+`;
+                });
+
+                if (fields.length > 0 && methods.length > 0) codeHtml += `
+`;
+
+                methods.forEach(m => {
+                    let cleanText = m.text.replace('public ', '');
+                    let methodName = cleanText.split('(')[0].split(' ').pop();
+                    
+                    codeHtml += `    <span class="code-kw">public</span> ${cleanText} 
+    {
+`;
+                    
+                    // הדמיית גוף מתודה Java-style בתוך C# כבקשת המשתמש
+                    if (methodName === "GetName") {
+                        codeHtml += `        <span class="code-kw">return</span> <span class="code-kw">this</span>.name;
+`;
+                    } else if (methodName === "SetName") {
+                        codeHtml += `        <span class="code-kw">this</span>.name = n;
+`;
+                    } else if (methodName === "GetHp") {
+                        codeHtml += `        <span class="code-kw">return</span> <span class="code-kw">this</span>.hp;
+`;
+                    } else if (methodName === "SetHp") {
+                        codeHtml += `        <span class="code-kw">this</span>.hp = h;
+`;
+                    } else if (methodName === "GetGold") {
+                        codeHtml += `        <span class="code-kw">return</span> <span class="code-kw">this</span>.gold;
+`;
+                    } else if (methodName === "SetGold") {
+                        codeHtml += `        <span class="code-kw">this</span>.gold = g;
+`;
+                    } else if (methodName === "GetDifficulty") {
+                        codeHtml += `        <span class="code-kw">return</span> <span class="code-kw">this</span>.difficulty;
+`;
+                    } else if (methodName === "SetDifficulty") {
+                        codeHtml += `        <span class="code-kw">this</span>.difficulty = d;
+`;
+                    } else if (methodName === "Attack") {
+                        codeHtml += `        <span class="code-comment">// לוגיקת תקיפה בקפא"פ</span>
+`;
+                    } else if (methodName === "CastSpell") {
+                        codeHtml += `        <span class="code-comment">// לוגיקת הטלת לחש מאגי</span>
+`;
+                    }
+                    
+                    codeHtml += `    }
+
+`;
+                });
+
+                // ניקוי ירידת שורה מיותרת בסוף
+                if (methods.length > 0) {
+                    codeHtml = codeHtml.trimEnd() + "\n";
+                }
+
+                codeHtml += `}
+
+`;
+            });
+
+            document.getElementById('code-box').innerHTML = `<code>${codeHtml.trim()}</code>`;
+        }
+
+        // בדיקת הפתרון שהזין התלמיד
+        function checkSolution() {
+            const feedback = document.getElementById('feedback-box');
+            feedback.style.display = 'block';
+
+            if (currentStage === 'A') {
+                // בדיקת שלב א'
+                const charItems = currentClasses.Character.items.map(i => i.id);
+                const warItems = currentClasses.Warrior.items.map(i => i.id);
+                const mageItems = currentClasses.Mage.items.map(i => i.id);
+                
+                const hasShared = ['f_name', 'f_hp', 'm_gn', 'm_sn', 'm_gh', 'm_sh'].every(id => charItems.includes(id));
+                const warCorrect = warItems.length === 1 && warItems.includes('m_atk');
+                const mageCorrect = mageItems.length === 1 && mageItems.includes('m_csp');
+                
+                const inheritanceCorrect = currentClasses.Warrior.parent === 'Character' && currentClasses.Mage.parent === 'Character';
+
+                if (hasShared && warCorrect && mageCorrect && inheritanceCorrect) {
+                    feedback.className = "feedback-message feedback-success";
+                    feedback.innerHTML = "🌟 כל הכבוד! פיצחתם את שלב א'! עברתם בהצלחה את הכללת התכונות (Generalization) ומנעתם כפל קוד! עוברים לשלב ב'...";
+                    
+                    setTimeout(() => {
+                        showStageBIntro();
+                    }, 3500);
+                } else {
+                    feedback.className = "feedback-message feedback-error";
+                    let errorMsg = "🛑 אופס! המבנה עדיין לא מדויק:<br>";
+                    if (!hasShared) errorMsg += "- ודאו שכל 6 הרכיבים המשותפים (שם, חיים והגטרים/סטרים שלהם) נמצאים ב-Character.<br>";
+                    if (!inheritanceCorrect) errorMsg += "- ודאו ששתי המחלקות Warrior ו-Mage מוגדרות כיורשות מ-Character.<br>";
+                    if (!warCorrect || !mageCorrect) errorMsg += "- הפעולות הייחודיות (Attack, CastSpell) צריכות להישאר במחלקות הבן בלבד.";
+                    feedback.innerHTML = errorMsg;
+                }
+            } else {
+                // בדיקת שלב ב'
+                const charItems = currentClasses.Character.items.map(i => i.id);
+                const heroItems = currentClasses.Hero.items.map(i => i.id);
+                const enemyItems = currentClasses.Enemy.items.map(i => i.id);
+                const warItems = currentClasses.Warrior.items.map(i => i.id);
+                const mageItems = currentClasses.Mage.items.map(i => i.id);
+
+                // Character צריך להכיל תכונות בסיס של כל ישות
+                const charCorrect = ['f_name', 'f_hp', 'm_gn', 'm_sn', 'm_gh', 'm_sh'].every(id => charItems.includes(id)) && charItems.length === 6;
+                // Hero צריך להכיל את הזהב המשותף לגיבורים
+                const heroCorrect = ['f_gold', 'm_ggold', 'm_sgold'].every(id => heroItems.includes(id)) && heroItems.length === 3;
+                // Enemy צריך להכיל רק קושי
+                const enemyCorrect = ['f_diff', 'm_gdiff', 'm_sdiff'].every(id => enemyItems.includes(id)) && enemyItems.length === 3;
+                
+                const warCorrect = warItems.length === 1 && warItems.includes('m_atk');
+                const mageCorrect = mageItems.length === 1 && mageItems.includes('m_csp');
+
+                // בדיקת קשרי ירושה
+                const parentsCorrect = currentClasses.Hero.parent === 'Character' && 
+                                       currentClasses.Enemy.parent === 'Character' && 
+                                       currentClasses.Warrior.parent === 'Hero' && 
+                                       currentClasses.Mage.parent === 'Hero';
+
+                if (charCorrect && heroCorrect && enemyCorrect && warCorrect && mageCorrect && parentsCorrect) {
+                    feedback.className = "feedback-message feedback-success";
+                    feedback.innerHTML = "🏆 ניצחון מוחלט! בניתם היררכיה מושלמת תלת-שכבתית ב-#C המשלבת חלוקת תפקידים נכונה ומניעת כפילויות מלאה! אתם אלופי ה-OOP!";
+                    document.getElementById('check-btn').disabled = true;
+                    document.getElementById('check-btn').innerText = "🏁 המשחק הושלם בהצלחה!";
+                } else {
+                    feedback.className = "feedback-message feedback-error";
+                    let errorMsg = "🛑 ההיררכיה הרב-שכבתית עדיין לא שלמה:<br>";
+                    if (!parentsCorrect) errorMsg += "- בדקו את החצים: Hero ו-Enemy יורשים מ-Character, ו-Warrior ו-Mage יורשים מ-Hero.<br>";
+                    if (!charCorrect) errorMsg += "- שם ונקודות חיים משותפים לכל הישויות (כולל אויבים) ולכן מקומם ב-Character.<br>";
+                    if (!heroCorrect) errorMsg += "- זהב (Gold) משותף רק לגיבורים (Warrior ו-Mage) אך לא לאויב, ולכן מקומו ב-Hero.<br>";
+                    if (!enemyCorrect || !warCorrect || !mageCorrect) errorMsg += "- תכונות ייחודיות ספציפיות נשארות בקצוות ההיררכיה.";
+                    feedback.innerHTML = errorMsg;
+                }
+            }
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedback-box').style.display = 'none';
+        }
+
+        // ניהול מודאל חלונות פתיחה ומעבר שלבים
+        function closeModal() {
+            document.getElementById('intro-modal').style.display = 'none';
+        }
+
+        function showStageBIntro() {
+            const modal = document.getElementById('intro-modal');
+            document.getElementById('modal-title-text').innerText = "מתקדמים לשלב ב': היררכיית עומק מרובת רמות!";
+            
+            document.getElementById('modal-body-content').innerHTML = `
+                <p>עבודה מצוינת! כעת המשחק מתרחב ונוספו דרישות חדשות מהסטודיו:</p>
+                <div class="modal-char-box">
+                    <div class="modal-char-title">👾 Enemy (אויב)</div>
+                    <div>נוספה מחלקת אויב חדשה. גם לאויבים יש שם וחיים, אבל יש להם תכונה ייחודית של <strong>רמת קושי (difficulty)</strong>.</div>
+                </div>
+                <div class="modal-char-box">
+                    <div class="modal-char-title">🛡️ Hero (גיבור)</div>
+                    <div>הלוחם והקוסם מוגדרים כעת שניהם כסוגים של 'גיבורים' המשתפים ביניהם שדה איסוף מטבעות <strong>זהב (gold)</strong>. לאויבים אין זהב!</div>
+                </div>
+                <br>
+                <p><strong>האתגר החדש:</strong> עליכם ליצור מבנה ירושה עמוק יותר (3 שכבות) שימנע לחלוטין כפל קוד, כך שכל תכונה תשב במקום המדויק ביותר בהיררכיה!</p>
+            `;
+            
+            const btn = modal.querySelector('.modal-btn');
+            btn.innerText = "אני מוכן לאתגר הגדול! ←";
+            btn.onclick = function() {
+                closeModal();
+                initStage('B');
+            };
+            modal.style.display = 'flex';
+        }
+
+        // הפעלה ראשונית
+        window.onload = function() {
+            initStage('A');
+        };
+    </script>
+</body>
+</html>

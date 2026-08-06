@@ -184,9 +184,32 @@
 </div>
 ```
 
+## CollectCircles tutorial rules
+
+- The CollectCircles Android tutorial lives under `android/yoram` and is synchronized
+  with the Java/XML project at
+  `C:\Users\3stra\AndroidStudioProjects\CollectCircles`.
+- Write each chapter as the transition from the preceding runnable Android state, not
+  as a disconnected full-project dump.
+- Use Java, XML layouts, View Binding, and Android-native concepts; do not mechanically
+  translate .NET MAUI APIs or teach Jetpack Compose in this series.
+- Prefer clear high-school teaching code over extra abstractions. Explain why important
+  choices are made without commenting every obvious line.
+- Simple source comments may be in Hebrew. Keep comments with substantial inline code,
+  syntax, API names, or code-like expressions in English when that avoids RTL/LTR
+  corruption.
+- Preserve and explicitly explain the geometry distinction:
+  `distance < r1 + r2` means that two circles overlap, while
+  `distance + smallRadius <= targetRadius` means that the smaller circle is fully
+  contained by the target.
+- Never commit CollectCircles tutorial changes in `BeautifulMivney`; the repository
+  owner will commit them.
+
 ## Tutorial language/style convention
 
 - Default language direction for this repo should lean Hebrew unless explicitly decided otherwise for a specific page.
+- In Mermaid/plain-text diagram labels for math/modeling content, prefer Unicode superscripts/subscripts such as `aⁱ`, `aʲ`, `x²` over caret notation such as `a^i`, because Mermaid renders `^` literally. Keep TeX/MathJax notation for ordinary Markdown math. This preference also applies when editing math-heavy sibling sites such as `mathBeautifulFork`.
+- Mermaid diagrams default to LTR rendering through `assets/js/custom-script.js`; do not wrap diagrams in `.english` just to fix transition order. Use `mermaid-rtl` or `%% dir: rtl %%` only for diagrams whose labels intentionally need RTL rendering.
 - For Hebrew lettered sub-question lists, prefer a real ordered list with `{: .alefbet}` and ordinary Markdown numbering (`1.`, `2.`, `3.`) rather than hand-writing `א.`, `ב.`, `ג.` as separate `{: .subq}` paragraphs.
 - Reusable pattern:
 
@@ -208,7 +231,41 @@ main {
 </style>
 ```
 
+- For a short English block inside a Hebrew or mixed-language page, do not apply page-wide LTR styling. Wrap only that block with the shared `.english` class so its direction and alignment remain readable:
+
+```html
+<div markdown="1" class="english">
+
+1. English list item.
+2. Another English list item.
+
+</div>
+```
+
+  Use this for English lists, prompts, quotations, and multi-paragraph examples. When writing mixed content, keep language changes visually contained in an appropriate wrapper instead of relying on inline `direction` or `text-align` styles. This keeps Hebrew pages clean and prevents LTR content from disrupting the surrounding RTL layout.
+
 - Do not retroactively rewrite in-progress tutorials between Hebrew/English unless explicitly requested.
+
+## Important content highlighting and visual flow
+
+- Keep lesson pages visually engaging and easy to scan. Use the repository's design classes to emphasize important guidance, decisions, warnings, successful outcomes, and reusable prompts:
+  - `{: .box-note}` for a short, single-paragraph note;
+  - `{: .box-success}` for a short, single-paragraph positive instruction or completed outcome;
+  - `{: .box-warning}` for risks, guardrails, or caution;
+  - `{: .box-error}` for a failure condition or prohibition that must stand out.
+- When highlighted content contains a list, multiple paragraphs, Markdown structure, or another section, use a block wrapper instead of the short syntax:
+
+```html
+<div markdown="1" class="box-note">
+
+...content with lists, paragraphs, or Markdown...
+
+</div>
+```
+
+- Do not use a `text` code fence merely to emphasize ordinary prose or a prompt instruction; reserve code fences for literal commands, code, or text the reader should copy exactly. Prefer an appropriate design box when the content is instructional or presentation-oriented.
+- Use `<details markdown="1"><summary>…</summary>` for secondary reference material so that the main presentation flow stays focused. Keep primary explanations and decisions visible.
+- Prefer relative CSS units (`rem` for type scale and `em` for local proportional adjustments) over `px`, especially for text and spacing. Use `px` only when a fixed rendering unit is materially more appropriate, such as an SVG stroke width or a one-pixel border.
 
 ## Media include convention
 

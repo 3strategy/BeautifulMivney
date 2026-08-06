@@ -1,56 +1,71 @@
 ---
 layout: page
 title: "Agentic Engineering - פתיחה"
-subtitle: "חשיפה 13.5 לקראת סדנה"
+subtitle: "חשיפה 27.6 לקראת סדנה"
 tags: [agentic, codex, teaching, ai, harness-engineering]
 lang: he
 ---
 
-{: .box-success}
-**We are in a world where developers spend their days *==conversing with different agents, checking in on them, and seeing the work that they did.==***<br/>מעבר מ"שימוש בצ'אט" אל **ניהול עבודה הנדסית עם סוכנים**. הארכיטקט לא רק כותב פרומפט. הארכיטקט מגדיר סביבת עבודה, כללי בטיחות, בדיקות, תיעוד, משימות, ואופן בדיקה של התוצר.
+<div markdown=1 class="box-success">
+<div markdown=1 class="english">
+**We are in a world where developers spend their days conversing with different agents, ==checking in on them,== and seeing the work that they did.**
+</div>
+מעבר מ"שימוש בצ'אט" אל **ניהול עבודה הנדסית עם סוכנים**. המהנדס לא רק כותב פרומפט. המהנדס מגדיר סביבת עבודה, כללי בטיחות, בדיקות, תיעוד, משימות, ואופן בדיקה של התוצר.
 
-{% include youtube.html id="LD0rePKLCyc" %}
-
----
-**הערות לסרטון:**
-
-- [האתר שנולד בפרומפט הזה נמצא כאן](https://vibe180326.vercel.app/)
-- ה-deployment בוצע בפקודה לאייג'נט שיעשה deploy ל-vercel בתוספת הבהרה שאני לא מכיר את התהליך אבל יש לי חשבון. האייג'נט ביצע ואני רק התקבשתי לאשר login - לתת כמה ספרות.
+</div>
 
 
+<!-- ## הזמנה לסדנה {#id1invitation} -->
 
-<details markdown="1"><summary>מטרה ומבנה ההצגה</summary>
+<details markdown="1" class="box-note"><summary>הזמנה לסדנה</summary>
+**הי כולם**. ב-29/6 הסדנה שלנו על Agentic Engineering.
+המשפט שמסכם את התקופה הוא זה: ~~אנחנו עוברים~~ **עברנו** מעולם שבו “שואלים את הצ’אט” לעולם שבו **מנהלים עבודה הנדסית עם סוכנים.**
 
-## מטרת השיעור
+זו לא הולכת להיות הרצאה שבה אני “מעביר חומר”. אשתדל לקצר בחפירות. זו סדנה. בואו לשחק, לשבור, לשאול, לאתגר, להראות חלופות, ולעזור אחד לשני. מי שמכיר כלי אחר, דרך אחרת, ניסיון מוצלח או כישלון מפואר, שיביא אותו. כולנו נרוויח.
 
-בסוף 30 דקות המורים אמורים להבין:
+כל החומרים שאני בונה לסדנה זמינים כבר [כאן בתפריט Agentic Engineering]({{ '/agentic/00-opener' | relative_url }})
 
-1. מה ההבדל בין שיחה עם מודל לבין עבודה עם agent על קוד.
-2. למה Git, בדיקות, Markdown ו־AGENTS.md הם חלק מהמקצוע החדש.
-3. איך הופכים "תעשה לי" ל־workflow שאפשר לבדוק, לשחזר וללמד.
+**יש שם יותר ממה שנספיק:**
 
-{: .box-note}
-המטרה אינה לשכנע שכל תלמיד חייב לעבוד כך מחר. המטרה היא לתת למורה מילון מושגים, תחושת כיוון, ודוגמת עבודה מספיק מוחשית כדי לזהות מה חסר בסביבת ההוראה הנוכחית.
+- פתיחה על [ההבדל בין Chat רגיל לבין עבודה עם agent בתוך סביבת קוד]({{ '/agentic/01-online-vs-agentic' | relative_url }}),
+- [Git/GitHub]({{ '/agentic/02-git-github' | relative_url }}), [מפרטים ב-Markdown, AGENTS.md]({{ '/agentic/03-specifications-markdown' | relative_url }}),
+- [Harness Engineering mindset & Agentic Workflows]({{ '/agentic/agentic-workflows-and-harness-engineering-he' | relative_url }}),
+- עבודה עם [clasp ו-Google Sheets / Apps Script]({{ '/agentic/04-apps-script-clasp-sheets' | relative_url }}),
+- יצירת אתר תוכן Markdown/Jekyll בפרומפט אחד שיכול לשמש אותכם להוראה: [גרסת GitHub Pages בלבד]({{ '/agentic/03b-1shot-github-markdown-site' | relative_url }}) או [גרסת Jekyll מקומית עם WSL/Bundler]({{ '/agentic/03c-1shot-github-jekyll-with-local-wsl-bundle' | relative_url }}),
+- אתר מלא עם Harness: [live hosting]({{ '/agentic/05-hosting' | relative_url }}), CI/CD, [UnitTests ו-TDD]({{ '/agentic/06-tdd-long-running-agents' | relative_url }}), [Playwright E2E]({{ '/agentic/07-playwright-browser' | relative_url }}), [Firebase מהפרומפט הראשון]({{ '/agentic/08-firebase-first-prompt' | relative_url }}),
+- ואפילו [התראות מ-Codex כשהוא מסיים לעבוד]({{ '/agentic/09-notifications-pushbullet' | relative_url }}), לאלו שיצרו חשבון [pushbullet](https://www.pushbullet.com/){:target="_blank"}
 
-## 30 דקות - מבנה מוצע
+**אשתדל לעבוד איתכם על שלושה *תוצרים* שימושיים לנו כמורים:**
 
+1. [clasp ו-Google Apps Script]({{ '/agentic/04-apps-script-clasp-sheets' | relative_url }}). כל מי שמשתמש באקסל או בגוגל שיטס יכול להנות מהתועלת של app script. ואם כבר, אז agentic.
+  ![alt text](/assets/img/agentic/clasp1.png)
+2. אתר Markdown/Jekyll שבו תוכלו ליצור תכניה הוראה הזמינים לתלמידים באתר (כמו אצלי למשל). יש שתי גרסאות - [למתחילים]({{ '/agentic/03b-1shot-github-markdown-site' | relative_url }}) ו[למתקדמים שכבר עובדים עם WSL/Bundler]({{ '/agentic/03c-1shot-github-jekyll-with-local-wsl-bundle' | relative_url }}).
+  ![alt text](/assets/img/agentic/imageJustTheDocs.png)
+3. התנסות ב- one shot prompt for a project+git with a **full harness**, עם המשך ל-[Firebase]({{ '/agentic/08-firebase-first-prompt' | relative_url }}) ול-[live deployment]({{ '/agentic/05-hosting' | relative_url }}).
+  ![alt text](/assets/img/agentic/firebaseFirst.png)
+המטרה שלי היא לא שתצאו עם "עוד כלי AI", אלא עם התנסות טובה בעבודה שבה אתם המהנדסים וה- agentעובד (קורא קבצים, כותב, מעדכן, מתקין, מריץ בדיקות, מציג ראיות).
 
-| זמן | פעילות | מה הארכיטקט אמור לראות |
-| ---: | --- | --- |
-| 0-5 | פתיח: עולם של agents | לא עוד autocomplete, אלא משימות ארוכות עם בדיקה |
-| 5-10 | Online מול CLI / Extension / App | ההבדל בין תשובה לבין עבודה בתוך repo |
-| 10-18 | Demo קצר | agent קורא קבצים, משנה קובץ, מריץ בדיקה, מסכם |
-| 18-24 | Harness Engineering | AGENTS, tests, docs, Git, notifications |
-| 24-30 | דיון כיתתי | מה אפשר לתת לתלמידים, ומה אסור עדיין לפתוח |
+כפי שכבר ביקשתי לפני מספר חודשים - **לא ניכנס לדיונים של "לאן פנינו" בחלון הזמנים של הסדנה.** ונשאיר זאת לארוחת הערב.
 
+תיאום ציפיות: **harness enginneering סובב סביב עבודה נכונה שיכולה לקחת פרוייקט הרבה הרבה יותר רחוק.** ואנחנו לצערינו כמעט בכל ההדגמות נבצע יותר one-shot prompt עם ראייה לטווח מעט יותר קצר.
+
+מוזמנים להציץ מראש בחומרים. יש הרבה מעבר למה שנוכל להספיק.
 </details>
 
-## המפה הגדולה
+## מי זה ה-AGENT ומה עושים איתו?
+
+{: .box-note}
+
+בסדנה זו, `Agent` הוא coding agent, כגון ==codex== or ==claude code== or ==chat==. אלו פלגינים ל-vscode וגם אפליקציות נפרדות. את ההבחנה בין Chat, CLI, Extension ו-App נרחיב בעמוד [Online מול Agentic]({{ '/agentic/01-online-vs-agentic' | relative_url }}). אנחנו נעבוד עם codex ומי שמנוסים ב-claude or copilot יעבדו איתם.
+
+{: .box-error}
+**הקושי בסדנה שלנו:** בזמן קצר אפשר בעיקר לראות את הכח שיש כיום ל-**Agent** לעשות הכל, והדרך היא להראות דוגמאות ל- `one shot prompt` שמגיע רחוק. זה יוצר **פרוייטק עם אורך חיים מוגבל.** האתגר הוא לעבור ל- harness mindset, באופן שיאפשר לבנות מוצר שניתן להגדיל ולגדול איתו בלי שהכל מתפרק.
+
+## התמונה הגדולה
 
 ```mermaid
 flowchart LR
-    A["מורה / מפתח"] --> B["Prompt"]
-    B --> C["Agent"]
+    B["מפתח Prompt"] --> C["Agent"]
     C --> D["Codebase"]
     C --> E["Terminal"]
     C --> F["Browser / E2E"]
@@ -60,7 +75,7 @@ flowchart LR
     G --> J["Review"]
     H --> J
     I --> J
-    J --> K["Accept / Fix / Reject"]
+    J --> |"agentic loop: Accept / Fix / Reject"| C
 ```
 
 ## המונח: Harness Engineering כפי שהגדיר GPT5.5
@@ -69,63 +84,87 @@ Harness הוא הרתמה שמחזיקה את ה־agent בתוך מסלול עב
 
 - הוראות קבועות: `AGENTS.md`, `CLAUDE.md`, skills, docs.
 - גבולות פעולה: הרשאות, תיקיות מותרות, מה לא למחוק, מתי לשאול.
-- בדיקות: unit tests, build, lint, Playwright, בדיקה ידנית בדפדפן.
-- תיעוד: Markdown, תרשימי Mermaid, דפי משימה, רשימת "done when".
-- ניהול שינוי: Git, Pull Requests, checkpoints, review.
+- בדיקות: [unit tests, TDD]({{ '/agentic/06-tdd-long-running-agents' | relative_url }}), build, lint, [Playwright]({{ '/agentic/07-playwright-browser' | relative_url }}), בדיקה ידנית בדפדפן.
+- תיעוד: [Markdown, תרשימי Mermaid, דפי משימה, רשימת "done when"]({{ '/agentic/03-specifications-markdown' | relative_url }}).
+- ניהול שינוי: [Git, Pull Requests, checkpoints, review]({{ '/agentic/02-git-github' | relative_url }}).
 
 {: .box-success}
-אם ה־agent הוא "עובד", ה־harness הוא מערכת העבודה. בהוראה, אנחנו מלמדים לא רק את העובד אלא את מערכת העבודה סביבו.
+אם ה־agent הוא "עובד", ה־harness הוא מערכת העבודה. בפרומפט, אנחנו מנחים את העובד ליצור, אך גם ליצור את סביבת העבודה שסביבו.
 
-## Harness - הגדרה סובייקטיבית שלי - דוגמא מפרוייקט
+### דוגמת Prompt: תוצר מיידי וגם שיפור של ה־harness
+
+לא כל פרומפט צריך לבקש רק שינוי בעמוד או בקוד. אפשר לבקש גם שהתוצאה תלמד את הסוכן ואת המאגר כיצד לבצע את אותה עבודה טוב יותר בפעם הבאה.
+
+<div markdown="1" class="box-note">
+
+**דוגמת פרומפט בגישת Harness Engineering:**
+<div markdown="1" class="english">
+
+1. Write line 188 in English.
+2. In some places in your edit you used `text` code fences when a correct approach would be to use one of the design classes `box-note`, `box-success`, `box-warning`, or `box-error`. For a section rather than a one-liner, use a `div` wrapper instead of the short `{: .box-note}` syntax.
+3. Update `AGENTS.md` with this preference regarding important content highlighting and keeping it interesting and visually appealing.
+
+</div>
+
+הבקשה הראשונה משפרת תוצר קיים. השנייה משפרת את דרך ההצגה. ==השלישית הופכת את הלקח לכלל קבוע ב־harness, כך שהסוכן הבא יתחיל מנקודת פתיחה טובה יותר.==
+
+</div>
+
+## Harness - הגדרה שלי
+
+<div markdown="1" class="box-success">
 
 עבורי: זה כל מה שיש בפרוייקט שהוא מחוץ לקוד הפרוייקט עצמו, ומשמש את ה-Agent (ולעיתים אותנו) כדי לעבוד נכון וביעילות
 אצלנו זה כולל:
+
 - פרוייקט UnitTest שנכתב ומתוחזק על ידי האייג'נט.
-- בפרוייקט ה- UnitTests יושבים גם סקריפטים ps1 שיודעים לבצע כל מיני משימות ב-UnitTests אבל גם בפרוייקט בדיקות E2E לעיתים. 
-- פרוייקט בדיקות E2E מבוסס PlayWright. 
+- בפרוייקט ה- UnitTests יושבים גם סקריפטים ps1 שיודעים לבצע כל מיני משימות ב-UnitTests אבל גם בפרוייקט בדיקות E2E לעיתים.
+- פרוייקט בדיקות E2E מבוסס PlayWright.
 - פרוייקט מסמכולוגיה. כולל כ-30-50 מסמכים, קובץ rules, לעיתים demo artifacts
 - קובץ AGENTS עם הפנייה ל-3-5 קובצי AGENTS משימתיים, ובהם הפניות למסמכים השונים בפרוייקט המסמכולוגיה.
 
 **זו הסביבה שבה קודקס:**
 
 1. יודע להבין **גבולות גזרה**.
-2. יודע מהר אין עובד, **ואיך אמור לעבוד** פיצ'ר מסויים. 
+2. יודע מהר אין עובד, **ואיך אמור לעבוד** פיצ'ר מסויים.
 3. איך נראית הסכימה.
-4. וכו'. 
-התוצרים שלנו מהאייג'נט יהיה **תמיד** גם קוד במערכת, וגם תוספות / הרחבות של ה-Harness. האייגנט לא רק כותב קוד. הוא כותב הכל. אנחנו שם כדי לקרוא, לערוך לבקר ולהנחות.
+4. וכו'.
+
+התוצרים שלנו מהאייג'נט יהיו, **כמעט תמיד**, גם קוד במערכת, וגם **שיפור ה-Harness**. האייגנט לא רק כותב קוד. הוא כותב הכל. אנחנו שם כדי לקרוא, לערוך לבקר ולהנחות.
+
+</div>
 
 שימו לב שלא הזכרתי בכלל את המילה Skils. אין לנו. וזה יכול להיות אוזלת יד, או אמונה שגויה שלי (גם בעקבות קריאה מזמן), שאנחנו מקבלים אותם כיום יותר בתוך הקודקס בצורה יותר יעילה, ==ושתפקידנו מתמצה ליצור לו סביבת עבודה נוחה וברורה,== ולהגדיר לו הכי טוב בעולם מה צריך לעשות / ==ומה צריך להיות.==
 
-
 ## דמו - הסרטון שראינו
 
-נסו בעצמכם לקחת פרוייקט עובד שלכם, ולבקש מ-Codex, Claude or חס וחלילה Copilot, לבצע שינוי מסויים.
+נסו בעצמכם לקחת פרוייקט עובד שלכם, ולבקש מ-Codex, Claude or אם תרצו נסיון חינמי-Copilot, לבצע שינוי מסויים.
 
-### דוגמא ממש שגויה
+### דוגמא ממש שגויה - פרומפט שהציע AI
 
-> קרא את מבנה הפרויקט. הוסף עמוד Markdown קצר עם טבלה ותרשים Mermaid.
-עדכן את התפריט. הרץ build. בסוף תן לי רשימת קבצים ששונו והאם הבדיקה עברה.
+{: .box-error}
+קרא את מבנה הפרויקט. הוסף עמוד Markdown קצר עם טבלה ותרשים Mermaid. עדכן את התפריט. הרץ build. בסוף תן לי רשימת קבצים ששונו והאם הבדיקה עברה.
 
-אין טעם לבקש את הדברים האלו בסביבה אייגנטית תקינה. הוא תמיד יודיע אלו קבצים שונו, וגם הגיט יעקוב אחרי זה. עדכון התפריט בד"כ יקרה אם הוא רגיל לזה וזה שולי. 
+אין טעם לבקש את הדברים האלו בסביבה אייג'נטית תקינה. קודקס יודיע אלו קבצים שונו, וגם **הגיט יַעֲקֹב** אחרי זה. עדכון התפריט בד"כ יקרה אם הוא רגיל לזה וזה שולי.
 
-הדמו טוב אם רואים ארבעה דברים:
+הדמו טוב אם רואים ארבעה דברים (שוב, לא מדוייק, הערות שלי ב-bold)
 
-1. ה־agent קורא לפני שהוא משנה. מובן מאליו
-2. הוא משנה מעט קבצים ולא "משכתב את העולם". לא מדוייק - תלוי פרוייקט
-3. הוא מריץ build או בדיקה. כיום, build מובן מאליו. בדיקה - רשות, תלויית הגדרות, ודרישה. עלולה לעלות ביוקר, ומצד שני הכרחית במקרים מסויימים של לולאות.
+1. ה־agent קורא לפני שהוא משנה. **מובן מאליו**
+2. הוא משנה מעט קבצים ולא "משכתב את העולם". **לא מדוייק - תלוי פרוייקט**
+3. הוא מריץ build או בדיקה. כיום, build **מובן מאליו. בדיקה - רשות, תלויית הגדרות, ודרישה. עלולה לעלות ביוקר, ומצד שני הכרחית במקרים מסויימים של לולאות.**
 4. הוא נותן evidence: מה עבר, מה לא עבר, ומה נשאר לבדיקה.
-
+5. **תוספת שלי**: שינויים שרלוונטיים ל-AGENTS, Schema, Spec, Harness **בוצעו** כחלק מהמימוש (של פיצ'ר או תיקון באג).
 
 ## דוגמא נוספת - עבודה ב-repo הנוכחי
 
 <div class="two-columns">
 
-<div class="col-md-10 box-note" markdown="1">
-כתוב 5-12 עמודי markdown kramdown תחת תיקיה agentic, שמטרתם ללמד מורים את הנושא Agentic Engineering / Harness Engineering. 
-ראשית עמוד - ברמה תחילית לחשיפה ראשונה במשך 30 דקות. 
-ושאר העמודים תוך מיקוד על תתי נושאים. 
+<div class="col-md-9 box-note" markdown="1">
+כתוב 5-12 עמודי markdown kramdown תחת תיקיה agentic, שמטרתם ללמד מורים את הנושא Agentic Engineering / Harness Engineering.
+ראשית עמוד - ברמה תחילית לחשיפה ראשונה במשך 30 דקות.
+ושאר העמודים תוך מיקוד על תתי נושאים.
 
-ניתן ליצור תת תפריט תחת א מתקדם
+ניתן ליצור תת תפריט תחת `א מתקדם`
 
 לפני שאתה מתחיל סקור את אתר, ושמור לך קישורים לעמודים שכבר כרגע עושים בנושא - למשל אם יש משהו לגבי google sheets / clasp. אם לא, אז ספציפית לגבי הנושא הזה אני ארצה לשלוח לך חומר מתומצת.
 
@@ -133,47 +172,44 @@ Harness הוא הרתמה שמחזיקה את ה־agent בתוך מסלול עב
 
 להלן רשימת הנושאים שעבורם יש ליצור הרחבות / עמודים.
 
-**opener - in English:** We are in a world where developers spend their days “conversing with different agents, checking in on them, and seeing the work that they did. 
+**opener - in English:** We are in a world where developers spend their days “conversing with different agents, checking in on them, and seeing the work that they did.
 
 Sub-topics (so many things I need to teach):
 
-
-- The difference between Online and Agentic (CLI/Extension/App) 
+- [The difference between Online and Agentic (CLI/Extension/App)]({{ '/agentic/01-online-vs-agentic' | relative_url }})
 - Viable alternatives (April 26): openai, antropic.  
 - Demo, (link to a youtube of my that I still need to edit).  
-- Git and Github. 
-- Agentic Engineering on **App scripts? clasp**  
-- **AGENTS, Skills, Docs, and markdown**. It’s all about specifications. markdown - the language. 
-- Hosting: Netlify, Pages, **Vercel, Railway**
-- **TDD How to make the agent work longer:**  
-  - Unit-tests 
-  - TDD 
-    - Green green 
-    - Red green 
+- [Git and Github]({{ '/agentic/02-git-github' | relative_url }}).
+- [Agentic Engineering on **App scripts? clasp**]({{ '/agentic/04-apps-script-clasp-sheets' | relative_url }})  
+- [**AGENTS, Skills, Docs, and markdown**]({{ '/agentic/03-specifications-markdown' | relative_url }}). It’s all about specifications. markdown - the language.
+- [Hosting: Netlify, Pages, **Vercel, Railway**]({{ '/agentic/05-hosting' | relative_url }})
+- [**TDD How to make the agent work longer:**]({{ '/agentic/06-tdd-long-running-agents' | relative_url }})  
+  - Unit-tests
+  - TDD
+    - Green green
+    - Red green
   - E2E testing:  
-    - playwright  
+    - [playwright]({{ '/agentic/07-playwright-browser' | relative_url }})  
       - Attach vs. CDP,  
-      - Headed vs. Headless 
-    - playwright-cli 
-   - codex browser plugin
-   - codex in-app browser
+      - Headed vs. Headless
+    - playwright-cli
+  - codex browser plugin
+  - codex in-app browser
 
-- How to Firebase from the first prompt? 
-- Notify me when the agent is done? using PushBullet to know when Agent is done working. 
-
+- [How to Firebase from the first prompt?]({{ '/agentic/08-firebase-first-prompt' | relative_url }})
+- [Notify me when the agent is done? using PushBullet to know when Agent is done working.]({{ '/agentic/09-notifications-pushbullet' | relative_url }})
 
 שמור על יכולות העיצוב המדהימות באמצעות {: .box-success}, {: .box-note}, {: .tabl-rl} לטבלאות דו לשוניות  
 mermaid,  ושאר יכולות שכבר יש באתר כגון שאלונים אינטרקטיביים.
 
 </div>
-<div class="col-md-2" markdown="1">
+<div class="col-md-3" markdown="1">
 ![צילום מסך של פרומפט לדוגמה]({{ '/assets/img/agentic00/image.png' | relative_url }})
 </div>
 
 </div>
 
 ## שאלת יציאה
-
 
 איזה חלק בעבודה עם agent הוא הכי מסוכן בכיתה?
 
@@ -184,16 +220,156 @@ mermaid,  ושאר יכולות שכבר יש באתר כגון שאלונים �
 1. קבלת תשובה בלי בדיקה
 1. שימוש ב-Markdown
 
+התשובה הרצויה היא **ג**. הבעיה אינה שה־agent כותב קוד. הבעיה היא שמקבלים תוצר בלי מסלול בדיקה, בלי Git, ובלי הגדרת אחריות. **והכי מסוכן ללמידה - בלי שהתלמיד מבין מה הקוד עושה**.
 
-התשובה הרצויה היא **ג**. הבעיה אינה שה־agent כותב קוד. הבעיה היא שמקבלים תוצר בלי מסלול בדיקה, בלי Git, ובלי הגדרת אחריות.
+⟵ **Harness בפרוייקט של תלמיד צריך לכלול:**
+
+- הגדרות וכלים לתיעוד מתמשך של המסמכים,
+- שמירה אוטומטית של הפרומפטים והדיאלוגים החשובים,
+- כתיבה של קוד הכולל תיעוד וסשנים שבהם ה-AGENT **בוחן את התלמיד** על הבנתו (למשל AGENT שמגדיר סשן שו"ת בכל מספר פרומפטים).
+- התלמיד צריך לשאול את עצמו תמיד אם הוא בצד הטוב של הסרטון הבא
+
+{% include youtube.html id="HTUh0OO6Kmo" %}
+
 ## על מה נדבר בסדנה
 
-- Online מול Agentic - מה ההבדל בין שיחה עם מודל לבין עבודה עם agent בתוך פרויקט אמיתי.
-- Git ו-GitHub - איך שומרים נקודות חזרה, בודקים שינויים, ומלמדים עבודה אחראית עם קוד.
-- AGENTS ו-Markdown - איך כותבים הוראות עבודה, מסמכי משימה ותיעוד שה-agent מסוגל לבצע לפיהם.
-- Google Sheets ו-clasp - איך מחברים עבודה agentic לכלי בית ספר מוכרים כמו Sheets ו-Apps Script.
-- Hosting - איך מעלים תוצר לרשת ומבינים את ההבדל בין קוד מקומי לשירות חי.
-- TDD ובדיקות - איך נותנים ל-agent לרוץ יותר זמן בלי לאבד שליטה: בדיקות, build וקריטריוני סיום.
-- Playwright ודפדפן Codex - איך בודקים ממשק בדפדפן ומקבלים ראיות ויזואליות שהתוצר עובד.
-- Firebase מפרומפט ראשון - איך ניגשים לשירותי backend בלי להפוך את הפרומפט לקסם לא מבוקר.
-- התראות PushBullet - איך מקבלים סימן כשה-agent סיים, במיוחד במשימות ארוכות.
+- [**Online מול Agentic**]({{ '/agentic/01-online-vs-agentic' | relative_url }}) - מה ההבדל בין שיחה עם מודל לבין עבודה עם agent בתוך פרויקט אמיתי.
+- [Git ו-**GitHub**]({{ '/agentic/02-git-github' | relative_url }}) - איך שומרים נקודות חזרה, בודקים שינויים, ומלמדים עבודה אחראית עם קוד.
+- [AGENTS ו-**Markdown**]({{ '/agentic/03-specifications-markdown' | relative_url }}) - איך כותבים הוראות עבודה, מסמכי משימה ותיעוד שה-agent מסוגל לבצע לפיהם.
+- [Google Sheets ו-**clasp**]({{ '/agentic/04-apps-script-clasp-sheets' | relative_url }}) - איך מחברים עבודה agentic לכלי בית ספר מוכרים כמו Sheets ו-Apps Script.
+- [Hosting]({{ '/agentic/05-hosting' | relative_url }}) - איך מעלים תוצר לרשת ומבינים את ההבדל בין קוד מקומי לשירות חי.
+- [**TDD** ובדיקות]({{ '/agentic/06-tdd-long-running-agents' | relative_url }}) - איך נותנים ל-agent לרוץ יותר זמן בלי לאבד שליטה: בדיקות, build וקריטריוני סיום.
+- [**Playwright** ודפדפן Codex]({{ '/agentic/07-playwright-browser' | relative_url }}) - איך בודקים ממשק בדפדפן ומקבלים ראיות ויזואליות שהתוצר עובד.
+- [Firebase מפרומפט ראשון]({{ '/agentic/08-firebase-first-prompt' | relative_url }}) - איך ניגשים לשירותי backend בלי להפוך את הפרומפט לקסם לא מבוקר.
+- [התראות **PushBullet**]({{ '/agentic/09-notifications-pushbullet' | relative_url }}) - איך מקבלים סימן כשה-agent סיים, במיוחד במשימות ארוכות.
+
+
+## במה נשתמש (pre-requisites)
+
+[לוז](https://docs.google.com/document/d/1u3RmwIEnwEDxYcjg6CX6RT9imPjM7Ao5/edit)
+
+**לארגן מראש:**
+
+- חשבון Open AI plus (החשבון ב-20$ לחודש)
+ רצוי חשבון באתרים הבאים. אלו דברים שיותר נוח לארגן מראש כשאתם פנויים לטפל בסיסמאות וכיוב'
+- github,
+- vercel or netlify or railway (or more than 1),
+- pushbullet, רשות. לצורך notifications. חשבון - חינמי. תתקינו את האפליקציה בטלפון אם זה רלוונטי לכם
+
+להביא:
+- מחשב נייד
+- טלפון
+
+**להתקין מראש:**
+
+1. Codex Desktop App (from windows store) https://apps.microsoft.com/detail/9PLM9XGG6VKS?hl=neutral&gl=IL&ocid=pdpshare or the same on Mac...
+2. VSCode,
+3. VSCode extension: Codex (by Open AI),
+4. VSCode extension: markdownlint,
+5. VSCode - Git for windows (vscode התקנה נפרדת שניתן להתחיל מתוך ),
+6. Codex app on your android or iphone.
+7. PushBullet למי שרוצים הודעות מהאייג'נט
+
+## Codex settings
+
+![alt text](/assets/img/agentic/imageAgentSettigns.png)
+
+## my global AGENTS.md (under username\.codex)
+
+<details><summary>קובץ agents הגלובאלי שלי, וקובץ notify.ps1</summary>
+
+### AGENTS.md
+
+```text
+# Global Agent Permissions
+
+## Workspaces
+
+You may freely read, write, delete, and execute in:
+
+- `C:\Users\myUser\source\repos`
+- `C:\Users\myUser\StudioProjects`
+- `C:\Users\myUser\AndroidStudioProjects`
+- `C:\Users\myUser\source\Work`
+- `\\wsl.localhost\Ubuntu\home\stra\repos\`
+- `\\wsl.localhost\Ubuntu\home\stra\sites\`
+- `C:\Users\myUser\Downloads`
+- `C:\Temp`
+- WSL `~/repos$`
+- WSL `~/sites$`
+
+Do not write outside these unless explicitly asked.
+
+## Python
+
+You may use Python here:
+
+- `C:\Users\myUser\AppData\Local\Programs\Python\Python313\`
+
+Feel free to run `python`, `pip`, `pipx`, install packages, and use tools.
+
+## Git (read-only)
+
+Allowed:
+
+- `git status`, `git diff`, `git log`, `git show`, `git blame`, `git rev-parse`, `git branch --show-current`, `git ls-files`
+
+Do NOT:
+
+- `git commit`, `git branch`, `git switch`, `git checkout`, `git reset`, `git clean`, push
+
+## Runtime
+
+You may build, test, run servers, and open browsers (Edge, Chrome, Brave).
+
+When running Playwright E2E test suites, you may use `4-6` workers instead of `2` when that is appropriate for the run.
+
+## Notifications
+
+At the end of each user prompt, run `.\\notify.ps1` from the `.codex` folder to notify me whether the task completed successfully or failed.
+
+Use this pattern:
+
+`.\notify.ps1 -Title "Codex - <project> - " -Message "<prompt title> Finished"`
+
+If the task fails, still run the notification script and make the message reflect the failure state.
+
+This relies on the `push_bullet_acc_token` environment variable being set.
+
+## Mode
+
+Prefer acting without asking, keep changes scoped, flag anything risky.
+
+```
+
+### notify.ps1
+
+**לצורך שימוש** - הטוקן שלי שיצרתי באתר pushbullet מוגדר כ-env variable בשם `push_bullet_acc_token`
+
+```text
+param(
+    [string]$Title = "Codex",
+    [string]$Message = "Task finished"
+)
+
+$token = $env:push_bullet_acc_token
+
+if (-not $token) {
+    throw "Missing environment variable: push_bullet_acc_token"
+}
+
+$body = @{
+    type  = "note"
+    title = $Title
+    body  = $Message
+} | ConvertTo-Json
+
+Invoke-RestMethod `
+    -Uri "https://api.pushbullet.com/v2/pushes" `
+    -Method Post `
+    -Headers @{ "Access-Token" = $token } `
+    -Body $body `
+    -ContentType "application/json"
+```
+
+</details>

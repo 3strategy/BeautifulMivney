@@ -1,0 +1,117 @@
+---
+layout: page
+title: "MDX demo"
+subtitle: "Markdown authored as an interactive React component"
+permalink: /mdx-demo/
+---
+
+import { useMemo, useState } from 'react';
+
+export const capabilities = [
+  {
+    id: 'markdown',
+    label: 'Markdown',
+    icon: '✍️',
+    description: 'Headings, prose, links, code blocks, and lists remain concise and readable.'
+  },
+  {
+    id: 'jsx',
+    label: 'JSX',
+    icon: '⚛️',
+    description: 'Embed a real component exactly where the explanation needs it.'
+  },
+  {
+    id: 'state',
+    label: 'State',
+    icon: '✨',
+    description: 'Let the learner change an input and see the page respond immediately.'
+  }
+];
+
+export function Card({ title, children }) {
+  return (
+    <section style={{ border: '1px solid #d8dee9', borderRadius: '12px', padding: '1.25rem', margin: '1rem 0', background: '#f8fafc' }}>
+      <h2 style={{ marginTop: 0 }}>{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+export function CapabilityExplorer() {
+  const [selectedId, setSelectedId] = useState('markdown');
+  const selected = useMemo(
+    () => capabilities.find((capability) => capability.id === selectedId),
+    [selectedId]
+  );
+
+  return (
+    <Card title="1. Pick an MDX capability">
+      <div role="tablist" aria-label="MDX capabilities" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        {capabilities.map((capability) => (
+          <button
+            key={capability.id}
+            type="button"
+            role="tab"
+            aria-selected={capability.id === selectedId}
+            data-testid={`capability-${capability.id}`}
+            onClick={() => setSelectedId(capability.id)}
+            style={{
+              border: capability.id === selectedId ? '2px solid #2563eb' : '1px solid #cbd5e1',
+              borderRadius: '999px',
+              background: capability.id === selectedId ? '#dbeafe' : '#fff',
+              padding: '0.5rem 0.85rem',
+              cursor: 'pointer'
+            }}
+          >
+            {capability.icon} {capability.label}
+          </button>
+        ))}
+      </div>
+      <p role="status" style={{ marginBottom: 0 }}>
+        <strong>{selected.icon} {selected.label}:</strong> {selected.description}
+      </p>
+    </Card>
+  );
+}
+
+export function LiveGreeting() {
+  const [name, setName] = useState('Ada');
+  const [isComplete, setIsComplete] = useState(false);
+  const heading = useMemo(() => (name.trim() ? `Hello, ${name.trim()}!` : 'Hello, learner!'), [name]);
+
+  return (
+    <Card title="2. Edit a React-powered explanation">
+      <label htmlFor="learner-name">Your name</label>
+      <input
+        id="learner-name"
+        aria-label="Your name"
+        value={name}
+        onChange={(event) => setName(event.target.value)}
+        style={{ display: 'block', width: 'min(100%, 24rem)', margin: '0.35rem 0 0.75rem', padding: '0.55rem', borderRadius: '6px', border: '1px solid #94a3b8' }}
+      />
+      <div aria-live="polite" style={{ padding: '1rem', borderRadius: '8px', background: '#e0f2fe' }}>
+        <strong>{heading}</strong>
+        <br />
+        This line is rendered by a JSX component, while the paragraph below is normal Markdown.
+      </div>
+      <button
+        type="button"
+        onClick={() => setIsComplete((value) => !value)}
+        aria-pressed={isComplete}
+        style={{ marginTop: '0.75rem' }}
+      >
+        {isComplete ? '✓ Experiment complete' : 'Mark experiment complete'}
+      </button>
+    </Card>
+  );
+}
+
+# This heading is Markdown
+
+MDX lets a document keep Markdown for the narrative while inserting a component at the exact point where interaction improves understanding.
+
+<CapabilityExplorer />
+
+<LiveGreeting />
+
+The source for this page contains Markdown, React imports, JSX components, state, memoized values, accessibility attributes, and normal Jekyll front matter—all in one `.mdx` file.

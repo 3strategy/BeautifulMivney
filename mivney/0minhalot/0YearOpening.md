@@ -81,15 +81,71 @@ section finals
 תקופת המבחנים (Finals) :crit, finals, 2026-03-15, 75d
 </div>
 
+
+<div class="mermaid" style="width:100%; background-color:#aaafaa; border: solid 1px; border-color:#ffffff; border-radius:3px">
+%%{init: {
+  "gantt": {
+    "displayMode": "compact",
+    "leftPadding": 60,
+    "rightPadding": 20,
+    "topPadding": 30,
+    "gridLineStartPadding": 20,
+    "barGap": 1,
+    "barHeight": 14
+  },
+  "themeVariables": { "fontSize": "12px" }
+} }%%
+gantt
+title תכנית עבודה – ספט׳ עד יוני
+dateFormat YYYY-MM-DD
+axisFormat %b %Y
+
+%% -----------------------------
+%% חופשות למידה (בראש התרשים)
+%% -----------------------------
+section חחופשות למידה
+כיפור-סוכות :holiday3, 2026-09-20, 14d
+חנוכה :holiday3, 2026-12-06, 7d
+פורים: holiday3, 2027-03-23, 2d
+פסח :holiday3, 2027-04-13, 16d
+
+%% -----------------------------
+%% מסלול מבני נתונים (DS Core)
+%% -----------------------------
+section מבני נתונים
+רקורסיה :active, recursion, 2026-08-15, 52d
+שרשרת חוליות :ll, after recursion, 42d
+מבנים נוספים :more, after ll, 37d
+
+%% -----------------------------
+%% חזרה על מחלקות – במקביל, החל שבועיים אחרי ההתחלה
+%% -----------------------------
+section חזרה על מחלקות
+מחלקות :classes, 2026-09-01, 20d
+
+%% -----------------------------
+%% OOP ו-Android Studio – החל חודשיים אחרי ההתחלה
+%% -----------------------------
+section OOP ו-Android Studio
+OOP + Android Studio :oop, 2026-10-15, 2027-02-14
+
+%% -----------------------------
+%% Finals (טיימליין רביעי)
+%% -----------------------------
+section finals
+תקופת המבחנים (Finals) :crit, finals, 2027-03-01, 95d
+</div>
+
 ---
 
 ## חומרי עזר ומקורות
 
-- **ספרים**: "מבט לחלונות" – _ניתן להסתדר גם בלעדיהם. כמו שנה שעברה_.
 - **אתרי קורס**:
-  - **מבני.שלי.com** – חומרי הלימוד המלווים.
-  - **[campus.il המצגות](/mivney/0minhalot/ChapterCampus)** – תכנים משלימים.
-  - [campus.il קישור לקורס](https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/)
+  - **מבני.שלי.com** – חומרי הלימוד המלווים
+  - [codeclassroom.io](https://codeclassroom.io)
+  - **[campus.il המצגות](/mivney/0minhalot/ChapterCampus)** – תכנים משלימים
+  - [campus.il קישור לקורס מבני נתונים](https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/)
+  - [campus.il קישור לקורס תמ"ע פרקים 11-13](https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceA_HE+2023_1/course/)
 
 ---
 
@@ -149,7 +205,7 @@ section finals
 <!-- תמונה מוצעת: אייקון/לוגו WhatsApp -->
 ![alt text](/assets/img/0year/image-6.png)
 
-## בחינות
+## בחינות - יש להתעדכן לפי לוח מבחנים
 
 - **סמסטר א׳**: שתי בחינות.
 - **סמסטר ב׳**: בחינה + שתי **מתכונות** (כנראה). אתם ניגשים לשאלונים 899371 (יסודות) ו-899271 (מבני+תמ"ע). בשנה שעברה מבני היתה הבחינה הראשונה ויסודות אחר כך. זה בכל מקרה לא באותו תאריך.

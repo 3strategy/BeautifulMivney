@@ -6,6 +6,39 @@ tags: [agentic, git, github, pull-request, review]
 lang: he
 ---
 
+## דרישות קדם - חיבור ל-GitHub CLI
+
+<details open markdown="1"><summary>הוראות התקנה</summary>
+
+**פותחים cmd ומתקינים:**
+
+```powershell
+winget install --id GitHub.cli -e
+```
+
+**מתחברים:**
+
+```powershell
+gh auth login
+```
+
+![alt text](/assets/img/agentic/ghcli.png)
+
+```powershell
+git config --global --list
+```
+
+**אם לא מוגדר לכם עדיין מייל לגיט הוסיפו באופן הבא (עם השם והמייל שלכם):**
+
+```powershell
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+עכשיו אפשר לעבוד עם Git מקומי ו־GitHub מה־CLI. לא פחות חשוב: **גם לאייג'נט יותר קל לעבוד. עם `gh` מותקן ומאומת.** סוכנים כמו Claude Code ו-Codex יכולים לבדוק סטטוס של CI, ולתשאל issues/PRs ישירות מה-shell - בלי שתצטרך להעביר להם טוקן API בתוך ה-prompt. זה בעצם מרחיב להם את היכולות מעבר ל-git הבסיסי (commit/push/clone) לכל מה שדורש את ה-API של GitHub. שווה לבדוק שה-scopes שנבחרו ב-`gh auth login` מספיקים למה שתרצה שהסוכן יעשה.
+
+</details>
+
 ## למה Git הוא תנאי בסיסי
 
 Agentic Engineering בלי Git הוא כמו מעבדה בלי מחברת ניסוי. אפשר לעבוד, אבל קשה לדעת מה השתנה, למה השתנה, ואיך חוזרים אחורה.
@@ -18,8 +51,8 @@ Agentic Engineering בלי Git הוא כמו מעבדה בלי מחברת ניס
 | מצב | שימוש | מתאים למורה? |
 |---|---|---|
 | Local checkpoint | לפני/אחרי משימה, diff מקומי | כן, חובה כמעט בכל דמו |
-| Branch | ניסוי מבודד או עבודת תלמיד | כן, כשיש כמה משימות |
-| Pull Request | review, דיון, תיעוד החלטות | כן, כשמלמדים צוות או פרויקט |
+| Branch | ניסוי מבודד או עבודת תלמיד | לא הכרחי, מועיל כשיש אתר לייב או הרבה משימות |
+| Pull Request | review, דיון, תיעוד החלטות | לא מומלץ בתיכון |
 {: .tabl-rl}
 
 ## זרימת עבודה בסיסית

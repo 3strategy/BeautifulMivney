@@ -44,6 +44,8 @@ public class Dog : Animal   // Dog inherits Animal
 
 לעיתים נציג מחלקות בתרשים UML. החץ כלפי מעלה - מהיורשת אל מחלקת הבסיס. על צורת הכתיבה של UML יוסבר בהמשך
 
+<div markdown="1" class="mermaid-class-diagram">
+
 ```mermaid
 classDiagram
     direction TB
@@ -67,6 +69,8 @@ classDiagram
     Mammal <|-- Dog : ראש חץ חלול לציון הורשה
 
 ```
+
+</div>
 
 
 
@@ -156,6 +160,7 @@ for (int i = 0; i < kennel.Length; i++)
 
 <details markdown=1><summary>למימוש מעט יותר משוכלל</summary>
 
+<div class="mermaid-class-diagram">
 <div class="mermaid" style="direction:ltr;">
 classDiagram
     direction TB
@@ -182,6 +187,7 @@ classDiagram
 
     Organism <|-- Mammal
     Mammal <|-- Dog
+</div>
 </div>
 
 בגרסה זו השינויים הבאים:

@@ -7,7 +7,13 @@ _site
 .DS_Store
 Thumbs.db
 ehthumbs.db
+*Zone.Identifier
 
 Gemfile.lock
+.bundle/
+vendor/
 
 beautiful-jekyll-theme-*.gem
+node_modules/
+mdx-pages/
+assets/generated/mdx/

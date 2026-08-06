@@ -10,7 +10,7 @@
 ############################
 
 # Name of website
-title: מבני נתונים ותמ"ע עם גיא
+title: מבני נתונים עם גיא
 
 # Your name to show in the footer
 author: גיא סידס
@@ -33,18 +33,23 @@ navbar-links:
     - קמפוס מבני נתונים: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/course/"
     - מה מותר ומה אסור: "https://docs.google.com/document/d/1_38kIc1UwK7Eiz673KyBjqGdkJeqa-I5kGCDOMckHqc/edit?usp=sharing"
     - בחינות מה"ט - שאלות תמ"ע: "https://data.labor.gov.il/Mahat/mahat_tests_search.aspx"
-    - לוח בגרויות: "https://students.education.gov.il/matriculation-exams/schedule-exam"
+    - לוח בגרויות 27 טיוטה: "https://meyda.education.gov.il/files/Exams/LuachSumExams2027Tyota.pdf"
+    - לוח בגרויות 26: "https://students.education.gov.il/matriculation-exams/schedule-exam"
     - לוח בגרויות 26 כולל שעות: "https://meyda.education.gov.il/files/Exams/HoursSumExams2026NEW.xlsx"
     - שאלוני בגרויות משרד החינוך: "https://meyda.education.gov.il/bagmgr/default.html#/"
     - אתר מפמ"ר: "https://pop.education.gov.il/tchumey_daat/computer-science-software-engineering-cyber/high-school/pedagogy-of/high-school-software-cyber-engineering/"
+    - תכנית הלימודים - טלפונים חכמים: "https://meyda.education.gov.il/files/CSIT/smartphones.pdf"
     - ספר פרוייקט: "https://meyda.education.gov.il/files/CSIT/Smartphones-Project.pdf"
-    - מחוון פרוייקט: "https://meyda.education.gov.il/files/CSIT/smartphonesProject-5.pdf"
+    - מחוון פרוייקט טלפונים חכמים: "https://meyda.education.gov.il/files/CSIT/smartphonesProject-5.pdf"
     - "מחוון פרוייקט משולב נתונים": "https://meyda.education.gov.il/files/CSIT/web-services-asynchronous-programming-and-databases.pdf"
     - חוקי מענה - הקלות שאגת הארי: "https://meyda.education.gov.il/files/portal_talmidim/maane_2026/computer_2026.pdf"
     - הקלות בחישוב הציון מבנה היבחנות שאגת הארי: "https://meyda.education.gov.il/files/Exams/FinalInsrtuctionsMoedSumExams16042026.pdf"
     - מיקוד תשפ"ו: "https://meyda.education.gov.il/files/portal_talmidim/mikud/2026/computers.pdf"
     - שאלון מותאם: "https://meyda.education.gov.il/files/CSIT/AdaptedExams-31-07-22.pdf"
-    
+    - השתלמויות 26: "https://docs.google.com/document/d/1Wec8VVjvcz6wpuHqhuM90WHyCWacv4C62_I18nY1hXE/edit?usp=sharing"
+    - השתלמויות 25: "https://docs.google.com/document/d/1FmNY8nXGh7AiW3C4ZmGSuDe9f8PPB-tEE0hFz9bGwjs/edit?usp=sharing"
+
+
   פתיחת שנה: 
     - 0. פתיחת שנה: "/mivney/0minhalot/0YearOpening"
     - 0.1 עבודה בקמפוס: "/mivney/0minhalot/ChapterCampus"
@@ -127,6 +132,7 @@ navbar-links:
     - 2.5 מתי נקבע הטיפוס: "/oop/02Polymorphism3"
     - 2.6 מה קורה עם ToString?: "/oop/02Polymorphism4CwToString"
     - 2.7 סוגי שגיאות - שירה ב: "/oop/error.types.shira.bakal.pptx"
+    - 2.7 סוגי שגיאות - שירה שחור לבןב: "/oop/oop/error.types.shira.BW.pptx"
     - 2. פולימורפיזם מאמר: "/oop/M2018.L.sam-compare.pdf"
     - 2.8 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11B-polymorphism/index.html"
     - פתרון מבחן 26.1.26: "/mivney/7testSols/tstxSol260126/"
@@ -136,6 +142,7 @@ navbar-links:
     - דף החלטה חדש 1: "/oop/02QuestionnaireLogicMap"
     - דף החלטה חדש 2: "/oop/02CompilationAndRunTimeErrorSummary"
     - דף החלטה חדש 3: "/oop/02FunctionChoicePath"
+    - משחק לימוד OOP: "/oop/GeminiArtifacts/oop_learning_game.html"
 
 
   - תרגול אינטרקטיבי:
@@ -157,8 +164,30 @@ navbar-links:
   - בגרויות מבני נתונים: "/bagruyot/index/"
   - בחינות מה"ט: "https://data.labor.gov.il/Mahat/mahat_tests_search.aspx"
 
+  Agentic:
+    - 00 Agentic Engineering פתיחה: "/agentic/00-opener"
+    - 01 Online מול Agentic: "/agentic/01-online-vs-agentic"
+    - 02 Git ו-GitHub: "/agentic/02-git-github"
+    - 03 AGENTS & Markdown:
+        - 03 AGENTS & Markdown: "/agentic/03-specifications-markdown"
+        - 03b One-shot GitHub Pages: "/agentic/03b-1shot-github-markdown-site"
+        - 03c One-shot+ Jekyll WSL: "/agentic/03c-1shot-github-jekyll-with-local-wsl-bundle"
+    - 04 Google Sheets ו-clasp: "/agentic/04-apps-script-clasp-sheets"
+    - 05 Hosting: "/agentic/05-hosting"
+    - 06 TDD ובדיקות: "/agentic/06-tdd-long-running-agents"
+    - 07 Playwright ודפדפן Codex: "/agentic/07-playwright-browser"
+    - 08 Firebase מפרומפט ראשון: "/agentic/08-firebase-first-prompt"
+    - 09 התראות PushBullet: "/agentic/09-notifications-pushbullet"
+    - 10 שאלון עירנות כבר היה לנו: "/agentic/10-workshop-quiz"
+    - Agentic workflows: "/agentic/agentic-workflows-and-harness-engineering-he"
+    - Codex switches: "/agentic/codex-switches-and-agent-environment-he"
+    # - Claude prompts: "https://code.claude.com/docs/en/prompt-library"
+    # - "לוז": "https://docs.google.com/document/d/1u3RmwIEnwEDxYcjg6CX6RT9imPjM7Ao5/edit"
+    - 11 Simple Agentic - UnitTests: "/agentic/11-beginners-solving-and-unit-testing"
+
   א יסודות:
   - סרטוני AppSchool: "https://appschoolfront.web.app/course/learn/wmdWWTs17sLTO8N20HtO"
+  - מפגשי אנדרואיד עם זאב: "/android/zeev/meetings"
   - פתיח והתקנה:
     - 02 היכרות עם אנדרואיד: "/android/alon/02.Intro.pdf"
     - Ctrl K D: "/android/projectSteps/012androidCodeFormatting"
@@ -199,28 +228,23 @@ navbar-links:
     - 018b יצירת פיירבייס: "/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup"
     - 018c לוגין לפיירבייס: "/android/projectSteps/018c.EmailPasswordLoginAndFBRef"
     - 018d Google OAuth Login and SHA1: "/android/projectSteps/018d.GoogleOAuthLoginAndSHA1"
+    - 019a Binding Instead of FindViewById: "/android/projectSteps/019a.BindingInsteadOfFindByID"
+    - 019b View Binding ב-MainActivity: "/android/projectSteps/019bBindingsForMainActivity"
+    - 020 Touch sensors and Canvas: "/android/CollectCircles/01.collect-circles-drawing"
     - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
     - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
 
   א מתקדם:
-  - Agentic Engineering:
-    - 00 פתיחה למורים: "/agentic/00-opener"
-    - 01 Online מול Agentic: "/agentic/01-online-vs-agentic"
-    - 02 Git ו-GitHub: "/agentic/02-git-github"
-    - 03 AGENTS ו-Markdown: "/agentic/03-specifications-markdown"
-    - 04 Google Sheets ו-clasp: "/agentic/04-apps-script-clasp-sheets"
-    - 05 Hosting: "/agentic/05-hosting"
-    - 06 TDD ובדיקות: "/agentic/06-tdd-long-running-agents"
-    - 07 Playwright ודפדפן Codex: "/agentic/07-playwright-browser"
-    - 08 Firebase מפרומפט ראשון: "/agentic/08-firebase-first-prompt"
-    - 09 התראות PushBullet: "/agentic/09-notifications-pushbullet"
-    - 10 שאלון עירנות: "/agentic/10-workshop-quiz"
-    
   - תקשורת ונתונים:
     - 08 Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
     - 181 חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
     - 185 Firebase FBRef (חדש): "/android/projectSteps/185newFBref"
   - שונות:
+    - הכנה לבחינות:
+      - שאלות לדוגמה לבגרות והכנה: "/android/exam-prep/Exemplary Questions to Graduation & Preparation Exams.docx"
+      - מצגת הכנה לפני בחינה: "/android/exam-prep/prompts_before_exam.pptx"
+      - מצגת הכנה לבחינה - יוסי Y64: "/android/exam-prep/exam-prep-yossi-y64.pptx"
+      - שאלות שהמבדק עשוי לשאול: "/android/exam-prep/questions_tester_may_ask"
     - 14 BroadcastReceiver: "/android/alon/14.BroadCastReceiver.pdf"
     - 15 Fragments (מצגת): "/android/alon/15.Fragments.pptx"
     - 15b מדריך Fragments: "/android/alon/15b.FragmentsTutorial"
@@ -523,6 +547,7 @@ defaults:
 
 # Exclude these files from production site
 exclude:
+  - mdx/
   - CHANGELOG.md
   - CNAME
   - Gemfile
