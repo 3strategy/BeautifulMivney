@@ -32,6 +32,10 @@
               <h2 class="{{ include.type }}-subheading">{{ page.subtitle | strip_html }}</h2>
             {% endif %}
           {% endif %}
+
+          {% if page.credit %}
+            <span class="{{ include.type }}-credit">{{ page.credit | strip_html }}</span>
+          {% endif %}
           
           {% if include.type == "post" %} 
             {% if page.author %}

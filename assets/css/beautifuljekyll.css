@@ -759,6 +759,19 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
 .intro-header .post-heading .post-subheading {
   margin-bottom: 1.25rem;
 }
+.intro-header .page-heading .page-credit,
+.intro-header .post-heading .post-credit {
+  display: block;
+  margin-top: 0.75rem;
+  color: var(--mid-col);
+  font-family: var(--body-font);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.intro-header.big-img .page-heading .page-credit,
+.intro-header.big-img .post-heading .post-credit {
+  color: #EEE;
+}
 .intro-header.big-img .page-heading .page-subheading,
 .intro-header.big-img .post-heading .post-subheading {
   font-weight: 400;
