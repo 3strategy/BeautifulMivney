@@ -1,8 +1,8 @@
 ---
 layout: page
-title: "CollectCircles 8-18"
-subtitle: "WorkManager, Idle-Game Tutorial Roadmap"
-tags: [Android, Java, SharedPreferences, MaterialDialog, OOP, Math,Animation, Trigonometry,Canvas, StateMachine, GameLoop]
+title: "CollectPlan"
+subtitle: "Agentic Plan for Goal and parallel work on Android and on Tutorial project"
+tags: [Codex, Plan, Goal]
 lang: en
 ---
 
@@ -12,6 +12,9 @@ main {
   text-align: left !important;
 }
 </style>
+
+{: .box-note}
+This page preserves the teacher/development plan. Students should use the shorter [student roadmap for chapters 8–18](/android/CollectCircles/08-18.student-roadmap), which follows the final implemented chapter order.
 
 {: .box-note}
 Extend `android/CollectCircles` from chapter 07 through a sequence of small, runnable lessons. The original five-circle timed game remains available; a persisted autonomous mode adds endless spawning, spendable/lifetime circle totals, purchasable animated “pushers,” offline progress, WorkManager eligibility notifications, and classroom brag notifications.
