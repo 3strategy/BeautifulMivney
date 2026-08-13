@@ -193,6 +193,12 @@
   as a disconnected full-project dump.
 - Use Java, XML layouts, View Binding, and Android-native concepts; do not mechanically
   translate .NET MAUI APIs or teach Jetpack Compose in this series.
+- Describe file locations as they appear in Android Studio's **Android** view. Use paths
+  such as `app > kotlin+java > com.example.collectcircles`, `app > res > layout`,
+  `app > manifests`, and `Gradle Scripts`; do not present `app/src/main/...` paths as
+  student navigation instructions. For root files hidden from Android view, use
+  **Search Everywhere** or another direct opening instruction instead of switching the
+  tutorial to Project view.
 - Prefer clear high-school teaching code over extra abstractions. Explain why important
   choices are made without commenting every obvious line.
 - Simple source comments may be in Hebrew. Keep comments with substantial inline code,
