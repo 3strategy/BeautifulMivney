@@ -186,9 +186,28 @@
 
 ## CollectCircles tutorial rules
 
-- The CollectCircles Android tutorial lives under `android/yoram` and is synchronized
-  with the Java/XML project at
-  `C:\Users\3stra\AndroidStudioProjects\CollectCircles`.
+- The CollectCircles Android tutorial lives under `android/CollectCircles`.
+- The completed reference implementation is the Java/XML project at:
+  - Windows: `C:\Users\3stra\AndroidStudioProjects\CollectCircles`
+  - WSL mount: `/mnt/c/Users/3stra/AndroidStudioProjects/CollectCircles`
+- The repository owner validates the tutorial sequentially by applying its instructions
+  as a student would in a separate project:
+  - Windows: `C:\Users\3stra\AndroidStudioProjects\CollectCirclesT`
+  - WSL mount: `/mnt/c/Users/3stra/AndroidStudioProjects/CollectCirclesT`
+- When investigating a CollectCircles tutorial issue, treat `CollectCirclesT` as the
+  student's current lesson state and `CollectCircles` as the completed source of truth.
+  Read the reported lesson and crash/build output, inspect the exact student code around
+  the first relevant stack frame, and compare only the lesson-relevant files and concepts;
+  do not expect the validation project to contain features from later chapters.
+- Preserve the step-by-step validation state in `CollectCirclesT`: diagnose first and do
+  not copy the completed reference project over it or implement later-lesson code. Edit
+  `CollectCirclesT` only when the repository owner explicitly asks for the student project
+  to be fixed.
+- If the student followed a reasonable reading of the lesson but reached a broken state,
+  update the tutorial with clearer placement/context or a missing step, then validate the
+  documented transition against `CollectCirclesT`. If the lesson already states the needed
+  action, identify the exact missed instruction and consider a small warning only when it
+  would prevent a likely recurring mistake.
 - Write each chapter as the transition from the preceding runnable Android state, not
   as a disconnected full-project dump.
 - Use Java, XML layouts, View Binding, and Android-native concepts; do not mechanically
