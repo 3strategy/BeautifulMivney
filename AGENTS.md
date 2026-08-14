@@ -223,6 +223,12 @@
 - Simple source comments may be in Hebrew. Keep comments with substantial inline code,
   syntax, API names, or code-like expressions in English when that avoids RTL/LTR
   corruption.
+- In Android Studio tutorials, document constructors and methods with Java's Javadoc
+  form (`/** ... */`) immediately above the declaration, so Android Studio exposes the
+  documentation to callers in code completion and Quick Documentation. The Javadoc may
+  be written in Hebrew or English. Add useful `@param`, `@return`, and `@throws` tags when
+  applicable; reserve ordinary `//` comments for implementation details inside the method.
+  Keep the documentation purposeful and do not comment every obvious line.
 - Preserve and explicitly explain the geometry distinction:
   `distance < r1 + r2` means that two circles overlap, while
   `distance + smallRadius <= targetRadius` means that the smaller circle is fully
