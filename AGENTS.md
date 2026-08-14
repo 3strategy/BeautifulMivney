@@ -273,6 +273,11 @@ main {
 
 ## Tutorial diff presentation convention
 
+- For paired `לפני` / `אחרי` comparisons on Hebrew pages, keep the logical Markdown/HTML
+  source order as `לפני` first and `אחרי` second. Add the shared `before-after` modifier to
+  the container: `<div class="two-columns before-after">`. On wide RTL pages this shows
+  `לפני` on the left and `אחרי` on the right without reversing the source; on narrow screens
+  the columns stack in logical source order, with `לפני` above `אחרי`.
 - Use an ordinary fenced `diff` block for a simple change when the built-in `+` and `-`
   coloring communicates everything students need.
 - For a complex diff, or whenever the repository owner asks to **improve**, clarify, or
@@ -280,6 +285,9 @@ main {
   elaborate Liquid highlighter with `mark_lines`, even if the request does not explicitly
   name that syntax. This preserves normal diff coloring while allowing important unchanged
   context lines to be highlighted as well.
+- In a paired `לפני` / `אחרי` comparison, when unchanged lines are highlighted in the
+  `אחרי` diff only to provide orientation, highlight those same logical lines in the `לפני`
+  block as well. Matching highlights should act as visual anchors across both columns.
 - Use this form, with `mark_lines` containing the displayed code-line numbers that need
   extra emphasis (the Liquid opening and closing lines are not counted):
 

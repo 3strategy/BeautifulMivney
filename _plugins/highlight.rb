@@ -8,9 +8,22 @@ module HighlightEquals
     fence_char = nil
     fence_len = 0
     in_raw_block = nil
+    in_liquid_highlight = false
     out_lines = []
 
     content.each_line do |line|
+      if in_liquid_highlight
+        out_lines << line
+        in_liquid_highlight = false if line.match?(/\{%\s*endhighlight\s*%\}/)
+        next
+      end
+
+      if line.match?(/\{%\s*highlight\b/)
+        out_lines << line
+        in_liquid_highlight = true unless line.match?(/\{%\s*endhighlight\s*%\}/)
+        next
+      end
+
       if in_raw_block
         out_lines << line
         in_raw_block = nil if closes_raw_block?(line, in_raw_block)

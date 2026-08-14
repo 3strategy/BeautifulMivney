@@ -781,6 +781,17 @@ pre code span.c1 {
   min-width: 0;
 }
 
+/* Keep לפני then אחרי in the source, while showing לפני on the left on wide RTL pages. */
+.two-columns.before-after {
+  flex-direction: row-reverse;
+}
+
+@media (max-width: 768px) {
+  .two-columns.before-after {
+    flex-direction: column;
+  }
+}
+
 .questionnaire-source-layout {
   align-items: flex-start;
 }
