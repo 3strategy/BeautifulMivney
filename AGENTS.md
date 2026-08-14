@@ -313,6 +313,9 @@ main {
     code block rather than placing the Liquid tags at column zero.
   - Preserve the source indentation after a leading diff marker and on unchanged context
     lines.
+- When a diff abbreviates unchanged code, put the Unicode vertical ellipsis `⁞` on its own
+  context line at the exact omission point. Do not use `...`; the four vertical dots make it
+  explicit that code was skipped for brevity and is not literal source to copy.
 - Before choosing `mark_lines`, count the rendered lines inside the highlight block,
   including blank code lines, and verify that the highlighted numbers point to the intended
   context. See the boundary-comment example in
