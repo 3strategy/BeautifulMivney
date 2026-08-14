@@ -266,8 +266,39 @@ navbar-links:
 
   הגדרות:
 
+    - בחירת תפריט:
+      - יא מבני נתונים: "javascript:setMenuSet('data-structures');"
+      - יא תמע: "javascript:setMenuSet('oop');"
+      - אנדרואיד: "javascript:setMenuSet('android');"
     - החלפת רקע: "javascript:toggleTheme();"
     - החלפת גודל: "javascript:toggleSize();"
+
+# Each top-level navbar item can belong to one or more menu views. Items that
+# are not listed here (such as חיצוני, Agentic and הגדרות) remain shared.
+navbar-menu-sets:
+  data-structures:
+    label: יא מבני נתונים
+    items:
+      - פתיחת שנה
+      - רקורסיה ויעילות
+      - שרשרת חוליות
+      - מחסנית
+      - תור
+      - עץ בינארי
+      - סיכום
+  oop:
+    label: יא תמע
+    items:
+      - פתיחת שנה
+      - תמ"ע
+  android:
+    label: אנדרואיד
+    items:
+      - א יסודות
+      - א תרגול
+      - א מתקדם
+
+navbar-default-menu-set: data-structures
 
 
 
