@@ -271,6 +271,39 @@ main {
 
 - Do not retroactively rewrite in-progress tutorials between Hebrew/English unless explicitly requested.
 
+## Tutorial diff presentation convention
+
+- Use an ordinary fenced `diff` block for a simple change when the built-in `+` and `-`
+  coloring communicates everything students need.
+- For a complex diff, or whenever the repository owner asks to **improve**, clarify, or
+  make a diff easier to follow, implicitly switch from a fenced `diff` block to Jekyll's more
+  elaborate Liquid highlighter with `mark_lines`, even if the request does not explicitly
+  name that syntax. This preserves normal diff coloring while allowing important unchanged
+  context lines to be highlighted as well.
+- Use this form, with `mark_lines` containing the displayed code-line numbers that need
+  extra emphasis (the Liquid opening and closing lines are not counted):
+
+```liquid
+         {% highlight diff mark_lines="8 23" %}
+         unchanged context
++added line
+-removed line
+         unchanged context to emphasize
+         {% endhighlight %}
+```
+
+- Rendering is whitespace-sensitive:
+  - `+` and `-` diff markers must be the very first character on their lines; never indent
+    those markers.
+  - Indent both `{% highlight diff ... %}` and `{% endhighlight %}` with the surrounding
+    code block rather than placing the Liquid tags at column zero.
+  - Preserve the source indentation after a leading diff marker and on unchanged context
+    lines.
+- Before choosing `mark_lines`, count the rendered lines inside the highlight block,
+  including blank code lines, and verify that the highlighted numbers point to the intended
+  context. See the boundary-comment example in
+  `android/CollectCircles/03.collect-circles-finish.md` near its `onCreate` diff.
+
 ## Important content highlighting and visual flow
 
 - Keep lesson pages visually engaging and easy to scan. Use the repository's design classes to emphasize important guidance, decisions, warnings, successful outcomes, and reusable prompts:
