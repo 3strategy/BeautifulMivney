@@ -1058,6 +1058,18 @@ mark {
   unicode-bidi: embed;
 }
 
+/* Mermaid's default sequence theme hard-codes dark message text and lines. */
+.mermaid .messageText,
+.mermaid .messageText tspan {
+  fill: var(--text-col) !important;
+}
+
+.mermaid .messageLine0,
+.mermaid .messageLine1,
+.mermaid .actor-line {
+  stroke: var(--text-col) !important;
+}
+
 /* Class diagrams are dense; retain Mermaid's default typography and geometry. */
 .mermaid svg.classDiagram,
 .mermaid svg.classDiagram * {
