@@ -578,6 +578,7 @@ defaults:
 
 # Exclude these files from production site
 exclude:
+  - AGENTS.md
   - mdx/
   - CHANGELOG.md
   - CNAME
