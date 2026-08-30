@@ -133,7 +133,10 @@ small ORM lesson.
 5. In Logcat, compare the generated SELECT/DELETE SQL with the typed Requery calls.
 
 Both `sqlrequery` and the manual twin use `com.example.sqlrequery`; installing either APK replaces
-the other. Confirm the APK source before interpreting database state. The authoritative manual twin
+the other while preserving the same private `class-netflix.db` file. The completed three-table
+schema is version `2` in both projects. Do not change the completed app back to version `1`: after
+the twin has opened the database, Android will reject that downgrade and close the Activity during
+startup. Confirm the APK source before interpreting database state. The authoritative manual twin
 is the one named by the current BeautifulMivney `AGENTS.md`.
 
 ## Simplification decisions to preserve

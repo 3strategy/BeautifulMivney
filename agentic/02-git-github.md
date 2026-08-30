@@ -128,3 +128,6 @@ gitGraph
 - [GitHub Pages and Jekyll](https://docs.github.com/github/working-with-github-pages/about-github-pages-and-jekyll)
 - [OpenAI Codex app review and Git workflows](https://developers.openai.com/codex/app)
 - [Pull Requests באתר זה](/android/projectSteps/202GitPullRequests)
+
+{: .box-note}
+פרק המשך: [איך הופכים commit חלקי לקומיט שלם בלי לאבד את ה-Working Tree]({{ '/agentic/02b-git-replace-partial-commit' | relative_url }}).

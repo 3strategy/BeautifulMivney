@@ -167,7 +167,9 @@ navbar-links:
   Agentic:
     - 00 Agentic Engineering פתיחה: "/agentic/00-opener"
     - 01 Online מול Agentic: "/agentic/01-online-vs-agentic"
-    - 02 Git ו-GitHub: "/agentic/02-git-github"
+    - 02 Git ו-GitHub:
+        - 02 Git ו-GitHub: "/agentic/02-git-github"
+        - 02b תיקון commit חלקי: "/agentic/02b-git-replace-partial-commit"
     - 03 AGENTS & Markdown:
         - 03 AGENTS & Markdown: "/agentic/03-specifications-markdown"
         - 03b One-shot GitHub Pages: "/agentic/03b-1shot-github-markdown-site"
