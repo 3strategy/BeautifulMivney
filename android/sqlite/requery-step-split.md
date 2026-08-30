@@ -31,9 +31,9 @@ Keep the final Javadocs in the destination project. In the tutorial, introduce e
 - No architecture layer whose only purpose is production structure.
 - Build after every step that introduces annotations or generated types.
 
-## Proposed four-step tutorial
+## Proposed three-step tutorial
 
-Four steps are intentional. Each step is a mini-tutorial that starts from the previous working app
+Three steps are intentional. Each step is a mini-tutorial that starts from the previous working app
 and ends with new, runnable, visibly verifiable functionality. A step must include its objective,
 small code delta, explanation, expected UI/Logcat evidence, and a short verification. Splitting the
 same tiny app into ten or eleven setup-sized commits would make mechanics feel more important than
@@ -71,7 +71,7 @@ composite key `(movieId, studentId)`, a fresh run performs 3 + 3 + 4 inserts, an
 zero inserts. The screen visibly shows all four “who watched what” rows through Java relationship
 navigation. Introduce the Movie/Watching and insert Javadocs here.
 
-### Step 3 — Express SQL INNER JOIN in typed Requery Java
+### Step 3 — Express the typed INNER JOIN and add all three inserts
 
 Student-visible changes:
 
@@ -81,25 +81,16 @@ Student-visible changes:
 - Join Watching through `STUDENT_ID`, then Movie through `MOVIE_ID`.
 - Read each `Tuple` with those same typed expressions.
 - Render the rows in one monospaced TextView.
-
-Show the SQL and Requery forms side by side. Add the full `showWatchings()` Javadoc in this step.
-
-Checkpoint: all four expected rows appear and Logcat contains the corresponding two SQL
-`inner join` clauses. The visible result stays the same, which makes the relationship-navigation
-version and explicit SQL-shaped join directly comparable.
-
-### Step 4 — Add all three interactive inserts
-
-Student-visible changes:
-
 - Add the three View Binding buttons to `activity_main.xml`.
 - Add the small programmatic dialog helpers and Student/Movie `AlertDialog`s.
 - Query Student and Movie choices for the Watching dialog's Spinners.
 - Validate a 1–10 rating, insert Watching, refresh the join, and handle a duplicate composite key.
 - Add the remaining final Javadocs, then run `assembleDebug` and `lintDebug`.
 
-Checkpoint: create `Lia`, `Coco`, and `Lia → Coco → 7`; one insert reaches each table, the fifth
-joined row appears immediately, survives restart, and does not trigger reseeding.
+Show the SQL and Requery forms side by side. Checkpoint: the original four rows appear through the
+two SQL `inner join` clauses; then create `Lia`, `Coco`, and `Lia → Coco → 7`. One insert reaches
+each table, the fifth joined row appears immediately, survives restart, and does not trigger
+reseeding.
 
 ### Optional extension — RecyclerView
 
@@ -135,14 +126,16 @@ AndroidManifest.xml       (only if the tutorial changes it)
 
 Do not add these unless a later lesson explicitly changes scope:
 
-- AppCompat, Material Components, Activity KTX, and ConstraintLayout.
+- Changes to AppCompat, Material Components, Activity KTX, or ConstraintLayout dependencies that
+  Android Studio already placed in the baseline. Preserve them; they are not lesson material.
 - RecyclerView in the core database lesson.
 - Room, raw `SQLiteOpenHelper`, textual application SQL, or another database.
 - RxJava/Requery reactive stores.
 - ViewModel, LiveData, repositories, dependency injection, fragments, or navigation.
 - Coroutines or Kotlin application source.
 - DiffUtil, ListAdapter, data binding expressions, or multiple row types.
-- Test libraries merely to preserve template-generated placeholder tests.
+- Changes to the template-generated test files, test runner, or test libraries. Preserve them and
+  omit them from the walkthrough.
 
 The only non-Android runtime/build dependencies required by the destination are:
 
