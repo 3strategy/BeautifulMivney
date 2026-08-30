@@ -23,6 +23,33 @@
   - `menu_drawer.xml` / `drawer_menu.xml`
   - `AndroidManifest.xml`
 
+## SQLite/Requery Android tutorial series
+
+- Tutorial plans and future lesson pages live under:
+  - WSL: `/home/stra/repos/BeautifulMivney/android/sqlite`
+  - Windows: `\\wsl.localhost\Ubuntu\home\stra\repos\BeautifulMivney\android\sqlite`
+- Completed compact reference project (final source of truth):
+  - Windows: `C:\Users\3stra\AndroidStudioProjects\sqlrequery`
+  - WSL mount: `/mnt/c/Users/3stra/AndroidStudioProjects/sqlrequery`
+- Manual step-by-step progress twin (student/tutorial validation state):
+  - Windows: `C:\Users\3stra\AndroidStudioProjects\sqlrequerySteps`
+  - WSL mount: `/mnt/c/Users/3stra/AndroidStudioProjects/sqlrequerySteps`
+- Both Android projects deliberately use the identical `com.example.sqlrequery` package,
+  namespace, and application ID. Installing one on a device/emulator replaces the other, so identify
+  the producing project before using runtime behavior or app data as evidence.
+- Use `sqlrequery` to determine the intended final Java/XML/Requery implementation. Use
+  `sqlrequerySteps` to determine what a student should have at the current mini-tutorial boundary;
+  do not expect it to contain concepts from later steps.
+- Preserve the manual validation state in `sqlrequerySteps`. Do not copy the completed project over
+  it or advance it unless the repository owner explicitly asks to apply, validate, or repair a
+  particular step.
+- The planned core series has four runnable mini-tutorials. Each must end with working, observable
+  functionality rather than setup alone: Student end to end; the rated relationship via navigation;
+  the typed INNER JOIN; then the three interactive inserts.
+- When tutorial instructions and the manual twin disagree, diagnose the exact transition first.
+  Update the lesson when a reasonable reading produces a broken state; modify either Android project
+  only when the repository owner explicitly includes that project in the requested edit scope.
+
 ## Sandbox-first Android workflow (important)
 
 - Sandbox project (Windows): `C:\Users\3stra\AndroidStudioProjects\TicTacToeSignalR`
