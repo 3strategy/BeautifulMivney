@@ -52,9 +52,10 @@
   sets, test runner, JUnit/Espresso dependencies, and their version-catalog entries unchanged. They
   are omitted from the student-facing walkthrough because they are unrelated, not deleted from the
   project. The same distinction applies to other untouched template infrastructure.
-- The core series has three runnable mini-tutorials. Each ends with working, observable
+- The core series has four runnable mini-tutorials. Each ends with working, observable
   functionality rather than setup alone: Student end to end; the rated relationship via navigation;
-  then the typed INNER JOIN together with all three interactive inserts.
+  the typed INNER JOIN together with all three interactive inserts; then a RecyclerView whose
+  Delete action removes one Watching by its composite key and survives restart.
 - When tutorial instructions and the manual twin disagree, diagnose the exact transition first.
   Update the lesson when a reasonable reading produces a broken state; modify either Android project
   only when the repository owner explicitly includes that project in the requested edit scope.

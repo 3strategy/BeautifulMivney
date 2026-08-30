@@ -31,9 +31,9 @@ Keep the final Javadocs in the destination project. In the tutorial, introduce e
 - No architecture layer whose only purpose is production structure.
 - Build after every step that introduces annotations or generated types.
 
-## Proposed three-step tutorial
+## Proposed four-step tutorial
 
-Three steps are intentional. Each step is a mini-tutorial that starts from the previous working app
+Four steps are intentional. Each step is a mini-tutorial that starts from the previous working app
 and ends with new, runnable, visibly verifiable functionality. A step must include its objective,
 small code delta, explanation, expected UI/Logcat evidence, and a short verification. Splitting the
 same tiny app into ten or eleven setup-sized commits would make mechanics feel more important than
@@ -92,9 +92,14 @@ two SQL `inner join` clauses; then create `Lia`, `Coco`, and `Lia → Coco → 7
 each table, the fifth joined row appears immediately, survives restart, and does not trigger
 reseeding.
 
-### Optional extension — RecyclerView
+### Step 4 — RecyclerView and deleting one Watching
 
-Copy the completed Activity before changing the UI. Replace only the monospaced result TextView with a tiny RecyclerView and adapter. Keep `Database`, all three entities, inserts, and the join unchanged so students can see that the persistence lesson is independent of list rendering.
+Replace only the monospaced result TextView with a tiny RecyclerView and adapter. Bind the existing
+typed join tuples directly, add the composite-key ids to the select, and delete the clicked Watching
+with a typed Requery delete. Keep all three entities, the schema, seed, and inserts unchanged.
+
+Checkpoint: four rows appear with Delete buttons; deleting `Maya | Barbie | 9` leaves the other
+three rows, and the deletion survives restart.
 
 ## Files to omit from the student-facing code walkthrough
 

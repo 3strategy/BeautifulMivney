@@ -239,6 +239,7 @@ navbar-links:
     - Requery 1 - טבלת Student: "/android/sqlite/01.requery-student"
     - Requery 2 - קשר עם דירוג: "/android/sqlite/02.requery-rated-relationship"
     - Requery 3 - JOIN והוספות: "/android/sqlite/03.requery-join-and-inserts"
+    - Requery 4 - RecyclerView ומחיקה: "/android/sqlite/04.requery-recyclerview-delete"
     - 08 Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
     - 181 חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
     - 185 Firebase FBRef (חדש): "/android/projectSteps/185newFBref"
