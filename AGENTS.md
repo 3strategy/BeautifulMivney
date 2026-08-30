@@ -32,17 +32,26 @@
   - Windows: `C:\Users\3stra\AndroidStudioProjects\sqlrequery`
   - WSL mount: `/mnt/c/Users/3stra/AndroidStudioProjects/sqlrequery`
 - Manual step-by-step progress twin (student/tutorial validation state):
+  - Windows: `C:\Users\3stra\AndroidStudioProjects\sqlrequerySteps2`
+  - WSL mount: `/mnt/c/Users/3stra/AndroidStudioProjects/sqlrequerySteps2`
+  - This is the Git-tracked Empty Views baseline and the authoritative project for implementing
+    and validating each hypothetical tutorial transition.
+- Earlier untracked validation attempt (not authoritative for diffs):
   - Windows: `C:\Users\3stra\AndroidStudioProjects\sqlrequerySteps`
   - WSL mount: `/mnt/c/Users/3stra/AndroidStudioProjects/sqlrequerySteps`
-- Both Android projects deliberately use the identical `com.example.sqlrequery` package,
+- These Android projects deliberately use the identical `com.example.sqlrequery` package,
   namespace, and application ID. Installing one on a device/emulator replaces the other, so identify
   the producing project before using runtime behavior or app data as evidence.
 - Use `sqlrequery` to determine the intended final Java/XML/Requery implementation. Use
-  `sqlrequerySteps` to determine what a student should have at the current mini-tutorial boundary;
+  `sqlrequerySteps2` to determine what a student should have at the current mini-tutorial boundary;
   do not expect it to contain concepts from later steps.
-- Preserve the manual validation state in `sqlrequerySteps`. Do not copy the completed project over
+- Preserve the manual validation state in `sqlrequerySteps2`. Do not copy the completed project over
   it or advance it unless the repository owner explicitly asks to apply, validate, or repair a
   particular step.
+- In the Requery step series, preserve the Empty Views template's `test` and `androidTest` source
+  sets, test runner, JUnit/Espresso dependencies, and their version-catalog entries unchanged. They
+  are omitted from the student-facing walkthrough because they are unrelated, not deleted from the
+  project. The same distinction applies to other untouched template infrastructure.
 - The planned core series has four runnable mini-tutorials. Each must end with working, observable
   functionality rather than setup alone: Student end to end; the rated relationship via navigation;
   the typed INNER JOIN; then the three interactive inserts.
@@ -305,6 +314,45 @@ main {
 - Do not retroactively rewrite in-progress tutorials between Hebrew/English unless explicitly requested.
 
 ## Tutorial diff presentation convention
+
+### Minimal, efficient tutorial transitions
+
+- Treat every chapter as a transformation from the exact runnable state the student already has.
+  Before authoring instructions, identify that state from a tracked baseline project and implement
+  the proposed chapter in the step-validation project. Use the resulting Git diff as evidence for
+  the tutorial; do not reconstruct the transition from memory or from a completed project alone.
+- "Minimal" means the smallest coherent change that teaches and delivers the chapter's observable
+  outcome. It does not mean replacing an existing file with a shorter final version. Preserve
+  working Android-template code, dependencies, resources, themes, manifest entries, build types,
+  and layout structure unless the chapter genuinely requires changing them.
+- Assume the student must type and understand every changed line. Each added or removed line must
+  either be explained in the current chapter or be an immediately understandable piece of stable
+  scaffolding that prevents needless rework in a known near-future chapter.
+- Optimize for both a small diff and a clean path to the final application. When a file is already
+  being edited, it is acceptable to add a small amount of future-proof structure if it compiles,
+  is useful now, introduces no unexplained concept, and is very likely to remain unchanged. Do not
+  add dead buttons, inactive UI, unused entities, speculative abstractions, or later-chapter logic
+  merely to reduce the number of future file touches.
+- For an existing file, teach a focused contextual diff rather than pasting a replacement file.
+  Show only the changed region plus enough unchanged lines to locate it safely. Present a complete
+  file when the file is new, or when a true whole-file rewrite is itself the lesson and is clearer
+  than a sequence of edits.
+- Keep unrelated template lines visible as unchanged context when they help orientation, but never
+  turn their presence into deletion instructions. For example, adding an ORM does not by itself
+  justify removing AppCompat, Material, Activity KTX, ConstraintLayout, themes, or backup rules.
+- Distinguish "omit from the walkthrough" from "delete from the project." Files and dependencies
+  that are unrelated to the lesson should normally remain untouched and simply stay out of the
+  instructions. Remove a subsystem only when the repository owner explicitly requests its deletion
+  in the current scope; never infer deletion merely because the lesson does not teach or use it.
+- Filter folder comparisons aggressively. Exclude `.idea/`, `.gradle/`, every `build/` directory,
+  binaries, generated sources, local properties, wrapper noise, and formatting-only or newline-only
+  churn unless one of them is the explicit subject of the lesson.
+- Order edits so every build checkpoint is valid. In annotation-processing lessons, add and sync
+  the processor before introducing generated-type references, create the annotated source, build,
+  verify generation, and only then use generated classes in handwritten code.
+- After writing the page, audit it line-for-line against the validation project's tracked diff.
+  Every student-facing edit must exist in the project, every project source edit must be taught,
+  and each checkpoint must build and demonstrate the stated behavior.
 
 - For paired `לפני` / `אחרי` comparisons on Hebrew pages, keep the logical Markdown/HTML
   source order as `לפני` first and `אחרי` second. Add the shared `before-after` modifier to
