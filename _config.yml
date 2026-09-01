@@ -188,6 +188,7 @@ navbar-links:
     - 11 Simple Agentic - UnitTests: "/agentic/11-beginners-solving-and-unit-testing"
 
   א יסודות:
+  - מפת נושאים באנדרואיד: "/android/topics-index"
   - סרטוני AppSchool: "https://appschoolfront.web.app/course/learn/wmdWWTs17sLTO8N20HtO"
   - מפגשי אנדרואיד עם זאב: "/android/zeev/meetings"
   - פתיח והתקנה:
@@ -585,6 +586,8 @@ defaults:
 # Exclude these files from production site
 exclude:
   - AGENTS.md
+  - .agents/
+  - gems/
   - mdx/
   - CHANGELOG.md
   - CNAME

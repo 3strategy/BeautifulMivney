@@ -12,6 +12,24 @@ lang: en
 {: .box-warning}
 הפתרון המוצג כאן כבר אינו מומלץ. פתרון זה מתבסס על פרוייקט בו כל פעילות יורשת מ-MasterActivity וכך מריצה בעצמה את מערכת התפריטים.
 
+[חזרה ל־012: הגדרת קיצור לפירמוט קוד](/android/projectSteps/012androidCodeFormatting)
+
+<details markdown="1"><summary>שלושה חלקים שונים מרכיבים את התפריט</summary>
+
+1. קובץ `res/menu/*.xml` מגדיר **מה רואים**: כותרת, מזהה וסדר של כל פריט.
+2. `onCreateOptionsMenu` מבצע inflate והופך את ה־XML לאובייקטי תפריט בזמן ריצה.
+3. `onOptionsItemSelected` מגדיר **מה קורה** לאחר לחיצה, בדרך כלל יצירת `Intent` ופתיחת
+   Activity אחרת.
+
+ה־`id` הוא החוזה בין ה־XML לקוד. טקסט הכותרת יכול להשתנות או לעבור לתרגום בלי לשנות את
+ההתנהגות, אבל שינוי `android:id` מחייב לעדכן גם את ה־`if` המתאים ב־Java.
+
+`Intent` מפורש, למשל `new Intent(this, NewActivity.class)`, אומר ל־Android בדיוק איזו
+מחלקה לפתוח. הפעילות החדשה מתווספת בדרך כלל ל־back stack; לחיצה על Back מסירה אותה וחושפת
+את המסך הקודם, ולא יוצרת אותו מחדש מאפס בהכרח.
+
+</details>
+
 ## הוספת כל ה‑Activities לתפריט Overflow (⋮)
 
 אחרי שהוספנו כמה וכמה Activities להוסיף אותן גם לתפריט ה- ⋮
@@ -177,3 +195,7 @@ public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 ---
 
 **זהו!** עכשיו תוכלו להוסיף בקלות עוד `if` לכל Activity שיצרתם ולהפעיל אותו מתפריט ה־Overflow.
+
+## המשך
+
+- [014a - יצירת תפריט מגירה מבוסס Fragments](/android/projectSteps/014a.creatingFragmentsMenu)

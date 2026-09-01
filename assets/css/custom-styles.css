@@ -252,7 +252,11 @@ details > summary {
     text-align: left;
     padding-inline-start: 1.5em;
 }
-
+.hebrew {
+    direction: rtl;
+    text-align: right;
+    padding-inline-start: 1.5em;
+}
 
 pre {
     direction: ltr !important;

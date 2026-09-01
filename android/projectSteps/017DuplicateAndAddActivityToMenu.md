@@ -6,12 +6,26 @@ tags: [אנדרואיד, Activity, Drawer, Menu, Manifest, Git, Firebase, RTDB]
 lang: he
 ---
 
+[חזרה ל־016: חיבור המשחק ל־SignalR](/android/projectSteps/016.TicTacToeSignalR)
+
 {: .box-note}
 מדריך זה הוא **שלב הכנה** בלבד. המטרה: ליצור עותק של משחק ה-TicTacToe, להשאיר את הגרסה עם SignalR כמו שהיא, ולהכין מסך חדש ונקי לקראת עבודה עם Firebase RTDB.
 
 במילים פשוטות:
 - `MainActivity` נשאר המסך של SignalR.
 - `Main2Activity` יהיה המסך החדש שעליו נבנה RTDB בהמשך.
+
+<details markdown="1"><summary>למה משכפלים כאן, אף שכפילות בדרך כלל אינה רצויה?</summary>
+
+זהו פיצול לימודי מכוון: `MainActivity` נשארת דוגמה עובדת של SignalR, ו־`Main2Activity`
+נעשית נקודת התחלה ל־RTDB. כך אפשר להשוות שתי טכנולוגיות זמן־אמת באותו פרויקט בלי לפרק
+תוצאה שכבר עובדת.
+
+המחיר הוא שכפילות זמנית של קוד הלוח. במוצר ארוך־חיים היינו שוקלים לחלץ את המשותף ל־View,
+Fragment או controller משותף. בשלב הזה חילוץ כזה יוסיף הפשטה לפני שהתלמיד פגש את שני
+המקרים, ולכן שומרים את `TicTacToeModel` כמשותף ומפרידים רק את מסכי התקשורת.
+
+</details>
 
 ## וידאו מלווה + נקודות זמן
 
@@ -250,3 +264,7 @@ lang: he
 - סנכרון מהלכים בזמן אמת
 - יצירה/הצטרפות למשחק (multi games / join game)
 - שימוש ביכולות push של RTDB לעדכון לקוחות
+
+## המשך
+
+- [018a - יצירת מעטפת LoginActivity](/android/projectSteps/018a.LoginActivityFromGui)

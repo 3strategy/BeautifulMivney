@@ -6,6 +6,8 @@ tags: [אנדרואיד, Android, View Binding, Java, TicTacToe]
 lang: he
 ---
 
+[חזרה ל־019a: הפעלת View Binding והמרת המסך הראשון](/android/projectSteps/019a.BindingInsteadOfFindByID)
+
 בשלב הקודם הפעלנו את `View Binding` והמרנו מסך פשוט. כאן נמיר את `MainActivity` של משחק איקס-עיגול. במסך הזה יש גם עדכון רגיל של `EditText`, וגם קוד שמאתר כפתור לפי שורה ועמודה. החלק השני דורש שינוי מחשבתי קטן וחשוב.
 
 המטרה: לא יישארו ב-`MainActivity` קריאות `findViewById`.

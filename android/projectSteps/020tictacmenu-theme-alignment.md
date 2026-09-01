@@ -6,6 +6,8 @@ tags: [Android, XML, Material3, theming, TicTacMenu, exam-prep]
 lang: he
 ---
 
+[חזרה ל־019c: View Binding ב־Fragments וב־MenuActivity](/android/projectSteps/019c.BindingForFragmentsAndMenuActivity)
+
 {: .box-note}
 המדריך הוא אופציונאלי ומטרתו לשפר את העיצור.
 
