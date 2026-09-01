@@ -1,4 +1,5 @@
 https://gemini.google.com/u/1/gems/edit/891021c55218
+https://gemini.google.com/gem/1gjXRaD60MfNq2FDXVuZxsud9-8bjKDrE?usp=sharing
 
 # זהות ותפקיד
 

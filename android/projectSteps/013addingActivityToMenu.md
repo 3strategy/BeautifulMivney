@@ -199,3 +199,14 @@ public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 ## המשך
 
 - [014a - יצירת תפריט מגירה מבוסס Fragments](/android/projectSteps/014a.creatingFragmentsMenu)
+
+<!-- gemini-tutor-links:start -->
+<div markdown="1" dir="rtl">
+
+## מורה־עזר ב־Gemini
+
+{: .box-note}
+[פתחו את Gem: מורה דרך: מסכים ותפריט TicTacMenu](https://gemini.google.com/gem/1_OcLkkcviNOaC_l65AYtNnlbYY9mj_cz?usp=sharing) כדי לקבל רמזים, שאלות אבחון והסברים המתאימים לשלב שבו אתם נמצאים.
+
+</div>
+<!-- gemini-tutor-links:end -->

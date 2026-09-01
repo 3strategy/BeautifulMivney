@@ -171,3 +171,14 @@ android:textColor="@color/board_cell_text"
 ## המשך
 
 - [021a - פרסום חדרי משחק ב־Firebase RTDB](/android/projectSteps/021a.TicTacToeRTDBRooms)
+
+<!-- gemini-tutor-links:start -->
+<div markdown="1" dir="rtl">
+
+## מורה־עזר ב־Gemini
+
+{: .box-note}
+[פתחו את Gem: מעבדת TicTacToe: Model, View Binding ועיצוב](https://gemini.google.com/gem/1qSk94HvFDYbgXmtbkEl6GK_FoTZnwjmU?usp=sharing) כדי לקבל רמזים, שאלות אבחון והסברים המתאימים לשלב שבו אתם נמצאים.
+
+</div>
+<!-- gemini-tutor-links:end -->
