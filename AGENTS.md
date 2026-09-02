@@ -13,6 +13,57 @@
 - Android lesson pages live mainly under: `/home/stra/repos/BeautifulMivney/android/projectSteps`
 - Bagrut assets used by pages in this repo: `/home/stra/repos/BeautifulMivney/bagruyot`
 
+## Android curriculum map and project-audit sidekick
+
+Use these three artifacts together when answering curriculum questions or evaluating another Android
+project. They answer different questions and must not be treated as interchangeable:
+
+| Question | Canonical first look | Meaning |
+|:---|:---|:---|
+| Where is an Android topic taught? | `android/topics-index.md` | Student-facing coverage matrix with links and teaching depth. |
+| What important teaching is still missing or shallow? | `android/not-yet-covered.md` | Desired curriculum and prioritized gaps, including the external-evaluation rubric calibration. |
+| Which concepts appear in an Android Studio project? | `.agents/skills/android-project-concept-audit/` | Read-only static scan with file-and-line evidence; this is code presence, not proof of teaching quality or correct behavior. |
+
+When a lesson is added or substantially enriched, update `android/topics-index.md` and reconsider any
+affected row in `android/not-yet-covered.md`. For a new teaching project, use the audit report only to
+seed investigation; add coverage claims and links after confirming that student-facing material
+actually teaches, exercises, and verifies the concept.
+
+The three main teaching chains map to their completed companion projects as follows:
+
+| Teaching chain | Lesson source | Completed-project source of truth | Main topic arc |
+|:---|:---|:---|:---|
+| TicTacMenu | `android/projectSteps` (especially `013` onward) | `C:\Users\3stra\AndroidStudioProjects\TicTacMenu` | Activities, menus, Fragments, model separation, View Binding, authentication, Firebase RTDB and multiplayer state. |
+| CollectCircles | `android/CollectCircles` | `C:\Users\3stra\AndroidStudioProjects\CollectCircles` | Custom View/Canvas, touch and geometry, persistence, notifications/FCM, animation, JSON and WorkManager. |
+| Requery | `android/sqlite` | `C:\Users\3stra\AndroidStudioProjects\sqlrequery` | Entities, relationships, schema migration, typed JOINs, RecyclerView and composite-key deletion. |
+
+When asked to analyze what an existing or future Android project contains, use the
+`android-project-concept-audit` skill as the first pass before diving into the code. Run its scanner
+against the requested project, inspect the cited evidence for relevant positives, and only then read
+the surrounding source, build, or run the app as the question requires. A **Present** result is a clue,
+not proof that the feature works or is meaningfully used; **Not detected** is not proof of absence.
+
+From PowerShell, the direct form is:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
+  '<repo-root>\.agents\skills\android-project-concept-audit\scripts\Invoke-AndroidConceptAudit.ps1' `
+  -ProjectPath 'C:\path\to\AndroidProject' `
+  -OutputFormat Markdown `
+  -EvidenceLimit 3
+```
+
+Use `Table` for a quick terminal view, `Markdown` for a report, or `Json` for further processing.
+The process-scoped execution-policy bypass is intentional for an unsigned script reached through a
+WSL UNC path; it does not change machine or user policy. If detector patterns change, run
+`scripts/Test-AndroidConceptAudit.ps1`, whose assertions cover known present and missing concepts in
+TicTacMenu, CollectCircles, and `sqlrequery`.
+
+Keep the repository-local skill as the canonical copy for now; it already accepts any Gradle Android
+project through `-ProjectPath`. Do not create divergent copies in other teaching repositories. If a
+second curriculum begins depending on it or it needs independent versioning/releases, prefer moving
+it to one separately tracked tool project and referencing/installing that single source from here.
+
 ## Main Android codebase (source app for many tutorials)
 
 - Android Studio project (Windows): `C:\Users\3stra\AndroidStudioProjects\TicTacMenu`
@@ -276,6 +327,31 @@
 ## Tutorial language/style convention
 
 - Default language direction for this repo should lean Hebrew unless explicitly decided otherwise for a specific page.
+- In Markdown tables, right-align every Hebrew/RTL column with the separator `---:`. Do not use
+  `:---` for a Hebrew column: under Markdown/Kramdown it explicitly means left alignment. Use
+  `:---:` only for a deliberately centered column, and reserve `:---` for a genuinely LTR column.
+  For example:
+
+```md
+| נושא | הסבר |
+|---:|---:|
+| ... | ... |
+```
+
+  For a mixed table, express each column independently in the separator row; for example:
+
+```md
+| הסבר בעברית | API | סטטוס |
+|---:|:---|:---:|
+| ... | ... | ... |
+```
+
+  Prefer these native Markdown markers over `{: .table-*}` attributes. Do not add or retain a
+  table class merely to choose a left/right/center alignment combination. When editing an existing
+  table whose class serves only that purpose, migrate it gradually to explicit separator markers.
+  The markers control horizontal alignment but not Unicode bidirectional direction, so keep or add
+  custom CSS only when a concrete rendered case needs `direction`, `unicode-bidi`, or styling that
+  the Markdown markers cannot express.
 - In Mermaid/plain-text diagram labels for math/modeling content, prefer Unicode superscripts/subscripts such as `aⁱ`, `aʲ`, `x²` over caret notation such as `a^i`, because Mermaid renders `^` literally. Keep TeX/MathJax notation for ordinary Markdown math. This preference also applies when editing math-heavy sibling sites such as `mathBeautifulFork`.
 - Mermaid diagrams default to LTR rendering through `assets/js/custom-script.js`; do not wrap diagrams in `.english` just to fix transition order. Use `mermaid-rtl` or `%% dir: rtl %%` only for diagrams whose labels intentionally need RTL rendering.
 - For Hebrew lettered sub-question lists, prefer a real ordered list with `{: .alefbet}` and ordinary Markdown numbering (`1.`, `2.`, `3.`) rather than hand-writing `א.`, `ב.`, `ג.` as separate `{: .subq}` paragraphs.

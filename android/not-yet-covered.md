@@ -147,7 +147,7 @@ full-width: true
 ההשוואה נעשתה מול [מפת הנושאים באנדרואיד](/android/topics-index), שמבחינה בין שיעור מעשי, העמקה ומקור משלים. זו תמונת מצב של **עומק ההוראה המתועד**, לא חיפוש מילים בלבד: נושא עשוי להופיע בקוד או במצגת ועדיין להזדקק למסלול שבו התלמיד מתרגל, בודק ומסביר אותו.
 
 | סטטוס | פירוש |
-|:---|:---|
+|---:|---:|
 | **חסר** | לא נמצא במפה שיעור ממוקד או מסלול לימוד מספק. |
 | **מוזכר/משלים** | קיים קישור, מצגת, תרגיל צדדי או שימוש קצר, אך אין עדיין רצף הוראה מעשי ומעמיק. |
 | **נלמד, ראוי להעמקה** | יש שיעור מעשי משמעותי, אך חסרים מקרי קצה, הסבר עקרוני, בדיקה או חיבור לפרויקט עצמאי. |
@@ -157,7 +157,7 @@ full-width: true
 ### P0 — יסודות שכדאי להשלים תחילה
 
 | נושא יעד | סטטוס נוכחי | מה חסר כדי להגיע ליעד | נקודת פתיחה קיימת |
-|:---|:---:|:---|:---|
+|---:|:---:|---:|---:|
 | שחזור Activity ו־Fragment אחרי שינוי תצורה או הריגת תהליך | **נלמד, ראוי להעמקה** | תרגיל שמסובב מסך, מפעיל `Don't keep activities` או יוצר תהליך מחדש; הבחנה בין field,‏ `Bundle` ומקור אמת; מחזור חיי ה־View של Fragment | [מחזור חיים ב־CollectCircles](/android/CollectCircles/03.collect-circles-finish), [מצגת מחזור החיים](/android/zeev/meetings#id-meeting-6-activity-lifecycle) |
 | נגישות, מסכים אדפטיביים ולוקליזציה | **חסר** | `contentDescription`, קורא מסך, גודל טקסט, contrast, יעד מגע, strings/plurals,‏ RTL ו־`start`/`end`, ובדיקה מעשית על שני גדלים | [Layout Editor](/android/CollectCircles/01a.collect-circles-layout-editor) יכול לשמש בסיס למסלול חדש |
 | מצבי UI מלאים: טעינה, ריק, שגיאה, הצלחה ו־retry | **חסר** | מודל מצב מפורש ותרגיל שבו ה־API או המסד מחזירים גם כשל ורשימה ריקה; מניעת לחיצה כפולה ושימור state | [RTDB rooms](/android/projectSteps/021a.TicTacToeRTDBRooms), [RecyclerView של Requery](/android/sqlite/04.requery-recyclerview-delete) |
@@ -169,7 +169,7 @@ full-width: true
 ### P1 — השלמות חשובות למסלול Android ולפרויקט גמר
 
 | נושא יעד | סטטוס נוכחי | מה חסר כדי להגיע ליעד | נקודת פתיחה קיימת |
-|:---|:---:|:---|:---|
+|---:|:---:|---:|---:|
 | יסודות HTTP ולקוח API כללי | **נלמד, ראוי להעמקה** | method/status/headers/timeout,‏ Retrofit/OkHttp, המרת JSON למודל טיפוסי, ביטול לפי lifecycle, offline/cache ו־retry אחראי; הידע כיום קשור בעיקר ל־SignalR או ל־API של LLM | [SignalR](/android/projectSteps/016.TicTacToeSignalR), [Interactions API](/android/unsorted/LLM-using-google-interactions-api) |
 | אסינכרוניות ותחרות בין פעולות | **מוזכר/משלים** | main thread, executor/callback, race condition, ביטול, תוצאה שמגיעה אחרי סגירת מסך, ותיאום בין מקור מקומי לרשת | [מפגש Thread](/android/zeev/meetings#id-meeting-8-thread), [תיאום UI ו־Worker](/android/CollectCircles/17.collect-circles-worker-settlement) |
 | ניווט מודרני ושחזור זרימה | **נלמד, ראוי להעמקה** | back stack,‏ Up לעומת Back, deep links,‏ Navigation Component, העברת מזהה במקום אובייקט, ותוצאה טיפוסית באמצעות contracts | [Activities ו־Intents](/android/projectSteps/013addingActivityToMenu), [Fragments בתפריט](/android/projectSteps/014b.AddingFragmentsToMenu), [ActivityResultLauncher](/android/zeev/meetings#id-meeting-13-activity-result-launcher-course) |
@@ -185,7 +185,7 @@ full-width: true
 ### P2 — הרחבות בחירה שכדאי להפוך ממקור משלים למסלול מעשי
 
 | נושא יעד | סטטוס נוכחי | מה חסר כדי להגיע ליעד | נקודת פתיחה קיימת |
-|:---|:---:|:---|:---|
+|---:|:---:|---:|---:|
 | מצלמה, גלריה ואחסון תחום | **מוזכר/משלים** | contracts,‏ content URI,‏ FileProvider, הרשאות לפי גרסה, metadata וסיבוב תמונה | [אינדקס AppSchool](/android/asaf/001asafAndroidChapters) |
 | מיקום ומפות | **מוזכר/משלים** | הרשאה מדורגת, דיוק מול סוללה, lifecycle, מפה, פרטיות והדגמת תרחיש שימוש אמיתי | [מפגשי Android](/android/zeev/meetings) |
 | חיישנים | **מוזכר/משלים** | מערכת צירים ויחידות, קצב דגימה, סינון רעש, הרשמה/הסרה לפי lifecycle ותוצר עובד | [מפגש Sensors](/android/zeev/meetings#id-meeting-2-sensors) |

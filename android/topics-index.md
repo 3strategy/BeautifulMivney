@@ -12,8 +12,10 @@ full-width: true
 
 ## איך קוראים את המפה?
 
+{: .table-he}
+
 | סימון עומק | מה תמצאו בקישור |
-|:---|:---|
+|---|---|
 | **שיעור מעשי** | בנייה מודרכת של תוצר עובד, עם קוד ושלבי בדיקה. |
 | **העמקה** | הסבר של הרעיון, השוואה או ניתוח שעוזרים להבין *למה* הקוד בנוי כך. |
 | **משלים** | אזכור קצר, תרגול, שאלות חזרה או שער למצגת/קובץ נוסף. זה אינו תחליף לשיעור מלא. |
@@ -61,8 +63,11 @@ full-width: true
 
 ## Android Studio, מבנה הפרויקט ותהליך העבודה
 
+
+{: .table-he}
+
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---|---|---|
 | יצירת `Activity` דרך Android Studio | שיעור מעשי | [הוספת Activities](/android/projectSteps/011addingActivities), [יצירת LoginActivity מן ה־GUI](/android/projectSteps/018a.LoginActivityFromGui) |
 | `AndroidManifest`,‏ Launcher ורישום מסכים | שיעור מעשי | [תפריט Fragments והגדרת Launcher](/android/projectSteps/014a.creatingFragmentsMenu), [שכפול ורישום Activity](/android/projectSteps/017DuplicateAndAddActivityToMenu), [LoginActivity כ־Launcher יחיד](/android/projectSteps/018a.LoginActivityFromGui) |
 | ניווט בתצוגת **Android** ומיקום קבצים | שיעור מעשי | [Layout Editor](/android/CollectCircles/01a.collect-circles-layout-editor), [Requery — הכנת Gradle וה־Entity הראשון](/android/sqlite/01.requery-student) |
@@ -75,8 +80,10 @@ full-width: true
 
 ## Activities,‏ Intents וניווט
 
+{: .table-he}
+
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---|---|---|
 | מעבר בין Activities בעזרת `Intent` מפורש | שיעור מעשי | [Activities בתפריט Overflow](/android/projectSteps/013addingActivityToMenu), [שכפול Activity וניתוב מן המגירה](/android/projectSteps/017DuplicateAndAddActivityToMenu) |
 | תפריט Overflow וקובץ menu XML | שיעור מעשי | [הוספת Activities לתפריט](/android/projectSteps/013addingActivityToMenu) |
 | Navigation Drawer,‏ `DrawerLayout` ו־`NavigationView` | שיעור מעשי | [יצירת תפריט מגירה](/android/projectSteps/014a.creatingFragmentsMenu), [הוספת יעדים למגירה](/android/projectSteps/014b.AddingFragmentsToMenu) |
@@ -87,8 +94,10 @@ full-width: true
 
 ## מחזור חיים, מצב ושמירה קלה
 
+{: .table-he}
+
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---|---|---|
 | מחזור החיים של `Activity` | שיעור מעשי | [עצירת עדכוני זמן ב־`onStop`](/android/CollectCircles/03.collect-circles-finish), [חישוב התקדמות ב־`onStart` וב־`onStop`](/android/CollectCircles/13.collect-circles-offline-progress); **משלים:** [מצגת מחזור החיים](/android/zeev/meetings#id-meeting-6-activity-lifecycle) |
 | `SharedPreferences` לקריאה וכתיבה | שיעור מעשי | [שמירת שיא](/android/CollectCircles/03.collect-circles-finish), [מצב משחק מתמשך](/android/CollectCircles/08.collect-circles-persistent-economy), [שמירת בחירת "הישאר מחובר"](/android/projectSteps/018a.LoginActivityFromGui) |
 | מצב בזיכרון לעומת מצב שנשמר במכשיר | העמקה | [כלכלה מתמשכת ב־CollectCircles](/android/CollectCircles/08.collect-circles-persistent-economy) |
@@ -98,8 +107,10 @@ full-width: true
 
 ## XML, רכיבי UI ו־View Binding
 
+{: .table-he}
+
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---|---|---|
 | בניית מסך ב־Layout Editor | שיעור מעשי | [CollectCircles — בניית המסך דרך ה־GUI](/android/CollectCircles/01a.collect-circles-layout-editor), [LoginActivity דרך ה־GUI](/android/projectSteps/018a.LoginActivityFromGui) |
 | XML layouts, אילוצים, משקלים ומשאבי `strings.xml` | שיעור מעשי | [מסך המשחק CollectCircles](/android/CollectCircles/01.collect-circles-drawing), [מסך Login](/android/projectSteps/018a.LoginActivityFromGui), [טבלת Requery](/android/sqlite/04.requery-recyclerview-delete) |
 | `View Binding` במקום `findViewById` | שיעור מעשי | [עקרונות ומעבר הדרגתי](/android/projectSteps/019a.BindingInsteadOfFindByID), [MainActivity](/android/projectSteps/019bBindingsForMainActivity), [Fragments ו־MenuActivity](/android/projectSteps/019c.BindingForFragmentsAndMenuActivity), [Requery בפרויקט חדש](/android/sqlite/01.requery-student) |
@@ -112,8 +123,9 @@ full-width: true
 
 ## Canvas, מגע, גאומטריה ואנימציה
 
+
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---:|:---:|---:|
 | יצירת `View` מותאם אישית ו־`onDraw` | שיעור מעשי | [ציור עיגולים ב־Canvas](/android/CollectCircles/01.collect-circles-drawing) |
 | `Canvas`,‏ `Paint` ומערכת הצירים | שיעור מעשי | [הלוח הראשון](/android/CollectCircles/01.collect-circles-drawing), [ציור דמות Pusher](/android/CollectCircles/11.collect-circles-draw-pusher) |
 | אירועי מגע, תפיסה, גרירה ושחרור עם `MotionEvent` | שיעור מעשי | [מצב משחק וגרירת עיגולים](/android/CollectCircles/02.collect-circles-game) |
@@ -125,8 +137,10 @@ full-width: true
 
 ## OOP,‏ Java וארכיטקטורה
 
+{: .table-he}
+
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---|---|---|
 | הפרדת מצב המשחק מן המסך | שיעור מעשי | [יצירת TicTacToeModel](/android/projectSteps/015a.creatingTicTacToeModel), [חיבור המודל ל־Activity](/android/projectSteps/015b.AddingTicTacToeToMainActivity), [מחלקת Game ב־CollectCircles](/android/CollectCircles/02.collect-circles-game) |
 | מחלקות, בנאים, שדות, getters ומתודות | שיעור מעשי | [Circle ו־Target](/android/CollectCircles/01.collect-circles-drawing), [Entity ראשון ב־Requery](/android/sqlite/01.requery-student) |
 | ירושה (`extends`) ו־`super` | שיעור מעשי | [Target יורש מ־Circle](/android/CollectCircles/01.collect-circles-drawing) |
@@ -137,8 +151,10 @@ full-width: true
 
 ## נתונים מקומיים: SQLite ו־Requery
 
+{: .table-he}
+
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---|---|---|
 | Entity,‏ annotations וקוד שנוצר | שיעור מעשי | [Student מקצה לקצה](/android/sqlite/01.requery-student) |
 | פתיחת מסד, insert ו־select typed | שיעור מעשי | [Student מקצה לקצה](/android/sqlite/01.requery-student) |
 | קשר רבים־לרבים עם נתון נוסף | שיעור מעשי | [Student–Watching–Movie עם rating](/android/sqlite/02.requery-rated-relationship) |
@@ -150,7 +166,7 @@ full-width: true
 ## Firebase, התחברות ונתונים בזמן אמת
 
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---:|:---:|---:|
 | יצירת פרויקט Firebase וחיבור אפליקציית Android | שיעור מעשי | [Firebase Project + RTDB + Authentication](/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup) |
 | `google-services.json`,‏ package name ותקלות התאמה | שיעור מעשי | [בדיקות ותיקון No matching client](/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup), [שינוי שם פרויקט מחובר לשירות](/android/projectSteps/191renameProject) |
 | Firebase Authentication במייל ובסיסמה | שיעור מעשי | [Login ו־FBRef](/android/projectSteps/018c.EmailPasswordLoginAndFBRef) |
@@ -164,7 +180,7 @@ full-width: true
 ## רשת, API וענן
 
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---:|:---:|---:|
 | לקוח SignalR, חיבור לשרת ושליחת אירועים | שיעור מעשי | [Tic-Tac-Toe מרובה משתתפים](/android/projectSteps/016.TicTacToeSignalR) |
 | זרימת הודעה בין UI,‏ Service, שרת ולקוח אחר | העמקה | [תרשים הרצף של SignalR](/android/projectSteps/016.TicTacToeSignalR) |
 | קריאת API ושליחת JSON מ־Android | שיעור מעשי | [Interactions API ו־LLM ב־Java](/android/unsorted/LLM-using-google-interactions-api) |
@@ -175,7 +191,7 @@ full-width: true
 ## הרשאות, התראות ועבודה ברקע
 
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---:|:---:|---:|
 | הרשאות רגילות, מסוכנות ומיוחדות | שיעור מעשי | [מדריך הרשאות](/android/alon/13.android_permissions_tutorial_Version2) |
 | בקשת הרשאה בזמן ריצה | שיעור מעשי | [מדריך הרשאות](/android/alon/13.android_permissions_tutorial_Version2), [הרשאת התראות ב־Android 13+](/android/CollectCircles/05.collect-circles-local-notification) |
 | Notification Channel ובניית התראה מקומית | שיעור מעשי | [CollectCircles 5 — התראה מקומית](/android/CollectCircles/05.collect-circles-local-notification) |
@@ -192,7 +208,7 @@ full-width: true
 ## בדיקות, תקלות ואיכות
 
 | נושא | עומק | איפה לומדים |
-|:---|:---:|:---|
+|---:|:---:|---:|
 | בדיקת יחידה לפונקציית Java טהורה | שיעור מעשי | [בדיקת מחיר Pusher](/android/CollectCircles/10.collect-circles-pusher-shop), [בדיקת מחשבון אופליין](/android/CollectCircles/13.collect-circles-offline-progress) |
 | ההבדל בין `test` ל־`androidTest` | העמקה קצרה | [בדיקת מחיר Pusher](/android/CollectCircles/10.collect-circles-pusher-shop) |
 | בדיקות ידניות ותוצאה נצפית | שיעור מעשי | [רשימת הבדיקה של Requery 1](/android/sqlite/01.requery-student), [בדיקת RTDB בשני מכשירים](/android/projectSteps/021a.TicTacToeRTDBRooms), [בדיקות FCM](/android/CollectCircles/06.collect-circles-fcm-invitations) |
