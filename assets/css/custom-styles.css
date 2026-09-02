@@ -254,7 +254,7 @@ details > summary {
 }
 .hebrew {
     direction: rtl;
-    text-align: right;
+    text-align: right !important;
     padding-inline-start: 1.5em;
 }
 

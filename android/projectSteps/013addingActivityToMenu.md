@@ -201,7 +201,7 @@ public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 - [014a - יצירת תפריט מגירה מבוסס Fragments](/android/projectSteps/014a.creatingFragmentsMenu)
 
 <!-- gemini-tutor-links:start -->
-<div markdown="1" dir="rtl">
+<div markdown="1" class="hebrew">
 
 ## מורה־עזר ב־Gemini
 

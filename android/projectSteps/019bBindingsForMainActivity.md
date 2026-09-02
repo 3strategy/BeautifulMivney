@@ -152,7 +152,7 @@ private int idFor(int row, int col) {
 - [019c - View Binding ב-Fragments וב-MenuActivity]({{ '/android/projectSteps/019c.BindingForFragmentsAndMenuActivity' | relative_url }})
 
 <!-- gemini-tutor-links:start -->
-<div markdown="1" dir="rtl">
+<div markdown="1" class="hebrew">
 
 ## מורה־עזר ב־Gemini
 
