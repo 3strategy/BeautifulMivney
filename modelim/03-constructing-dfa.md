@@ -11,7 +11,7 @@ css: ["/modelim/course.css"]
 בשיעור זה נבנה אוטומטים לפי המידע שכל מצב צריך לזכור: תחילית, סיומת, הופעת רצף וספירה חסומה. נלמד לטפל בחפיפות ולהבחין בין כישלון זמני למצב מלכודת.
 
 
-[הקודם]({{ '/modelim/02-reading-dfa' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/04-finite-memory' | relative_url }})
+[הקודם]({{ '/modelim/02-reading-dfa' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/04-finite-memory' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -123,4 +123,4 @@ stateDiagram-v2
 
 </details>
 
-[הקודם]({{ '/modelim/02-reading-dfa' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/04-finite-memory' | relative_url }})
+[הקודם]({{ '/modelim/02-reading-dfa' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/04-finite-memory' | relative_url }}){: data-sequence-nav="next"}

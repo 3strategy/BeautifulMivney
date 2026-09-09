@@ -10,7 +10,7 @@ css: ["/modelim/course.css"]
 {: .box-note}
 בשיעור זה נכיר סרט קריאה וכתיבה ונתרגל מעקב מדויק אחרי הראש והמצב. נבנה מכונה שהופכת ביטים, ואז ננתח את מכונת מטלה 5 ונגלה איזו פונקציה היא מחשבת על מספרים אונריים.
 
-[הקודם]({{ '/modelim/12-language-hierarchy' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/14-computing-and-models' | relative_url }})
+[הקודם]({{ '/modelim/12-language-hierarchy' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/14-computing-and-models' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -151,4 +151,4 @@ $$f(n)=n\bmod3\qquad(n\ge1).$$
 
 </details>
 
-[הקודם]({{ '/modelim/12-language-hierarchy' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/14-computing-and-models' | relative_url }})
+[הקודם]({{ '/modelim/12-language-hierarchy' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/14-computing-and-models' | relative_url }}){: data-sequence-nav="next"}

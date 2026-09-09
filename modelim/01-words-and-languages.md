@@ -11,7 +11,7 @@ css: ["/modelim/course.css"]
 בשיעור זה נלמד לקרוא הגדרות של שפות: נבחין בין סימן, מילה וקבוצת מילים, נבדוק שייכות ונמצא את כל המילים הקצרות ביותר. זהו הבסיס לתכנון אוטומטים בהמשך הקורס.
 
 
-[מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא: קריאת אוטומט]({{ '/modelim/02-reading-dfa' | relative_url }})
+[מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא: קריאת אוטומט]({{ '/modelim/02-reading-dfa' | relative_url }}){: data-sequence-nav="next"}
 
 ## מה נלמד?
 
@@ -103,4 +103,4 @@ $$K=\{a^n b^{3k+1}c^k\mid n>0,\ k>0\}.$$
 {: .box-success}
 מוכנים להתקדם כשאפשר להסביר מדוע מילה שייכת או אינה שייכת לשפה, ולציין בדיוק איזה תנאי נכשל.
 
-[מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא: קריאת אוטומט]({{ '/modelim/02-reading-dfa' | relative_url }})
+[מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא: קריאת אוטומט]({{ '/modelim/02-reading-dfa' | relative_url }}){: data-sequence-nav="next"}

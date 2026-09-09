@@ -11,7 +11,7 @@ css: ["/modelim/course.css"]
 בשיעור זה נחבר כמה תנאים באותו אוטומט. נזכור זוגיות ושאריות במקום מספרים בלתי חסומים, ונשלב אותן עם תחילית וסיומת בלי לאבד מידע בין הצעדים.
 
 
-[הקודם]({{ '/modelim/03-constructing-dfa' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/05-incomplete-dfa' | relative_url }})
+[הקודם]({{ '/modelim/03-constructing-dfa' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/05-incomplete-dfa' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -102,4 +102,4 @@ css: ["/modelim/course.css"]
 
 </details>
 
-[הקודם]({{ '/modelim/03-constructing-dfa' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/05-incomplete-dfa' | relative_url }})
+[הקודם]({{ '/modelim/03-constructing-dfa' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/05-incomplete-dfa' | relative_url }}){: data-sequence-nav="next"}

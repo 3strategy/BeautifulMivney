@@ -11,7 +11,7 @@ css: ["/modelim/course.css"]
 בשיעור זה נבין מה עושה מעבר חסר באוטומט דטרמיניסטי, נבנה מזהה למספרים בינאריים ונשלים אוטומט בעזרת מלכודת. נבדוק מדוע חייבים להשלים לפני בניית משלים.
 
 
-[הקודם]({{ '/modelim/04-finite-memory' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/06-nfa' | relative_url }})
+[הקודם]({{ '/modelim/04-finite-memory' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/06-nfa' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -113,4 +113,4 @@ stateDiagram-v2
 
 </details>
 
-[הקודם]({{ '/modelim/04-finite-memory' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/06-nfa' | relative_url }})
+[הקודם]({{ '/modelim/04-finite-memory' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/06-nfa' | relative_url }}){: data-sequence-nav="next"}

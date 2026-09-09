@@ -10,7 +10,7 @@ css: ["/modelim/course.css"]
 {: .box-note}
 בשיעור זה נלמד לפשט הגדרות, להפריד בין פרמטרים תלויים לבלתי תלויים, לבדוק הכלה באמצעות הוכחה או דוגמה נגדית, ולזהות חיתוכים פשוטים שמסתתרים בין שפות מסובכות. התרגול נשען על מטלות 3–4.
 
-[הקודם]({{ '/modelim/08-nonregularity' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/10-pda' | relative_url }})
+[הקודם]({{ '/modelim/08-nonregularity' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/10-pda' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -93,4 +93,4 @@ $$L_2=\{a^nb^na^m\mid n\ge m\ge0\},\qquad L_3=\{a^nb^{2n}a^{n\bmod3}\mid n\ge0\}
 
 </details>
 
-[הקודם]({{ '/modelim/08-nonregularity' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/10-pda' | relative_url }})
+[הקודם]({{ '/modelim/08-nonregularity' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/10-pda' | relative_url }}){: data-sequence-nav="next"}

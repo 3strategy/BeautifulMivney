@@ -11,7 +11,7 @@ css: ["/modelim/course.css"]
 בשיעור זה נלמד לבנות אוטומט לא דטרמיניסטי ללא מעברי אפסילון, לעקוב אחרי כל המצבים האפשריים ולהמיר אותו לאוטומט דטרמיניסטי שקול. מסלול מקבל אחד מספיק, בתנאי שקרא את כל הקלט.
 
 
-[הקודם]({{ '/modelim/05-incomplete-dfa' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/07-language-operations' | relative_url }})
+[הקודם]({{ '/modelim/05-incomplete-dfa' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/07-language-operations' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -117,4 +117,4 @@ stateDiagram-v2
 
 </details>
 
-[הקודם]({{ '/modelim/05-incomplete-dfa' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/07-language-operations' | relative_url }})
+[הקודם]({{ '/modelim/05-incomplete-dfa' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/07-language-operations' | relative_url }}){: data-sequence-nav="next"}

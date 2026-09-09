@@ -11,7 +11,7 @@ css: ["/modelim/course.css"]
 בשיעור זה נשתמש בפעולות על שפות כדי לפרק בעיות: חיתוך, איחוד, משלים, הפרש, שרשור, כוכב והיפוך. נבנה מכפלה ונוכיח רגולריות באמצעות סגירות, תוך שמירה על האיסור על מעברי אפסילון.
 
 
-[הקודם]({{ '/modelim/06-nfa' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/08-nonregularity' | relative_url }})
+[הקודם]({{ '/modelim/06-nfa' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/08-nonregularity' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -115,4 +115,4 @@ $$L=(L_2\setminus L_3)L_1^R.$$
 
 </details>
 
-[הקודם]({{ '/modelim/06-nfa' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/08-nonregularity' | relative_url }})
+[הקודם]({{ '/modelim/06-nfa' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/08-nonregularity' | relative_url }}){: data-sequence-nav="next"}

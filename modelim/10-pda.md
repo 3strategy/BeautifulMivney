@@ -10,7 +10,7 @@ css: ["/modelim/course.css"]
 {: .box-note}
 בשיעור זה נוסיף לאוטומט זיכרון מסוג מחסנית. נלמד לקרוא מעברי דחיפה ושליפה, לעקוב אחר תוכן המחסנית ולבנות אוטומטים להשוואת כמויות ולסוגריים מאוזנים — ללא מעברי אפסילון.
 
-[הקודם]({{ '/modelim/09-language-reasoning' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/11-pda-constructions' | relative_url }})
+[הקודם]({{ '/modelim/09-language-reasoning' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/11-pda-constructions' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -121,4 +121,4 @@ stateDiagram-v2
 
 </details>
 
-[הקודם]({{ '/modelim/09-language-reasoning' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/11-pda-constructions' | relative_url }})
+[הקודם]({{ '/modelim/09-language-reasoning' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/11-pda-constructions' | relative_url }}){: data-sequence-nav="next"}

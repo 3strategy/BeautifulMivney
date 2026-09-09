@@ -192,7 +192,7 @@ navbar-links:
   - בגרויות מבני נתונים: "/bagruyot/index/"
   - בחינות מה"ט: "https://data.labor.gov.il/Mahat/mahat_tests_search.aspx"
 
-  Agentic:
+  יסודות ועבודה עם סוכנים:
     - 00 Agentic Engineering פתיחה: "/agentic/00-opener"
     - 01 Online מול Agentic: "/agentic/01-online-vs-agentic"
     - 02 Git ו-GitHub:
@@ -202,18 +202,22 @@ navbar-links:
         - 03 AGENTS & Markdown: "/agentic/03-specifications-markdown"
         - 03b One-shot GitHub Pages: "/agentic/03b-1shot-github-markdown-site"
         - 03c One-shot+ Jekyll WSL: "/agentic/03c-1shot-github-jekyll-with-local-wsl-bundle"
-    - 04 Google Sheets ו-clasp: "/agentic/04-apps-script-clasp-sheets"
-    - 05 Hosting: "/agentic/05-hosting"
-    - 06 TDD ובדיקות: "/agentic/06-tdd-long-running-agents"
-    - 07 Playwright ודפדפן Codex: "/agentic/07-playwright-browser"
-    - 08 Firebase מפרומפט ראשון: "/agentic/08-firebase-first-prompt"
-    - 09 התראות PushBullet: "/agentic/09-notifications-pushbullet"
-    - 10 שאלון עירנות כבר היה לנו: "/agentic/10-workshop-quiz"
-    - Agentic workflows: "/agentic/agentic-workflows-and-harness-engineering-he"
     - Codex switches: "/agentic/codex-switches-and-agent-environment-he"
     # - Claude prompts: "https://code.claude.com/docs/en/prompt-library"
     # - "לוז": "https://docs.google.com/document/d/1u3RmwIEnwEDxYcjg6CX6RT9imPjM7Ao5/edit"
+
+  יישומים ופרסום:
+    - 04 Google Sheets ו-clasp: "/agentic/04-apps-script-clasp-sheets"
+    - 05 Hosting: "/agentic/05-hosting"
+    - 08 Firebase מפרומפט ראשון: "/agentic/08-firebase-first-prompt"
+    - 09 התראות PushBullet: "/agentic/09-notifications-pushbullet"
+
+  בדיקות ותרגול:
+    - 06 TDD ובדיקות: "/agentic/06-tdd-long-running-agents"
+    - 07 Playwright ודפדפן Codex: "/agentic/07-playwright-browser"
+    - 10 שאלון עירנות כבר היה לנו: "/agentic/10-workshop-quiz"
     - 11 Simple Agentic - UnitTests: "/agentic/11-beginners-solving-and-unit-testing"
+    - Agentic workflows: "/agentic/agentic-workflows-and-harness-engineering-he"
 
   א יסודות:
   - מפת נושאים באנדרואיד: "/android/topics-index"
@@ -306,11 +310,12 @@ navbar-links:
       - יא תמע: "javascript:setMenuSet('oop');"
       - אנדרואיד: "javascript:setMenuSet('android');"
       - מודלים חישוביים: "javascript:setMenuSet('modelim');"
+      - Agentic: "javascript:setMenuSet('agentic');"
     - החלפת רקע: "javascript:toggleTheme();"
     - החלפת גודל: "javascript:toggleSize();"
 
 # Each top-level navbar item can belong to one or more menu views. Items that
-# are not listed here (such as חיצוני, Agentic and הגדרות) remain shared.
+# are not listed here (such as חיצוני and הגדרות) remain shared.
 navbar-menu-sets:
   data-structures:
     label: יא מבני נתונים
@@ -342,6 +347,12 @@ navbar-menu-sets:
       - שפות רגולריות ואי־רגולריות
       - אוטומט מחסנית
       - מכונת טיורינג
+  agentic:
+    label: Agentic
+    items:
+      - יסודות ועבודה עם סוכנים
+      - יישומים ופרסום
+      - בדיקות ותרגול
 
 navbar-default-menu-set: data-structures
 

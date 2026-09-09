@@ -10,7 +10,7 @@ css: ["/modelim/course.css"]
 {: .box-note}
 בשיעור הסיום נבנה מכונת טיורינג שפועלת אחרת על מספר זוגי ואי־זוגי, נוכיח שהפלט נכון ושהחישוב מסתיים. לאחר מכן נבדיל בין חישוב פונקציה, זיהוי שפה והכרעת שפה, ונכיר בקצרה את גבולות החישוב.
 
-[הקודם]({{ '/modelim/13-turing-machines' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }})
+[הקודם]({{ '/modelim/13-turing-machines' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }})
 
 ## מטרות וידע קודם
 
@@ -145,4 +145,4 @@ $$g(n)=\begin{cases}n/2&n\text{ זוגי},\\n-1&n\text{ אי־זוגי}.\end{cas
 
 </details>
 
-[הקודם]({{ '/modelim/13-turing-machines' | relative_url }}) · [חזרה למפת הקורס ולמטלות]({{ '/modelim/' | relative_url }})
+[הקודם]({{ '/modelim/13-turing-machines' | relative_url }}){: data-sequence-nav="prev"} · [חזרה למפת הקורס ולמטלות]({{ '/modelim/' | relative_url }})

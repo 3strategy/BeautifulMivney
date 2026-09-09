@@ -11,7 +11,7 @@ css: ["/modelim/course.css"]
 בשיעור זה נלמד לקרוא תרשים וטבלת מעברים של אוטומט סופי דטרמיניסטי, לעקוב אחרי קלט ולהסביר איזו שפה האוטומט מקבל. הדגש: מצב מקבל קובע קבלה רק לאחר קריאת המילה כולה.
 
 
-[הקודם]({{ '/modelim/01-words-and-languages' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/03-constructing-dfa' | relative_url }})
+[הקודם]({{ '/modelim/01-words-and-languages' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/03-constructing-dfa' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -129,4 +129,4 @@ stateDiagram-v2
 
 </details>
 
-[הקודם]({{ '/modelim/01-words-and-languages' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/03-constructing-dfa' | relative_url }})
+[הקודם]({{ '/modelim/01-words-and-languages' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/03-constructing-dfa' | relative_url }}){: data-sequence-nav="next"}

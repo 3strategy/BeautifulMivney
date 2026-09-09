@@ -10,7 +10,7 @@ css: ["/modelim/course.css"]
 {: .box-note}
 בשיעור זה נוכיח שלפעמים שום אוטומט סופי אינו מספיק. נלמד להבחין בין קידומות באמצעות המשך מתאים, להשתמש בלמת הניפוח ולבודד שפה קשה בעזרת תכונות סגירות. נבנה הוכחות ולא נסתפק באמירה "צריך לספור".
 
-[הקודם]({{ '/modelim/07-language-operations' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/09-language-reasoning' | relative_url }})
+[הקודם]({{ '/modelim/07-language-operations' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/09-language-reasoning' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -86,4 +86,4 @@ $$K=\{w_1b^nw_2\mid n\ge1,\ w_1,w_2\in\{a,c\}^*,\ \#_a(w_1)=\#_c(w_2)\}.$$
 
 </details>
 
-[הקודם]({{ '/modelim/07-language-operations' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/09-language-reasoning' | relative_url }})
+[הקודם]({{ '/modelim/07-language-operations' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/09-language-reasoning' | relative_url }}){: data-sequence-nav="next"}

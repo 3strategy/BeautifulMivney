@@ -10,7 +10,7 @@ css: ["/modelim/course.css"]
 {: .box-note}
 בשיעור זה נסווג שפות לפי כוח הזיכרון הדרוש להן. נראה שמחסנית יכולה להשוות כמויות אך אינה פותרת כל דרישת ספירה; נבנה אוטומט להשוואת כמויות בסדר חופשי ונוכיח מדוע שפות מסוימות אינן חופשיות הקשר.
 
-[הקודם]({{ '/modelim/11-pda-constructions' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/13-turing-machines' | relative_url }})
+[הקודם]({{ '/modelim/11-pda-constructions' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/13-turing-machines' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -108,4 +108,4 @@ css: ["/modelim/course.css"]
 
 </details>
 
-[הקודם]({{ '/modelim/11-pda-constructions' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/13-turing-machines' | relative_url }})
+[הקודם]({{ '/modelim/11-pda-constructions' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/13-turing-machines' | relative_url }}){: data-sequence-nav="next"}

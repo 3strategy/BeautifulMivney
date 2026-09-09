@@ -10,7 +10,7 @@ css: ["/modelim/course.css"]
 {: .box-note}
 בשיעור זה נשתמש במחסנית יחד עם הזיכרון הסופי של המצבים. נבנה פתרונות ליחס בין בלוקים, לאי־שוויון בין כמויות ולהשוואת הבלוק הראשון לאחרון. בכל בנייה נגדיר מה נספר ונבדוק את מקרי הגבול, ללא מעברי אפסילון.
 
-[הקודם]({{ '/modelim/10-pda' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/12-language-hierarchy' | relative_url }})
+[הקודם]({{ '/modelim/10-pda' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/12-language-hierarchy' | relative_url }}){: data-sequence-nav="next"}
 
 ## מטרות וידע קודם
 
@@ -153,4 +153,4 @@ $$H=\{a^r(ba^{j_1})\cdots(ba^{j_t})ca^r\mid r\ge1,\ t\ge0,\ j_1,\ldots,j_t\ge1\}
 
 </details>
 
-[הקודם]({{ '/modelim/10-pda' | relative_url }}) · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/12-language-hierarchy' | relative_url }})
+[הקודם]({{ '/modelim/10-pda' | relative_url }}){: data-sequence-nav="prev"} · [מפת הקורס]({{ '/modelim/' | relative_url }}) · [הבא]({{ '/modelim/12-language-hierarchy' | relative_url }}){: data-sequence-nav="next"}
