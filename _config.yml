@@ -23,6 +23,33 @@ author: גיא סידס
 
 navbar-links:
 
+  'אסד"מ':
+    - מפת הקורס והמטלות: "/modelim/"
+    - 01 מילים ושפות: "/modelim/01-words-and-languages"
+    - 02 קריאת אוטומט סופי: "/modelim/02-reading-dfa"
+    - 03 בניית אוטומט סופי: "/modelim/03-constructing-dfa"
+    - 04 זוגיות ושילוב תנאים: "/modelim/04-finite-memory"
+
+  'אס"ד לא מלא':
+    - 05 מעברים חסרים ומספרים בינאריים: "/modelim/05-incomplete-dfa"
+
+  'אסל"ד':
+    - 06 אי־דטרמיניזם ללא אפסילון: "/modelim/06-nfa"
+
+  שפות רגולריות ואי־רגולריות:
+    - 07 פעולות על שפות וסגירות: "/modelim/07-language-operations"
+    - 08 הוכחת אי־רגולריות: "/modelim/08-nonregularity"
+    - 09 פישוט שפות ובדיקת טענות: "/modelim/09-language-reasoning"
+
+  אוטומט מחסנית:
+    - 10 יסודות אוטומט מחסנית: "/modelim/10-pda"
+    - 11 יחסים ובניות מחסנית: "/modelim/11-pda-constructions"
+    - 12 גבולות המחסנית וסיווג שפות: "/modelim/12-language-hierarchy"
+
+  מכונת טיורינג:
+    - 13 סרט ומעקב אחר מכונה: "/modelim/13-turing-machines"
+    - 14 חישוב והשוואת מודלים: "/modelim/14-computing-and-models"
+
   חיצוני:
     - Code Classroom מערכת הגשות שלי: "https://codeclassroom.io"
     - אתר יסודות שלי: "https://יסודות.שלי.com"
@@ -278,6 +305,7 @@ navbar-links:
       - יא מבני נתונים: "javascript:setMenuSet('data-structures');"
       - יא תמע: "javascript:setMenuSet('oop');"
       - אנדרואיד: "javascript:setMenuSet('android');"
+      - מודלים חישוביים: "javascript:setMenuSet('modelim');"
     - החלפת רקע: "javascript:toggleTheme();"
     - החלפת גודל: "javascript:toggleSize();"
 
@@ -305,6 +333,15 @@ navbar-menu-sets:
       - א יסודות
       - א תרגול
       - א מתקדם
+  modelim:
+    label: מודלים חישוביים
+    items:
+      - 'אסד"מ'
+      - 'אס"ד לא מלא'
+      - 'אסל"ד'
+      - שפות רגולריות ואי־רגולריות
+      - אוטומט מחסנית
+      - מכונת טיורינג
 
 navbar-default-menu-set: data-structures
 
