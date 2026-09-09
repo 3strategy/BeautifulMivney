@@ -6,7 +6,7 @@ tags: [אנדרואיד, Android, View Binding, Java, TicTacToe]
 lang: he
 ---
 
-[חזרה ל־019a: הפעלת View Binding והמרת המסך הראשון](/android/projectSteps/019a.BindingInsteadOfFindByID)
+[חזרה ל־019a: הפעלת View Binding והמרת המסך הראשון](/android/projectSteps/019a.BindingInsteadOfFindByID){: data-sequence-nav="prev"}
 
 בשלב הקודם הפעלנו את `View Binding` והמרנו מסך פשוט. כאן נמיר את `MainActivity` של משחק איקס-עיגול. במסך הזה יש גם עדכון רגיל של `EditText`, וגם קוד שמאתר כפתור לפי שורה ועמודה. החלק השני דורש שינוי מחשבתי קטן וחשוב.
 
@@ -149,7 +149,7 @@ private int idFor(int row, int col) {
 
 ## השיעור הבא
 
-- [019c - View Binding ב-Fragments וב-MenuActivity]({{ '/android/projectSteps/019c.BindingForFragmentsAndMenuActivity' | relative_url }})
+- [019c - View Binding ב-Fragments וב-MenuActivity]({{ '/android/projectSteps/019c.BindingForFragmentsAndMenuActivity' | relative_url }}){: data-sequence-nav="next"}
 
 <!-- gemini-tutor-links:start -->
 <div markdown="1" class="hebrew">

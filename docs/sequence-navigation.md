@@ -1,8 +1,31 @@
 # Touch navigation for lesson sequences
 
 The shared `assets/js/sequence-navigation.js` is loaded by the footer and activates
-only when `main` contains tagged links. The numbered `modelim` lessons are the
-initial pilot. Course maps and historical submissions are not part of the sequence.
+only when `main` contains tagged links. Enabled sequences are the numbered
+`modelim` lessons, TicTacMenu 013–020 (including lettered steps), and CollectCircles.
+The `modelim` course map and historical submissions remain outside its sequence.
+
+## Android routes
+
+TicTacMenu follows 013 → 014a → 014b → 015a → 015b → 016 → 017 →
+018a → 018b → standard 018c → 018d → 019a → 019b → 019c → 020.
+The Hebrew/View Binding variant of 018c also supports previous/next, returning
+to 018b or continuing to 018d. Optional shortcut links remain ordinary links.
+013 is the swipe boundary; its existing manual link to 012 remains available.
+
+CollectCircles follows 1 → 2 → 3 → 4 → 5 → 6 → 8 → 9 → 10 → 11 → 12 →
+13 → 14 → 15 → 16 → 17 → 18. The student route skips teacher cloud setup (7),
+and the full route through 15–18 is the default after 14. Chapter 4 now has a
+back-link to 3; chapter 5's back-link goes to 4 so the main route is reciprocal.
+
+Side pages retain their existing choices: 1a goes back to 1 or forward to 2;
+the 5–7 roadmap goes back to 3 or forward to 5; chapter 7 goes back to 6 or
+forward to the 8–18 roadmap; that roadmap goes back to 6 or forward to 8.
+15b goes back to 14 and is an ending, with no next swipe. Return swipes from
+the main route follow that route, not the previously visited side page.
+The teacher/development plan is not enabled.
+
+## Tagging links
 
 Tag existing Markdown links using Kramdown attributes:
 
@@ -59,5 +82,6 @@ normal vertical reading, wide tables, diagram interactions, pinch zoom, browser
 Back, and the first/last lessons. Start within the page, away from screen edges.
 Desktop emulation cannot fully reproduce phone OS gestures or Safari behavior.
 
-To reuse on BeautifulYesodot later, copy the shared script, load it in that site's
-footer, and tag that course's own links after verifying its `main` content wrapper.
+BeautifulYesodot now uses the identical shared script and enables its own Taba
+student sequence. Keep gesture fixes aligned across both repositories and run
+both browser suites; course link targets and sequence fixtures remain site-local.

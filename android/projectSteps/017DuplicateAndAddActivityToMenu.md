@@ -6,7 +6,7 @@ tags: [אנדרואיד, Activity, Drawer, Menu, Manifest, Git, Firebase, RTDB]
 lang: he
 ---
 
-[חזרה ל־016: חיבור המשחק ל־SignalR](/android/projectSteps/016.TicTacToeSignalR)
+[חזרה ל־016: חיבור המשחק ל־SignalR](/android/projectSteps/016.TicTacToeSignalR){: data-sequence-nav="prev"}
 
 {: .box-note}
 מדריך זה הוא **שלב הכנה** בלבד. המטרה: ליצור עותק של משחק ה-TicTacToe, להשאיר את הגרסה עם SignalR כמו שהיא, ולהכין מסך חדש ונקי לקראת עבודה עם Firebase RTDB.
@@ -267,7 +267,7 @@ Fragment או controller משותף. בשלב הזה חילוץ כזה יוסי�
 
 ## המשך
 
-- [018a - יצירת מעטפת LoginActivity](/android/projectSteps/018a.LoginActivityFromGui)
+- [018a - יצירת מעטפת LoginActivity](/android/projectSteps/018a.LoginActivityFromGui){: data-sequence-nav="next"}
 
 <!-- gemini-tutor-links:start -->
 <div markdown="1" class="hebrew">

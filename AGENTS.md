@@ -545,3 +545,19 @@ main {
 </div>
 </div>
 ```
+
+## Swipe navigation shared with BeautifulYesodot
+
+- Both sites load `assets/js/sequence-navigation.js` from the footer. Keep the
+  gesture implementation aligned, while tagging each site's own content links.
+- Tag links within `main` using `data-sequence-nav="next"` /
+  `data-sequence-nav="prev"`. Right swipe means next; left means previous.
+  Use `data-swipe-ignore` for custom widgets that own their touch gestures.
+- Mivney routes and tests: `docs/sequence-navigation.md` and
+  `tests/sequence-navigation.spec.js`. Yesodot enables its Taba student sequence
+  and has its own route fixture and browser tests at the same relative locations.
+- Do not overwrite Yesodot's `custom-script.js` or `nav.html` during a port:
+  it supports empty named menu views and has an `expandAllDetails()` helper.
+  Its search placement and default menu IDs are site-specific. Consult the owner
+  before standardizing ambiguous differences. See Yesodot's
+  `docs/sibling-infrastructure-notes.md` for the focused comparison.

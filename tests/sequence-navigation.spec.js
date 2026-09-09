@@ -4,6 +4,7 @@ const http = require('node:http');
 const path = require('node:path');
 
 const site = path.join(__dirname, '..', '_site');
+const androidSequences = require('./fixtures/android-sequences.json');
 const lessons = fs.readdirSync(path.join(site, 'modelim'))
   .filter(name => /^\d\d-/.test(name)).sort();
 let server, base;
@@ -30,6 +31,8 @@ async function open(page, index = 1) {
   await readingSurface(page);
 }
 async function readingSurface(page) {
+  await page.waitForLoadState('load');
+  await page.locator('main').waitFor();
   // A plain reading surface within the actual lesson, clear of navigation links.
   await page.evaluate(() => {
     document.querySelector('#swipe-test-surface')?.remove();
@@ -69,6 +72,45 @@ test('all 14 built lessons tag the correct neighbors, including boundaries', asy
     await expect(page.locator('script[src$="/assets/js/sequence-navigation.js"]')).toHaveCount(1);
   }
 });
+
+for (const [name, chain] of Object.entries(androidSequences.chains)) {
+  test(`${name}: the main swipe route is reciprocal`, async () => {
+    for (let i = 0; i < chain.length; i++) {
+      expect(androidSequences.pages[chain[i]]).toEqual({
+        prev: chain[i - 1] || null, next: chain[i + 1] || null,
+      });
+    }
+  });
+}
+
+test('Android lessons and branches render exactly one correct link per swipe direction', async ({ page, request }) => {
+  test.setTimeout(90000);
+  for (const [url, navigation] of Object.entries(androidSequences.pages)) {
+    const response = await page.goto(base + url);
+    expect(response.status(), url).toBe(200);
+    for (const [direction, destination] of Object.entries(navigation)) {
+      const links = page.locator(`main a[data-sequence-nav="${direction}"]`);
+      await expect(links, `${url}: ${direction}`).toHaveCount(destination ? 1 : 0);
+      if (destination) {
+        await expect(links).toHaveAttribute('href', destination);
+        expect((await request.get(base + destination)).status(), destination).toBe(200);
+      }
+    }
+  }
+});
+
+for (const [name, index] of [['tictacmenu', 8], ['collectcircles', 5], ['collectcircles', 12]]) {
+  test(`${name} step ${index}: native swipes follow the chosen route both ways`, async ({ page }) => {
+    const chain = androidSequences.chains[name];
+    await page.goto(base + chain[index]);
+    await readingSurface(page);
+    await swipe(page, [100, 330], [285, 334]);
+    await expect(page).toHaveURL(base + chain[index + 1]);
+    await readingSurface(page);
+    await swipe(page, [285, 330], [100, 334]);
+    await expect(page).toHaveURL(base + chain[index]);
+  });
+}
 
 test('native touch swipe right goes next, swipe left goes previous, including after history return', async ({ page }) => {
   await open(page);

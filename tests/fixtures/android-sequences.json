@@ -1,0 +1,194 @@
+{
+  "chains": {
+    "tictacmenu": [
+      "/android/projectSteps/013addingActivityToMenu",
+      "/android/projectSteps/014a.creatingFragmentsMenu",
+      "/android/projectSteps/014b.AddingFragmentsToMenu",
+      "/android/projectSteps/015a.creatingTicTacToeModel",
+      "/android/projectSteps/015b.AddingTicTacToeToMainActivity",
+      "/android/projectSteps/016.TicTacToeSignalR",
+      "/android/projectSteps/017DuplicateAndAddActivityToMenu",
+      "/android/projectSteps/018a.LoginActivityFromGui",
+      "/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup",
+      "/android/projectSteps/018c.EmailPasswordLoginAndFBRef",
+      "/android/projectSteps/018d.GoogleOAuthLoginAndSHA1",
+      "/android/projectSteps/019a.BindingInsteadOfFindByID",
+      "/android/projectSteps/019bBindingsForMainActivity",
+      "/android/projectSteps/019c.BindingForFragmentsAndMenuActivity",
+      "/android/projectSteps/020tictacmenu-theme-alignment"
+    ],
+    "collectcircles": [
+      "/android/CollectCircles/01.collect-circles-drawing",
+      "/android/CollectCircles/02.collect-circles-game",
+      "/android/CollectCircles/03.collect-circles-finish",
+      "/android/CollectCircles/04.collect-circles-oop-afterthought",
+      "/android/CollectCircles/05.collect-circles-local-notification",
+      "/android/CollectCircles/06.collect-circles-fcm-invitations",
+      "/android/CollectCircles/08.collect-circles-persistent-economy",
+      "/android/CollectCircles/09.collect-circles-autonomous-mode",
+      "/android/CollectCircles/10.collect-circles-pusher-shop",
+      "/android/CollectCircles/11.collect-circles-draw-pusher",
+      "/android/CollectCircles/12.collect-circles-pushers-work",
+      "/android/CollectCircles/13.collect-circles-offline-progress",
+      "/android/CollectCircles/14.collect-circles-first-worker",
+      "/android/CollectCircles/15.collect-circles-periodic-work",
+      "/android/CollectCircles/16.collect-circles-json-schedule",
+      "/android/CollectCircles/17.collect-circles-worker-settlement",
+      "/android/CollectCircles/18.collect-circles-pusher-brag"
+    ]
+  },
+  "pages": {
+    "/android/projectSteps/013addingActivityToMenu": {
+      "prev": null,
+      "next": "/android/projectSteps/014a.creatingFragmentsMenu"
+    },
+    "/android/projectSteps/014a.creatingFragmentsMenu": {
+      "prev": "/android/projectSteps/013addingActivityToMenu",
+      "next": "/android/projectSteps/014b.AddingFragmentsToMenu"
+    },
+    "/android/projectSteps/014b.AddingFragmentsToMenu": {
+      "prev": "/android/projectSteps/014a.creatingFragmentsMenu",
+      "next": "/android/projectSteps/015a.creatingTicTacToeModel"
+    },
+    "/android/projectSteps/015a.creatingTicTacToeModel": {
+      "prev": "/android/projectSteps/014b.AddingFragmentsToMenu",
+      "next": "/android/projectSteps/015b.AddingTicTacToeToMainActivity"
+    },
+    "/android/projectSteps/015b.AddingTicTacToeToMainActivity": {
+      "prev": "/android/projectSteps/015a.creatingTicTacToeModel",
+      "next": "/android/projectSteps/016.TicTacToeSignalR"
+    },
+    "/android/projectSteps/016.TicTacToeSignalR": {
+      "prev": "/android/projectSteps/015b.AddingTicTacToeToMainActivity",
+      "next": "/android/projectSteps/017DuplicateAndAddActivityToMenu"
+    },
+    "/android/projectSteps/017DuplicateAndAddActivityToMenu": {
+      "prev": "/android/projectSteps/016.TicTacToeSignalR",
+      "next": "/android/projectSteps/018a.LoginActivityFromGui"
+    },
+    "/android/projectSteps/018a.LoginActivityFromGui": {
+      "prev": "/android/projectSteps/017DuplicateAndAddActivityToMenu",
+      "next": "/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup"
+    },
+    "/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup": {
+      "prev": "/android/projectSteps/018a.LoginActivityFromGui",
+      "next": "/android/projectSteps/018c.EmailPasswordLoginAndFBRef"
+    },
+    "/android/projectSteps/018c.EmailPasswordLoginAndFBRef": {
+      "prev": "/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup",
+      "next": "/android/projectSteps/018d.GoogleOAuthLoginAndSHA1"
+    },
+    "/android/projectSteps/018d.GoogleOAuthLoginAndSHA1": {
+      "prev": "/android/projectSteps/018c.EmailPasswordLoginAndFBRef",
+      "next": "/android/projectSteps/019a.BindingInsteadOfFindByID"
+    },
+    "/android/projectSteps/019a.BindingInsteadOfFindByID": {
+      "prev": "/android/projectSteps/018d.GoogleOAuthLoginAndSHA1",
+      "next": "/android/projectSteps/019bBindingsForMainActivity"
+    },
+    "/android/projectSteps/019bBindingsForMainActivity": {
+      "prev": "/android/projectSteps/019a.BindingInsteadOfFindByID",
+      "next": "/android/projectSteps/019c.BindingForFragmentsAndMenuActivity"
+    },
+    "/android/projectSteps/019c.BindingForFragmentsAndMenuActivity": {
+      "prev": "/android/projectSteps/019bBindingsForMainActivity",
+      "next": "/android/projectSteps/020tictacmenu-theme-alignment"
+    },
+    "/android/projectSteps/020tictacmenu-theme-alignment": {
+      "prev": "/android/projectSteps/019c.BindingForFragmentsAndMenuActivity",
+      "next": null
+    },
+    "/android/CollectCircles/01.collect-circles-drawing": {
+      "prev": null,
+      "next": "/android/CollectCircles/02.collect-circles-game"
+    },
+    "/android/CollectCircles/02.collect-circles-game": {
+      "prev": "/android/CollectCircles/01.collect-circles-drawing",
+      "next": "/android/CollectCircles/03.collect-circles-finish"
+    },
+    "/android/CollectCircles/03.collect-circles-finish": {
+      "prev": "/android/CollectCircles/02.collect-circles-game",
+      "next": "/android/CollectCircles/04.collect-circles-oop-afterthought"
+    },
+    "/android/CollectCircles/04.collect-circles-oop-afterthought": {
+      "prev": "/android/CollectCircles/03.collect-circles-finish",
+      "next": "/android/CollectCircles/05.collect-circles-local-notification"
+    },
+    "/android/CollectCircles/05.collect-circles-local-notification": {
+      "prev": "/android/CollectCircles/04.collect-circles-oop-afterthought",
+      "next": "/android/CollectCircles/06.collect-circles-fcm-invitations"
+    },
+    "/android/CollectCircles/06.collect-circles-fcm-invitations": {
+      "prev": "/android/CollectCircles/05.collect-circles-local-notification",
+      "next": "/android/CollectCircles/08.collect-circles-persistent-economy"
+    },
+    "/android/CollectCircles/08.collect-circles-persistent-economy": {
+      "prev": "/android/CollectCircles/06.collect-circles-fcm-invitations",
+      "next": "/android/CollectCircles/09.collect-circles-autonomous-mode"
+    },
+    "/android/CollectCircles/09.collect-circles-autonomous-mode": {
+      "prev": "/android/CollectCircles/08.collect-circles-persistent-economy",
+      "next": "/android/CollectCircles/10.collect-circles-pusher-shop"
+    },
+    "/android/CollectCircles/10.collect-circles-pusher-shop": {
+      "prev": "/android/CollectCircles/09.collect-circles-autonomous-mode",
+      "next": "/android/CollectCircles/11.collect-circles-draw-pusher"
+    },
+    "/android/CollectCircles/11.collect-circles-draw-pusher": {
+      "prev": "/android/CollectCircles/10.collect-circles-pusher-shop",
+      "next": "/android/CollectCircles/12.collect-circles-pushers-work"
+    },
+    "/android/CollectCircles/12.collect-circles-pushers-work": {
+      "prev": "/android/CollectCircles/11.collect-circles-draw-pusher",
+      "next": "/android/CollectCircles/13.collect-circles-offline-progress"
+    },
+    "/android/CollectCircles/13.collect-circles-offline-progress": {
+      "prev": "/android/CollectCircles/12.collect-circles-pushers-work",
+      "next": "/android/CollectCircles/14.collect-circles-first-worker"
+    },
+    "/android/CollectCircles/14.collect-circles-first-worker": {
+      "prev": "/android/CollectCircles/13.collect-circles-offline-progress",
+      "next": "/android/CollectCircles/15.collect-circles-periodic-work"
+    },
+    "/android/CollectCircles/15.collect-circles-periodic-work": {
+      "prev": "/android/CollectCircles/14.collect-circles-first-worker",
+      "next": "/android/CollectCircles/16.collect-circles-json-schedule"
+    },
+    "/android/CollectCircles/16.collect-circles-json-schedule": {
+      "prev": "/android/CollectCircles/15.collect-circles-periodic-work",
+      "next": "/android/CollectCircles/17.collect-circles-worker-settlement"
+    },
+    "/android/CollectCircles/17.collect-circles-worker-settlement": {
+      "prev": "/android/CollectCircles/16.collect-circles-json-schedule",
+      "next": "/android/CollectCircles/18.collect-circles-pusher-brag"
+    },
+    "/android/CollectCircles/18.collect-circles-pusher-brag": {
+      "prev": "/android/CollectCircles/17.collect-circles-worker-settlement",
+      "next": null
+    },
+    "/android/projectSteps/018c.EmailPasswordLoginAndFBRefHebrewBindings": {
+      "prev": "/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup",
+      "next": "/android/projectSteps/018d.GoogleOAuthLoginAndSHA1"
+    },
+    "/android/CollectCircles/01a.collect-circles-layout-editor": {
+      "prev": "/android/CollectCircles/01.collect-circles-drawing",
+      "next": "/android/CollectCircles/02.collect-circles-game"
+    },
+    "/android/CollectCircles/05-07.student-roadmap": {
+      "prev": "/android/CollectCircles/03.collect-circles-finish",
+      "next": "/android/CollectCircles/05.collect-circles-local-notification"
+    },
+    "/android/CollectCircles/07.collect-circles-cloud-infrastructure": {
+      "prev": "/android/CollectCircles/06.collect-circles-fcm-invitations",
+      "next": "/android/CollectCircles/08-18.student-roadmap"
+    },
+    "/android/CollectCircles/08-18.student-roadmap": {
+      "prev": "/android/CollectCircles/06.collect-circles-fcm-invitations",
+      "next": "/android/CollectCircles/08.collect-circles-persistent-economy"
+    },
+    "/android/CollectCircles/15b.collect-circles-notification-only": {
+      "prev": "/android/CollectCircles/14.collect-circles-first-worker",
+      "next": null
+    }
+  }
+}

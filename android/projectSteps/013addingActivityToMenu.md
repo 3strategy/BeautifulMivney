@@ -198,7 +198,7 @@ public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
 ## המשך
 
-- [014a - יצירת תפריט מגירה מבוסס Fragments](/android/projectSteps/014a.creatingFragmentsMenu)
+- [014a - יצירת תפריט מגירה מבוסס Fragments](/android/projectSteps/014a.creatingFragmentsMenu){: data-sequence-nav="next"}
 
 <!-- gemini-tutor-links:start -->
 <div markdown="1" class="hebrew">
