@@ -1,14 +1,23 @@
 ---
 layout: page
 title: "019b - View Binding ב-MainActivity"
-subtitle: "המרת מסך המשחק מ-findViewById ל-View Binding"
+subtitle: "אתחול בסיסי לשימוש חוזר, ואז המרת מסך המשחק ל-View Binding"
 tags: [אנדרואיד, Android, View Binding, Java, TicTacToe]
 lang: he
+full-width: true
 ---
+
+<style>
+.binding-start-comparison pre,
+.binding-start-comparison code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+</style>
 
 [חזרה ל־019a: הפעלת View Binding והמרת המסך הראשון](/android/projectSteps/019a.BindingInsteadOfFindByID){: data-sequence-nav="prev"}
 
-בשלב הקודם הפעלנו את `View Binding` והמרנו מסך פשוט. כאן נמיר את `MainActivity` של משחק איקס-עיגול. במסך הזה יש גם עדכון רגיל של `EditText`, וגם קוד שמאתר כפתור לפי שורה ועמודה. החלק השני דורש שינוי מחשבתי קטן וחשוב.
+בשלב הקודם הפעלנו את `View Binding` והמרנו מסך פשוט. כאן מתחילים בשינוי קטן ב־`MainActivity` שאפשר לחזור עליו בפרויקטים חדשים: טוענים את המסך דרך שדה `binding`, מחליפים את `findViewById(R.id.main)` ב־`binding.main`, ומעדכנים את הריווח בקצוות המסך. אחר כך נשתמש ב־binding כדי להמיר את מסך משחק האיקס־עיגול.
 
 המטרה: לא יישארו ב-`MainActivity` קריאות `findViewById`.
 
@@ -24,31 +33,75 @@ buildFeatures {
 
 אחרי `Sync Project with Gradle Files`, הקובץ `activity_main.xml` יוצר את המחלקה `ActivityMainBinding`.
 
-## שלב 1 - יצירת ה-binding
+## שלב 1 - האתחול הבסיסי של MainActivity
 
-פתחו את:
+פתחו את `MainActivity` בתצוגת **Android**, תחת `app > kotlin+java > com.example.tictacmenu > activities`.
 
-- `app/src/main/java/com/example/tictacmenu/activities/MainActivity.java`
+נקודת המוצא בהשוואה היא הקוד הרגיל של התבנית: `setContentView(R.layout.activity_main)` טוען את המסך, ו־`findViewById(R.id.main)` מאתר את ה־View שעליו מחילים את הריווח. נוסיף שדה `binding` בגוף המחלקה `MainActivity`, **מעל `@Override` ומחוץ ל־`onCreate`**, ונאתחל אותו בתוך המתודה.
 
-הוסיפו את ה-import ואת השדה:
+הוסיפו את ה־import של הפרויקט:
 
-```diff
--import com.example.tictacmenu.R;
-+import com.example.tictacmenu.databinding.ActivityMainBinding;
+```java
+import com.example.tictacmenu.databinding.ActivityMainBinding;
+```
 
- public class MainActivity extends AppCompatActivity {
+השאירו את ה־import של `R` כל עוד קוד אחר בקובץ משתמש בו.
+
+מוצגת תחילת המתודה בלבד; שאר הקוד ב־`onCreate` ממשיך אחרי `});` ונשאר במקומו. שורות אדומות מוחלפות, שורות ירוקות נוספות, והדגשות הרקע מסמנות את אותן נקודות בקוד בשתי העמודות.
+
+<div class="two-columns before-after binding-start-comparison">
+<div markdown="1" class="column">
+
+### לפני
+
+    {% highlight diff mark_lines="2 4" %}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+-        setContentView(R.layout.activity_main);
+-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    {% endhighlight %}
+
+</div>
+<div markdown="1" class="column">
+
+### אחרי
+
+    {% highlight diff mark_lines="4 6" %}
 +    private ActivityMainBinding binding;
-```
 
-בתחילת `onCreate`, החליפו את טעינת ה-layout:
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
 
-```diff
--setContentView(R.layout.activity_main);
-+binding = ActivityMainBinding.inflate(getLayoutInflater());
-+setContentView(binding.getRoot());
-```
++        binding = ActivityMainBinding.inflate(getLayoutInflater());
++        setContentView(binding.getRoot());
++        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
++            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
++            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return insets;
+        });
+    {% endhighlight %}
 
-`binding.getRoot()` הוא ה-View הראשי של `activity_main.xml`; לכן הוא הערך שמעבירים ל-`setContentView`.
+</div>
+</div>
+
+**מה השתנה?**
+
+1. **מוסיפים שדה ומאתחלים דרכו את המסך.** `private ActivityMainBinding binding;` נמצא מחוץ למתודה, כדי שגם מתודות אחרות באותה Activity יוכלו להשתמש בו אחרי האתחול. בתוך `onCreate`, השורה `binding = ActivityMainBinding.inflate(getLayoutInflater());` יוצרת את רכיבי המסך, ו־`setContentView(binding.getRoot());` מציג את ה־View הראשי שלהם. כך שתי השורות מחליפות את `setContentView(R.layout.activity_main);`. בהשמה בתוך המתודה כותבים `binding =` בלי להכריז שוב על הטיפוס, כדי לא ליצור משתנה מקומי שמסתיר את השדה.
+2. **ניגשים ל־View ישירות.** `binding.main` מחליף את `findViewById(R.id.main)` בשורת ה־listener: זהו כבר אובייקט ה־View בעל המזהה `@+id/main`, ולכן אין צורך לחפש אותו.
+3. **הריווח מתחשב גם במגרעת המסך.** `systemBars()` מתייחס לפסי המערכת, ו־`displayCutout()` מוסיף התחשבות במגרעת או בחור המצלמה. הסימן `|` משלב את שני סוגי ה־insets, ו־`setPadding` משתמש בתוצאה כדי להרחיק את התוכן מהאזורים האלה. השם `bars` מחליף את `systemBars` גם בהכרזה וגם בשימוש. [הסבר בתיעוד Android](https://developer.android.com/develop/ui/views/layout/edge-to-edge#display-cutout-insets).
+
+{: .box-success}
+**לשימוש חוזר בפרויקט חדש:** זהו אותו אתחול בסיסי ל־Activity עם View Binding. התאימו את שם מחלקת ה־binding לקובץ ה־layout ואת `binding.main` למזהה של ה־View שעליו מחילים את הריווח; בדוגמה זו הוא `@+id/main`.
+
+**בדיקה לפני שממשיכים:** הריצו `Build > Make Project`, פתחו את המסך ובדקו שהתוכן אינו מוסתר על ידי פסי המערכת או מגרעת המסך, גם בסיבוב לרוחב. מכאן ממשיכים לשינויים של מסך המשחק.
 
 ## שלב 2 - החלפה פשוטה של View יחיד
 
