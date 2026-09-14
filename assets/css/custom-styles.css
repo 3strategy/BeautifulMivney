@@ -1064,8 +1064,22 @@ mark {
 
 /* Mermaid's default sequence theme hard-codes dark message text and lines. */
 .mermaid .messageText,
-.mermaid .messageText tspan {
+.mermaid .messageText tspan,
+.mermaid .loopText,
+.mermaid .loopText tspan,
+.rtdb-device-flow .mermaid .sectionTitle,
+.rtdb-device-flow .mermaid .sectionTitle tspan {
   fill: var(--text-col) !important;
+}
+
+/* Keep the two-device RTDB sequences readable on narrow lesson pages. */
+.rtdb-device-flow {
+  overflow-x: auto;
+  direction: ltr;
+}
+
+.rtdb-device-flow .mermaid svg {
+  min-width: 44rem;
 }
 
 .mermaid .messageLine0,

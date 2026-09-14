@@ -171,10 +171,12 @@ full-width: true
 | `google-services.json`,‏ package name ותקלות התאמה | שיעור מעשי | [בדיקות ותיקון No matching client](/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup), [שינוי שם פרויקט מחובר לשירות](/android/projectSteps/191renameProject) |
 | Firebase Authentication במייל ובסיסמה | שיעור מעשי | [Login ו־FBRef](/android/projectSteps/018c.EmailPasswordLoginAndFBRef) |
 | Google Sign-In,‏ OAuth,‏ SHA-1 ו־Firebase credential | שיעור מעשי | [Google OAuth Login](/android/projectSteps/018d.GoogleOAuthLoginAndSHA1) |
+| זהות ב־Authentication לעומת פרופיל משתמש ב־RTDB | העמקה השוואתית עם קוד מקור | [למה Presence משתמשת ב־User וב־TicTacMenu מספיק UID?](/android/projectSteps/021a.TicTacToeRTDBRooms#user-profile-vs-auth) |
 | `DatabaseReference`, כתיבה וקריאה מ־RTDB | שיעור מעשי | [פרסום חדרי משחק](/android/projectSteps/021a.TicTacToeRTDBRooms) |
-| `ValueEventListener` ועדכונים בזמן אמת | שיעור מעשי | [רשימת חדרים חיה](/android/projectSteps/021a.TicTacToeRTDBRooms), [משחק וצפייה בזמן אמת](/android/projectSteps/021b.TicTacToeRTDBGame) |
+| `ValueEventListener` ועדכונים בזמן אמת | שיעור מעשי והעמקה | [רשימת חדרים חיה](/android/projectSteps/021a.TicTacToeRTDBRooms), [תרשימי זרימה בין שני מכשירים: הצטרפות, מהלך ואישור כתיבה](/android/projectSteps/021b.TicTacToeRTDBGame#rtdb-two-device-flow) |
 | הסרת listener והתאמה למחזור החיים | שיעור מעשי | [ניקוי מאזין החדרים](/android/projectSteps/021a.TicTacToeRTDBRooms) |
-| מבנה נתונים ב־RTDB והמרת אובייקט Java לעץ JSON | העמקה | [מודל חדר והזרימה בין מכשירים](/android/projectSteps/021a.TicTacToeRTDBRooms) |
+| מבנה נתונים ב־RTDB והמרת אובייקט Java לעץ JSON | העמקה עם קוד השוואתי ושאלות בדיקה | [GameRoom מול Presence:‏ POJO/DTO,‏ Map ו־JSONObject](/android/projectSteps/021a.TicTacToeRTDBRooms#presence-rtdb-comparison), [serialization ו־deserialization ותפקיד הבנאי הריק](/android/projectSteps/021a.TicTacToeRTDBRooms#rtdb-serialization) |
+| בחירת היקף כתיבה, שדות חסרים ותחרות בין לקוחות | העמקה עיונית; ללא מעבדת transactions | [setValue לעומת updateChildren, מחיקה, שינוי סכימה וגבולות המיפוי](/android/projectSteps/021a.TicTacToeRTDBRooms#presence-rtdb-comparison) |
 | כללי RTDB וגבול האמון | העמקה ראשונית | [כללי כיתה והסיכון שבכללים פתוחים](/android/projectSteps/021a.TicTacToeRTDBRooms), [תשתית הענן של CollectCircles](/android/CollectCircles/07.collect-circles-cloud-infrastructure) |
 
 ## רשת, API וענן
