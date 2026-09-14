@@ -91,14 +91,6 @@ Bead second = new Bead("Blue");
 head.SetNextBead(second);
 ```
 
-<div class="mermaid">
-graph LR
-    H["head"] --> A["color: Red"]
-    A -->|"nextBead"| B["color: Blue"]
-    B -->|"nextBead"| N["null"]
-    S["second"] --> B
-</div>
-
 המשתנה `head` מפנה לחרוז הראשון — **ראש השרשרת**. גם `second` וגם הקישור שבחרוז האדום מפנים לאותו חרוז כחול; פעולת הקישור לא יצרה חרוז נוסף.
 
 ```csharp
@@ -144,6 +136,35 @@ while (current != null)
 השרשרת שבנינו היא **רשימה מקושרת**: כל חוליה (`Node`) מחזיקה נתון והפניה לחוליה הבאה. ב־`Bead` הנתון הוא צבע; בחוליה אחרת הוא יכול להיות מספר או אובייקט מורכב.
 
 בניגוד למערך, אין כאן גישה ישירה לחוליה לפי אינדקס: מתחילים מהראש ומתקדמים בקישורים. אחרי שהגענו למקום הרצוי, אפשר להוסיף חוליה או להסיר חוליה באמצעות שינוי הקישורים, בלי להזיז את שאר האיברים.
+
+### דיאגרמה – רשימה מקושרת
+
+<div class="mermaid">
+
+graph LR
+    subgraph A[" "]
+        A1["value: 5"]
+        A2["next"]
+    end
+    subgraph B[" "]
+        B1["value: 7"]
+        B2["next"]
+    end
+    subgraph C[" "]
+        C1["value: 12"]
+        C2["next"]
+    end
+    subgraph D[" "]
+        D1["value: 20"]
+        D2["null"]
+    end
+
+    A2 --> B
+    B2 --> C
+    C2 --> D
+    head -->A
+
+</div>
 
 <details markdown="1">
 <summary>מהי חוליה (NodeInt)?</summary>
