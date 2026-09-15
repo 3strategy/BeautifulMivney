@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android Project Evaluation"
+  short_description: "Compare Android scope, rubric gaps, and teachable code"
+  default_prompt: "Use $android-project-concept-audit to compare these Android projects against an empty baseline and identify rubric gaps, evidence limits, and manageable teaching examples."

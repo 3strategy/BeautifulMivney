@@ -115,8 +115,8 @@ $concepts = @(
         '\bclass\s+\w+.*:\s*(?:\w+\.)*(?:Activity|AppCompatActivity|ComponentActivity)\s*\('
     )),
     (New-Concept -Id 'fragments' -Name 'Fragments' -AnyPatterns @(
-        '\bclass\s+\w+(?:<[^>]+>)?\s+extends\s+(?:\w+\.)*Fragment\b',
-        '\bclass\s+\w+.*:\s*(?:\w+\.)*Fragment\s*\('
+        '\bclass\s+\w+(?:<[^>]+>)?\s+extends\s+(?:\w+\.)*(?:Fragment|DialogFragment|BottomSheetDialogFragment)\b',
+        '\bclass\s+\w+.*:\s*(?:\w+\.)*(?:Fragment|DialogFragment|BottomSheetDialogFragment)\s*\('
     )),
     (New-Concept -Id 'view-binding' -Name 'View Binding' -AnyPatterns @(
         '\.databinding\.[A-Z][A-Za-z0-9]*Binding\b',
@@ -214,8 +214,7 @@ $concepts = @(
     )),
     (New-Concept -Id 'requery' -Name 'Requery ORM' -AnyPatterns @(
         'io\.requery\.',
-        '\bEntityDataStore<',
-        '\bPersistable\b'
+        '\bEntityDataStore<'
     )),
     (New-Concept -Id 'sqlite' -Name 'SQLite data layer' -AnyPatterns @(
         'android\.database\.sqlite\.',
