@@ -14,13 +14,13 @@ module HighlightEquals
     content.each_line do |line|
       if in_liquid_highlight
         out_lines << line
-        in_liquid_highlight = false if line.match?(/\{%\s*endhighlight\s*%\}/)
+        in_liquid_highlight = false if line.match?(/\{%\s*end(?:highlight|code_diff)\s*%\}/)
         next
       end
 
-      if line.match?(/\{%\s*highlight\b/)
+      if line.match?(/\{%\s*(?:highlight|code_diff)\b/)
         out_lines << line
-        in_liquid_highlight = true unless line.match?(/\{%\s*endhighlight\s*%\}/)
+        in_liquid_highlight = true unless line.match?(/\{%\s*end(?:highlight|code_diff)\s*%\}/)
         next
       end
 

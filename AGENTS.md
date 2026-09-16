@@ -392,6 +392,51 @@ main {
 
 ## Tutorial diff presentation convention
 
+### Side-by-side word diffs: default for inline code changes
+
+- Proactively use the shared `{% code_diff %}` / `{% endcode_diff %}` renderer
+  when teaching additions, removals, or replacements of a word, qualifier,
+  operator, or short expression within existing lines. Apply this across lessons,
+  exercises, corrections, and refactoring walkthroughs; it is not specific to
+  Android or View Binding. Do not wait for an explicit request for this format.
+- Prefer it especially when the same small change repeats on several lines,
+  such as adding `binding.` or `Console.`. Show aligned before/after code and
+  highlight only the changed tokens. Avoid whole-line red/green replacement
+  coloring or screenshots as the primary explanation of these small edits.
+- Keep enough unchanged context to identify the method and edit location. Use
+  short, coherent excerpts, with `⁞` on a context line for omitted code.
+  The renderer calculates the word differences; do not hand-mark individual
+  words with HTML or create page-specific diff styling.
+- Use `full-width: true`. Before (`לפני`) stays on the left and after (`אחרי`)
+  on the right, with corresponding lines aligned. This is intentionally a
+  wide-screen view: never stack these panels or wrap code at a narrow breakpoint.
+  Allow horizontal scrolling when space is insufficient. Ordinary two-column
+  content can retain its usual responsive behavior.
+- Author a focused unified-diff excerpt inside the Liquid block: start context
+  lines with one space, removals with `-`, and additions with `+`; preserve code
+  indentation after that prefix. Put the Liquid tags at column zero, outside
+  Markdown fences. Do not include Git headers or `@@` hunk markers.
+- For structural additions/removals where whole-line changes are the lesson,
+  use an ordinary fenced `diff`, or `highlight diff mark_lines` when unchanged
+  context needs emphasis. A request to improve a diff should first trigger this
+  choice between word-level comparison and structural diff, not an automatic
+  switch to whole-line highlighting.
+- After editing, build the site and inspect the wide rendered comparison:
+  verify left/right order, aligned lines, precise word highlights, and copyable
+  source. Keep the shared renderer and styling aligned between BeautifulMivney
+  and BeautifulYesodot. See [docs/code-diff.md](docs/code-diff.md) for the
+  implementation, examples, limitations, and checks.
+
+```liquid
+{% code_diff %}
+ public void onLoginClick(View view) {
+-    String email = eTemail.getText().toString();
++    String email = binding.eTemail.getText().toString();
+     ⁞
+ }
+{% endcode_diff %}
+```
+
 ### Minimal, efficient tutorial transitions
 
 - Treat every chapter as a transformation from the exact runnable state the student already has.
@@ -431,18 +476,16 @@ main {
   Every student-facing edit must exist in the project, every project source edit must be taught,
   and each checkpoint must build and demonstrate the stated behavior.
 
-- For paired `לפני` / `אחרי` comparisons on Hebrew pages, keep the logical Markdown/HTML
+- For ordinary paired `לפני` / `אחרי` content outside `code_diff`, keep the logical Markdown/HTML
   source order as `לפני` first and `אחרי` second. Add the shared `before-after` modifier to
   the container: `<div class="two-columns before-after">`. On wide RTL pages this shows
   `לפני` on the left and `אחרי` on the right without reversing the source; on narrow screens
   the columns stack in logical source order, with `לפני` above `אחרי`.
-- Use an ordinary fenced `diff` block for a simple change when the built-in `+` and `-`
+- Use an ordinary fenced `diff` block for a simple structural change when the built-in `+` and `-`
   coloring communicates everything students need.
-- For a complex diff, or whenever the repository owner asks to **improve**, clarify, or
-  make a diff easier to follow, implicitly switch from a fenced `diff` block to Jekyll's more
-  elaborate Liquid highlighter with `mark_lines`, even if the request does not explicitly
-  name that syntax. This preserves normal diff coloring while allowing important unchanged
-  context lines to be highlighted as well.
+- For a complex structural diff, use Jekyll's Liquid highlighter with `mark_lines`
+  to emphasize important unchanged context as well as the changed lines. For inline
+  word-level edits, use `code_diff` as specified above.
 - In a paired `לפני` / `אחרי` comparison, when unchanged lines are highlighted in the
   `אחרי` diff only to provide orientation, highlight those same logical lines in the `לפני`
   block as well. Matching highlights should act as visual anchors across both columns.
@@ -458,7 +501,8 @@ main {
          {% endhighlight %}
 ```
 
-- Rendering is whitespace-sensitive:
+- Rendering of `highlight diff` blocks is whitespace-sensitive (the `code_diff`
+  tag placement is different, as specified above):
   - `+` and `-` diff markers must be the very first character on their lines; never indent
     those markers.
   - Indent both `{% highlight diff ... %}` and `{% endhighlight %}` with the surrounding
