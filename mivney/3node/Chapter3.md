@@ -2,7 +2,7 @@
 layout: page
 title: "פרק 3 – מחלקת Node⟨T⟩ – רשימות מקושרות"
 subtitle: "משרשרת חרוזים לחוליות כלליות וג'נריקס"
-tags: [Node,Bead, רשימה מקושרת, ג'נריקס,Unit4, חוליות,Generics, רשימת מחרוזות, מבנה נתונים]
+tags: [Node,Bead, רשימה מקושרת, ג'נריקס,Unit4, חוליות,Generics, רשימת מחרוזות, מבנה נתונים, סרטוני שרשרת חוליות]
 mathjax: true
 lang: he
 ---
@@ -319,3 +319,7 @@ graph LR
 ## תרגול וקישורים
 
 [תרגילי שרשרת החרוזים — יצירה, מעבר ושינוי קישורים]({% link cst/3nodeNbead/Ex3a0beads.md %})
+
+## פלייליסט
+
+[סרטוני שרשרת חוליות ב-YouTube](https://www.youtube.com/playlist?list=PLciwThuwUH6o)

@@ -2,7 +2,7 @@
 layout: page 
 title: פרק 4 – מחלקת Stack⟨T⟩
 subtitle: "עבודה עם מחסנית – LIFO, Push ו‑Pop"
-tags: [Stack, מחסנית, Push, Pop, Top, מחסנית גנרית, C#]
+tags: [Stack, מחסנית, Push, Pop, Top, מחסנית גנרית, C#, סרטוני מחסנית]
 mathjax: true
 lang: he
 ---
@@ -148,5 +148,9 @@ graph LR
 ## תרגול וקישורים
 
 תוכלו למצוא תרגילים במערכת ההגשות
+
+## פלייליסט
+
+[סרטוני מחסנית ב-YouTube](https://www.youtube.com/playlist?list=PLLWyvuD48c6A)
 
 

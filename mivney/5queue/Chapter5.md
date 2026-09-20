@@ -2,7 +2,7 @@
 layout: page 
 title: "פרק 5 – מחלקת Queue⟨T⟩"
 subtitle: "תור, FIFO ותור מעגלי"
-tags: [Queue, תור, Insert , Remove, מחלקה גנרית, תור מעגלי]
+tags: [Queue, תור, Insert , Remove, מחלקה גנרית, תור מעגלי, סרטוני תור]
 mathjax: true
 lang: he
 ---
@@ -200,6 +200,10 @@ graph LR
 ## תרגול וקישורים
 
 תוכלו למצוא תרגילים במערכת ההגשות
+
+## פלייליסט
+
+[סרטוני תור ב-YouTube](https://www.youtube.com/playlist?list=PLemK5yN4m3YU)
 
 <details markdown="1">
 <summary>תרגיל</summary>
