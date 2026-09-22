@@ -1,0 +1,38 @@
+{
+  "Connect4Rtdb": {
+    "games": {
+      ".read": "auth != null",
+      "$roomId": {
+        ".write": "auth != null && ((!data.exists() && newData.exists() && newData.child('schemaVersion').val() === 1 && newData.child('playerRed').val() === auth.uid && newData.child('playerYellow').val() === '' && newData.child('moves').val() === '' && newData.child('createdAt').val() === now && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() === '' && data.child('moves').val() === '' && newData.child('playerYellow').val() === auth.uid && auth.uid !== data.child('playerRed').val() && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('moves').val() === data.child('moves').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() !== '' && data.child('playerRed').val() !== data.child('playerYellow').val() && ((data.child('moves').val().length % 2 === 0 && auth.uid === data.child('playerRed').val()) || (data.child('moves').val().length % 2 === 1 && auth.uid === data.child('playerYellow').val())) && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('playerYellow').val() === data.child('playerYellow').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('moves').val().length === data.child('moves').val().length + 1 && newData.child('moves').val().beginsWith(data.child('moves').val()) && newData.child('moves').val().matches(/^[0-6]{1,42}$/) && newData.child('updatedAt').val() === now))",
+        ".validate": "newData.hasChildren(['schemaVersion', 'name', 'playerRed', 'playerYellow', 'moves', 'createdAt', 'updatedAt'])",
+        "schemaVersion": {
+          ".validate": "newData.isNumber() && newData.val() === 1"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 60"
+        },
+        "playerRed": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "playerYellow": {
+          ".validate": "newData.isString() && (newData.val() === '' || (newData.val().length > 0 && newData.val() !== newData.parent().child('playerRed').val()))"
+        },
+        "moves": {
+          ".validate": "newData.isString() && newData.val().matches(/^[0-6]{0,42}$/)"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "updatedAt": {
+          ".validate": "newData.isNumber() && newData.val() >= newData.parent().child('createdAt').val()"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "$other": {
+      ".validate": false
+    }
+  }
+}

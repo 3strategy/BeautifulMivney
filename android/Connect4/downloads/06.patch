@@ -1,0 +1,408 @@
+--- a/app/src/main/java/com/example/connect4/ai/ComputerMoveService.java
++++ b/app/src/main/java/com/example/connect4/ai/ComputerMoveService.java
+@@ -0,0 +1,52 @@
++package com.example.connect4.ai;
++
++import com.example.connect4.core.ComputerPlayer;
++import com.example.connect4.core.GameAction;
++import com.example.connect4.core.GameState;
++import com.example.connect4.core.HeuristicPlayer;
++import java.util.concurrent.CancellationException;
++
++/**
++ * Connects an opponent, asks for one action, and returns the action with its status.
++ * All methods run synchronously on the computer worker, never on the UI thread.
++ * Only the controller may apply the returned action to the live game.
++ */
++public final class ComputerMoveService {
++    private ComputerMoveService() { }
++
++    public static Result chooseHeuristicMove(GameState snapshot) {
++        return new Result(chooseLegalAction(new HeuristicPlayer(), snapshot),
++                "Heuristic · win, block, then center");
++    }
++
++    private static GameAction chooseLegalAction(ComputerPlayer player, GameState snapshot) {
++        throwIfInterrupted();
++        GameAction action = player.chooseAction(snapshot);
++        throwIfInterrupted();
++        if (!snapshot.legalActions().contains(action)) {
++            throw new IllegalStateException("Computer player returned an illegal action");
++        }
++        return action;
++    }
++
++    private static void throwIfInterrupted() {
++        if (Thread.currentThread().isInterrupted()) {
++            throw new CancellationException("Computer move cancelled");
++        }
++    }
++
++    /** One completed calculation; model scores never cross the controller boundary. */
++    public static final class Result {
++        private final GameAction action;
++        private final String status;
++
++        private Result(GameAction action, String status) {
++            this.action = action;
++            this.status = status;
++        }
++
++        public GameAction action() { return action; }
++
++        public String status() { return status; }
++    }
++}
+--- a/app/src/main/java/com/example/connect4/GameSession.java
++++ b/app/src/main/java/com/example/connect4/GameSession.java
+@@ -1,14 +1,91 @@
+ package com.example.connect4;
+ 
++import android.os.Handler;
++import android.os.Looper;
++import androidx.annotation.MainThread;
+ import androidx.lifecycle.ViewModel;
++import com.example.connect4.ai.ComputerMoveService;
+ import com.example.connect4.core.GameEngine;
++import com.example.connect4.core.GameState;
++import java.util.concurrent.ExecutorService;
++import java.util.concurrent.Executors;
++import java.util.concurrent.Future;
++import java.util.function.Consumer;
++import java.util.function.Supplier;
+ 
+-/** Retains the game across Activity recreation, without keeping a View or Activity. */
++/** Survives rotation. Only MainActivity updates the live engine on the main thread. */
+ public final class GameSession extends ViewModel {
+     public static final int MODE_LOCAL = 0;
+     public static final int MODE_HEURISTIC = 1;
++
++    public GameEngine engine = new GameEngine();
+     public int mode = MODE_LOCAL;
+-    public int humanSide = com.example.connect4.core.GameState.RED;
+-    public GameEngine engine = new GameEngine();
++    public int humanSide = GameState.RED;
+     public boolean restored;
++    public String modelStatus = "Heuristic · win, block, then center";
++    private final ExecutorService computerWorker = Executors.newSingleThreadExecutor();
++    private final Handler mainThread = new Handler(Looper.getMainLooper());
++    private Future<?> pendingComputerMove;
++    private long computerRequestId;
++    private boolean computerThinking;
++    private boolean computerMoveFailed;
++
++    @MainThread
++    public boolean isComputerThinking() { return computerThinking; }
++
++    @MainThread
++    public boolean hasComputerMoveFailed() { return computerMoveFailed; }
++
++    /**
++     * Runs one calculation on the worker and delivers its result on the main thread.
++     * Cancelling invalidates even results that have already been posted for delivery.
++     * The callback still checks the position and applies the action through GameEngine.
++     */
++    @MainThread
++    public void requestComputerMove(
++            Supplier<ComputerMoveService.Result> calculation,
++            Consumer<ComputerMoveService.Result> onMoveReady,
++            Consumer<RuntimeException> onFailure) {
++        if (computerThinking) throw new IllegalStateException("A computer move is already pending");
++        long requestId = ++computerRequestId;
++        computerThinking = true;
++        computerMoveFailed = false;
++        pendingComputerMove = computerWorker.submit(() -> {
++            try {
++                ComputerMoveService.Result result = calculation.get();
++                mainThread.post(() -> {
++                    if (!completeComputerMove(requestId)) return;
++                    onMoveReady.accept(result);
++                });
++            } catch (RuntimeException failure) {
++                mainThread.post(() -> {
++                    if (!completeComputerMove(requestId)) return;
++                    computerMoveFailed = true;
++                    onFailure.accept(failure);
++                });
++            }
++        });
++    }
++
++    private boolean completeComputerMove(long requestId) {
++        if (requestId != computerRequestId) return false;
++        computerThinking = false;
++        pendingComputerMove = null;
++        return true;
++    }
++
++    /** Called before restart, configuration changes, leaving the screen, or disposal. */
++    @MainThread
++    public void cancelComputerMove() {
++        computerRequestId++;
++        computerThinking = false;
++        computerMoveFailed = false;
++        if (pendingComputerMove != null) pendingComputerMove.cancel(true);
++        pendingComputerMove = null;
++    }
++
++    @Override protected void onCleared() {
++        cancelComputerMove();
++        computerWorker.shutdownNow();
++    }
+ }
+--- a/app/src/main/java/com/example/connect4/core/HeuristicPlayer.java
++++ b/app/src/main/java/com/example/connect4/core/HeuristicPlayer.java
+@@ -1,7 +1,8 @@
+ package com.example.connect4.core;
+ 
+ import java.util.List;
++import java.util.concurrent.CancellationException;
+ 
+ /** Deterministic fallback: win, block, then take the closest column to center. */
+ public final class HeuristicPlayer implements ComputerPlayer {
+     private static final int[] CENTER_ORDER = {3, 2, 4, 1, 5, 0, 6};
+@@ -13,8 +14,11 @@
+         }
+         List<GameAction> legal = state.legalActions();
+         if (legal.isEmpty()) {
+             throw new IllegalArgumentException("Cannot choose an action without a legal move");
++        }
++        if (Thread.currentThread().isInterrupted()) {
++            throw new CancellationException("Heuristic calculation interrupted");
+         }
+ 
+         GameAction winning = immediateWinningAction(state, state.currentPlayer());
+         if (winning != null) {
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -23,16 +23,22 @@
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/gameSetup" />
+ 
++    <TextView
++        android:id="@+id/aiStatus" android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        app:layout_constraintTop_toBottomOf="@id/status"
++        app:layout_constraintStart_toStartOf="parent" />
++
+     <com.example.connect4.ui.BoardView
+         android:id="@+id/board"
+         android:layout_width="0dp"
+         android:layout_height="0dp"
+         app:layout_constraintDimensionRatio="7:6"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+-        app:layout_constraintTop_toBottomOf="@id/status" />
++        app:layout_constraintTop_toBottomOf="@id/aiStatus" />
+ 
+     <Button
+         android:id="@+id/restart"
+         android:layout_width="wrap_content"
+--- a/app/src/main/java/com/example/connect4/MainActivity.java
++++ b/app/src/main/java/com/example/connect4/MainActivity.java
+@@ -4,10 +4,9 @@
+ import androidx.lifecycle.ViewModelProvider;
+ import com.example.connect4.core.GameAction;
+ import com.example.connect4.core.GameEngine;
+ import com.example.connect4.core.GameState;
+-import com.example.connect4.core.ComputerPlayer;
+-import com.example.connect4.core.HeuristicPlayer;
++import com.example.connect4.ai.ComputerMoveService;
+ 
+ import com.example.connect4.databinding.ActivityMainBinding;
+ 
+ import androidx.activity.EdgeToEdge;
+@@ -19,8 +18,9 @@
+ public class MainActivity extends AppCompatActivity {
+     private ActivityMainBinding binding;
+     private GameSession session;
+     private GameSetupFragment setup;
++    private boolean started;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -64,15 +64,16 @@
+         render();
+     }
+     /** Resets the game after changing a player or pressing New game. */
+     private void newGame() {
++        session.cancelComputerMove();
+         session.engine = new GameEngine();
+         persist();
+         render();
+     }
+ 
+     private boolean humanTurn() {
+-        return !session.engine.snapshot().isTerminal()
++        return started && !session.isComputerThinking() && !session.engine.snapshot().isTerminal()
+                 && (session.mode == GameSession.MODE_LOCAL
+                 || session.engine.snapshot().currentPlayer() == session.humanSide);
+     }
+ 
+@@ -82,25 +83,49 @@
+         binding.board.show(state);
+         if (state.isDraw()) binding.status.setText("Draw — board full");
+         else if (state.isTerminal()) binding.status.setText(state.winner() == GameState.RED ? "Red wins!" : "Yellow wins!");
+         else binding.status.setText(state.currentPlayer() == GameState.RED ? "Red to play" : "Yellow to play");
+-        if (session.mode == GameSession.MODE_HEURISTIC && !state.isTerminal() && !humanTurn()) {
+-            ComputerPlayer player = new HeuristicPlayer();
+-            GameAction action = player.chooseAction(state);
+-            if (session.engine.apply(action)) { persist(); render(); }
+-        }
++        if (session.isComputerThinking()) binding.status.setText("Computer is thinking…");
++        binding.aiStatus.setText(session.modelStatus);
++        requestComputerMoveIfNeeded();
+     }
+ 
+     /** Saves only accepted column history; the engine reconstructs the rest. */
+     private void persist() {
+         getPreferences(MODE_PRIVATE).edit().putString("moves", session.engine.snapshot().moves())
+                 .putInt("mode", session.mode).putInt("side", session.humanSide).apply();
+     }
+ 
++    @Override protected void onStart() { super.onStart(); started = true; render(); }
++
+     @Override protected void onStop() {
++        started = false;
++        session.cancelComputerMove();
+         persist();
+         super.onStop();
+     }
+ 
+     ActivityMainBinding viewBinding() { return binding; }
+     com.example.connect4.databinding.FragmentGameSetupBinding setupBinding() { return setup.viewBinding(); }
++
++    /** Captures one position; the worker never receives the live engine. */
++    private void requestComputerMoveIfNeeded() {
++        GameState requestedState = session.engine.snapshot();
++        if (!started || session.mode == GameSession.MODE_LOCAL || requestedState.isTerminal()
++                || session.isComputerThinking() || session.hasComputerMoveFailed()
++                || requestedState.currentPlayer() == session.humanSide) return;
++        binding.status.setText("Computer is thinking…");
++        session.requestComputerMove(
++                () -> ComputerMoveService.chooseHeuristicMove(requestedState),
++                result -> applyComputerMove(requestedState, result),
++                failure -> { session.modelStatus = "Computer move failed · " + failure.getMessage(); render(); });
++    }
++
++    /** Accepts only a result for the still-current position, on the main thread. */
++    private void applyComputerMove(GameState requestedState, ComputerMoveService.Result result) {
++        if (!started || !requestedState.equals(session.engine.snapshot())) return;
++        if (!session.engine.apply(result.action())) throw new IllegalStateException("Illegal computer action");
++        session.modelStatus = result.status();
++        persist();
++        render();
++    }
+ }
+--- a/app/src/androidTest/java/com/example/connect4/ComputerMoveLifecycleTest.java
++++ b/app/src/androidTest/java/com/example/connect4/ComputerMoveLifecycleTest.java
+@@ -0,0 +1,107 @@
++package com.example.connect4;
++
++import static org.junit.Assert.assertFalse;
++import static org.junit.Assert.assertTrue;
++
++import android.os.Looper;
++import androidx.test.ext.junit.runners.AndroidJUnit4;
++import androidx.test.platform.app.InstrumentationRegistry;
++import com.example.connect4.ai.ComputerMoveService;
++import com.example.connect4.core.GameEngine;
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.TimeUnit;
++import java.util.concurrent.atomic.AtomicBoolean;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++/** Exercises real worker/main-thread delivery, including workers that ignore cancellation. */
++@RunWith(AndroidJUnit4.class)
++public class ComputerMoveLifecycleTest {
++    @Test public void cancelledResultCannotReachTheNextTurn() throws Exception {
++        verifyCancelledCompletion(false);
++    }
++
++    @Test public void cancelledFailureCannotFailTheNextTurn() throws Exception {
++        verifyCancelledCompletion(true);
++    }
++
++    @Test public void activeFailureClearsBusyStateAndCanBeReset() throws Exception {
++        GameSession session = new GameSession();
++        CountDownLatch failureDelivered = new CountDownLatch(1);
++        AtomicBoolean moveDelivered = new AtomicBoolean();
++        try {
++            onMain(() -> session.requestComputerMove(() -> {
++                throw new IllegalStateException("Test calculation failed");
++            }, result -> moveDelivered.set(true), failure -> failureDelivered.countDown()));
++            assertTrue(failureDelivered.await(5, TimeUnit.SECONDS));
++            assertFalse(moveDelivered.get());
++            onMain(() -> {
++                assertFalse(session.isComputerThinking());
++                assertTrue(session.hasComputerMoveFailed());
++                session.cancelComputerMove();
++                assertFalse(session.hasComputerMoveFailed());
++            });
++        } finally {
++            onMain(session::onCleared);
++        }
++    }
++
++    private void verifyCancelledCompletion(boolean failOldRequest) throws Exception {
++        GameSession session = new GameSession();
++        CountDownLatch oldStarted = new CountDownLatch(1);
++        CountDownLatch releaseOld = new CountDownLatch(1);
++        CountDownLatch currentDelivered = new CountDownLatch(1);
++        AtomicBoolean oldDelivered = new AtomicBoolean();
++        AtomicBoolean newFailed = new AtomicBoolean();
++        AtomicBoolean calculationOffMain = new AtomicBoolean();
++        AtomicBoolean deliveryOnMain = new AtomicBoolean();
++        try {
++            onMain(() -> session.requestComputerMove(() -> {
++                oldStarted.countDown();
++                // Simulate native inference that finishes despite Future.cancel(true).
++                boolean released = false;
++                while (!released) {
++                    try {
++                        released = releaseOld.await(5, TimeUnit.SECONDS);
++                        if (!released) throw new IllegalStateException("Test worker timed out");
++                    } catch (InterruptedException ignored) {
++                        // Deliberately continue, so the request ID must reject this completion.
++                    }
++                }
++                if (failOldRequest) throw new IllegalStateException("Obsolete model failed");
++                return ComputerMoveService.chooseHeuristicMove(new GameEngine().snapshot());
++            }, result -> oldDelivered.set(true), failure -> oldDelivered.set(true)));
++            assertTrue(oldStarted.await(5, TimeUnit.SECONDS));
++            onMain(() -> {
++                session.cancelComputerMove();
++                session.requestComputerMove(() -> {
++                    calculationOffMain.set(Looper.myLooper() != Looper.getMainLooper());
++                    return ComputerMoveService.chooseHeuristicMove(new GameEngine().snapshot());
++                }, result -> {
++                    deliveryOnMain.set(Looper.myLooper() == Looper.getMainLooper());
++                    currentDelivered.countDown();
++                }, failure -> {
++                    newFailed.set(true);
++                    currentDelivered.countDown();
++                });
++            });
++            releaseOld.countDown();
++            assertTrue(currentDelivered.await(5, TimeUnit.SECONDS));
++            assertFalse(oldDelivered.get());
++            assertFalse(newFailed.get());
++            assertTrue(calculationOffMain.get());
++            assertTrue(deliveryOnMain.get());
++            onMain(() -> {
++                assertFalse(session.isComputerThinking());
++                assertFalse(session.hasComputerMoveFailed());
++            });
++        } finally {
++            releaseOld.countDown();
++            onMain(session::onCleared);
++        }
++    }
++
++    private static void onMain(Runnable action) {
++        InstrumentationRegistry.getInstrumentation().runOnMainSync(action);
++    }
++}

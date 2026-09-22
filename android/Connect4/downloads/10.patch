@@ -1,0 +1,3157 @@
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -45,8 +45,9 @@
+     implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+     implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+     implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
+     implementation("com.google.firebase:firebase-auth")
++    implementation("com.google.firebase:firebase-database")
+     implementation("com.google.ai.edge.litert:litert:2.1.0")
+     implementation("androidx.lifecycle:lifecycle-viewmodel:2.10.0")
+     implementation(libs.activity.ktx)
+     implementation(libs.appcompat)
+--- a/app/src/main/java/com/example/connect4/multiplayer/FirebaseRefs.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/FirebaseRefs.java
+@@ -0,0 +1,30 @@
++package com.example.connect4.multiplayer;
++
++import com.google.firebase.database.DatabaseReference;
++import com.google.firebase.database.FirebaseDatabase;
++
++/** Centralized, game-scoped Firebase locations. */
++public final class FirebaseRefs {
++    public static final String DATABASE_URL =
++            "https://guysfbfinal-default-rtdb.firebaseio.com";
++    public static final String GAME_ROOT = "Connect4Rtdb";
++    public static final String GAMES_CHILD = "games";
++
++    private FirebaseRefs() {
++    }
++
++    /** Returns the configured shared database, rather than Firebase's default URL. */
++    public static FirebaseDatabase database() {
++        return FirebaseDatabase.getInstance(DATABASE_URL);
++    }
++
++    /** Returns this game's isolated room collection under the shared database. */
++    public static DatabaseReference games(FirebaseDatabase database) {
++        return database.getReference(GAME_ROOT).child(GAMES_CHILD);
++    }
++
++    /** Returns Firebase's read-only connection-status location. */
++    public static DatabaseReference connection(FirebaseDatabase database) {
++        return database.getReference(".info/connected");
++    }
++}
+--- a/app/src/main/java/com/example/connect4/multiplayer/RoomData.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/RoomData.java
+@@ -0,0 +1,83 @@
++package com.example.connect4.multiplayer;
++
++/** Firebase representation of one Connect Four room. */
++public class RoomData {
++    private int schemaVersion;
++    private String name;
++    private String playerRed;
++    private String playerYellow;
++    private String moves;
++    private long createdAt;
++    private long updatedAt;
++
++    /** Required by Firebase's object mapper. */
++    public RoomData() {
++    }
++
++    public RoomData(int schemaVersion, String name, String playerRed,
++                    String playerYellow, String moves, long createdAt, long updatedAt) {
++        this.schemaVersion = schemaVersion;
++        this.name = name;
++        this.playerRed = playerRed;
++        this.playerYellow = playerYellow;
++        this.moves = moves;
++        this.createdAt = createdAt;
++        this.updatedAt = updatedAt;
++    }
++
++    public int getSchemaVersion() {
++        return schemaVersion;
++    }
++
++    public void setSchemaVersion(int schemaVersion) {
++        this.schemaVersion = schemaVersion;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    public String getPlayerRed() {
++        return playerRed;
++    }
++
++    public void setPlayerRed(String playerRed) {
++        this.playerRed = playerRed;
++    }
++
++    public String getPlayerYellow() {
++        return playerYellow;
++    }
++
++    public void setPlayerYellow(String playerYellow) {
++        this.playerYellow = playerYellow;
++    }
++
++    public String getMoves() {
++        return moves;
++    }
++
++    public void setMoves(String moves) {
++        this.moves = moves;
++    }
++
++    public long getCreatedAt() {
++        return createdAt;
++    }
++
++    public void setCreatedAt(long createdAt) {
++        this.createdAt = createdAt;
++    }
++
++    public long getUpdatedAt() {
++        return updatedAt;
++    }
++
++    public void setUpdatedAt(long updatedAt) {
++        this.updatedAt = updatedAt;
++    }
++}
+--- a/app/src/main/java/com/example/connect4/multiplayer/RoomRole.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/RoomRole.java
+@@ -0,0 +1,8 @@
++package com.example.connect4.multiplayer;
++
++/** The signed-in user's relationship to a room. */
++public enum RoomRole {
++    RED,
++    YELLOW,
++    SPECTATOR
++}
+--- a/app/src/main/java/com/example/connect4/multiplayer/RoomStatus.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/RoomStatus.java
+@@ -0,0 +1,8 @@
++package com.example.connect4.multiplayer;
++
++/** Status derived from seats and replayed game state. */
++public enum RoomStatus {
++    WAITING,
++    PLAYING,
++    FINISHED
++}
+--- a/app/src/main/java/com/example/connect4/multiplayer/RoomValidation.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/RoomValidation.java
+@@ -0,0 +1,111 @@
++package com.example.connect4.multiplayer;
++
++import com.example.connect4.core.GameAction;
++import com.example.connect4.core.GameEngine;
++import com.example.connect4.core.GameState;
++
++/** Strict validation and deterministic replay for Firebase room data. */
++public final class RoomValidation {
++    public static final int SCHEMA_VERSION = 1;
++    public static final int MAX_NAME_LENGTH = 60;
++    public static final int MAX_MOVES = 42;
++
++    private RoomValidation() {
++    }
++
++    /** Replays persisted moves and returns either a derived status or a safe validation error. */
++    public static Result validate(RoomData room) {
++        if (room == null) {
++            return Result.invalid("Room data is missing");
++        }
++        if (room.getSchemaVersion() != SCHEMA_VERSION) {
++            return Result.invalid("Unsupported room schema");
++        }
++
++        String name = room.getName();
++        if (name == null || name.isEmpty() || name.length() > MAX_NAME_LENGTH
++                || !name.equals(name.trim())) {
++            return Result.invalid("Room name must be trimmed and contain 1-60 characters");
++        }
++
++        String red = room.getPlayerRed();
++        String yellow = room.getPlayerYellow();
++        String moves = room.getMoves();
++        if (red == null || red.isEmpty()) {
++            return Result.invalid("Room has no Red player");
++        }
++        if (yellow == null) {
++            return Result.invalid("Room has no Yellow seat field");
++        }
++        if (!yellow.isEmpty() && yellow.equals(red)) {
++            return Result.invalid("Red and Yellow must be different users");
++        }
++        if (moves == null || moves.length() > MAX_MOVES || !moves.matches("[0-6]*")) {
++            return Result.invalid("Move history must contain at most 42 columns from 0 to 6");
++        }
++        if (yellow.isEmpty() && !moves.isEmpty()) {
++            return Result.invalid("A waiting room cannot contain moves");
++        }
++        if (room.getCreatedAt() <= 0 || room.getUpdatedAt() < room.getCreatedAt()) {
++            return Result.invalid("Room timestamps are missing or out of order");
++        }
++
++        GameEngine engine = new GameEngine();
++        for (int index = 0; index < moves.length(); index++) {
++            int column = moves.charAt(index) - '0';
++            if (!engine.apply(new GameAction(column))) {
++                return Result.invalid("Move history is illegal at move " + (index + 1));
++            }
++        }
++
++        GameState state = engine.snapshot();
++        RoomStatus status;
++        if (yellow.isEmpty()) {
++            status = RoomStatus.WAITING;
++        } else if (state.isTerminal()) {
++            status = RoomStatus.FINISHED;
++        } else {
++            status = RoomStatus.PLAYING;
++        }
++        return Result.valid(state, status);
++    }
++
++    /** Immutable result of validating a Firebase room payload. */
++    public static final class Result {
++        private final GameState state;
++        private final RoomStatus status;
++        private final String error;
++
++        private Result(GameState state, RoomStatus status, String error) {
++            this.state = state;
++            this.status = status;
++            this.error = error;
++        }
++
++        private static Result valid(GameState state, RoomStatus status) {
++            return new Result(state, status, null);
++        }
++
++        private static Result invalid(String error) {
++            return new Result(null, null, error);
++        }
++
++        /** Reports whether all schema, seat, timestamp, and replay checks passed. */
++        public boolean isValid() {
++            return error == null;
++        }
++
++        /** Returns the replayed state, or {@code null} when validation failed. */
++        public GameState getState() {
++            return state;
++        }
++
++        public RoomStatus getStatus() {
++            return status;
++        }
++
++        public String getError() {
++            return error;
++        }
++    }
++}
+--- a/app/src/main/java/com/example/connect4/multiplayer/RoomSnapshot.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/RoomSnapshot.java
+@@ -0,0 +1,42 @@
++package com.example.connect4.multiplayer;
++
++import com.example.connect4.core.GameState;
++
++/** A validated room plus its locally replayed game snapshot. */
++public final class RoomSnapshot {
++    private final String roomId;
++    private final RoomData room;
++    private final GameState gameState;
++    private final RoomRole role;
++    private final RoomStatus status;
++
++    RoomSnapshot(String roomId, RoomData room, GameState gameState,
++                 RoomRole role, RoomStatus status) {
++        this.roomId = roomId;
++        this.room = room;
++        this.gameState = gameState;
++        this.role = role;
++        this.status = status;
++    }
++
++    public String getRoomId() {
++        return roomId;
++    }
++
++    public RoomData getRoom() {
++        return room;
++    }
++
++    public GameState getGameState() {
++        return gameState;
++    }
++
++    public RoomRole getRole() {
++        return role;
++    }
++
++    public RoomStatus getStatus() {
++        return status;
++    }
++
++}
+--- a/app/src/main/java/com/example/connect4/multiplayer/RoomSummary.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/RoomSummary.java
+@@ -0,0 +1,36 @@
++package com.example.connect4.multiplayer;
++
++/** One stable-key lobby entry. Invalid rooms remain visible as errors. */
++public final class RoomSummary {
++    private final String roomId;
++    private final String name;
++    private final RoomStatus status;
++    private final String error;
++
++    RoomSummary(String roomId, String name, RoomStatus status, String error) {
++        this.roomId = roomId;
++        this.name = name;
++        this.status = status;
++        this.error = error;
++    }
++
++    public String getRoomId() {
++        return roomId;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public RoomStatus getStatus() {
++        return status;
++    }
++
++    public String getError() {
++        return error;
++    }
++
++    public boolean isValid() {
++        return error == null;
++    }
++}
+--- a/app/src/main/java/com/example/connect4/multiplayer/RepositoryError.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/RepositoryError.java
+@@ -1,15 +1,39 @@
+ package com.example.connect4.multiplayer;
+ 
+-/** Carries a recoverable operation error to the screen. */
++/** Stable error shape for UI recovery without exposing Firebase callbacks. */
+ public final class RepositoryError {
+-    public enum Code { INVALID_ARGUMENT, UNKNOWN }
++    public enum Code {
++        AUTH_REQUIRED,
++        BUSY,
++        INVALID_ARGUMENT,
++        INVALID_ROOM,
++        MISSING_ROOM,
++        CONFLICT,
++        PERMISSION_DENIED,
++        CANCELLED,
++        NETWORK,
++        UNKNOWN
++    }
++
+     private final Code code;
+     private final String message;
+     private final String roomId;
++
+     RepositoryError(Code code, String message, String roomId) {
+-        this.code=code; this.message=message; this.roomId=roomId;
++        this.code = code;
++        this.message = message;
++        this.roomId = roomId;
+     }
+-    public Code getCode() { return code; }
+-    public String getMessage() { return message; }
+-    public String getRoomId() { return roomId; }
++
++    public Code getCode() {
++        return code;
++    }
++
++    public String getMessage() {
++        return message;
++    }
++
++    public String getRoomId() {
++        return roomId;
++    }
+ }
+--- a/app/src/main/java/com/example/connect4/multiplayer/MultiplayerRepository.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/MultiplayerRepository.java
+@@ -1,16 +1,50 @@
+ package com.example.connect4.multiplayer;
++
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.auth.GoogleAuthProvider;
+-
+-/** Owns Firebase authentication and closes its listeners explicitly. */
++import com.google.firebase.database.DataSnapshot;
++import com.google.firebase.database.DatabaseError;
++import com.google.firebase.database.DatabaseException;
++import com.google.firebase.database.DatabaseReference;
++import com.google.firebase.database.FirebaseDatabase;
++import com.google.firebase.database.MutableData;
++import com.google.firebase.database.ServerValue;
++import com.google.firebase.database.Transaction;
++import com.google.firebase.database.ValueEventListener;
++
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.LinkedHashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.concurrent.atomic.AtomicReference;
++
++/**
++ * Owns Firebase authentication, scoped room references, subscriptions and atomic writes.
++ * The controller remains the only owner of a live game; this class only publishes replayed
++ * snapshots produced by the pure Java engine.
++ */
+ public final class MultiplayerRepository {
+     private final FirebaseAuth auth;
+-    /** Uses the app registered by the teacher. */
+-    public MultiplayerRepository() { this(FirebaseAuth.getInstance()); }
+-    /** Allows isolated Auth emulator instances in tests. */
+-    public MultiplayerRepository(FirebaseAuth auth) { this.auth=auth; }
++    private final FirebaseDatabase database;
++    private final DatabaseReference gamesReference;
++
++    private String pendingCreateRoomId;
++    private String pendingJoinRoomId;
++
++    /** Creates a repository backed by the configured production Firebase instances. */
++    public MultiplayerRepository() {
++        this(FirebaseAuth.getInstance(), FirebaseRefs.database());
++    }
++
++    /** Allows debug builds and tests to inject Firebase instances configured for emulators. */
++    public MultiplayerRepository(FirebaseAuth auth, FirebaseDatabase database) {
++        this.auth = auth;
++        this.database = database;
++        this.gamesReference = FirebaseRefs.games(database);
++    }
+ 
+     /** Returns the authenticated Firebase user's UID, or {@code null} when signed out. */
+     public String currentUid() {
+         FirebaseUser user = auth.getCurrentUser();
+@@ -36,8 +70,20 @@
+                     "Email and password are required", null));
+             return;
+         }
+         auth.createUserWithEmailAndPassword(email.trim(), password)
++                .addOnSuccessListener(result -> callback.onSuccess(result.getUser().getUid()))
++                .addOnFailureListener(exception -> callback.onError(firebaseError(exception, null)));
++    }
++
++    /** Exchanges a Google ID token obtained by the Android credential UI for Firebase Auth. */
++    public void signInWithGoogle(String idToken, ResultCallback<String> callback) {
++        if (idToken == null || idToken.trim().isEmpty()) {
++            callback.onError(error(RepositoryError.Code.INVALID_ARGUMENT,
++                    "Google sign-in returned no ID token", null));
++            return;
++        }
++        auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken.trim(), null))
+                 .addOnSuccessListener(result -> callback.onSuccess(result.getUser().getUid()))
+                 .addOnFailureListener(exception -> callback.onError(firebaseError(exception, null)));
+     }
+ 
+@@ -55,8 +101,412 @@
+         auth.addAuthStateListener(firebaseListener);
+         return once(() -> auth.removeAuthStateListener(firebaseListener));
+     }
+ 
++
++    /** Subscribes to the lobby's validated room summaries. */
++    public Subscription subscribeLobby(LobbyListener listener) {
++        if (currentUid() == null) {
++            listener.onError(error(RepositoryError.Code.AUTH_REQUIRED,
++                    "Sign in to view online rooms", null));
++            return Subscription.EMPTY;
++        }
++
++        ValueEventListener firebaseListener = new ValueEventListener() {
++            @Override
++            public void onDataChange(DataSnapshot snapshot) {
++                List<RoomSummary> rooms = new ArrayList<>();
++                for (DataSnapshot roomSnapshot : snapshot.getChildren()) {
++                    String roomId = roomSnapshot.getKey();
++                    ParsedRoom parsed = parseRoom(roomSnapshot);
++                    if (parsed.error != null) {
++                        String name = parsed.room == null || parsed.room.getName() == null
++                                ? "Invalid room" : parsed.room.getName();
++                        rooms.add(new RoomSummary(roomId, name, null, parsed.error));
++                    } else {
++                        rooms.add(new RoomSummary(roomId, parsed.room.getName(),
++                                parsed.validation.getStatus(), null));
++                    }
++                }
++                listener.onRooms(Collections.unmodifiableList(rooms));
++            }
++
++            @Override
++            public void onCancelled(DatabaseError databaseError) {
++                listener.onError(databaseError(databaseError, null));
++            }
++        };
++        gamesReference.addValueEventListener(firebaseListener);
++        return once(() -> gamesReference.removeEventListener(firebaseListener));
++    }
++
++    /** Subscribes to one room after validating its data and replaying its move history. */
++    public Subscription subscribeRoom(String roomId, RoomListener listener) {
++        if (!validRoomId(roomId)) {
++            listener.onError(error(RepositoryError.Code.INVALID_ARGUMENT,
++                    "Room ID is missing or invalid", roomId));
++            return Subscription.EMPTY;
++        }
++        String uid = currentUid();
++        if (uid == null) {
++            listener.onError(error(RepositoryError.Code.AUTH_REQUIRED,
++                    "Sign in to open an online room", roomId));
++            return Subscription.EMPTY;
++        }
++
++        DatabaseReference roomReference = gamesReference.child(roomId);
++        ValueEventListener firebaseListener = new ValueEventListener() {
++            @Override
++            public void onDataChange(DataSnapshot snapshot) {
++                if (!snapshot.exists()) {
++                    listener.onError(error(RepositoryError.Code.MISSING_ROOM,
++                            "This room no longer exists", roomId));
++                    return;
++                }
++                ParsedRoom parsed = parseRoom(snapshot);
++                if (parsed.error != null) {
++                    listener.onError(error(RepositoryError.Code.INVALID_ROOM,
++                            parsed.error, roomId));
++                    return;
++                }
++                RoomRole role = roleFor(parsed.room, uid);
++                listener.onRoom(new RoomSnapshot(roomId, parsed.room,
++                        parsed.validation.getState(), role, parsed.validation.getStatus()));
++            }
++
++            @Override
++            public void onCancelled(DatabaseError databaseError) {
++                listener.onError(databaseError(databaseError, roomId));
++            }
++        };
++        roomReference.addValueEventListener(firebaseListener);
++        return once(() -> roomReference.removeEventListener(firebaseListener));
++    }
++
++    /** Performs a one-shot server read used to gate input after reconnecting. */
++    public void getRoom(String roomId, ResultCallback<RoomSnapshot> callback) {
++        if (!validRoomId(roomId)) {
++            callback.onError(error(RepositoryError.Code.INVALID_ARGUMENT,
++                    "Room ID is missing or invalid", roomId));
++            return;
++        }
++        String uid = currentUid();
++        if (uid == null) {
++            callback.onError(error(RepositoryError.Code.AUTH_REQUIRED,
++                    "Sign in to open an online room", roomId));
++            return;
++        }
++        gamesReference.child(roomId).get().addOnCompleteListener(task -> {
++            if (!task.isSuccessful()) {
++                callback.onError(firebaseError(task.getException(), roomId));
++                return;
++            }
++            DataSnapshot snapshot = task.getResult();
++            if (!snapshot.exists()) {
++                callback.onError(error(RepositoryError.Code.MISSING_ROOM,
++                        "This room no longer exists", roomId));
++                return;
++            }
++            ParsedRoom parsed = parseRoom(snapshot);
++            if (parsed.error != null) {
++                callback.onError(error(RepositoryError.Code.INVALID_ROOM,
++                        parsed.error, roomId));
++                return;
++            }
++            callback.onSuccess(new RoomSnapshot(roomId, parsed.room,
++                    parsed.validation.getState(), roleFor(parsed.room, uid),
++                    parsed.validation.getStatus()));
++        });
++    }
++
++    /** Creates a Red-owned waiting room with a server-assigned identifier. */
++    public void createRoom(String rawName, ResultCallback<String> callback) {
++        String uid = currentUid();
++        if (uid == null) {
++            callback.onError(error(RepositoryError.Code.AUTH_REQUIRED,
++                    "Sign in before creating a room", null));
++            return;
++        }
++        String name = rawName == null ? "" : rawName.trim();
++        if (name.isEmpty() || name.length() > RoomValidation.MAX_NAME_LENGTH) {
++            callback.onError(error(RepositoryError.Code.INVALID_ARGUMENT,
++                    "Room name must contain 1-60 characters", null));
++            return;
++        }
++
++        DatabaseReference newRoomReference;
++        synchronized (this) {
++            if (pendingCreateRoomId != null) {
++                callback.onError(error(RepositoryError.Code.BUSY,
++                        "A room creation is already pending", pendingCreateRoomId));
++                return;
++            }
++            newRoomReference = gamesReference.push();
++            pendingCreateRoomId = newRoomReference.getKey();
++        }
++
++        String roomId = newRoomReference.getKey();
++        Map<String, Object> room = new LinkedHashMap<>();
++        room.put("schemaVersion", RoomValidation.SCHEMA_VERSION);
++        room.put("name", name);
++        room.put("playerRed", uid);
++        room.put("playerYellow", "");
++        room.put("moves", "");
++        room.put("createdAt", ServerValue.TIMESTAMP);
++        room.put("updatedAt", ServerValue.TIMESTAMP);
++
++        newRoomReference.setValue(room).addOnCompleteListener(task -> {
++            clearPendingCreate(roomId);
++            if (task.isSuccessful()) {
++                callback.onSuccess(roomId);
++            } else {
++                callback.onError(firebaseError(task.getException(), roomId));
++            }
++        });
++    }
++
++    /** Claims Yellow atomically, or returns the caller's existing/spectator role. */
++    public void joinRoom(String roomId, ResultCallback<RoomRole> callback) {
++        String uid = currentUid();
++        if (uid == null) {
++            callback.onError(error(RepositoryError.Code.AUTH_REQUIRED,
++                    "Sign in before joining a room", roomId));
++            return;
++        }
++        if (!validRoomId(roomId)) {
++            callback.onError(error(RepositoryError.Code.INVALID_ARGUMENT,
++                    "Room ID is missing or invalid", roomId));
++            return;
++        }
++        synchronized (this) {
++            if (pendingJoinRoomId != null) {
++                callback.onError(error(RepositoryError.Code.BUSY,
++                        "A room join is already pending", pendingJoinRoomId));
++                return;
++            }
++            pendingJoinRoomId = roomId;
++        }
++
++        DatabaseReference roomReference = gamesReference.child(roomId);
++        roomReference.get().addOnCompleteListener(readTask -> {
++            if (!readTask.isSuccessful()) {
++                clearPendingJoin(roomId);
++                callback.onError(firebaseError(readTask.getException(), roomId));
++                return;
++            }
++            if (!readTask.getResult().exists()) {
++                clearPendingJoin(roomId);
++                callback.onError(error(RepositoryError.Code.MISSING_ROOM,
++                        "This room no longer exists", roomId));
++                return;
++            }
++            ParsedRoom baseline = parseRoom(readTask.getResult());
++            if (baseline.error != null) {
++                clearPendingJoin(roomId);
++                callback.onError(error(RepositoryError.Code.INVALID_ROOM,
++                        baseline.error, roomId));
++                return;
++            }
++            RoomRole existingRole = roleFor(baseline.room, uid);
++            if (existingRole != RoomRole.SPECTATOR
++                    || !baseline.room.getPlayerYellow().isEmpty()) {
++                clearPendingJoin(roomId);
++                callback.onSuccess(existingRole);
++                return;
++            }
++            runJoinTransaction(roomReference, roomId, uid, baseline.room, callback);
++        });
++    }
++
++    private void runJoinTransaction(DatabaseReference roomReference, String roomId, String uid,
++                                    RoomData baseline,
++                                    ResultCallback<RoomRole> callback) {
++        AtomicReference<String> rejection = new AtomicReference<>("Room changed while joining");
++        AtomicReference<RoomRole> resolvedRole = new AtomicReference<>();
++        roomReference.runTransaction(new Transaction.Handler() {
++            @Override
++            public Transaction.Result doTransaction(MutableData currentData) {
++                seedEmptyTransaction(currentData, baseline);
++                MutableRoom parsed = parseMutableRoom(currentData);
++                if (parsed.error != null) {
++                    rejection.set(parsed.error);
++                    return Transaction.abort();
++                }
++                RoomData room = parsed.room;
++                if (uid.equals(room.getPlayerRed())) {
++                    resolvedRole.set(RoomRole.RED);
++                    return Transaction.abort();
++                }
++                if (uid.equals(room.getPlayerYellow())) {
++                    resolvedRole.set(RoomRole.YELLOW);
++                    return Transaction.abort();
++                }
++                if (!room.getPlayerYellow().isEmpty()) {
++                    resolvedRole.set(RoomRole.SPECTATOR);
++                    return Transaction.abort();
++                }
++                if (!room.getMoves().isEmpty()) {
++                    rejection.set("A room cannot be joined after moves have started");
++                    return Transaction.abort();
++                }
++                currentData.child("playerYellow").setValue(uid);
++                currentData.child("updatedAt").setValue(ServerValue.TIMESTAMP);
++                rejection.set(null);
++                return Transaction.success(currentData);
++            }
++
++            @Override
++            public void onComplete(DatabaseError databaseError, boolean committed,
++                                   DataSnapshot snapshot) {
++                clearPendingJoin(roomId);
++                if (databaseError != null) {
++                    callback.onError(databaseError(databaseError, roomId));
++                    return;
++                }
++                if (!committed) {
++                    if (resolvedRole.get() != null) {
++                        callback.onSuccess(resolvedRole.get());
++                        return;
++                    }
++                    callback.onError(error(RepositoryError.Code.CONFLICT,
++                            rejection.get(), roomId));
++                    return;
++                }
++                // Re-read committed data: transaction snapshots can contain estimated timestamps.
++                getRoom(roomId, new ResultCallback<RoomSnapshot>() {
++                    @Override public void onSuccess(RoomSnapshot room) {
++                        callback.onSuccess(room.getRole());
++                    }
++                    @Override public void onError(RepositoryError failure) {
++                        callback.onError(failure);
++                    }
++                });
++            }
++        }, false);
++    }
++
++
++
++    public synchronized String pendingCreateRoomId() {
++        return pendingCreateRoomId;
++    }
++
++    public synchronized String pendingJoinRoomId() {
++        return pendingJoinRoomId;
++    }
++
++
++    private synchronized void clearPendingCreate(String roomId) {
++        if (roomId != null && roomId.equals(pendingCreateRoomId)) {
++            pendingCreateRoomId = null;
++        }
++    }
++
++    private synchronized void clearPendingJoin(String roomId) {
++        if (roomId.equals(pendingJoinRoomId)) {
++            pendingJoinRoomId = null;
++        }
++    }
++
++
++    private static ParsedRoom parseRoom(DataSnapshot snapshot) {
++        RoomData room;
++        try {
++            room = snapshot.getValue(RoomData.class);
++        } catch (DatabaseException exception) {
++            return new ParsedRoom(null, null, "Room fields have invalid types");
++        }
++        if (!hasExactFields(snapshot)) {
++            return new ParsedRoom(room, null, "Room fields are missing or unexpected");
++        }
++        RoomValidation.Result validation = RoomValidation.validate(room);
++        return validation.isValid()
++                ? new ParsedRoom(room, validation, null)
++                : new ParsedRoom(room, validation, validation.getError());
++    }
++
++    private static MutableRoom parseMutableRoom(MutableData data) {
++        if (data == null || data.getValue() == null) {
++            return new MutableRoom(null, null, "Room data is not available");
++        }
++        if (!hasExactFields(data)) {
++            return new MutableRoom(null, null, "Room fields are missing or unexpected");
++        }
++        RoomData room;
++        try {
++            room = data.getValue(RoomData.class);
++        } catch (DatabaseException exception) {
++            return new MutableRoom(null, null, "Room fields have invalid types");
++        }
++        RoomValidation.Result validation = RoomValidation.validate(room);
++        return validation.isValid()
++                ? new MutableRoom(room, validation, null)
++                : new MutableRoom(room, validation, validation.getError());
++    }
++
++    /**
++     * Transactions may make an initial callback with an empty local cache. The prior server read
++     * supplies a candidate for that attempt. Firebase's compare-and-retry protocol replaces it
++     * with current server data before any stale candidate can commit.
++     */
++    private static void seedEmptyTransaction(MutableData data, RoomData baseline) {
++        if (data.getValue() == null) {
++            data.setValue(baseline);
++        }
++    }
++
++    private static boolean hasExactFields(DataSnapshot snapshot) {
++        return snapshot.getChildrenCount() == 7
++                && snapshot.hasChild("schemaVersion")
++                && snapshot.hasChild("name")
++                && snapshot.hasChild("playerRed")
++                && snapshot.hasChild("playerYellow")
++                && snapshot.hasChild("moves")
++                && snapshot.hasChild("createdAt")
++                && snapshot.hasChild("updatedAt");
++    }
++
++    private static boolean hasExactFields(MutableData data) {
++        return data.getChildrenCount() == 7
++                && data.hasChild("schemaVersion")
++                && data.hasChild("name")
++                && data.hasChild("playerRed")
++                && data.hasChild("playerYellow")
++                && data.hasChild("moves")
++                && data.hasChild("createdAt")
++                && data.hasChild("updatedAt");
++    }
++
++    private static RoomRole roleFor(RoomData room, String uid) {
++        if (uid.equals(room.getPlayerRed())) {
++            return RoomRole.RED;
++        }
++        if (uid.equals(room.getPlayerYellow())) {
++            return RoomRole.YELLOW;
++        }
++        return RoomRole.SPECTATOR;
++    }
++
++    private static boolean validRoomId(String roomId) {
++        return roomId != null && !roomId.isEmpty()
++                && roomId.indexOf('/') < 0 && roomId.indexOf('.') < 0
++                && roomId.indexOf('#') < 0 && roomId.indexOf('$') < 0
++                && roomId.indexOf('[') < 0 && roomId.indexOf(']') < 0;
++    }
++
++    private static RepositoryError databaseError(DatabaseError databaseError, String roomId) {
++        RepositoryError.Code code;
++        if (databaseError.getCode() == DatabaseError.PERMISSION_DENIED) {
++            code = RepositoryError.Code.PERMISSION_DENIED;
++        } else if (databaseError.getCode() == DatabaseError.DISCONNECTED
++                || databaseError.getCode() == DatabaseError.NETWORK_ERROR) {
++            code = RepositoryError.Code.NETWORK;
++        } else {
++            code = RepositoryError.Code.CANCELLED;
++        }
++        return error(code, databaseError.getMessage(), roomId);
++    }
++
+     private static RepositoryError firebaseError(Exception exception, String roomId) {
+         String message = exception == null || exception.getLocalizedMessage() == null
+                 ? "Firebase operation failed" : exception.getLocalizedMessage();
+         return error(RepositoryError.Code.UNKNOWN, message, roomId);
+@@ -80,26 +530,57 @@
+             }
+         };
+     }
+ 
++    private static final class ParsedRoom {
++        private final RoomData room;
++        private final RoomValidation.Result validation;
++        private final String error;
++
++        private ParsedRoom(RoomData room, RoomValidation.Result validation, String error) {
++            this.room = room;
++            this.validation = validation;
++            this.error = error;
++        }
++    }
++
++    private static final class MutableRoom {
++        private final RoomData room;
++        private final RoomValidation.Result validation;
++        private final String error;
++
++        private MutableRoom(RoomData room, RoomValidation.Result validation, String error) {
++            this.room = room;
++            this.validation = validation;
++            this.error = error;
++        }
++    }
++
+     public interface Subscription extends AutoCloseable {
+         Subscription EMPTY = () -> { };
+-        @Override void close();
+-    }
++
++        @Override
++        void close();
++    }
++
+     public interface ResultCallback<T> {
+         void onSuccess(T result);
++
+         void onError(RepositoryError error);
+     }
+-    public interface AuthListener { void onAuthChanged(String uid); }
+-
+-    /** Exchanges a Google ID token obtained by the Android credential UI for Firebase Auth. */
+-    public void signInWithGoogle(String idToken, ResultCallback<String> callback) {
+-        if (idToken == null || idToken.trim().isEmpty()) {
+-            callback.onError(error(RepositoryError.Code.INVALID_ARGUMENT,
+-                    "Google sign-in returned no ID token", null));
+-            return;
+-        }
+-        auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken.trim(), null))
+-                .addOnSuccessListener(result -> callback.onSuccess(result.getUser().getUid()))
+-                .addOnFailureListener(exception -> callback.onError(firebaseError(exception, null)));
++
++    public interface AuthListener {
++        void onAuthChanged(String uid);
++    }
++
++    public interface LobbyListener {
++        void onRooms(List<RoomSummary> rooms);
++
++        void onError(RepositoryError error);
++    }
++
++    public interface RoomListener {
++        void onRoom(RoomSnapshot room);
++
++        void onError(RepositoryError error);
+     }
+ }
+--- a/app/src/main/java/com/example/connect4/GameSession.java
++++ b/app/src/main/java/com/example/connect4/GameSession.java
+@@ -3,13 +3,14 @@
+ import android.os.Handler;
+ import android.os.Looper;
+ import androidx.annotation.MainThread;
+ import androidx.lifecycle.ViewModel;
++import com.example.connect4.ai.ModelCatalog;
+ import com.example.connect4.ai.ComputerMoveService;
+-import com.example.connect4.ai.ModelCatalog;
+-import com.example.connect4.multiplayer.MultiplayerRepository;
+ import com.example.connect4.core.GameEngine;
+ import com.example.connect4.core.GameState;
++import com.example.connect4.multiplayer.MultiplayerRepository;
++import com.example.connect4.multiplayer.RoomSnapshot;
+ import java.util.concurrent.ExecutorService;
+ import java.util.concurrent.Executors;
+ import java.util.concurrent.Future;
+ import java.util.function.Consumer;
+@@ -20,22 +21,24 @@
+     public static final int MODE_LOCAL = 0;
+     public static final int MODE_HEURISTIC = 1;
+     public static final int MODE_MODEL = 2;
+     public static final int MODE_ONLINE = 3;
+-    public MultiplayerRepository repository;
+-    public boolean authPending;
+-    public String onlineMessage = "";
+-    public String onlineUid;
+-    public long onlineGeneration;
+-    public long googleRequestGeneration;
+-    public Runnable refreshOnline;
+-    public String selectedModelId = ModelCatalog.DEFAULT_MODEL_ID;
+ 
+     public GameEngine engine = new GameEngine();
+     public int mode = MODE_LOCAL;
+     public int humanSide = GameState.RED;
+     public boolean restored;
+-    public String modelStatus = "Heuristic · win, block, then center";
++    public String modelStatus = "Model loads on the computer’s turn";
++    public String selectedModelId = ModelCatalog.DEFAULT_MODEL_ID;
++    public String roomId;
++    public MultiplayerRepository repository;
++    public RoomSnapshot room;
++    public String onlineMessage = "";
++    public String onlineUid;
++    public long onlineGeneration;
++    public boolean authPending;
++    public long googleRequestGeneration;
++    public Runnable refreshOnline;
+     private final ExecutorService computerWorker = Executors.newSingleThreadExecutor();
+     private final Handler mainThread = new Handler(Looper.getMainLooper());
+     private Future<?> pendingComputerMove;
+     private long computerRequestId;
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -60,8 +60,17 @@
+                 android:hint="Password" android:inputType="textPassword" android:autofillHints="password" android:saveEnabled="false" />
+             <Button android:id="@+id/signIn" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sign in" />
+             <Button android:id="@+id/signUp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Create account" />
+         </LinearLayout>
++        <LinearLayout android:id="@+id/lobbyPanel" android:orientation="vertical"
++            android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone">
++            <EditText android:id="@+id/roomName" android:layout_width="match_parent" android:layout_height="wrap_content"
++                android:hint="Room name" android:maxLength="60" android:inputType="textCapSentences" />
++            <Button android:id="@+id/createRoom" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Create room" />
++            <LinearLayout android:id="@+id/rooms" android:orientation="vertical"
++                android:layout_width="match_parent" android:layout_height="wrap_content" />
++        </LinearLayout>
++        <Button android:id="@+id/backToLobby" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Return to lobby" />
+         <Button android:id="@+id/signOut" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sign out" />
+     </LinearLayout>
+     </LinearLayout>
+ </ScrollView>
+--- a/app/src/main/java/com/example/connect4/OnlineController.java
++++ b/app/src/main/java/com/example/connect4/OnlineController.java
+@@ -1,85 +1,121 @@
+ package com.example.connect4;
+ 
+ import android.view.View;
++import android.widget.Button;
+ import com.example.connect4.databinding.ActivityMainBinding;
+ import com.example.connect4.multiplayer.*;
+-
+-/** Connects the login controls to retained authentication state. */
++import java.util.ArrayList;
++import java.util.List;
++
++/** Screen subscriptions are Activity-owned; pending writes stay in the retained repository. */
+ final class OnlineController {
+-    interface Host { void changed(); }
++    interface Host { void changed(); void received(RoomSnapshot room); }
+     private final ActivityMainBinding ui;
+     private final GameSession session;
+     private final Host host;
+-    private boolean active;
+     private final GoogleSignIn googleSignIn;
+     private boolean pickingGoogle;
+-    private MultiplayerRepository.Subscription auth = MultiplayerRepository.Subscription.EMPTY;
++    private final List<MultiplayerRepository.Subscription> subscriptions = new ArrayList<>();
++    private MultiplayerRepository.Subscription screen = MultiplayerRepository.Subscription.EMPTY;
++    private boolean active;
++    private long screenGeneration;
+     private final Runnable refreshCallback = this::refreshScreen;
+ 
+     OnlineController(android.app.Activity activity, ActivityMainBinding ui, GameSession session, Host host) {
+-        this.ui=ui; this.session=session; this.host=host;
+-        googleSignIn=new GoogleSignIn(activity);
++        this.ui = ui;
++        this.session = session;
++        this.host = host;
++        googleSignIn = new GoogleSignIn(activity);
+         ui.googleSignIn.setOnClickListener(v -> authenticateGoogle());
+         ui.signIn.setOnClickListener(v -> authenticate(false));
+         ui.signUp.setOnClickListener(v -> authenticate(true));
+         ui.signOut.setOnClickListener(v -> {
+             session.onlineGeneration++;
++            session.roomId = null;
++            session.room = null;
+             if (session.repository != null) session.repository.signOut();
+             googleSignIn.clearSession();
+             refreshScreen();
+         });
+-    }
+-
+-    /** Attaches a single auth listener while the online screen is visible. */
++        ui.createRoom.setOnClickListener(v -> createRoom());
++        ui.backToLobby.setOnClickListener(v -> lobby());
++    }
++
+     void start() {
+         if (active || session.mode != GameSession.MODE_ONLINE) return;
+-        active=true;
+-        session.refreshOnline=refreshCallback;
++        active = true;
++        session.refreshOnline = refreshCallback;
+         try {
+-            if (session.repository==null) session.repository=new MultiplayerRepository();
+-            auth=session.repository.subscribeAuth(uid -> {
++            if (session.repository == null) session.repository = new MultiplayerRepository();
++            MultiplayerRepository repo = session.repository;
++            subscriptions.add(repo.subscribeAuth(uid -> {
+                 if (!active) return;
+-                session.onlineUid=uid;
++                if (!java.util.Objects.equals(uid, session.onlineUid)) {
++                    session.onlineGeneration++;
++                    if (session.onlineUid != null) { session.roomId = null; session.room = null; }
++                    session.onlineUid = uid;
++                }
+                 refreshScreen();
+-            });
+-        } catch (IllegalStateException failure) {
+-            session.onlineMessage="Firebase setup unavailable. Add the registered Connect4 google-services.json and rebuild.";
+-        }
+-        refreshScreen();
+-    }
+-
+-    /** Releases Activity-owned callbacks without signing the user out. */
++            }));
++            refreshScreen();
++        } catch (IllegalStateException exception) {
++            session.onlineMessage = "Firebase setup unavailable. Add the registered Connect4 google-services.json and rebuild.";
++            host.changed();
++        }
++    }
++
+     void stop() {
+-        active=false;
+-        auth.close();
+-        if (session.refreshOnline==refreshCallback) session.refreshOnline=null;
+-    }
++        active = false;
++        if (session.refreshOnline == refreshCallback) session.refreshOnline = null;
++        screenGeneration++;
++        screen.close();
++        screen = MultiplayerRepository.Subscription.EMPTY;
++        for (MultiplayerRepository.Subscription subscription : subscriptions) subscription.close();
++        subscriptions.clear();
++    }
++
+     void modeChanged() {
+         session.onlineGeneration++;
+-        if (session.mode==GameSession.MODE_ONLINE) start(); else stop();
+-    }
+-    private void refreshScreen() { if (active) host.changed(); }
+-    private void refreshLatestScreen() { if (session.refreshOnline!=null) session.refreshOnline.run(); }
+-    private void showError(RepositoryError error) { session.onlineMessage=error.getMessage(); }
+-    void destroy() {
+-        if (pickingGoogle) {
+-            session.googleRequestGeneration++;
+-            session.authPending = false;
+-            pickingGoogle = false;
+-        }
+-        googleSignIn.cancel();
+-    }
+-
+-    /** Shows the session's identity and enables only available actions. */
+-    void render() {
+-        boolean signedIn=session.repository!=null && session.repository.currentUid()!=null;
+-        ui.authPanel.setVisibility(signedIn ? View.GONE : View.VISIBLE);
+-        ui.signOut.setVisibility(signedIn ? View.VISIBLE : View.GONE);
+-        ui.signIn.setEnabled(session.repository!=null && !session.authPending);
+-        ui.signUp.setEnabled(session.repository!=null && !session.authPending);
+-        ui.googleSignIn.setEnabled(session.repository!=null && !session.authPending);
+-        ui.onlineStatus.setText(signedIn ? "Signed in: " + session.repository.currentUid() : session.onlineMessage);
++        if (session.mode == GameSession.MODE_ONLINE) start(); else stop();
++    }
++
++    private void refreshScreen() {
++        screen.close();
++        screen = MultiplayerRepository.Subscription.EMPTY;
++        long token = ++screenGeneration;
++        if (!active || session.repository == null || session.repository.currentUid() == null) { host.changed(); return; }
++        if (session.roomId == null) {
++            screen = session.repository.subscribeLobby(new MultiplayerRepository.LobbyListener() {
++                @Override public void onRooms(List<RoomSummary> rooms) {
++                    if (!active || token != screenGeneration) return;
++                    ui.rooms.removeAllViews();
++                    for (RoomSummary room : rooms) {
++                        Button button = new Button(ui.getRoot().getContext());
++                        button.setText(room.getName() + " · " + (room.isValid() ? room.getStatus().toString().toLowerCase(java.util.Locale.ROOT) : "invalid room"));
++                        button.setEnabled(room.isValid() && !pending());
++                        button.setOnClickListener(v -> open(room.getRoomId()));
++                        ui.rooms.addView(button);
++                    }
++                    host.changed();
++                }
++                @Override public void onError(RepositoryError error) { if (token == screenGeneration) showError(error); }
++            });
++        } else {
++            screen = session.repository.subscribeRoom(session.roomId, new MultiplayerRepository.RoomListener() {
++                @Override public void onRoom(RoomSnapshot room) {
++                    if (!active || token != screenGeneration) return;
++                    session.room = room;
++                    host.received(room);
++                }
++                @Override public void onError(RepositoryError error) { if (token == screenGeneration) showError(error); }
++            });
++        }
++        host.changed();
++    }
++
++    private void refreshLatestScreen() {
++        if (session.refreshOnline != null) session.refreshOnline.run();
+     }
+ 
+     private void authenticate(boolean create) {
+         if (session.repository == null || session.authPending) return;
+@@ -141,5 +177,111 @@
+             }
+         });
+         host.changed();
+     }
++
++    void destroy() {
++        if (pickingGoogle) {
++            session.googleRequestGeneration++;
++            session.authPending = false;
++            pickingGoogle = false;
++        }
++        googleSignIn.cancel();
++    }
++
++    void createRoom() {
++        if (pending() || session.repository == null) return;
++        long token = session.onlineGeneration;
++        session.onlineMessage = "Creating room…";
++        session.repository.createRoom(ui.roomName.getText().toString(), new MultiplayerRepository.ResultCallback<String>() {
++            @Override public void onSuccess(String roomId) {
++                if (token != session.onlineGeneration) return;
++                session.roomId = roomId;
++                session.room = null;
++                session.onlineMessage = "Room created";
++                refreshLatestScreen();
++            }
++            @Override public void onError(RepositoryError error) {
++                if (token == session.onlineGeneration) { showError(error); refreshLatestScreen(); }
++            }
++        });
++        host.changed();
++    }
++
++    void newRoom() {
++        if (session.room != null && !pending()) {
++            ui.roomName.setText(session.room.getRoom().getName());
++            createRoom();
++        } else {
++            lobby();
++        }
++    }
++
++    private void open(String roomId) {
++        if (pending()) return;
++        session.onlineGeneration++;
++        long token = session.onlineGeneration;
++        session.roomId = roomId;
++        session.room = null;
++        session.onlineMessage = "Opening room…";
++        session.repository.joinRoom(roomId, new MultiplayerRepository.ResultCallback<RoomRole>() {
++            @Override public void onSuccess(RoomRole role) {
++                if (token != session.onlineGeneration) return;
++                session.onlineMessage = "Joined as " + role.toString().toLowerCase(java.util.Locale.ROOT);
++                refreshLatestScreen();
++            }
++            @Override public void onError(RepositoryError error) {
++                if (token != session.onlineGeneration) return;
++                showError(error);
++                refreshLatestScreen();
++            }
++        });
++        refreshScreen();
++    }
++
++    void lobby() {
++        session.onlineGeneration++;
++        session.roomId = null;
++        session.room = null;
++        session.onlineMessage = "Choose a room or create a new one. Previous rooms are preserved.";
++        refreshScreen();
++    }
++
++
++
++    private boolean pending() {
++        MultiplayerRepository repo = session.repository;
++        return repo != null && (repo.pendingCreateRoomId() != null || repo.pendingJoinRoomId() != null);
++    }
++
++    private void showError(RepositoryError error) {
++        session.onlineMessage = error.getMessage();
++        if (active) host.changed();
++    }
++
++    void render() {
++        boolean signedIn = session.repository != null && session.repository.currentUid() != null;
++        boolean inRoom = signedIn && session.roomId != null;
++        ui.authPanel.setVisibility(signedIn ? View.GONE : View.VISIBLE);
++        ui.lobbyPanel.setVisibility(signedIn && !inRoom ? View.VISIBLE : View.GONE);
++        ui.backToLobby.setVisibility(inRoom ? View.VISIBLE : View.GONE);
++        ui.signOut.setVisibility(signedIn ? View.VISIBLE : View.GONE);
++        ui.signIn.setEnabled(session.repository != null && !session.authPending);
++        ui.signUp.setEnabled(session.repository != null && !session.authPending);
++        ui.googleSignIn.setEnabled(session.repository != null && !session.authPending);
++        ui.createRoom.setEnabled(!pending());
++        ui.signOut.setEnabled(!pending() && !session.authPending);
++        for (int i = 0; i < ui.rooms.getChildCount(); i++) {
++            // Invalid rooms are never actionable; each button also guards connection in open().
++            ui.rooms.getChildAt(i).setAlpha(!pending() ? 1f : .5f);
++        }
++        String roomLabel = session.room == null || !inRoom ? "" : session.room.getRoom().getName() + " · "
++                + session.room.getRole().toString().toLowerCase(java.util.Locale.ROOT) + " · "
++                + session.room.getStatus().toString().toLowerCase(java.util.Locale.ROOT) + "\n";
++        ui.onlineStatus.setText(roomLabel + "Room screen"
++                + (pending() ? " · write pending / uncertain" : "") + "\n" + session.onlineMessage);
++        ui.offlineGame.setVisibility(inRoom ? View.VISIBLE : View.GONE);
++        ui.restart.setText("New room");
++        ui.restart.setEnabled(session.room != null && !pending());
++        ui.aiStatus.setText("Online · " + (session.room == null ? "reconciling room" : session.room.getRole().toString().toLowerCase(java.util.Locale.ROOT)));
++    }
+ }
+--- a/app/src/main/java/com/example/connect4/MainActivity.java
++++ b/app/src/main/java/com/example/connect4/MainActivity.java
+@@ -60,8 +60,9 @@
+             session.humanSide = saved.getInt("side", GameState.RED);
+             if (session.humanSide != GameState.RED && session.humanSide != GameState.YELLOW) {
+                 session.humanSide = GameState.RED;
+             }
++            session.roomId = saved.getString("room", null);
+             session.selectedModelId = saved.getString(
+                     "computer_player", modelCatalog.defaultModelId());
+             String moves = saved.getString("moves", "");
+             GameEngine restored = new GameEngine();
+@@ -83,8 +84,13 @@
+                     + " loads on the computer’s turn";
+         }
+         online = new OnlineController(this, binding, session, new OnlineController.Host() {
+             @Override public void changed() { persist(); render(); }
++            @Override public void received(com.example.connect4.multiplayer.RoomSnapshot room) {
++                session.engine = new GameEngine(room.getGameState());
++                persist();
++                render();
++            }
+         });
+         setup.configure(modelCatalog.entries().stream()
+                 .map(ModelCatalog.Entry::displayName).toArray(String[]::new),
+                 session.mode, session.humanSide - 1, selectedModelPosition(),
+@@ -129,8 +135,9 @@
+     }
+ 
+     private void newGame() {
+         session.cancelComputerMove();
++        if (session.mode == GameSession.MODE_ONLINE) { online.newRoom(); return; }
+         session.engine = new GameEngine();
+         persist();
+         render();
+     }
+@@ -226,9 +233,9 @@
+     }
+ 
+     private void persist() {
+         getPreferences(MODE_PRIVATE).edit().putInt("mode", session.mode).putInt("side", session.humanSide)
+-                .putString("moves", session.engine.snapshot().moves())
++                .putString("moves", session.engine.snapshot().moves()).putString("room", session.roomId)
+                 .putString("computer_player", session.selectedModelId).apply();
+     }
+ 
+     private ModelCatalog.Entry selectedModel() {
+--- a/app/src/androidTest/java/com/example/connect4/CourseAuthTest.java
++++ b/app/src/androidTest/java/com/example/connect4/CourseAuthTest.java
+@@ -21,9 +21,11 @@
+                 .setApiKey("fake-key-for-emulator").build(),"course-"+UUID.randomUUID());
+         try {
+             FirebaseAuth auth=FirebaseAuth.getInstance(app);
+             auth.useEmulator("10.0.2.2",9099);
+-            MultiplayerRepository repo=new MultiplayerRepository(auth);
++            com.google.firebase.database.FirebaseDatabase database=com.google.firebase.database.FirebaseDatabase.getInstance(app,"https://demo-connect4-default-rtdb.firebaseio.com");
++            database.useEmulator("10.0.2.2",9000);
++            MultiplayerRepository repo=new MultiplayerRepository(auth,database);
+             String email="course-"+UUID.randomUUID()+"@example.test";
+             String uid=await(cb -> repo.createAccount(email,"course-test-password",cb));
+             assertEquals(uid,repo.currentUid());
+             repo.signOut(); assertNull(repo.currentUid());
+--- a/app/src/androidTest/java/com/example/connect4/multiplayer/MultiplayerRepositoryEmulatorTest.java
++++ b/app/src/androidTest/java/com/example/connect4/multiplayer/MultiplayerRepositoryEmulatorTest.java
+@@ -0,0 +1,179 @@
++package com.example.connect4.multiplayer;
++
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertNotNull;
++import static org.junit.Assert.assertTrue;
++
++import android.content.Context;
++
++import androidx.test.core.app.ApplicationProvider;
++import androidx.test.ext.junit.runners.AndroidJUnit4;
++import androidx.test.platform.app.InstrumentationRegistry;
++
++import com.google.firebase.FirebaseApp;
++import com.google.firebase.FirebaseOptions;
++import com.google.firebase.auth.FirebaseAuth;
++import com.google.firebase.database.FirebaseDatabase;
++
++import org.junit.After;
++import org.junit.Assume;
++import org.junit.Before;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.UUID;
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.TimeUnit;
++import java.util.concurrent.atomic.AtomicReference;
++import java.util.function.Consumer;
++
++@RunWith(AndroidJUnit4.class)
++public class MultiplayerRepositoryEmulatorTest {
++    private static final String HOST = "10.0.2.2";
++    private static final String PASSWORD = "connect4-test-password";
++    private static final String DEMO_DATABASE_URL =
++            "https://demo-connect4-default-rtdb.firebaseio.com";
++    private final List<FirebaseApp> testApps = new ArrayList<>();
++
++    private Client red;
++    private Client yellowCandidate;
++    private Client spectatorCandidate;
++    private Client secondRedSession;
++
++    @Before
++    public void setUp() throws Exception {
++        Assume.assumeTrue("opt-in Firebase emulator test",
++                Boolean.parseBoolean(InstrumentationRegistry.getArguments().getString("firebaseEmulators", "false")));
++        String run = UUID.randomUUID().toString();
++        red = client("red-" + run, "red-" + run + "@example.test");
++        yellowCandidate = client("yellow-" + run, "yellow-" + run + "@example.test");
++        spectatorCandidate = client("spectator-" + run,
++                "spectator-" + run + "@example.test");
++        secondRedSession = client("red2-" + run, red.email);
++
++        MultiplayerRepositoryEmulatorTest.<String>await(
++                callback -> red.repository.createAccount(red.email, PASSWORD, callback));
++        MultiplayerRepositoryEmulatorTest.<String>await(callback -> yellowCandidate.repository.createAccount(
++                yellowCandidate.email, PASSWORD, callback));
++        MultiplayerRepositoryEmulatorTest.<String>await(callback -> spectatorCandidate.repository.createAccount(
++                spectatorCandidate.email, PASSWORD, callback));
++        MultiplayerRepositoryEmulatorTest.<String>await(
++                callback -> secondRedSession.repository.signIn(red.email, PASSWORD, callback));
++    }
++
++    @After
++    public void tearDown() {
++        for (FirebaseApp app : testApps) {
++            app.delete();
++        }
++        testApps.clear();
++    }
++
++    @Test
++    public void concurrentJoinKeepsOneYellowAndOneSpectator() throws Exception {
++        String roomId = await(callback -> red.repository.createRoom(
++                "Repository emulator test", callback));
++        RoomSnapshot waiting = await(callback -> red.repository.getRoom(roomId, callback));
++        assertEquals(RoomStatus.WAITING, waiting.getStatus());
++        assertEquals(RoomRole.RED, waiting.getRole());
++
++        AsyncResult<RoomRole> firstClaim = begin(callback ->
++                yellowCandidate.repository.joinRoom(roomId, callback));
++        AsyncResult<RoomRole> secondClaim = begin(callback ->
++                spectatorCandidate.repository.joinRoom(roomId, callback));
++        RoomRole firstRole = firstClaim.await();
++        RoomRole secondRole = secondClaim.await();
++        assertTrue((firstRole == RoomRole.YELLOW && secondRole == RoomRole.SPECTATOR)
++                || (firstRole == RoomRole.SPECTATOR && secondRole == RoomRole.YELLOW));
++
++        Client yellow = firstRole == RoomRole.YELLOW ? yellowCandidate : spectatorCandidate;
++        Client spectator = firstRole == RoomRole.SPECTATOR
++                ? yellowCandidate : spectatorCandidate;
++        assertEquals(RoomRole.RED,
++                MultiplayerRepositoryEmulatorTest.<RoomRole>await(
++                        callback -> red.repository.joinRoom(roomId, callback)));
++        assertEquals(RoomRole.YELLOW,
++                MultiplayerRepositoryEmulatorTest.<RoomRole>await(
++                        callback -> yellow.repository.joinRoom(roomId, callback)));
++        assertEquals(RoomRole.SPECTATOR,
++                MultiplayerRepositoryEmulatorTest.<RoomRole>await(
++                        callback -> spectator.repository.joinRoom(roomId, callback)));
++
++        assertEquals(RoomStatus.PLAYING, MultiplayerRepositoryEmulatorTest.<RoomSnapshot>await(
++                callback -> spectator.repository.getRoom(roomId,callback)).getStatus());
++    }
++
++    private Client client(String appName, String email) {
++        Context context = ApplicationProvider.getApplicationContext();
++        FirebaseOptions options = new FirebaseOptions.Builder()
++                .setApiKey("fake-api-key")
++                .setApplicationId("1:1234567890:android:connect4test")
++                .setProjectId("demo-connect4")
++                .setDatabaseUrl(DEMO_DATABASE_URL)
++                .build();
++        FirebaseApp app = FirebaseApp.initializeApp(
++                context, options, "connect4-test-" + appName);
++        testApps.add(app);
++        FirebaseAuth auth = FirebaseAuth.getInstance(app);
++        FirebaseDatabase database = FirebaseDatabase.getInstance(app, DEMO_DATABASE_URL);
++        auth.useEmulator(HOST, 9099);
++        database.useEmulator(HOST, 9000);
++        return new Client(email, new MultiplayerRepository(auth, database));
++    }
++
++    private static <T> T await(Consumer<MultiplayerRepository.ResultCallback<T>> operation)
++            throws Exception {
++        return begin(operation).await();
++    }
++
++    private static <T> AsyncResult<T> begin(
++            Consumer<MultiplayerRepository.ResultCallback<T>> operation) {
++        AsyncResult<T> result = new AsyncResult<>();
++        operation.accept(result.callback);
++        return result;
++    }
++
++    private static final class Client {
++        private final String email;
++        private final MultiplayerRepository repository;
++
++        private Client(String email, MultiplayerRepository repository) {
++            this.email = email;
++            this.repository = repository;
++        }
++    }
++
++    private static final class AsyncResult<T> {
++        private final CountDownLatch latch = new CountDownLatch(1);
++        private final AtomicReference<T> value = new AtomicReference<>();
++        private final AtomicReference<RepositoryError> error = new AtomicReference<>();
++        private final MultiplayerRepository.ResultCallback<T> callback =
++                new MultiplayerRepository.ResultCallback<T>() {
++                    @Override
++                    public void onSuccess(T result) {
++                        value.set(result);
++                        latch.countDown();
++                    }
++
++                    @Override
++                    public void onError(RepositoryError failure) {
++                        error.set(failure);
++                        latch.countDown();
++                    }
++                };
++
++        private T await() throws Exception {
++            assertTrue("Firebase callback timed out", latch.await(15, TimeUnit.SECONDS));
++            assertEquals(error.get() == null ? null : error.get().getMessage(), null, error.get());
++            assertNotNull(value.get());
++            return value.get();
++        }
++
++        private int successCount() throws Exception {
++            assertTrue("Firebase callback timed out", latch.await(15, TimeUnit.SECONDS));
++            return error.get() == null && value.get() != null ? 1 : 0;
++        }
++    }
++}
+--- a/app/src/test/java/com/example/connect4/multiplayer/RoomValidationTest.java
++++ b/app/src/test/java/com/example/connect4/multiplayer/RoomValidationTest.java
+@@ -0,0 +1,55 @@
++package com.example.connect4.multiplayer;
++
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertFalse;
++import static org.junit.Assert.assertTrue;
++
++import org.junit.Test;
++
++public class RoomValidationTest {
++    @Test
++    public void waitingRoomReplaysAsEmptyWaitingState() {
++        RoomValidation.Result result = RoomValidation.validate(room("", ""));
++
++        assertTrue(result.isValid());
++        assertEquals(RoomStatus.WAITING, result.getStatus());
++        assertEquals("", result.getState().moves());
++    }
++
++    @Test
++    public void completeWinReplaysAsFinished() {
++        RoomValidation.Result result = RoomValidation.validate(room("yellow", "0101010"));
++
++        assertTrue(result.isValid());
++        assertEquals(RoomStatus.FINISHED, result.getStatus());
++        assertEquals(1, result.getState().winner());
++    }
++
++    @Test
++    public void rejectsMoveAfterWin() {
++        RoomValidation.Result result = RoomValidation.validate(room("yellow", "01010102"));
++
++        assertFalse(result.isValid());
++        assertTrue(result.getError().contains("move 8"));
++    }
++
++    @Test
++    public void rejectsOverfilledColumn() {
++        RoomValidation.Result result = RoomValidation.validate(room("yellow", "0000000"));
++
++        assertFalse(result.isValid());
++        assertTrue(result.getError().contains("move 7"));
++    }
++
++    @Test
++    public void rejectsHistoryBeforeYellowJoins() {
++        RoomValidation.Result result = RoomValidation.validate(room("", "3"));
++
++        assertFalse(result.isValid());
++        assertTrue(result.getError().contains("waiting room"));
++    }
++
++    private static RoomData room(String yellow, String moves) {
++        return new RoomData(1, "Class game", "red", yellow, moves, 1000, 1000);
++    }
++}
+--- a/firebase/.gitignore
++++ b/firebase/.gitignore
+@@ -0,0 +1,2 @@
++node_modules/
++*-debug.log
+--- a/firebase/connect4.rules.fragment.json
++++ b/firebase/connect4.rules.fragment.json
+@@ -0,0 +1,38 @@
++{
++  "Connect4Rtdb": {
++    "games": {
++      ".read": "auth != null",
++      "$roomId": {
++        ".write": "auth != null && ((!data.exists() && newData.exists() && newData.child('schemaVersion').val() === 1 && newData.child('playerRed').val() === auth.uid && newData.child('playerYellow').val() === '' && newData.child('moves').val() === '' && newData.child('createdAt').val() === now && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() === '' && data.child('moves').val() === '' && newData.child('playerYellow').val() === auth.uid && auth.uid !== data.child('playerRed').val() && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('moves').val() === data.child('moves').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('updatedAt').val() === now))",
++        ".validate": "newData.hasChildren(['schemaVersion', 'name', 'playerRed', 'playerYellow', 'moves', 'createdAt', 'updatedAt'])",
++        "schemaVersion": {
++          ".validate": "newData.isNumber() && newData.val() === 1"
++        },
++        "name": {
++          ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 60"
++        },
++        "playerRed": {
++          ".validate": "newData.isString() && newData.val().length > 0"
++        },
++        "playerYellow": {
++          ".validate": "newData.isString() && (newData.val() === '' || (newData.val().length > 0 && newData.val() !== newData.parent().child('playerRed').val()))"
++        },
++        "moves": {
++          ".validate": "newData.isString() && newData.val().matches(/^[0-6]{0,42}$/)"
++        },
++        "createdAt": {
++          ".validate": "newData.isNumber() && newData.val() > 0"
++        },
++        "updatedAt": {
++          ".validate": "newData.isNumber() && newData.val() >= newData.parent().child('createdAt').val()"
++        },
++        "$other": {
++          ".validate": false
++        }
++      }
++    },
++    "$other": {
++      ".validate": false
++    }
++  }
++}
+--- a/firebase/emulator.rules.json
++++ b/firebase/emulator.rules.json
+@@ -0,0 +1,50 @@
++{
++  "rules": {
++    "Users": {
++      "$uid": {
++        ".read": "$uid === auth.uid",
++        ".write": "$uid === auth.uid"
++      }
++    },
++    "$key": {
++      ".read": "$key === 'TicTacToeRtdb' || $key.endsWith('*' + auth.uid)",
++      ".write": "$key === 'TicTacToeRtdb' || $key.endsWith('*' + auth.uid)"
++    },
++    "Connect4Rtdb": {
++      "games": {
++        ".read": "auth != null",
++        "$roomId": {
++          ".write": "auth != null && ((!data.exists() && newData.exists() && newData.child('schemaVersion').val() === 1 && newData.child('playerRed').val() === auth.uid && newData.child('playerYellow').val() === '' && newData.child('moves').val() === '' && newData.child('createdAt').val() === now && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() === '' && data.child('moves').val() === '' && newData.child('playerYellow').val() === auth.uid && auth.uid !== data.child('playerRed').val() && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('moves').val() === data.child('moves').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('updatedAt').val() === now))",
++          ".validate": "newData.hasChildren(['schemaVersion', 'name', 'playerRed', 'playerYellow', 'moves', 'createdAt', 'updatedAt'])",
++          "schemaVersion": {
++            ".validate": "newData.isNumber() && newData.val() === 1"
++          },
++          "name": {
++            ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 60"
++          },
++          "playerRed": {
++            ".validate": "newData.isString() && newData.val().length > 0"
++          },
++          "playerYellow": {
++            ".validate": "newData.isString() && (newData.val() === '' || (newData.val().length > 0 && newData.val() !== newData.parent().child('playerRed').val()))"
++          },
++          "moves": {
++            ".validate": "newData.isString() && newData.val().matches(/^[0-6]{0,42}$/)"
++          },
++          "createdAt": {
++            ".validate": "newData.isNumber() && newData.val() > 0"
++          },
++          "updatedAt": {
++            ".validate": "newData.isNumber() && newData.val() >= newData.parent().child('createdAt').val()"
++          },
++          "$other": {
++            ".validate": false
++          }
++        }
++      },
++      "$other": {
++        ".validate": false
++      }
++    }
++  }
++}
+--- a/firebase/firebase.json
++++ b/firebase/firebase.json
+@@ -0,0 +1,17 @@
++{
++  "database": {
++    "rules": "emulator.rules.json"
++  },
++  "emulators": {
++    "auth": {
++      "port": 9099
++    },
++    "database": {
++      "port": 9000
++    },
++    "ui": {
++      "enabled": false
++    },
++    "singleProjectMode": true
++  }
++}
+--- a/firebase/merge-rules.cjs
++++ b/firebase/merge-rules.cjs
+@@ -0,0 +1,22 @@
++const fs = require('node:fs');
++const path = require('node:path');
++
++const [, , inputPath, outputPath] = process.argv;
++if (!inputPath || !outputPath) {
++  console.error('Usage: node merge-rules.cjs <exported-live-rules.json> <merged-output.json>');
++  process.exit(2);
++}
++
++const current = JSON.parse(fs.readFileSync(inputPath, 'utf8'));
++const fragment = JSON.parse(fs.readFileSync(
++  path.join(__dirname, 'connect4.rules.fragment.json'), 'utf8'));
++if (!current.rules || typeof current.rules !== 'object' || Array.isArray(current.rules)) {
++  throw new Error('Input must be a Firebase rules export with a top-level "rules" object.');
++}
++if (Object.prototype.hasOwnProperty.call(current.rules, 'Connect4Rtdb')) {
++  throw new Error('Input already contains Connect4Rtdb; review it manually instead of overwriting it.');
++}
++
++current.rules.Connect4Rtdb = fragment.Connect4Rtdb;
++fs.writeFileSync(outputPath, `${JSON.stringify(current, null, 2)}\n`, 'utf8');
++console.log(`Wrote reviewed merge candidate to ${outputPath}`);
+--- a/firebase/package-lock.json
++++ b/firebase/package-lock.json
+@@ -0,0 +1,1186 @@
++{
++  "name": "connect4-course-rules-checks",
++  "lockfileVersion": 3,
++  "requires": true,
++  "packages": {
++    "": {
++      "name": "connect4-course-rules-checks",
++      "devDependencies": {
++        "@firebase/rules-unit-testing": "5.0.2",
++        "firebase": "12.19.0"
++      }
++    },
++    "node_modules/@firebase/ai": {
++      "version": "2.16.0",
++      "resolved": "https://registry.npmjs.org/@firebase/ai/-/ai-2.16.0.tgz",
++      "integrity": "sha512-WRVxl58B61Orwf7st7949ZIW2L4huV80Gpaum1z8v2eH+m2xaxWtC8mOjQyVAOirr6O/yf89cBjlPvoyBpBfTg==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/app-check-interop-types": "0.3.5",
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-types": "0.x"
++      }
++    },
++    "node_modules/@firebase/analytics": {
++      "version": "0.10.25",
++      "resolved": "https://registry.npmjs.org/@firebase/analytics/-/analytics-0.10.25.tgz",
++      "integrity": "sha512-oDagV3PHeNXBdxemksZCdj+GmUT19eCnTOcLdQePIIovFXlm3zWy3Gjeaokt9Nqx24kc4ljK8lU0XGcGmmKZ1A==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/installations": "0.6.24",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/analytics-compat": {
++      "version": "0.2.31",
++      "resolved": "https://registry.npmjs.org/@firebase/analytics-compat/-/analytics-compat-0.2.31.tgz",
++      "integrity": "sha512-msTlG9REujk5rjtOHNLngiuPmvaWGQte8ugL4/F6ZCMb+92Ue7SgjSEpNxINkM8ZtTrbGS83j5SZkt0r+M1Tjw==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/analytics": "0.10.25",
++        "@firebase/analytics-types": "0.8.5",
++        "@firebase/component": "0.7.5",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/analytics-types": {
++      "version": "0.8.5",
++      "resolved": "https://registry.npmjs.org/@firebase/analytics-types/-/analytics-types-0.8.5.tgz",
++      "integrity": "sha512-kdnooE7Bis2jEnsqcerRwn/UQpH5D3uvHpku7OdUM9TJN3omlu6iYtbyAQ6XkAJRgJtO0aNf9OOkW8J6D59oCA==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/@firebase/app": {
++      "version": "0.16.2",
++      "resolved": "https://registry.npmjs.org/@firebase/app/-/app-0.16.2.tgz",
++      "integrity": "sha512-fyCLPahl3r0Zb7Wzm+JLWcOOH3SaDgAyJzJ8EWIDiv51aNiv+2Pjbpa6myEuP7iXxjmJqrcbVm0GUF7h229T1Q==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "idb": "7.1.1",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      }
++    },
++    "node_modules/@firebase/app-check": {
++      "version": "0.13.1",
++      "resolved": "https://registry.npmjs.org/@firebase/app-check/-/app-check-0.13.1.tgz",
++      "integrity": "sha512-l8y3dmnhodXks/APAwx4tWqRl3tk8b9874KF1FJyKg1DIU+kMD0l52iz7S9/MW+eK8k6cjJg0G0iJ5KQAsQpow==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/app-check-compat": {
++      "version": "0.4.7",
++      "resolved": "https://registry.npmjs.org/@firebase/app-check-compat/-/app-check-compat-0.4.7.tgz",
++      "integrity": "sha512-fBb/xSMyIKv1nDmccfzz3IAGBzx/cQOxmZai66rJzifb1hMMkztf824Xx7LhpTUe7HNUbXwY90IvJ66fi8q6yg==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/app-check": "0.13.1",
++        "@firebase/app-check-types": "0.5.5",
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/app-check-interop-types": {
++      "version": "0.3.5",
++      "resolved": "https://registry.npmjs.org/@firebase/app-check-interop-types/-/app-check-interop-types-0.3.5.tgz",
++      "integrity": "sha512-qId34pVZ2CXTmtu4ofW5leiI93DvnOvIcr/5GT7MZPw5WXAi6nZoU+g9cNRgl7K90UJSbK0cXxten4meYMPyZg==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/@firebase/app-check-types": {
++      "version": "0.5.5",
++      "resolved": "https://registry.npmjs.org/@firebase/app-check-types/-/app-check-types-0.5.5.tgz",
++      "integrity": "sha512-+DF4gzFrlwGFyky38o4T/YN/r51l70yCtJ2HTkwmRj8FCMwPjm4hLH4fQbj6BUvzkiFqliBkitFsRpf1/YZkWA==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/@firebase/app-compat": {
++      "version": "0.5.18",
++      "resolved": "https://registry.npmjs.org/@firebase/app-compat/-/app-compat-0.5.18.tgz",
++      "integrity": "sha512-77H57WuGEsgrv59HdtuhHG+eQdP8di6myz7O93yW6yTZlR/tLSmsCxCq5vHp6AWWDwSV0EVtKUvizXQiQZVBWA==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/app": "0.16.2",
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      }
++    },
++    "node_modules/@firebase/app-types": {
++      "version": "0.9.6",
++      "resolved": "https://registry.npmjs.org/@firebase/app-types/-/app-types-0.9.6.tgz",
++      "integrity": "sha512-yPLahy7Esfu2w/yme3msVK4xTkDXQqq6szfQn8yVOQpCKiT5GVFjqNpLbuz6NkX0WuTwUidkmPewW3r4xkvpeg==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/logger": "0.5.2"
++      }
++    },
++    "node_modules/@firebase/auth": {
++      "version": "1.13.6",
++      "resolved": "https://registry.npmjs.org/@firebase/auth/-/auth-1.13.6.tgz",
++      "integrity": "sha512-MKRLvF72HJ/irNn2fJR0Gv5FOZNtqv1IBeJHRwK8l8pZ/wi9vuUw8ecyCMvQDDNxfS6uW0MWACL5KC4Y8Pp+fA==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@react-native-async-storage/async-storage": "^2.2.0 || ^3.0.0"
++      },
++      "peerDependenciesMeta": {
++        "@react-native-async-storage/async-storage": {
++          "optional": true
++        }
++      }
++    },
++    "node_modules/@firebase/auth-compat": {
++      "version": "0.6.11",
++      "resolved": "https://registry.npmjs.org/@firebase/auth-compat/-/auth-compat-0.6.11.tgz",
++      "integrity": "sha512-L+xp3DTJQrBV08Vt0UhcL/ofUOSjXom7JOJfbT6oas4o7gCrQnTYFKs8wfiuKLmHoo8BxMr5LdgjAs7o6aAsqQ==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/auth": "1.13.6",
++        "@firebase/auth-types": "0.13.2",
++        "@firebase/component": "0.7.5",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/auth-interop-types": {
++      "version": "0.2.6",
++      "resolved": "https://registry.npmjs.org/@firebase/auth-interop-types/-/auth-interop-types-0.2.6.tgz",
++      "integrity": "sha512-FgwZqDrBqgK0BHI70QTv1v/5wmuDF9f8fsJFvKSxoRlK2PPfSQtZAk2jhXu4pe9BZzFi/e4UYusU/bEQHdf6Qg==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/@firebase/auth-types": {
++      "version": "0.13.2",
++      "resolved": "https://registry.npmjs.org/@firebase/auth-types/-/auth-types-0.13.2.tgz",
++      "integrity": "sha512-OU+miuoSxIWYN7GT291d2ylVJBL3k/OePo7/JDSoQtkFQoEiGBc4AHuMjj/seqFIsHrqnjrAfRCk4pfufoJolQ==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "peerDependencies": {
++        "@firebase/app-types": "0.x",
++        "@firebase/util": "1.x"
++      }
++    },
++    "node_modules/@firebase/component": {
++      "version": "0.7.5",
++      "resolved": "https://registry.npmjs.org/@firebase/component/-/component-0.7.5.tgz",
++      "integrity": "sha512-vuFDcL91Q+2ZuBJkyOh86T4q0B4ffNTDjc/A38tybO56odQABxRTFLTIowCWqAKeIcgo37GowWMVgFF73gD8Qw==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      }
++    },
++    "node_modules/@firebase/data-connect": {
++      "version": "0.7.4",
++      "resolved": "https://registry.npmjs.org/@firebase/data-connect/-/data-connect-0.7.4.tgz",
++      "integrity": "sha512-su1aGWlzhxb+xtggCUSsufJn1FDa06SBDK71y+fpQ+g2zMhMExik6FUv/odkKzOF/xfWVjabCbWBcjJY3MceDA==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/auth-interop-types": "0.2.6",
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/database": {
++      "version": "1.1.5",
++      "resolved": "https://registry.npmjs.org/@firebase/database/-/database-1.1.5.tgz",
++      "integrity": "sha512-/JGpvszLoNXNgzilRXocigGfFF4hbcPA9wN1i1kjJx6oKkXgkHteZYl3lQs1lJX3ETDf6bv7zI15lPMVUp4sAQ==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/app-check-interop-types": "0.3.5",
++        "@firebase/auth-interop-types": "0.2.6",
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "faye-websocket": "0.11.4",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      }
++    },
++    "node_modules/@firebase/database-compat": {
++      "version": "2.1.7",
++      "resolved": "https://registry.npmjs.org/@firebase/database-compat/-/database-compat-2.1.7.tgz",
++      "integrity": "sha512-lBq9sJm8MnJINKJnkAKSOj2MbC66xGoSVCcGkPtstl+lkoKEBtD46qHLbuDgW/WbLPoKVm17RIN8BxHj+Z2F2w==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/database": "1.1.5",
++        "@firebase/database-types": "1.0.22",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      },
++      "peerDependenciesMeta": {
++        "@firebase/app": {
++          "optional": true
++        },
++        "@firebase/app-compat": {
++          "optional": true
++        }
++      }
++    },
++    "node_modules/@firebase/database-types": {
++      "version": "1.0.22",
++      "resolved": "https://registry.npmjs.org/@firebase/database-types/-/database-types-1.0.22.tgz",
++      "integrity": "sha512-YAZNXsjY9EQQ+pKw/3ax8n5FgolHC7Qew7EY5RceYdl0R2ZP+kCv1O0DkKlcceue8uQCOreHCNN7PWVFpY1Nug==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/app-types": "0.9.6",
++        "@firebase/util": "1.15.3"
++      }
++    },
++    "node_modules/@firebase/firestore": {
++      "version": "4.17.2",
++      "resolved": "https://registry.npmjs.org/@firebase/firestore/-/firestore-4.17.2.tgz",
++      "integrity": "sha512-SiyQEK1dYPOjItFVA+kZGdvOoRAtMebDBvUaSxJPNZMkKcRwYYK2kzWo5UXTZZj523uMxJnkr+KKVySEMme3kQ==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "@firebase/webchannel-wrapper": "1.0.7",
++        "@grpc/grpc-js": "~1.9.0",
++        "@grpc/proto-loader": "^0.7.8",
++        "re2js": "^2.8.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/firestore-compat": {
++      "version": "0.4.14",
++      "resolved": "https://registry.npmjs.org/@firebase/firestore-compat/-/firestore-compat-0.4.14.tgz",
++      "integrity": "sha512-HJ2HBNgNPrRsWIJ4E+Kc0u0h1U7HlF7If8AtYjie9HZXlMUmwYSJaXBj9VFm6gkSj5dlKZNcOQ0Ou25CVVG6rA==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/firestore": "4.17.2",
++        "@firebase/firestore-types": "3.0.5",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/firestore-types": {
++      "version": "3.0.5",
++      "resolved": "https://registry.npmjs.org/@firebase/firestore-types/-/firestore-types-3.0.5.tgz",
++      "integrity": "sha512-dbdMAQkMd5dwWc48eupz/Y6/E9ruat3+gY5lhVKscvvT/HnDBEEMzJW38zdKhgdnglZHGk2vUsJMOHAphMHGMA==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "peerDependencies": {
++        "@firebase/app-types": "0.x",
++        "@firebase/util": "1.x"
++      }
++    },
++    "node_modules/@firebase/functions": {
++      "version": "0.14.0",
++      "resolved": "https://registry.npmjs.org/@firebase/functions/-/functions-0.14.0.tgz",
++      "integrity": "sha512-DhuYFr0eMhp+s/PNEk6SiMsYkc00+XVOUeKbrl8MOzQNZI3SKQpqoDR1d+keNDAutwmHRWTUAdXBoVPD+xxVUw==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/app-check-interop-types": "0.3.5",
++        "@firebase/auth-interop-types": "0.2.6",
++        "@firebase/component": "0.7.5",
++        "@firebase/messaging-interop-types": "0.2.6",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/functions-compat": {
++      "version": "0.5.0",
++      "resolved": "https://registry.npmjs.org/@firebase/functions-compat/-/functions-compat-0.5.0.tgz",
++      "integrity": "sha512-T3BDIToESZUHt7438wyKYMkRjKg3m1xAIux5fVpNvTRQlDOFLukWniQWBDhJ2znpU9kxMTR6+e31TVo8P15PZw==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/functions": "0.14.0",
++        "@firebase/functions-types": "0.6.5",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/functions-types": {
++      "version": "0.6.5",
++      "resolved": "https://registry.npmjs.org/@firebase/functions-types/-/functions-types-0.6.5.tgz",
++      "integrity": "sha512-Zc0pURjthHXzSj54ZivCkzKDSV1r/wIpnmHdhq82q2yFFPVoncG/ZJjnVMiANvQfeww/QnElhzODpfwUucVwdA==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/@firebase/installations": {
++      "version": "0.6.24",
++      "resolved": "https://registry.npmjs.org/@firebase/installations/-/installations-0.6.24.tgz",
++      "integrity": "sha512-Ui52ey8wHoWqkBbXRKJEKYWylI0JZogZmoLS+o8Anh1bxWtK27ZYjLla1UJAAdC5DCKLJ2qAp0VpJOjg8VOX1g==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/util": "1.15.3",
++        "idb": "7.1.1",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/installations-compat": {
++      "version": "0.2.24",
++      "resolved": "https://registry.npmjs.org/@firebase/installations-compat/-/installations-compat-0.2.24.tgz",
++      "integrity": "sha512-8M5nlcWwYt881x83COP2odq5vgf+NgwJh+RMd4LRSv8JI1pxwDfgrDJOERrjTgfC9J5Z0vnQX4b1pdN914e0Zw==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/installations": "0.6.24",
++        "@firebase/installations-types": "0.5.5",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/installations-types": {
++      "version": "0.5.5",
++      "resolved": "https://registry.npmjs.org/@firebase/installations-types/-/installations-types-0.5.5.tgz",
++      "integrity": "sha512-e9UYcju3puDl1vdrcKIi5dExzHLameOT/Tc61Q48PYwxtsM1NzZh/ikGbdBQTsbRgg0EMZqdPr0/m5ODUBobrg==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "peerDependencies": {
++        "@firebase/app-types": "0.x"
++      }
++    },
++    "node_modules/@firebase/logger": {
++      "version": "0.5.2",
++      "resolved": "https://registry.npmjs.org/@firebase/logger/-/logger-0.5.2.tgz",
++      "integrity": "sha512-J2VO4NFTc0xQFrxV1B/lm5balicm9cwuX2acR9Yn41fN8KgUeQFo+VJV222IqW2FPSXKDu9uo5WdQFWf9TPbYg==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      }
++    },
++    "node_modules/@firebase/messaging": {
++      "version": "0.13.3",
++      "resolved": "https://registry.npmjs.org/@firebase/messaging/-/messaging-0.13.3.tgz",
++      "integrity": "sha512-nRXPAp+z0kA3KziJtRY9kktHECvRwaaONzHvislFgllhCwJMscW7icWNQA5IjyP8Uc2+GS/4px8Uz6rx6ftTag==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/installations": "0.6.24",
++        "@firebase/messaging-interop-types": "0.2.6",
++        "@firebase/util": "1.15.3",
++        "idb": "7.1.1",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/messaging-compat": {
++      "version": "0.2.30",
++      "resolved": "https://registry.npmjs.org/@firebase/messaging-compat/-/messaging-compat-0.2.30.tgz",
++      "integrity": "sha512-m1DPT2ET5x0qYqXLoHwKMAyf1mgZZOhuoE6H6/H4OPsp8zSxMIDEFPaW7MaffPJsCA5J7kHzo+BHVNXK4ZoV+w==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/messaging": "0.13.3",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/messaging-interop-types": {
++      "version": "0.2.6",
++      "resolved": "https://registry.npmjs.org/@firebase/messaging-interop-types/-/messaging-interop-types-0.2.6.tgz",
++      "integrity": "sha512-MVzvkKe2V4H2dHu5oOxRfeKQcfTwWmCgnzsC4V1q3ixun5iiL8riCZ2qI35rDhCL4glPGiu0jHxDbpVNuTKfow==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/@firebase/performance": {
++      "version": "0.7.14",
++      "resolved": "https://registry.npmjs.org/@firebase/performance/-/performance-0.7.14.tgz",
++      "integrity": "sha512-9PH1XEZVHErxGdbXluvGz4Uyjw4W955H8v7Mv9rHIybRrg5F2Ac2tvf5+mSf5EtnxWNmxrD2WLnvMFaZP4sMrQ==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/installations": "0.6.24",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0",
++        "web-vitals": "^4.2.4"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/performance-compat": {
++      "version": "0.2.27",
++      "resolved": "https://registry.npmjs.org/@firebase/performance-compat/-/performance-compat-0.2.27.tgz",
++      "integrity": "sha512-O/ozTf/EbChN94Pk7bd1eUC0PAC36726AwsaiJyC0bZzSBWfLGSWASGPH5pebUWXQPJtGxIJYRkkbX5l0Qa+Hw==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/performance": "0.7.14",
++        "@firebase/performance-types": "0.2.5",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/performance-types": {
++      "version": "0.2.5",
++      "resolved": "https://registry.npmjs.org/@firebase/performance-types/-/performance-types-0.2.5.tgz",
++      "integrity": "sha512-PRzOgB+/M+6AKlEkY8a9xy5Ff5SfZPIh4iShXhn2WAcL/euSbK7bdLqWysHduunNJhGFsXa22Ag3ixqL6rQtYg==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/@firebase/remote-config": {
++      "version": "0.9.2",
++      "resolved": "https://registry.npmjs.org/@firebase/remote-config/-/remote-config-0.9.2.tgz",
++      "integrity": "sha512-Rii93DkXjM+RE/ytHdYa7EIiQLJbdBr+W8EEiqd/vbLCOC+1FdkDuRiumJBp6t3yewHGbdqbpjB3fk3z0cZ+8g==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/installations": "0.6.24",
++        "@firebase/logger": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/remote-config-compat": {
++      "version": "0.2.29",
++      "resolved": "https://registry.npmjs.org/@firebase/remote-config-compat/-/remote-config-compat-0.2.29.tgz",
++      "integrity": "sha512-mY7JtTISK6F4g4T0x3kVepr5cp0NXL7f5yjIUXXGaTrg4qUlFBWRbENaHaqZ78dwmNcLm24h/yPsOVRlDXEXhA==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/logger": "0.5.2",
++        "@firebase/remote-config": "0.9.2",
++        "@firebase/remote-config-types": "0.5.2",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/remote-config-types": {
++      "version": "0.5.2",
++      "resolved": "https://registry.npmjs.org/@firebase/remote-config-types/-/remote-config-types-0.5.2.tgz",
++      "integrity": "sha512-i8k1omVfoAnaT1ZPv2FFjxMZrATYsO/GnFgHEj5+7fAJLzi8wLnGGv1WK06oEAD6ltrWXSO1HzeNyajn/NjMWw==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/@firebase/rules-unit-testing": {
++      "version": "5.0.2",
++      "resolved": "https://registry.npmjs.org/@firebase/rules-unit-testing/-/rules-unit-testing-5.0.2.tgz",
++      "integrity": "sha512-g053AaFcuf4gpAQbwRK/GIIGfPHhpomW3qkIYLi4xnaTUrf65yGP+0TPdojoXfB/ejrfevkXmMs5qXOTSwdN6A==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "firebase": "^12.0.0"
++      }
++    },
++    "node_modules/@firebase/storage": {
++      "version": "0.14.5",
++      "resolved": "https://registry.npmjs.org/@firebase/storage/-/storage-0.14.5.tgz",
++      "integrity": "sha512-r2tozN/BlEewLi70tJNUQPzWwbex9GM7NgXZsamHKQrjKEfcR0i4jGgHBKAKA4hbwiPE9eNMb3hcxWnDpeJZwg==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x"
++      }
++    },
++    "node_modules/@firebase/storage-compat": {
++      "version": "0.4.5",
++      "resolved": "https://registry.npmjs.org/@firebase/storage-compat/-/storage-compat-0.4.5.tgz",
++      "integrity": "sha512-vO0tFPxXbKDKdlTu8tYT08S9t9ezUTJYEdLCULpWxWq2aq6zojwN1QmAB+1a50AI/g47GlWUJn1XPncm/PDZsw==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/component": "0.7.5",
++        "@firebase/storage": "0.14.5",
++        "@firebase/storage-types": "0.8.5",
++        "@firebase/util": "1.15.3",
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      },
++      "peerDependencies": {
++        "@firebase/app": "0.x",
++        "@firebase/app-compat": "0.x"
++      }
++    },
++    "node_modules/@firebase/storage-types": {
++      "version": "0.8.5",
++      "resolved": "https://registry.npmjs.org/@firebase/storage-types/-/storage-types-0.8.5.tgz",
++      "integrity": "sha512-GEDs5P+rNUfNcS+wxIdOLAHficife2YXtvTJnyi3ssrX11AAtBg+nDUdbYh8vuBzWehVQZPmztGUUnud4L+4yg==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "peerDependencies": {
++        "@firebase/app-types": "0.x",
++        "@firebase/util": "1.x"
++      }
++    },
++    "node_modules/@firebase/util": {
++      "version": "1.15.3",
++      "resolved": "https://registry.npmjs.org/@firebase/util/-/util-1.15.3.tgz",
++      "integrity": "sha512-c/z/gaIlaaLZEuGbE6sLUuJ61tskg1JghvhcNQzW948ASBinbVBBRnZTC4b4yt4LaEtJQkYlyzqLHcutFwEIvA==",
++      "dev": true,
++      "hasInstallScript": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "tslib": "^2.1.0"
++      },
++      "engines": {
++        "node": ">=20.0.0"
++      }
++    },
++    "node_modules/@firebase/webchannel-wrapper": {
++      "version": "1.0.7",
++      "resolved": "https://registry.npmjs.org/@firebase/webchannel-wrapper/-/webchannel-wrapper-1.0.7.tgz",
++      "integrity": "sha512-phBFwieDLvkZGYN9CE9ZFNEIoBVksprzsnCzQejCmCHtgwCXReeuRpoEGN9C4EbhONztv8NRV1tau6Rb9pONwQ==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/@grpc/grpc-js": {
++      "version": "1.9.16",
++      "resolved": "https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.9.16.tgz",
++      "integrity": "sha512-wE4Ut/olIzfKqp631XrG+wbF0v1vWFN4YL9FyXC2LJiG33DsV7PLzURjrCvY/6je2ntdRkeLpPDluzSRGaVltQ==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@grpc/proto-loader": "^0.7.8",
++        "@types/node": ">=12.12.47"
++      },
++      "engines": {
++        "node": "^8.13.0 || >=10.10.0"
++      }
++    },
++    "node_modules/@grpc/proto-loader": {
++      "version": "0.7.15",
++      "resolved": "https://registry.npmjs.org/@grpc/proto-loader/-/proto-loader-0.7.15.tgz",
++      "integrity": "sha512-tMXdRCfYVixjuFK+Hk0Q1s38gV9zDiDJfWL3h1rv4Qc39oILCu1TRTDt7+fGUI8K4G1Fj125Hx/ru3azECWTyQ==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "lodash.camelcase": "^4.3.0",
++        "long": "^5.0.0",
++        "protobufjs": "^7.2.5",
++        "yargs": "^17.7.2"
++      },
++      "bin": {
++        "proto-loader-gen-types": "build/bin/proto-loader-gen-types.js"
++      },
++      "engines": {
++        "node": ">=6"
++      }
++    },
++    "node_modules/@protobufjs/aspromise": {
++      "version": "1.1.2",
++      "resolved": "https://registry.npmjs.org/@protobufjs/aspromise/-/aspromise-1.1.2.tgz",
++      "integrity": "sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==",
++      "dev": true,
++      "license": "BSD-3-Clause"
++    },
++    "node_modules/@protobufjs/base64": {
++      "version": "1.1.2",
++      "resolved": "https://registry.npmjs.org/@protobufjs/base64/-/base64-1.1.2.tgz",
++      "integrity": "sha512-AZkcAA5vnN/v4PDqKyMR5lx7hZttPDgClv83E//FMNhR2TMcLUhfRUBHCmSl0oi9zMgDDqRUJkSxO3wm85+XLg==",
++      "dev": true,
++      "license": "BSD-3-Clause"
++    },
++    "node_modules/@protobufjs/codegen": {
++      "version": "2.0.5",
++      "resolved": "https://registry.npmjs.org/@protobufjs/codegen/-/codegen-2.0.5.tgz",
++      "integrity": "sha512-zgXFLzW3Ap33e6d0Wlj4MGIm6Ce8O89n/apUaGNB/jx+hw+ruWEp7EwGUshdLKVRCxZW12fp9r40E1mQrf/34g==",
++      "dev": true,
++      "license": "BSD-3-Clause"
++    },
++    "node_modules/@protobufjs/eventemitter": {
++      "version": "1.1.1",
++      "resolved": "https://registry.npmjs.org/@protobufjs/eventemitter/-/eventemitter-1.1.1.tgz",
++      "integrity": "sha512-vW1GmwMZNnL+gMRaovlh9yZX74kc+TTU3FObkkurpMaRtBfLP3ldjS9KQWlwZgraRE0+dheEEoAxdzcJQ8eXZg==",
++      "dev": true,
++      "license": "BSD-3-Clause"
++    },
++    "node_modules/@protobufjs/fetch": {
++      "version": "1.1.1",
++      "resolved": "https://registry.npmjs.org/@protobufjs/fetch/-/fetch-1.1.1.tgz",
++      "integrity": "sha512-GpptLrs57adMSuHi3VNj0mAF8dwh36LMaYF6XyJ6JMWlVsc+t42tm1HSEDmOs3A8fC9yyeisgLhsTVQokOZ0zw==",
++      "dev": true,
++      "license": "BSD-3-Clause",
++      "dependencies": {
++        "@protobufjs/aspromise": "^1.1.1"
++      }
++    },
++    "node_modules/@protobufjs/float": {
++      "version": "1.0.2",
++      "resolved": "https://registry.npmjs.org/@protobufjs/float/-/float-1.0.2.tgz",
++      "integrity": "sha512-Ddb+kVXlXst9d+R9PfTIxh1EdNkgoRe5tOX6t01f1lYWOvJnSPDBlG241QLzcyPdoNTsblLUdujGSE4RzrTZGQ==",
++      "dev": true,
++      "license": "BSD-3-Clause"
++    },
++    "node_modules/@protobufjs/path": {
++      "version": "1.1.2",
++      "resolved": "https://registry.npmjs.org/@protobufjs/path/-/path-1.1.2.tgz",
++      "integrity": "sha512-6JOcJ5Tm08dOHAbdR3GrvP+yUUfkjG5ePsHYczMFLq3ZmMkAD98cDgcT2iA1lJ9NVwFd4tH/iSSoe44YWkltEA==",
++      "dev": true,
++      "license": "BSD-3-Clause"
++    },
++    "node_modules/@protobufjs/pool": {
++      "version": "1.1.0",
++      "resolved": "https://registry.npmjs.org/@protobufjs/pool/-/pool-1.1.0.tgz",
++      "integrity": "sha512-0kELaGSIDBKvcgS4zkjz1PeddatrjYcmMWOlAuAPwAeccUrPHdUqo/J6LiymHHEiJT5NrF1UVwxY14f+fy4WQw==",
++      "dev": true,
++      "license": "BSD-3-Clause"
++    },
++    "node_modules/@protobufjs/utf8": {
++      "version": "1.1.2",
++      "resolved": "https://registry.npmjs.org/@protobufjs/utf8/-/utf8-1.1.2.tgz",
++      "integrity": "sha512-b1UQwcEZ4yCnMCD8DAL1VlbvBJE9/IX4FTIp7BG1xYpf29SLazLSrqUkj4w7Y5y7cCVP6E5tcqqcI0xemPkHug==",
++      "dev": true,
++      "license": "BSD-3-Clause"
++    },
++    "node_modules/@types/node": {
++      "version": "26.6.2",
++      "resolved": "https://registry.npmjs.org/@types/node/-/node-26.6.2.tgz",
++      "integrity": "sha512-X1P21scMv4zGKLYqjdGjaKa7COa0RKVYYZZN/NfvLQ1JegxFhdhpZG/Lyn8AXx6CDUavKAd11v6BvfpkDByK8g==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "undici-types": "~8.9.0"
++      }
++    },
++    "node_modules/ansi-regex": {
++      "version": "5.0.1",
++      "resolved": "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz",
++      "integrity": "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=8"
++      }
++    },
++    "node_modules/ansi-styles": {
++      "version": "4.3.0",
++      "resolved": "https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz",
++      "integrity": "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "color-convert": "^2.0.1"
++      },
++      "engines": {
++        "node": ">=8"
++      },
++      "funding": {
++        "url": "https://github.com/chalk/ansi-styles?sponsor=1"
++      }
++    },
++    "node_modules/cliui": {
++      "version": "8.0.1",
++      "resolved": "https://registry.npmjs.org/cliui/-/cliui-8.0.1.tgz",
++      "integrity": "sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==",
++      "dev": true,
++      "license": "ISC",
++      "dependencies": {
++        "string-width": "^4.2.0",
++        "strip-ansi": "^6.0.1",
++        "wrap-ansi": "^7.0.0"
++      },
++      "engines": {
++        "node": ">=12"
++      }
++    },
++    "node_modules/color-convert": {
++      "version": "2.0.1",
++      "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz",
++      "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "color-name": "~1.1.4"
++      },
++      "engines": {
++        "node": ">=7.0.0"
++      }
++    },
++    "node_modules/color-name": {
++      "version": "1.1.4",
++      "resolved": "https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz",
++      "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/emoji-regex": {
++      "version": "8.0.0",
++      "resolved": "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz",
++      "integrity": "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/escalade": {
++      "version": "3.2.0",
++      "resolved": "https://registry.npmjs.org/escalade/-/escalade-3.2.0.tgz",
++      "integrity": "sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=6"
++      }
++    },
++    "node_modules/faye-websocket": {
++      "version": "0.11.4",
++      "resolved": "https://registry.npmjs.org/faye-websocket/-/faye-websocket-0.11.4.tgz",
++      "integrity": "sha512-CzbClwlXAuiRQAlUyfqPgvPoNKTckTPGfwZV4ZdAhVcP2lh9KUxJg2b5GkE7XbjKQ3YJnQ9z6D9ntLAlB+tP8g==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "websocket-driver": ">=0.5.1"
++      },
++      "engines": {
++        "node": ">=0.8.0"
++      }
++    },
++    "node_modules/firebase": {
++      "version": "12.19.0",
++      "resolved": "https://registry.npmjs.org/firebase/-/firebase-12.19.0.tgz",
++      "integrity": "sha512-kwXCLcI0ly2lkwygkbuRx6SsX3DSO96355YrWh9SWZ5ncsxK/y5cirn3sY6nZVSiBVE++2nL6Hchzu1EB8uohQ==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "@firebase/ai": "2.16.0",
++        "@firebase/analytics": "0.10.25",
++        "@firebase/analytics-compat": "0.2.31",
++        "@firebase/app": "0.16.2",
++        "@firebase/app-check": "0.13.1",
++        "@firebase/app-check-compat": "0.4.7",
++        "@firebase/app-compat": "0.5.18",
++        "@firebase/app-types": "0.9.6",
++        "@firebase/auth": "1.13.6",
++        "@firebase/auth-compat": "0.6.11",
++        "@firebase/data-connect": "0.7.4",
++        "@firebase/database": "1.1.5",
++        "@firebase/database-compat": "2.1.7",
++        "@firebase/firestore": "4.17.2",
++        "@firebase/firestore-compat": "0.4.14",
++        "@firebase/functions": "0.14.0",
++        "@firebase/functions-compat": "0.5.0",
++        "@firebase/installations": "0.6.24",
++        "@firebase/installations-compat": "0.2.24",
++        "@firebase/messaging": "0.13.3",
++        "@firebase/messaging-compat": "0.2.30",
++        "@firebase/performance": "0.7.14",
++        "@firebase/performance-compat": "0.2.27",
++        "@firebase/remote-config": "0.9.2",
++        "@firebase/remote-config-compat": "0.2.29",
++        "@firebase/storage": "0.14.5",
++        "@firebase/storage-compat": "0.4.5",
++        "@firebase/util": "1.15.3"
++      }
++    },
++    "node_modules/get-caller-file": {
++      "version": "2.0.5",
++      "resolved": "https://registry.npmjs.org/get-caller-file/-/get-caller-file-2.0.5.tgz",
++      "integrity": "sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==",
++      "dev": true,
++      "license": "ISC",
++      "engines": {
++        "node": "6.* || 8.* || >= 10.*"
++      }
++    },
++    "node_modules/http-parser-js": {
++      "version": "0.5.10",
++      "resolved": "https://registry.npmjs.org/http-parser-js/-/http-parser-js-0.5.10.tgz",
++      "integrity": "sha512-Pysuw9XpUq5dVc/2SMHpuTY01RFl8fttgcyunjL7eEMhGM3cI4eOmiCycJDVCo/7O7ClfQD3SaI6ftDzqOXYMA==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/idb": {
++      "version": "7.1.1",
++      "resolved": "https://registry.npmjs.org/idb/-/idb-7.1.1.tgz",
++      "integrity": "sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==",
++      "dev": true,
++      "license": "ISC"
++    },
++    "node_modules/is-fullwidth-code-point": {
++      "version": "3.0.0",
++      "resolved": "https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz",
++      "integrity": "sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=8"
++      }
++    },
++    "node_modules/lodash.camelcase": {
++      "version": "4.3.0",
++      "resolved": "https://registry.npmjs.org/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz",
++      "integrity": "sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/long": {
++      "version": "5.3.2",
++      "resolved": "https://registry.npmjs.org/long/-/long-5.3.2.tgz",
++      "integrity": "sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/protobufjs": {
++      "version": "7.6.6",
++      "resolved": "https://registry.npmjs.org/protobufjs/-/protobufjs-7.6.6.tgz",
++      "integrity": "sha512-dYDWdjSl5RNb7SgPxGQcRU+GtvP7s2fpkrY0r432PcOIaZ0/rBcxEZnQN67iJhFuQiVw754JDoPruPCNdGsbjg==",
++      "dev": true,
++      "hasInstallScript": true,
++      "license": "BSD-3-Clause",
++      "dependencies": {
++        "@protobufjs/aspromise": "^1.1.2",
++        "@protobufjs/base64": "^1.1.2",
++        "@protobufjs/codegen": "^2.0.5",
++        "@protobufjs/eventemitter": "^1.1.1",
++        "@protobufjs/fetch": "^1.1.1",
++        "@protobufjs/float": "^1.0.2",
++        "@protobufjs/path": "^1.1.2",
++        "@protobufjs/pool": "^1.1.0",
++        "@protobufjs/utf8": "^1.1.1",
++        "@types/node": ">=13.7.0",
++        "long": "^5.3.2"
++      },
++      "engines": {
++        "node": ">=12.0.0"
++      }
++    },
++    "node_modules/re2js": {
++      "version": "2.8.6",
++      "resolved": "https://registry.npmjs.org/re2js/-/re2js-2.8.6.tgz",
++      "integrity": "sha512-xLgQil4kIUCrAzVk9fRSkxkFNwmygLFjVxXrLc65aE1F0+Zsb8rxumFBy4XKyvgMCTL6kilDq3EZ0piE2dP/Dg==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=18.0.0"
++      }
++    },
++    "node_modules/require-directory": {
++      "version": "2.1.1",
++      "resolved": "https://registry.npmjs.org/require-directory/-/require-directory-2.1.1.tgz",
++      "integrity": "sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=0.10.0"
++      }
++    },
++    "node_modules/safe-buffer": {
++      "version": "5.2.1",
++      "resolved": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz",
++      "integrity": "sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==",
++      "dev": true,
++      "funding": [
++        {
++          "type": "github",
++          "url": "https://github.com/sponsors/feross"
++        },
++        {
++          "type": "patreon",
++          "url": "https://www.patreon.com/feross"
++        },
++        {
++          "type": "consulting",
++          "url": "https://feross.org/support"
++        }
++      ],
++      "license": "MIT"
++    },
++    "node_modules/string-width": {
++      "version": "4.2.3",
++      "resolved": "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz",
++      "integrity": "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "emoji-regex": "^8.0.0",
++        "is-fullwidth-code-point": "^3.0.0",
++        "strip-ansi": "^6.0.1"
++      },
++      "engines": {
++        "node": ">=8"
++      }
++    },
++    "node_modules/strip-ansi": {
++      "version": "6.0.1",
++      "resolved": "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz",
++      "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "ansi-regex": "^5.0.1"
++      },
++      "engines": {
++        "node": ">=8"
++      }
++    },
++    "node_modules/tslib": {
++      "version": "2.8.1",
++      "resolved": "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz",
++      "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==",
++      "dev": true,
++      "license": "0BSD"
++    },
++    "node_modules/undici-types": {
++      "version": "8.9.0",
++      "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-8.9.0.tgz",
++      "integrity": "sha512-KTDyRTYX8sWmKXAikPHHSyc63CRPETMctyjKFupcC6OBLXT3xsN0e9aF7m+mIXutFWpUXuedtowG7iLOzp0kQg==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/web-vitals": {
++      "version": "4.2.4",
++      "resolved": "https://registry.npmjs.org/web-vitals/-/web-vitals-4.2.4.tgz",
++      "integrity": "sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==",
++      "dev": true,
++      "license": "Apache-2.0"
++    },
++    "node_modules/websocket-driver": {
++      "version": "0.7.5",
++      "resolved": "https://registry.npmjs.org/websocket-driver/-/websocket-driver-0.7.5.tgz",
++      "integrity": "sha512-ZL2+3c7kMBdIRCMz6l8jQMHyGVxj+UL+xVk74Ombiciboca8rHa15L86B19E5oh1pL9Ii/uj54gtsIrZGMo6zA==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "dependencies": {
++        "http-parser-js": ">=0.5.1",
++        "safe-buffer": ">=5.1.0",
++        "websocket-extensions": ">=0.1.1"
++      },
++      "engines": {
++        "node": ">=0.8.0"
++      }
++    },
++    "node_modules/websocket-extensions": {
++      "version": "0.1.4",
++      "resolved": "https://registry.npmjs.org/websocket-extensions/-/websocket-extensions-0.1.4.tgz",
++      "integrity": "sha512-OqedPIGOfsDlo31UNwYbCFMSaO9m9G/0faIHj5/dZFDMFqPTcx6UwqyOy3COEaEOg/9VsGIpdqn62W5KhoKSpg==",
++      "dev": true,
++      "license": "Apache-2.0",
++      "engines": {
++        "node": ">=0.8.0"
++      }
++    },
++    "node_modules/wrap-ansi": {
++      "version": "7.0.0",
++      "resolved": "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-7.0.0.tgz",
++      "integrity": "sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "ansi-styles": "^4.0.0",
++        "string-width": "^4.1.0",
++        "strip-ansi": "^6.0.0"
++      },
++      "engines": {
++        "node": ">=10"
++      },
++      "funding": {
++        "url": "https://github.com/chalk/wrap-ansi?sponsor=1"
++      }
++    },
++    "node_modules/y18n": {
++      "version": "5.0.8",
++      "resolved": "https://registry.npmjs.org/y18n/-/y18n-5.0.8.tgz",
++      "integrity": "sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==",
++      "dev": true,
++      "license": "ISC",
++      "engines": {
++        "node": ">=10"
++      }
++    },
++    "node_modules/yargs": {
++      "version": "17.7.3",
++      "resolved": "https://registry.npmjs.org/yargs/-/yargs-17.7.3.tgz",
++      "integrity": "sha512-GZtjxm/J/4TSxuL3FNYjCmLktBTnIw/rVmKSIyKeYAZpmJB2ig9VauCC5xsa82GNKVKDAqpOn3KVzNt0zmrU0g==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "cliui": "^8.0.1",
++        "escalade": "^3.1.1",
++        "get-caller-file": "^2.0.5",
++        "require-directory": "^2.1.1",
++        "string-width": "^4.2.3",
++        "y18n": "^5.0.5",
++        "yargs-parser": "^21.1.1"
++      },
++      "engines": {
++        "node": ">=12"
++      }
++    },
++    "node_modules/yargs-parser": {
++      "version": "21.1.1",
++      "resolved": "https://registry.npmjs.org/yargs-parser/-/yargs-parser-21.1.1.tgz",
++      "integrity": "sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==",
++      "dev": true,
++      "license": "ISC",
++      "engines": {
++        "node": ">=12"
++      }
++    }
++  }
++}
+--- a/firebase/package.json
++++ b/firebase/package.json
+@@ -0,0 +1,5 @@
++{
++  "name": "connect4-course-rules-checks", "private": true,
++  "scripts": {"test": "node --test test/database.rules.test.cjs"},
++  "devDependencies": {"@firebase/rules-unit-testing": "5.0.2", "firebase": "12.19.0"}
++}
+--- a/firebase/test/database.rules.test.cjs
++++ b/firebase/test/database.rules.test.cjs
+@@ -0,0 +1,188 @@
++const { after, afterEach, before, describe, test } = require('node:test');
++const assert = require('node:assert/strict');
++const {
++  assertFails,
++  assertSucceeds,
++  initializeTestEnvironment,
++} = require('@firebase/rules-unit-testing');
++const {
++  get,
++  ref,
++  runTransaction,
++  serverTimestamp,
++  set,
++  update,
++} = require('firebase/database');
++const fs = require('node:fs');
++const path = require('node:path');
++
++const PROJECT_ID = 'demo-connect4';
++const ROOT = 'Connect4Rtdb/games';
++const rulesFile = process.env.CONNECT4_RULES_FILE ||
++  path.join(__dirname, '..', 'emulator.rules.json');
++let environment;
++
++function db(uid) {
++  return uid
++    ? environment.authenticatedContext(uid).database()
++    : environment.unauthenticatedContext().database();
++}
++
++function room(overrides = {}) {
++  return {
++    schemaVersion: 1,
++    name: 'Class game',
++    playerRed: 'red-user',
++    playerYellow: '',
++    moves: '',
++    createdAt: serverTimestamp(),
++    updatedAt: serverTimestamp(),
++    ...overrides,
++  };
++}
++
++async function seed(roomId, data) {
++  await environment.withSecurityRulesDisabled(async context => {
++    await set(ref(context.database(), `${ROOT}/${roomId}`), data);
++  });
++}
++
++describe('Connect4 RTDB rules', () => {
++  before(async () => {
++    environment = await initializeTestEnvironment({
++      projectId: PROJECT_ID,
++      database: {
++        rules: fs.readFileSync(rulesFile, 'utf8'),
++      },
++    });
++  });
++
++  afterEach(async () => environment.clearDatabase());
++  after(async () => environment.cleanup());
++
++  test('requires authentication to read or create rooms', async () => {
++    await assertFails(get(ref(db(), ROOT)));
++    await assertFails(set(ref(db(), `${ROOT}/room-a`), room()));
++    await assertSucceeds(get(ref(db('viewer'), ROOT)));
++  });
++
++  test('keeps the existing shared-instance wildcard from opening Connect4', async () => {
++    await seed('room-a', {
++      schemaVersion: 1,
++      name: 'Existing',
++      playerRed: 'red-user',
++      playerYellow: '',
++      moves: '',
++      createdAt: Date.now(),
++      updatedAt: Date.now(),
++    });
++    await assertFails(get(ref(db(), `${ROOT}/room-a`)));
++    await assertFails(set(ref(db(), `${ROOT}/room-a`), null));
++    await assertSucceeds(set(ref(db(), 'TicTacToeRtdb/lesson-room'), { untouched: true }));
++    assert.deepEqual((await get(ref(db(), 'TicTacToeRtdb/lesson-room'))).val(),
++      { untouched: true });
++  });
++
++  test('preserves representative existing Users and per-user wildcard access', async () => {
++    await assertSucceeds(set(ref(db('owner'), 'Users/owner/profile'), { name: 'Owner' }));
++    await assertFails(set(ref(db('other'), 'Users/owner/profile'), { name: 'Other' }));
++    await assertSucceeds(set(ref(db('owner'), 'lesson*owner/value'), 1));
++    await assertFails(set(ref(db('other'), 'lesson*owner/value'), 2));
++  });
++
++  test('binds a valid creation to Red and rejects malformed creation', async () => {
++    await assertSucceeds(set(ref(db('red-user'), `${ROOT}/room-a`), room()));
++    await assertFails(set(ref(db('other-user'), `${ROOT}/room-b`), room()));
++    await assertFails(set(ref(db('red-user'), `${ROOT}/room-c`),
++      room({ name: ' '.repeat(2), extra: true })));
++  });
++
++  test('only one different user can claim Yellow in a concurrent race', async () => {
++    await assertSucceeds(set(ref(db('red-user'), `${ROOT}/room-a`), room()));
++    const claim = async uid => {
++      const roomRef = ref(db(uid), `${ROOT}/room-a`);
++      const baseline = (await get(roomRef)).val();
++      return runTransaction(roomRef, current => {
++      current ??= structuredClone(baseline);
++      if (current && current.playerYellow === '') {
++        current.playerYellow = uid;
++        current.updatedAt = serverTimestamp();
++        return current;
++      }
++      return undefined;
++      });
++    };
++
++    const results = await Promise.allSettled([claim('yellow-a'), claim('yellow-b')]);
++    const committed = results.filter(result =>
++      result.status === 'fulfilled' && result.value.committed).length;
++    assert.equal(committed, 1);
++    const stored = (await get(ref(db('viewer'), `${ROOT}/room-a`))).val();
++    assert.ok(stored.playerYellow === 'yellow-a' || stored.playerYellow === 'yellow-b');
++    assert.notEqual(stored.playerYellow, stored.playerRed);
++  });
++
++  test('allows only the seated player on the matching turn to append one column', async () => {
++    const now = Date.now();
++    await seed('room-a', room({
++      playerYellow: 'yellow-user',
++      createdAt: now,
++      updatedAt: now,
++    }));
++
++    await assertFails(update(ref(db('yellow-user'), `${ROOT}/room-a`),
++      { moves: '3', updatedAt: serverTimestamp() }));
++    await assertFails(update(ref(db('spectator'), `${ROOT}/room-a`),
++      { moves: '3', updatedAt: serverTimestamp() }));
++    await assertSucceeds(update(ref(db('red-user'), `${ROOT}/room-a`),
++      { moves: '3', updatedAt: serverTimestamp() }));
++    await assertFails(update(ref(db('red-user'), `${ROOT}/room-a`),
++      { moves: '34', updatedAt: serverTimestamp() }));
++    await assertSucceeds(update(ref(db('yellow-user'), `${ROOT}/room-a`),
++      { moves: '34', updatedAt: serverTimestamp() }));
++  });
++
++  test('rejects stale overwrites, resets, deletion and immutable-field changes', async () => {
++    const now = Date.now();
++    await seed('room-a', room({
++      playerYellow: 'yellow-user',
++      moves: '3',
++      createdAt: now,
++      updatedAt: now,
++    }));
++
++    await assertFails(update(ref(db('yellow-user'), `${ROOT}/room-a`),
++      { moves: '2', updatedAt: serverTimestamp() }));
++    await assertFails(update(ref(db('yellow-user'), `${ROOT}/room-a`),
++      { name: 'Renamed', moves: '32', updatedAt: serverTimestamp() }));
++    await assertFails(set(ref(db('red-user'), `${ROOT}/room-a`), null));
++    await assertFails(update(ref(db('yellow-user'), `${ROOT}/room-a`),
++      { moves: '', updatedAt: serverTimestamp() }));
++  });
++
++  test('two sessions for one UID cannot commit from the same move prefix', async () => {
++    const now = Date.now();
++    await seed('room-a', room({
++      playerYellow: 'yellow-user',
++      createdAt: now,
++      updatedAt: now,
++    }));
++    const move = async column => {
++      const roomRef = ref(db('red-user'), `${ROOT}/room-a`);
++      const baseline = (await get(roomRef)).val();
++      return runTransaction(roomRef, current => {
++        current ??= structuredClone(baseline);
++        if (current.moves !== '') return undefined;
++        current.moves = String(column);
++        current.updatedAt = serverTimestamp();
++        return current;
++      });
++    };
++
++    const results = await Promise.allSettled([move(2), move(4)]);
++    const committed = results.filter(result =>
++      result.status === 'fulfilled' && result.value.committed).length;
++    assert.equal(committed, 1);
++    assert.match((await get(ref(db('viewer'), `${ROOT}/room-a/moves`))).val(), /^[24]$/);
++  });
++});

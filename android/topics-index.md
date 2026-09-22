@@ -8,7 +8,7 @@ full-width: true
 ---
 
 {: .box-note}
-המפה עוזרת למצוא שיעור לפי **הרעיון שרוצים ללמוד**, ולא רק לפי שם הפרויקט. אם זו הפעם הראשונה שלכם באתר, התחילו באחד משלושת מסלולי הלמידה; אם כבר יש לכם פרויקט, עברו ישירות לטבלת הנושא הדרוש.
+המפה עוזרת למצוא שיעור לפי **הרעיון שרוצים ללמוד**, ולא רק לפי שם הפרויקט. אם זו הפעם הראשונה שלכם באתר, התחילו באחד מארבעת מסלולי הלמידה; אם כבר יש לכם פרויקט, עברו ישירות לטבלת הנושא הדרוש.
 
 ## איך קוראים את המפה?
 
@@ -22,7 +22,7 @@ full-width: true
 
 לעיתים אותו נושא מופיע בכמה פרויקטים. כדאי לבחור תחילה את הקישור ששייך לפרויקט שלכם, ואחר כך לקרוא קישור נוסף כדי לראות שימוש אחר באותו רעיון.
 
-## שלושה מסלולי למידה מרכזיים
+## ארבעה מסלולי למידה מרכזיים
 
 ### TicTacMenu — ממסכים ותפריטים למשחק רשת
 
@@ -60,6 +60,24 @@ full-width: true
 4. [RecyclerView ומחיקה לפי מפתח מורכב](/android/sqlite/04.requery-recyclerview-delete)
 
 ---
+
+### Connect4 — ממנוע משחק מקומי למשחק רשת
+
+[מפת 13 הפרקים](/android/Connect4/) מתחילה ב־Empty Views Activity עם View Binding, ומתקדמת לפי תלויות למידה:
+
+| נושא | עומק | שיעור |
+|---:|---:|---:|
+| Canvas, מגע וגאומטריית לוח | שיעור מעשי | [לוח](/android/Connect4/01.connect4-board/) |
+| מנוע, snapshots, כוח כבידה, ניצחון ותיקו | שיעור מעשי | [תורות](/android/Connect4/02.connect4-drop-and-turns/), [תוצאות](/android/Connect4/03.connect4-win-and-draw/) |
+| ViewModel, SharedPreferences ושחזור באמצעות replay | שיעור מעשי | [שמירה ושחזור](/android/Connect4/04.connect4-save-and-restore/) |
+| ממשק שחקן, heuristic, Executor וביטול תוצאה ישנה | שיעור מעשי | [יוריסטיקה](/android/Connect4/05.connect4-heuristic-player/), [חישוב ברקע](/android/Connect4/06.connect4-background-turns/) |
+| שילוב מודל מסופק ו־fallback | שיעור מעשי באינטגרציה בלבד | [חבילת המורה](/android/Connect4/07.connect4-supplied-model-player/) — MCTS, קידוד ומודלים מסופקים; אין לימוד מימושם או אימון |
+| Firebase Authentication ו־Credential Manager | שיעור מעשי | [דוא״ל](/android/Connect4/08.connect4-email-authentication/), [Google](/android/Connect4/09.connect4-google-authentication/) |
+| transactions, UID, צופים וכללים תחומים | שיעור מעשי | [חדרים](/android/Connect4/10.connect4-online-rooms/), [משחק רשת](/android/Connect4/11.connect4-online-game/) |
+| Repository, זהות פעולה, ניתוק ושחזור listeners | שיעור מעשי | [התאוששות](/android/Connect4/12.connect4-online-recovery/) |
+| משאבי כיוון/לילה, insets ואנימציה | שיעור מעשי | [הצגה סופית](/android/Connect4/13.connect4-final-presentation/) |
+
+בדיקות JVM, Android ו־Firebase emulator מסופקות למורה ב־[תיעוד האימות](/android/Connect4/teaching-plan/#validation). נוכחותן אינה טענה שהתלמיד כותב את כל סוויטת הבדיקות; כניסת Google אינטראקטיבית ובדיקת שרת חי עדיין דורשות סביבת חשבון מתאימה.
 
 ## Android Studio, מבנה הפרויקט ותהליך העבודה
 

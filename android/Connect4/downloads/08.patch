@@ -1,0 +1,538 @@
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -1,4 +1,5 @@
+ // Top-level build file where you can add configuration options common to all sub-projects/modules.
+ plugins {
+     alias(libs.plugins.android.application) apply false
++    id("com.google.gms.google-services") version "4.5.0" apply false
+ }
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -1,6 +1,11 @@
+ plugins {
+     alias(libs.plugins.android.application)
++}
++
++// Offline modes also build before Firebase configuration is supplied.
++if (file("google-services.json").exists()) {
++    apply(plugin = "com.google.gms.google-services")
+ }
+ 
+ android {
+     namespace = "com.example.connect4"
+@@ -35,8 +40,10 @@
+     }
+ }
+ 
+ dependencies {
++    implementation(platform("com.google.firebase:firebase-bom:34.19.0"))
++    implementation("com.google.firebase:firebase-auth")
+     implementation("com.google.ai.edge.litert:litert:2.1.0")
+     implementation("androidx.lifecycle:lifecycle-viewmodel:2.10.0")
+     implementation(libs.activity.ktx)
+     implementation(libs.appcompat)
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -1,7 +1,9 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools">
++
++    <uses-permission android:name="android.permission.INTERNET" />
+ 
+     <application
+         android:allowBackup="true"
+         android:dataExtractionRules="@xml/data_extraction_rules"
+--- a/app/src/main/java/com/example/connect4/multiplayer/RepositoryError.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/RepositoryError.java
+@@ -0,0 +1,15 @@
++package com.example.connect4.multiplayer;
++
++/** Carries a recoverable operation error to the screen. */
++public final class RepositoryError {
++    public enum Code { INVALID_ARGUMENT, UNKNOWN }
++    private final Code code;
++    private final String message;
++    private final String roomId;
++    RepositoryError(Code code, String message, String roomId) {
++        this.code=code; this.message=message; this.roomId=roomId;
++    }
++    public Code getCode() { return code; }
++    public String getMessage() { return message; }
++    public String getRoomId() { return roomId; }
++}
+--- a/app/src/main/java/com/example/connect4/multiplayer/MultiplayerRepository.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/MultiplayerRepository.java
+@@ -0,0 +1,92 @@
++package com.example.connect4.multiplayer;
++import com.google.firebase.auth.FirebaseAuth;
++import com.google.firebase.auth.FirebaseUser;
++
++/** Owns Firebase authentication and closes its listeners explicitly. */
++public final class MultiplayerRepository {
++    private final FirebaseAuth auth;
++    /** Uses the app registered by the teacher. */
++    public MultiplayerRepository() { this(FirebaseAuth.getInstance()); }
++    /** Allows isolated Auth emulator instances in tests. */
++    public MultiplayerRepository(FirebaseAuth auth) { this.auth=auth; }
++
++    /** Returns the authenticated Firebase user's UID, or {@code null} when signed out. */
++    public String currentUid() {
++        FirebaseUser user = auth.getCurrentUser();
++        return user == null ? null : user.getUid();
++    }
++
++    /** Signs in with email/password and reports the resulting UID asynchronously. */
++    public void signIn(String email, String password, ResultCallback<String> callback) {
++        if (email == null || email.trim().isEmpty() || password == null || password.isEmpty()) {
++            callback.onError(error(RepositoryError.Code.INVALID_ARGUMENT,
++                    "Email and password are required", null));
++            return;
++        }
++        auth.signInWithEmailAndPassword(email.trim(), password)
++                .addOnSuccessListener(result -> callback.onSuccess(result.getUser().getUid()))
++                .addOnFailureListener(exception -> callback.onError(firebaseError(exception, null)));
++    }
++
++    /** Creates an email/password account and reports the resulting UID asynchronously. */
++    public void createAccount(String email, String password, ResultCallback<String> callback) {
++        if (email == null || email.trim().isEmpty() || password == null || password.isEmpty()) {
++            callback.onError(error(RepositoryError.Code.INVALID_ARGUMENT,
++                    "Email and password are required", null));
++            return;
++        }
++        auth.createUserWithEmailAndPassword(email.trim(), password)
++                .addOnSuccessListener(result -> callback.onSuccess(result.getUser().getUid()))
++                .addOnFailureListener(exception -> callback.onError(firebaseError(exception, null)));
++    }
++
++    /** Clears the current Firebase authentication session. */
++    public void signOut() {
++        auth.signOut();
++    }
++
++    /** Subscribes to authentication changes; callers must close the returned subscription. */
++    public Subscription subscribeAuth(AuthListener listener) {
++        FirebaseAuth.AuthStateListener firebaseListener = firebaseAuth -> {
++            FirebaseUser user = firebaseAuth.getCurrentUser();
++            listener.onAuthChanged(user == null ? null : user.getUid());
++        };
++        auth.addAuthStateListener(firebaseListener);
++        return once(() -> auth.removeAuthStateListener(firebaseListener));
++    }
++
++    private static RepositoryError firebaseError(Exception exception, String roomId) {
++        String message = exception == null || exception.getLocalizedMessage() == null
++                ? "Firebase operation failed" : exception.getLocalizedMessage();
++        return error(RepositoryError.Code.UNKNOWN, message, roomId);
++    }
++
++    private static RepositoryError error(RepositoryError.Code code, String message,
++                                         String roomId) {
++        return new RepositoryError(code, message == null ? "Operation failed" : message, roomId);
++    }
++
++    private static Subscription once(Runnable remover) {
++        return new Subscription() {
++            private boolean closed;
++
++            @Override
++            public synchronized void close() {
++                if (!closed) {
++                    closed = true;
++                    remover.run();
++                }
++            }
++        };
++    }
++
++    public interface Subscription extends AutoCloseable {
++        Subscription EMPTY = () -> { };
++        @Override void close();
++    }
++    public interface ResultCallback<T> {
++        void onSuccess(T result);
++        void onError(RepositoryError error);
++    }
++    public interface AuthListener { void onAuthChanged(String uid); }
++}
+--- a/app/src/main/java/com/example/connect4/GameSession.java
++++ b/app/src/main/java/com/example/connect4/GameSession.java
+@@ -5,8 +5,9 @@
+ import androidx.annotation.MainThread;
+ import androidx.lifecycle.ViewModel;
+ import com.example.connect4.ai.ComputerMoveService;
+ import com.example.connect4.ai.ModelCatalog;
++import com.example.connect4.multiplayer.MultiplayerRepository;
+ import com.example.connect4.core.GameEngine;
+ import com.example.connect4.core.GameState;
+ import java.util.concurrent.ExecutorService;
+ import java.util.concurrent.Executors;
+@@ -18,8 +19,15 @@
+ public final class GameSession extends ViewModel {
+     public static final int MODE_LOCAL = 0;
+     public static final int MODE_HEURISTIC = 1;
+     public static final int MODE_MODEL = 2;
++    public static final int MODE_ONLINE = 3;
++    public MultiplayerRepository repository;
++    public boolean authPending;
++    public String onlineMessage = "";
++    public String onlineUid;
++    public long onlineGeneration;
++    public Runnable refreshOnline;
+     public String selectedModelId = ModelCatalog.DEFAULT_MODEL_ID;
+ 
+     public GameEngine engine = new GameEngine();
+     public int mode = MODE_LOCAL;
+--- a/app/src/main/java/com/example/connect4/OnlineController.java
++++ b/app/src/main/java/com/example/connect4/OnlineController.java
+@@ -0,0 +1,93 @@
++package com.example.connect4;
++
++import android.view.View;
++import com.example.connect4.databinding.ActivityMainBinding;
++import com.example.connect4.multiplayer.*;
++
++/** Connects the login controls to retained authentication state. */
++final class OnlineController {
++    interface Host { void changed(); }
++    private final ActivityMainBinding ui;
++    private final GameSession session;
++    private final Host host;
++    private boolean active;
++    private MultiplayerRepository.Subscription auth = MultiplayerRepository.Subscription.EMPTY;
++    private final Runnable refreshCallback = this::refreshScreen;
++
++    OnlineController(android.app.Activity activity, ActivityMainBinding ui, GameSession session, Host host) {
++        this.ui=ui; this.session=session; this.host=host;
++        ui.signIn.setOnClickListener(v -> authenticate(false));
++        ui.signUp.setOnClickListener(v -> authenticate(true));
++        ui.signOut.setOnClickListener(v -> {
++            session.onlineGeneration++;
++            if (session.repository != null) session.repository.signOut();
++            refreshScreen();
++        });
++    }
++
++    /** Attaches a single auth listener while the online screen is visible. */
++    void start() {
++        if (active || session.mode != GameSession.MODE_ONLINE) return;
++        active=true;
++        session.refreshOnline=refreshCallback;
++        try {
++            if (session.repository==null) session.repository=new MultiplayerRepository();
++            auth=session.repository.subscribeAuth(uid -> {
++                if (!active) return;
++                session.onlineUid=uid;
++                refreshScreen();
++            });
++        } catch (IllegalStateException failure) {
++            session.onlineMessage="Firebase setup unavailable. Add the registered Connect4 google-services.json and rebuild.";
++        }
++        refreshScreen();
++    }
++
++    /** Releases Activity-owned callbacks without signing the user out. */
++    void stop() {
++        active=false;
++        auth.close();
++        if (session.refreshOnline==refreshCallback) session.refreshOnline=null;
++    }
++    void modeChanged() {
++        session.onlineGeneration++;
++        if (session.mode==GameSession.MODE_ONLINE) start(); else stop();
++    }
++    private void refreshScreen() { if (active) host.changed(); }
++    private void refreshLatestScreen() { if (session.refreshOnline!=null) session.refreshOnline.run(); }
++    private void showError(RepositoryError error) { session.onlineMessage=error.getMessage(); }
++    void destroy() { }
++
++    /** Shows the session's identity and enables only available actions. */
++    void render() {
++        boolean signedIn=session.repository!=null && session.repository.currentUid()!=null;
++        ui.authPanel.setVisibility(signedIn ? View.GONE : View.VISIBLE);
++        ui.signOut.setVisibility(signedIn ? View.VISIBLE : View.GONE);
++        ui.signIn.setEnabled(session.repository!=null && !session.authPending);
++        ui.signUp.setEnabled(session.repository!=null && !session.authPending);
++        ui.onlineStatus.setText(signedIn ? "Signed in: " + session.repository.currentUid() : session.onlineMessage);
++    }
++
++    private void authenticate(boolean create) {
++        if (session.repository == null || session.authPending) return;
++        session.authPending = true;
++        String email = ui.email.getText().toString();
++        String password = ui.password.getText().toString();
++        ui.password.setText("");
++        MultiplayerRepository.ResultCallback<String> callback = new MultiplayerRepository.ResultCallback<String>() {
++            @Override public void onSuccess(String uid) {
++                session.authPending = false;
++                session.onlineMessage = "Signed in";
++                refreshLatestScreen();
++            }
++            @Override public void onError(RepositoryError error) {
++                session.authPending = false;
++                showError(error);
++                refreshLatestScreen();
++            }
++        };
++        if (create) session.repository.createAccount(email, password, callback);
++        else session.repository.signIn(email, password, callback);
++        host.changed();
++    }
++}
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -12,8 +12,9 @@
+     <string-array name="game_modes">
+         <item>Two players · this device</item>
+         <item>Play heuristic</item>
+         <item>Play model / MCTS</item>
++        <item>Online rooms</item>
+     </string-array>
+     <string-array name="player_sides">
+         <item>You are Red · play first</item>
+         <item>You are Yellow · play second</item>
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -1,29 +1,28 @@
+ <?xml version="1.0" encoding="utf-8"?>
++<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
++    android:id="@+id/main" android:layout_width="match_parent" android:layout_height="match_parent"
++    android:saveEnabled="false" android:fillViewport="true">
++    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
++    <androidx.fragment.app.FragmentContainerView android:id="@+id/gameSetup"
++        android:name="com.example.connect4.GameSetupFragment"
++        android:layout_width="match_parent" android:layout_height="wrap_content" />
+ <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+-    android:id="@+id/main"
++    android:id="@+id/offlineGame"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent"
++    android:layout_height="wrap_content"
+     tools:context=".MainActivity">
+-
+-    <androidx.fragment.app.FragmentContainerView
+-        android:id="@+id/gameSetup"
+-        android:name="com.example.connect4.GameSetupFragment"
+-        android:layout_width="0dp" android:layout_height="wrap_content"
+-        app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintEnd_toEndOf="parent" />
+ 
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:id="@+id/status"
+         android:text="Tap a column"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toBottomOf="@id/gameSetup" />
++        app:layout_constraintTop_toTopOf="parent" />
+ 
+     <TextView
+         android:id="@+id/aiStatus" android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+@@ -43,8 +42,24 @@
+         android:id="@+id/restart"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="New game"
++        app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/board"
+         app:layout_constraintStart_toStartOf="parent" />
+ 
+-</androidx.constraintlayout.widget.ConstraintLayout>
++</androidx.constraintlayout.widget.ConstraintLayout>    <LinearLayout android:id="@+id/onlinePanel" android:orientation="vertical"
++        android:layout_width="match_parent" android:layout_height="wrap_content" android:visibility="gone">
++        <TextView android:id="@+id/onlineStatus" android:layout_width="match_parent" android:layout_height="wrap_content" />
++        <LinearLayout android:id="@+id/authPanel" android:orientation="vertical"
++            android:layout_width="match_parent" android:layout_height="wrap_content">
++            <EditText android:id="@+id/email" android:layout_width="match_parent" android:layout_height="wrap_content"
++                android:hint="Email" android:inputType="textEmailAddress" android:autofillHints="emailAddress" />
++            <EditText android:id="@+id/password" android:layout_width="match_parent" android:layout_height="wrap_content"
++                android:hint="Password" android:inputType="textPassword" android:autofillHints="password" android:saveEnabled="false" />
++            <Button android:id="@+id/signIn" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sign in" />
++            <Button android:id="@+id/signUp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Create account" />
++        </LinearLayout>
++        <Button android:id="@+id/signOut" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Sign out" />
++    </LinearLayout>
++    </LinearLayout>
++</ScrollView>
+--- a/app/src/main/java/com/example/connect4/MainActivity.java
++++ b/app/src/main/java/com/example/connect4/MainActivity.java
+@@ -22,8 +22,9 @@
+     private ActivityMainBinding binding;
+     private GameSetupFragment setup;
+     private GameSession session;
+     private boolean started;
++    private OnlineController online;
+     private ModelCatalog modelCatalog;
+ 
+     /** Exposes the activity binding only to the package-local online controller. */
+     ActivityMainBinding viewBinding() {
+@@ -52,9 +53,9 @@
+         boolean initializeModelStatus = false;
+         if (!session.restored) {
+             android.content.SharedPreferences saved = getPreferences(MODE_PRIVATE);
+             session.mode = saved.getInt("mode", GameSession.MODE_LOCAL);
+-            if (session.mode < GameSession.MODE_LOCAL || session.mode > GameSession.MODE_MODEL) {
++            if (session.mode < GameSession.MODE_LOCAL || session.mode > GameSession.MODE_ONLINE) {
+                 session.mode = GameSession.MODE_LOCAL;
+             }
+             session.humanSide = saved.getInt("side", GameState.RED);
+             if (session.humanSide != GameState.RED && session.humanSide != GameState.YELLOW) {
+@@ -80,8 +81,11 @@
+         } else if (initializeModelStatus) {
+             session.modelStatus = selectedModel().displayName()
+                     + " loads on the computer’s turn";
+         }
++        online = new OnlineController(this, binding, session, new OnlineController.Host() {
++            @Override public void changed() { persist(); render(); }
++        });
+         setup.configure(modelCatalog.entries().stream()
+                 .map(ModelCatalog.Entry::displayName).toArray(String[]::new),
+                 session.mode, session.humanSide - 1, selectedModelPosition(),
+                 new GameSetupFragment.Listener() {
+@@ -90,9 +94,10 @@
+                     session.mode = position;
+                     session.modelStatus = selectedModel().displayName()
+                             + " loads on the computer’s turn";
+                     session.cancelComputerMove();
+-                    newGame();
++                    online.modeChanged();
++                    if (position != GameSession.MODE_ONLINE) newGame();
+                 }
+                 render();
+             }
+             @Override public void onSideSelected(int position) {
+@@ -132,8 +137,9 @@
+ 
+ 
+     private boolean humanTurn() {
+         GameState state = session.engine.snapshot();
++        if (session.mode == GameSession.MODE_ONLINE) return false;
+         return started && !state.isTerminal() && !session.isComputerThinking()
+                 && (session.mode == GameSession.MODE_LOCAL
+                 || state.currentPlayer() == session.humanSide);
+     }
+@@ -144,9 +150,12 @@
+     }
+ 
+     private void render() {
+         GameState state = session.engine.snapshot();
++        boolean online = session.mode == GameSession.MODE_ONLINE;
+         setup.showMode(session.mode);
++        binding.onlinePanel.setVisibility(online ? View.VISIBLE : View.GONE);
++        binding.offlineGame.setVisibility(online ? View.GONE : View.VISIBLE);
+         binding.restart.setText(R.string.new_game);
+         binding.restart.setEnabled(true);
+         String player = playerName(state.currentPlayer());
+         if (state.isDraw()) {
+@@ -164,8 +173,10 @@
+         } else {
+             binding.aiStatus.setText(session.modelStatus);
+         }
+         binding.board.show(state, humanTurn());
++        if (online && this.online != null) this.online.render();
++        binding.restart.setVisibility(binding.offlineGame.getVisibility());
+         requestComputerMoveIfNeeded();
+     }
+ 
+ 
+@@ -178,9 +189,9 @@
+     /** Captures one turn before handing its immutable state to the computer worker. */
+     private void requestComputerMoveIfNeeded() {
+         GameState requestedState = session.engine.snapshot();
+         if (!started || session.mode == GameSession.MODE_LOCAL
+-                || session.isComputerThinking()
++                || session.mode == GameSession.MODE_ONLINE || session.isComputerThinking()
+                 || session.hasComputerMoveFailed() || requestedState.isTerminal()
+                 || requestedState.currentPlayer() == session.humanSide) return;
+ 
+         int requestedMode = session.mode;
+@@ -233,13 +244,15 @@
+         }
+         return 0;
+     }
+ 
+-    @Override protected void onStart() { super.onStart(); started = true; render(); }
++    @Override protected void onStart() { super.onStart(); started = true; online.start(); render(); }
+     @Override protected void onStop() {
+         started = false;
+         session.cancelComputerMove();
++        online.stop();
+         persist();
+         super.onStop();
+     }
+ 
++    @Override protected void onDestroy() { online.destroy(); super.onDestroy(); }
+ }
+--- a/app/src/androidTest/java/com/example/connect4/CourseAuthTest.java
++++ b/app/src/androidTest/java/com/example/connect4/CourseAuthTest.java
+@@ -0,0 +1,44 @@
++package com.example.connect4;
++import android.content.Context;
++import androidx.test.core.app.ApplicationProvider;
++import com.google.firebase.FirebaseApp;
++import com.google.firebase.FirebaseOptions;
++import com.google.firebase.auth.FirebaseAuth;
++import com.example.connect4.multiplayer.*;
++import org.junit.Test;
++import java.util.UUID;
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.TimeUnit;
++import java.util.concurrent.atomic.AtomicReference;
++import static org.junit.Assert.*;
++
++/** Requires the local Firebase Auth emulator at host port 9099. */
++public class CourseAuthTest {
++    @Test public void accountSignOutAndSignInKeepTheSameUid() throws Exception {
++        Context context=ApplicationProvider.getApplicationContext();
++        FirebaseApp app=FirebaseApp.initializeApp(context,new FirebaseOptions.Builder()
++                .setProjectId("demo-connect4").setApplicationId("1:123:android:course")
++                .setApiKey("fake-key-for-emulator").build(),"course-"+UUID.randomUUID());
++        try {
++            FirebaseAuth auth=FirebaseAuth.getInstance(app);
++            auth.useEmulator("10.0.2.2",9099);
++            MultiplayerRepository repo=new MultiplayerRepository(auth);
++            String email="course-"+UUID.randomUUID()+"@example.test";
++            String uid=await(cb -> repo.createAccount(email,"course-test-password",cb));
++            assertEquals(uid,repo.currentUid());
++            repo.signOut(); assertNull(repo.currentUid());
++            assertEquals(uid,await(cb -> repo.signIn(email,"course-test-password",cb)));
++        } finally { app.delete(); }
++    }
++    private interface Operation { void run(MultiplayerRepository.ResultCallback<String> callback); }
++    private static String await(Operation operation) throws Exception {
++        CountDownLatch done=new CountDownLatch(1);
++        AtomicReference<String> value=new AtomicReference<>(),error=new AtomicReference<>();
++        operation.run(new MultiplayerRepository.ResultCallback<String>() {
++            public void onSuccess(String result) { value.set(result);done.countDown(); }
++            public void onError(RepositoryError failure) { error.set(failure.getMessage());done.countDown(); }
++        });
++        assertTrue("Auth callback timed out",done.await(20,TimeUnit.SECONDS));
++        assertNull(error.get(),error.get());return value.get();
++    }
++}
+--- a/app/src/debug/AndroidManifest.xml
++++ b/app/src/debug/AndroidManifest.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++    <application android:networkSecurityConfig="@xml/debug_network_security_config" />
++</manifest>
+--- a/app/src/debug/res/xml/debug_network_security_config.xml
++++ b/app/src/debug/res/xml/debug_network_security_config.xml
+@@ -0,0 +1,10 @@
++<?xml version="1.0" encoding="utf-8"?>
++<network-security-config>
++    <base-config cleartextTrafficPermitted="false" />
++    <!-- Emulator-only RTDB endpoints use local cleartext traffic; release builds stay HTTPS-only. -->
++    <domain-config cleartextTrafficPermitted="true">
++        <domain includeSubdomains="false">10.0.2.2</domain>
++        <domain includeSubdomains="false">localhost</domain>
++        <domain includeSubdomains="false">127.0.0.1</domain>
++    </domain-config>
++</network-security-config>

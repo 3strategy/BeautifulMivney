@@ -1,0 +1,1907 @@
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -35,8 +35,9 @@
+     }
+ }
+ 
+ dependencies {
++    implementation("com.google.ai.edge.litert:litert:2.1.0")
+     implementation("androidx.lifecycle:lifecycle-viewmodel:2.10.0")
+     implementation(libs.activity.ktx)
+     implementation(libs.appcompat)
+     implementation(libs.constraintlayout)
+--- a/app/src/main/java/com/example/connect4/core/GameEngine.java
++++ b/app/src/main/java/com/example/connect4/core/GameEngine.java
+@@ -20,8 +20,25 @@
+         moves = new StringBuilder();
+         currentPlayer = GameState.RED;
+         winner = GameState.EMPTY;
+         winningCells = new ArrayList<>();
++    }
++
++    /**
++     * Copies a trusted, immutable snapshot for restoration or search.
++     * GameState is constructed inside core; untrusted saved/network move histories
++     * must instead be replayed through apply(), as RoomValidation does.
++     */
++    public GameEngine(GameState state) {
++        if (state == null) {
++            throw new NullPointerException("state");
++        }
++        board = state.boardCopy();
++        moves = new StringBuilder(state.moves());
++        currentPlayer = state.currentPlayer();
++        winner = state.winner();
++        terminal = state.isTerminal();
++        winningCells = new ArrayList<>(state.winningCells());
+     }
+ 
+     /** Returns a detached immutable snapshot suitable for rendering or AI simulation. */
+     public GameState snapshot() {
+--- a/app/src/main/java/com/example/connect4/ai/ComputerMoveService.java
++++ b/app/src/main/java/com/example/connect4/ai/ComputerMoveService.java
+@@ -1,10 +1,12 @@
+ package com.example.connect4.ai;
+ 
++import android.content.Context;
+ import com.example.connect4.core.ComputerPlayer;
+ import com.example.connect4.core.GameAction;
+ import com.example.connect4.core.GameState;
+ import com.example.connect4.core.HeuristicPlayer;
++import com.example.connect4.core.MctsPlayer;
+ import java.util.concurrent.CancellationException;
+ 
+ /**
+  * Connects an opponent, asks for one action, and returns the action with its status.
+@@ -16,8 +18,33 @@
+ 
+     public static Result chooseHeuristicMove(GameState snapshot) {
+         return new Result(chooseLegalAction(new HeuristicPlayer(), snapshot),
+                 "Heuristic · win, block, then center");
++    }
++
++    /** Opens, validates, uses and closes one model on the same worker thread. */
++    public static Result chooseModelMove(
++            Context context, ModelCatalog.Entry model, GameState snapshot, int simulations) {
++        if (simulations < 1) throw new IllegalArgumentException("simulations must be positive");
++        if (snapshot.legalActions().isEmpty()) {
++            throw new IllegalArgumentException("Cannot request a move without a legal action");
++        }
++        throwIfInterrupted();
++        try (TfliteEvaluator evaluator = new TfliteEvaluator(context, model.assets())) {
++            ComputerPlayer player = new MctsPlayer(evaluator, simulations);
++            GameAction action = chooseLegalAction(player, snapshot);
++            return new Result(action, evaluator.modelDescription()
++                    + " · MCTS " + simulations + " simulations");
++        } catch (CancellationException cancelled) {
++            // Restart/backgrounding is not a broken model and must not produce a fallback move.
++            throw cancelled;
++        } catch (Exception | LinkageError failure) {
++            throwIfInterrupted();
++            String reason = failure.getMessage();
++            if (reason == null || reason.isEmpty()) reason = failure.getClass().getSimpleName();
++            return new Result(chooseLegalAction(new HeuristicPlayer(), snapshot),
++                    model.displayName() + " · Heuristic fallback · " + reason);
++        }
+     }
+ 
+     private static GameAction chooseLegalAction(ComputerPlayer player, GameState snapshot) {
+         throwIfInterrupted();
+--- a/app/src/main/java/com/example/connect4/GameSession.java
++++ b/app/src/main/java/com/example/connect4/GameSession.java
+@@ -4,8 +4,9 @@
+ import android.os.Looper;
+ import androidx.annotation.MainThread;
+ import androidx.lifecycle.ViewModel;
+ import com.example.connect4.ai.ComputerMoveService;
++import com.example.connect4.ai.ModelCatalog;
+ import com.example.connect4.core.GameEngine;
+ import com.example.connect4.core.GameState;
+ import java.util.concurrent.ExecutorService;
+ import java.util.concurrent.Executors;
+@@ -16,8 +17,10 @@
+ /** Survives rotation. Only MainActivity updates the live engine on the main thread. */
+ public final class GameSession extends ViewModel {
+     public static final int MODE_LOCAL = 0;
+     public static final int MODE_HEURISTIC = 1;
++    public static final int MODE_MODEL = 2;
++    public String selectedModelId = ModelCatalog.DEFAULT_MODEL_ID;
+ 
+     public GameEngine engine = new GameEngine();
+     public int mode = MODE_LOCAL;
+     public int humanSide = GameState.RED;
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -1,11 +1,22 @@
+ <resources>
+     <string name="app_name">Connect4</string>
++    <string name="new_game">New game</string>
++    <string name="player_red">Red</string>
++    <string name="player_yellow">Yellow</string>
++    <string name="game_draw">Draw — board full</string>
++    <string name="player_wins">%1$s wins!</string>
++    <string name="player_thinking">%1$s is thinking…</string>
++    <string name="player_to_play">%1$s to play</string>
++    <string name="local_play_status">Local play · no account needed</string>
++    <string name="heuristic_status">Heuristic · win, block, then center</string>
+     <string-array name="game_modes">
+         <item>Two players · this device</item>
+         <item>Play heuristic</item>
++        <item>Play model / MCTS</item>
+     </string-array>
+     <string-array name="player_sides">
+         <item>You are Red · play first</item>
+         <item>You are Yellow · play second</item>
+     </string-array>
++
+ </resources>
+--- a/app/src/main/res/layout/fragment_game_setup.xml
++++ b/app/src/main/res/layout/fragment_game_setup.xml
+@@ -5,5 +5,8 @@
+     <Spinner android:id="@+id/mode" android:layout_width="match_parent"
+         android:layout_height="48dp" android:contentDescription="Game mode" />
+     <Spinner android:id="@+id/side" android:layout_width="match_parent"
+         android:layout_height="48dp" android:contentDescription="Your color" />
++    <Spinner android:id="@+id/computerPlayer" android:layout_width="match_parent"
++        android:layout_height="48dp" android:contentDescription="Computer player"
++        android:visibility="gone" />
+ </LinearLayout>
+--- a/app/src/main/java/com/example/connect4/GameSetupFragment.java
++++ b/app/src/main/java/com/example/connect4/GameSetupFragment.java
+@@ -14,45 +14,53 @@
+ public class GameSetupFragment extends Fragment {
+     interface Listener {
+         void onModeSelected(int position);
+         void onSideSelected(int position);
++        void onComputerSelected(int position);
+     }
+ 
+     private FragmentGameSetupBinding binding;
+     private Listener listener;
+-    private boolean configured;
++    private String[] computers;
+     private int mode;
+     private int side;
++    private int computer;
+ 
+     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
+         binding = FragmentGameSetupBinding.inflate(inflater, container, false);
+-        if (configured) bindControls();
++        if (computers != null) bindControls();
+         return binding.getRoot();
+     }
+ 
+-    void configure(int mode, int side, Listener listener) {
++    void configure(String[] computers, int mode, int side, int computer, Listener listener) {
+         this.listener = listener;
+-        configured = true;
++        this.computers = computers;
+         this.mode = mode;
+         this.side = side;
++        this.computer = computer;
+         // Restored fragments can receive configuration before their view is recreated.
+         if (binding != null) bindControls();
+     }
+ 
+     private void bindControls() {
+         binding.mode.setAdapter(adapter(getResources().getStringArray(R.array.game_modes)));
+         binding.side.setAdapter(adapter(getResources().getStringArray(R.array.player_sides)));
++        binding.computerPlayer.setAdapter(adapter(computers));
+         binding.mode.setSelection(mode);
+         binding.side.setSelection(side);
++        binding.computerPlayer.setSelection(computer);
+         binding.mode.setOnItemSelectedListener(selection(position -> this.listener.onModeSelected(position)));
+         binding.side.setOnItemSelectedListener(selection(position -> this.listener.onSideSelected(position)));
++        binding.computerPlayer.setOnItemSelectedListener(selection(position -> this.listener.onComputerSelected(position)));
+         showMode(mode);
+     }
+ 
+     void showMode(int mode) {
+         this.mode = mode;
+         if (binding == null) return;
+-        binding.side.setVisibility(mode == GameSession.MODE_HEURISTIC ? View.VISIBLE : View.GONE);
++        binding.side.setVisibility(mode == GameSession.MODE_HEURISTIC
++                || mode == GameSession.MODE_MODEL ? View.VISIBLE : View.GONE);
++        binding.computerPlayer.setVisibility(mode == GameSession.MODE_MODEL ? View.VISIBLE : View.GONE);
+     }
+ 
+     private ArrayAdapter<String> adapter(String[] items) {
+         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, items);
+--- a/app/src/main/java/com/example/connect4/ui/BoardView.java
++++ b/app/src/main/java/com/example/connect4/ui/BoardView.java
+@@ -12,8 +12,9 @@
+ public final class BoardView extends View {
+     private static final int ROWS = GameState.ROWS;
+     private static final int COLUMNS = GameState.COLUMNS;
+     private GameState state;
++    private boolean inputEnabled;
+     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+     private ColumnListener listener;
+ 
+     /** Receives a zero-based column; the View does not apply game rules. */
+@@ -28,9 +29,10 @@
+     /** Connects the Activity's response to a board tap. */
+     public void setColumnListener(ColumnListener listener) { this.listener = listener; }
+ 
+     /** Replaces the snapshot and requests a redraw. */
+-    public void show(GameState state) {
++    public void show(GameState state, boolean enabled) {
++        inputEnabled = enabled;
+         this.state = state;
+         invalidate();
+     }
+ 
+@@ -67,8 +69,9 @@
+         return Math.min(getWidth() / (float) COLUMNS, getHeight() / (float) ROWS);
+     }
+ 
+     @Override public boolean onTouchEvent(MotionEvent event) {
++        if (!inputEnabled) return false;
+         if (event.getAction() == MotionEvent.ACTION_UP) {
+             float size = cellSize();
+             float x = event.getX(), y = event.getY();
+             if (size > 0 && x >= 0 && x < size * COLUMNS && y >= 0 && y < size * ROWS) {
+--- a/app/src/main/java/com/example/connect4/MainActivity.java
++++ b/app/src/main/java/com/example/connect4/MainActivity.java
+@@ -1,131 +1,245 @@
+ package com.example.connect4;
+ 
+ import android.os.Bundle;
+-import androidx.lifecycle.ViewModelProvider;
+-import com.example.connect4.core.GameAction;
+-import com.example.connect4.core.GameEngine;
+-import com.example.connect4.core.GameState;
+-import com.example.connect4.ai.ComputerMoveService;
+-
+-import com.example.connect4.databinding.ActivityMainBinding;
+-
++import android.content.Context;
++import android.view.View;
+ import androidx.activity.EdgeToEdge;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.core.graphics.Insets;
+ import androidx.core.view.ViewCompat;
+ import androidx.core.view.WindowInsetsCompat;
+-
++import androidx.lifecycle.ViewModelProvider;
++import com.example.connect4.core.GameAction;
++import com.example.connect4.core.GameEngine;
++import com.example.connect4.core.GameState;
++import com.example.connect4.core.MctsPlayer;
++import com.example.connect4.ai.ModelCatalog;
++import com.example.connect4.ai.ComputerMoveService;
++import com.example.connect4.databinding.ActivityMainBinding;
++
++/** Coordinates the local game UI, retained session state, AI work, and online screen. */
+ public class MainActivity extends AppCompatActivity {
+     private ActivityMainBinding binding;
++    private GameSetupFragment setup;
+     private GameSession session;
+-    private GameSetupFragment setup;
+     private boolean started;
+-
+-    @Override
+-    protected void onCreate(Bundle savedInstanceState) {
++    private ModelCatalog modelCatalog;
++
++    /** Exposes the activity binding only to the package-local online controller. */
++    ActivityMainBinding viewBinding() {
++        return binding;
++    }
++
++    @Override protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         EdgeToEdge.enable(this);
+         binding = ActivityMainBinding.inflate(getLayoutInflater());
+         setContentView(binding.getRoot());
++        setup = (GameSetupFragment) getSupportFragmentManager().findFragmentById(R.id.gameSetup);
+         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
+-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
++            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
++            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+             return insets;
+         });
+         session = new ViewModelProvider(this).get(GameSession.class);
+-        setup = (GameSetupFragment) getSupportFragmentManager().findFragmentById(R.id.gameSetup);
++        String catalogFailure = null;
++        try {
++            modelCatalog = ModelCatalog.load(getAssets());
++        } catch (Exception failure) {
++            modelCatalog = ModelCatalog.fallback();
++            catalogFailure = "Model catalog unavailable · " + failure.getMessage();
++        }
++        boolean initializeModelStatus = false;
+         if (!session.restored) {
+-            session.mode = getPreferences(MODE_PRIVATE).getInt("mode", GameSession.MODE_LOCAL);
+-            if (session.mode < 0 || session.mode > GameSession.MODE_HEURISTIC) session.mode = GameSession.MODE_LOCAL;
+-            session.humanSide = getPreferences(MODE_PRIVATE).getInt("side", GameState.RED);
+-            if (session.humanSide != GameState.RED && session.humanSide != GameState.YELLOW) session.humanSide = GameState.RED;
+-            String moves = getPreferences(MODE_PRIVATE).getString("moves", "");
++            android.content.SharedPreferences saved = getPreferences(MODE_PRIVATE);
++            session.mode = saved.getInt("mode", GameSession.MODE_LOCAL);
++            if (session.mode < GameSession.MODE_LOCAL || session.mode > GameSession.MODE_MODEL) {
++                session.mode = GameSession.MODE_LOCAL;
++            }
++            session.humanSide = saved.getInt("side", GameState.RED);
++            if (session.humanSide != GameState.RED && session.humanSide != GameState.YELLOW) {
++                session.humanSide = GameState.RED;
++            }
++            session.selectedModelId = saved.getString(
++                    "computer_player", modelCatalog.defaultModelId());
++            String moves = saved.getString("moves", "");
+             GameEngine restored = new GameEngine();
+             for (int i = 0; i < moves.length(); i++) {
+                 if (!restored.apply(new GameAction(moves.charAt(i) - '0'))) break;
+             }
+             session.engine = restored;
+             session.restored = true;
+-        }
+-        setup.configure(session.mode, session.humanSide - 1, new GameSetupFragment.Listener() {
++            initializeModelStatus = true;
++        }
++        if (modelCatalog.find(session.selectedModelId) == null) {
++            session.selectedModelId = modelCatalog.defaultModelId();
++            initializeModelStatus = true;
++        }
++        if (catalogFailure != null) {
++            session.modelStatus = catalogFailure;
++        } else if (initializeModelStatus) {
++            session.modelStatus = selectedModel().displayName()
++                    + " loads on the computer’s turn";
++        }
++        setup.configure(modelCatalog.entries().stream()
++                .map(ModelCatalog.Entry::displayName).toArray(String[]::new),
++                session.mode, session.humanSide - 1, selectedModelPosition(),
++                new GameSetupFragment.Listener() {
+             @Override public void onModeSelected(int position) {
+-                if (session.mode != position) { session.mode = position; newGame(); }
+-                setup.showMode(session.mode);
++                if (session.mode != position) {
++                    session.mode = position;
++                    session.modelStatus = selectedModel().displayName()
++                            + " loads on the computer’s turn";
++                    session.cancelComputerMove();
++                    newGame();
++                }
++                render();
+             }
+             @Override public void onSideSelected(int position) {
+-                if (session.humanSide != position + 1) { session.humanSide = position + 1; newGame(); }
++                if (session.humanSide != position + 1) {
++                    session.humanSide = position + 1;
++                    newGame();
++                }
++                render();
++            }
++            @Override public void onComputerSelected(int position) {
++                ModelCatalog.Entry selected = modelCatalog.entries().get(position);
++                if (!selected.id().equals(session.selectedModelId)) {
++                    session.selectedModelId = selected.id();
++                    session.modelStatus = selected.displayName() + " loads on the computer’s turn";
++                    session.cancelComputerMove();
++                    if (session.mode == GameSession.MODE_MODEL) newGame();
++                    else persist();
++                }
++                render();
+             }
+         });
+-        binding.board.setColumnListener(column -> {
+-            if (!humanTurn()) return;
+-            if (session.engine.apply(new GameAction(column))) { persist(); render(); }
+-        });
++        binding.board.setColumnListener(this::playColumn);
+         binding.restart.setOnClickListener(v -> newGame());
+         render();
+     }
+-    /** Resets the game after changing a player or pressing New game. */
++
++    com.example.connect4.databinding.FragmentGameSetupBinding setupBinding() {
++        return setup.viewBinding();
++    }
++
+     private void newGame() {
+         session.cancelComputerMove();
+         session.engine = new GameEngine();
+         persist();
+         render();
+     }
+ 
++
+     private boolean humanTurn() {
+-        return started && !session.isComputerThinking() && !session.engine.snapshot().isTerminal()
++        GameState state = session.engine.snapshot();
++        return started && !state.isTerminal() && !session.isComputerThinking()
+                 && (session.mode == GameSession.MODE_LOCAL
+-                || session.engine.snapshot().currentPlayer() == session.humanSide);
+-    }
+-
+-    /** Presents the model; drawing does not change the game. */
++                || state.currentPlayer() == session.humanSide);
++    }
++
++    private void playColumn(int column) {
++        if (!humanTurn()) return;
++        if (session.engine.apply(new GameAction(column))) { persist(); render(); }
++    }
++
+     private void render() {
+         GameState state = session.engine.snapshot();
+-        binding.board.show(state);
+-        if (state.isDraw()) binding.status.setText("Draw — board full");
+-        else if (state.isTerminal()) binding.status.setText(state.winner() == GameState.RED ? "Red wins!" : "Yellow wins!");
+-        else binding.status.setText(state.currentPlayer() == GameState.RED ? "Red to play" : "Yellow to play");
+-        if (session.isComputerThinking()) binding.status.setText("Computer is thinking…");
+-        binding.aiStatus.setText(session.modelStatus);
++        setup.showMode(session.mode);
++        binding.restart.setText(R.string.new_game);
++        binding.restart.setEnabled(true);
++        String player = playerName(state.currentPlayer());
++        if (state.isDraw()) {
++            binding.status.setText(R.string.game_draw);
++        } else if (state.isTerminal()) {
++            binding.status.setText(getString(R.string.player_wins, playerName(state.winner())));
++        } else {
++            int message = session.isComputerThinking() ? R.string.player_thinking : R.string.player_to_play;
++            binding.status.setText(getString(message, player));
++        }
++        if (session.mode == GameSession.MODE_LOCAL) {
++            binding.aiStatus.setText(R.string.local_play_status);
++        } else if (session.mode == GameSession.MODE_HEURISTIC && !session.hasComputerMoveFailed()) {
++            binding.aiStatus.setText(R.string.heuristic_status);
++        } else {
++            binding.aiStatus.setText(session.modelStatus);
++        }
++        binding.board.show(state, humanTurn());
+         requestComputerMoveIfNeeded();
+     }
+ 
+-    /** Saves only accepted column history; the engine reconstructs the rest. */
++
++
++
++    private String playerName(int player) {
++        return getString(player == GameState.RED ? R.string.player_red : R.string.player_yellow);
++    }
++
++    /** Captures one turn before handing its immutable state to the computer worker. */
++    private void requestComputerMoveIfNeeded() {
++        GameState requestedState = session.engine.snapshot();
++        if (!started || session.mode == GameSession.MODE_LOCAL
++                || session.isComputerThinking()
++                || session.hasComputerMoveFailed() || requestedState.isTerminal()
++                || requestedState.currentPlayer() == session.humanSide) return;
++
++        int requestedMode = session.mode;
++        ModelCatalog.Entry selectedModel = selectedModel();
++        Context applicationContext = getApplicationContext();
++        binding.status.setText(getString(R.string.player_thinking, playerName(requestedState.currentPlayer())));
++        session.requestComputerMove(
++                () -> {
++                    if (requestedMode == GameSession.MODE_MODEL) {
++                        return ComputerMoveService.chooseModelMove(applicationContext, selectedModel,
++                                requestedState, MctsPlayer.DEFAULT_PHONE_SIMULATIONS);
++                    }
++                    return ComputerMoveService.chooseHeuristicMove(requestedState);
++                },
++                result -> applyComputerMove(requestedState, result),
++                failure -> {
++                    session.modelStatus = "Computer move failed · " + failure.getMessage();
++                    render();
++                });
++    }
++
++    /** Receives a proposed action on the main thread; the live engine has the final say. */
++    private void applyComputerMove(GameState requestedState, ComputerMoveService.Result result) {
++        if (!started || !requestedState.equals(session.engine.snapshot())) return;
++        session.modelStatus = result.status();
++        if (!session.engine.apply(result.action())) {
++            // The service already checked legality against this exact snapshot.
++            throw new IllegalStateException("Computer action was rejected for an unchanged turn");
++        }
++        persist();
++        render();
++    }
++
+     private void persist() {
+-        getPreferences(MODE_PRIVATE).edit().putString("moves", session.engine.snapshot().moves())
+-                .putInt("mode", session.mode).putInt("side", session.humanSide).apply();
++        getPreferences(MODE_PRIVATE).edit().putInt("mode", session.mode).putInt("side", session.humanSide)
++                .putString("moves", session.engine.snapshot().moves())
++                .putString("computer_player", session.selectedModelId).apply();
++    }
++
++    private ModelCatalog.Entry selectedModel() {
++        ModelCatalog.Entry selected = modelCatalog.find(session.selectedModelId);
++        return selected == null ? modelCatalog.require(modelCatalog.defaultModelId()) : selected;
++    }
++
++    private int selectedModelPosition() {
++        for (int index = 0; index < modelCatalog.entries().size(); index++) {
++            if (modelCatalog.entries().get(index).id().equals(session.selectedModelId)) {
++                return index;
++            }
++        }
++        return 0;
+     }
+ 
+     @Override protected void onStart() { super.onStart(); started = true; render(); }
+-
+     @Override protected void onStop() {
+         started = false;
+         session.cancelComputerMove();
+         persist();
+         super.onStop();
+     }
+ 
+-    ActivityMainBinding viewBinding() { return binding; }
+-    com.example.connect4.databinding.FragmentGameSetupBinding setupBinding() { return setup.viewBinding(); }
+-
+-    /** Captures one position; the worker never receives the live engine. */
+-    private void requestComputerMoveIfNeeded() {
+-        GameState requestedState = session.engine.snapshot();
+-        if (!started || session.mode == GameSession.MODE_LOCAL || requestedState.isTerminal()
+-                || session.isComputerThinking() || session.hasComputerMoveFailed()
+-                || requestedState.currentPlayer() == session.humanSide) return;
+-        binding.status.setText("Computer is thinking…");
+-        session.requestComputerMove(
+-                () -> ComputerMoveService.chooseHeuristicMove(requestedState),
+-                result -> applyComputerMove(requestedState, result),
+-                failure -> { session.modelStatus = "Computer move failed · " + failure.getMessage(); render(); });
+-    }
+-
+-    /** Accepts only a result for the still-current position, on the main thread. */
+-    private void applyComputerMove(GameState requestedState, ComputerMoveService.Result result) {
+-        if (!started || !requestedState.equals(session.engine.snapshot())) return;
+-        if (!session.engine.apply(result.action())) throw new IllegalStateException("Illegal computer action");
+-        session.modelStatus = result.status();
+-        persist();
+-        render();
+-    }
+ }
+--- a/app/src/androidTest/assets/policy_value.json
++++ b/app/src/androidTest/assets/policy_value.json
+@@ -0,0 +1,6 @@
++{
++  "game": "not-connect4",
++  "contract_version": 1,
++  "model_kind": "mock",
++  "model_sha256": "unused-because-game-validation-runs-first"
++}
+--- a/app/src/androidTest/java/com/example/connect4/BoardInputTest.java
++++ b/app/src/androidTest/java/com/example/connect4/BoardInputTest.java
+@@ -4,8 +4,9 @@
+ 
+ import android.view.MotionEvent;
+ import androidx.test.ext.junit.runners.AndroidJUnit4;
+ import androidx.test.platform.app.InstrumentationRegistry;
++import com.example.connect4.core.GameEngine;
+ import com.example.connect4.ui.BoardView;
+ import java.util.concurrent.atomic.AtomicInteger;
+ import org.junit.Test;
+ import org.junit.runner.RunWith;
+@@ -16,8 +17,9 @@
+         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+             BoardView board = new BoardView(
+                     InstrumentationRegistry.getInstrumentation().getTargetContext(), null);
+             board.layout(0, 0, 700, 300); // Drawn cells are 50px; board width is 350px.
++            board.show(new GameEngine().snapshot(), true);
+             AtomicInteger selected = new AtomicInteger(-1);
+             board.setColumnListener(selected::set);
+ 
+             tap(board, 349, 150);
+@@ -26,8 +28,11 @@
+                 selected.set(-1);
+                 tap(board, outside[0], outside[1]);
+                 assertEquals(-1, selected.get());
+             }
++            board.show(new GameEngine().snapshot(), false);
++            tap(board, 25, 150);
++            assertEquals(-1, selected.get());
+         });
+     }
+ 
+     private static void tap(BoardView board, float x, float y) {
+--- a/app/src/androidTest/java/com/example/connect4/InvalidModelMetadataTest.java
++++ b/app/src/androidTest/java/com/example/connect4/InvalidModelMetadataTest.java
+@@ -0,0 +1,45 @@
++package com.example.connect4;
++
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertThrows;
++
++import android.content.Context;
++import android.content.ContextWrapper;
++import android.content.res.AssetManager;
++import androidx.test.ext.junit.runners.AndroidJUnit4;
++import androidx.test.platform.app.InstrumentationRegistry;
++import com.example.connect4.ai.TfliteEvaluator;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++/** Uses test-APK assets to prove incompatible metadata is rejected before inference. */
++@RunWith(AndroidJUnit4.class)
++public class InvalidModelMetadataTest {
++    @Test
++    public void assetPairRejectsPathsAndWrongExtensions() {
++        assertThrows(IllegalArgumentException.class,
++                () -> new TfliteEvaluator.AssetPair("../model.tflite", "model.json", null));
++        assertThrows(IllegalArgumentException.class,
++                () -> new TfliteEvaluator.AssetPair("model.bin", "model.json", null));
++        assertThrows(IllegalArgumentException.class,
++                () -> new TfliteEvaluator.AssetPair("model.tflite", "folder/model.json", null));
++    }
++
++    @Test
++    public void wrongGameMetadataIsRejected() {
++        Context target = InstrumentationRegistry.getInstrumentation().getTargetContext();
++        AssetManager invalidAssets = InstrumentationRegistry.getInstrumentation()
++                .getContext().getAssets();
++        Context invalidModelContext = new ContextWrapper(target) {
++            @Override
++            public AssetManager getAssets() {
++                return invalidAssets;
++            }
++        };
++
++        IllegalArgumentException failure = assertThrows(
++                IllegalArgumentException.class,
++                () -> new TfliteEvaluator(invalidModelContext));
++        assertEquals("Wrong game", failure.getMessage());
++    }
++}
+--- a/app/src/androidTest/java/com/example/connect4/ModelIntegrationTest.java
++++ b/app/src/androidTest/java/com/example/connect4/ModelIntegrationTest.java
+@@ -0,0 +1,64 @@
++package com.example.connect4;
++
++import androidx.test.ext.junit.runners.AndroidJUnit4;
++import androidx.test.platform.app.InstrumentationRegistry;
++import com.example.connect4.core.PolicyValueEvaluator;
++import com.example.connect4.ai.ModelCatalog;
++import com.example.connect4.ai.TfliteEvaluator;
++import com.example.connect4.core.GameAction;
++import com.example.connect4.core.GameEngine;
++import com.example.connect4.core.MctsPlayer;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++import static org.junit.Assert.*;
++
++/** Real packaged model/native runtime smoke check, independent of model strength. */
++@RunWith(AndroidJUnit4.class)
++public class ModelIntegrationTest {
++    @Test public void packagedModelEvaluatesAndSearchesLegalMoves() throws Exception {
++        verifyPackagedModel(catalog().require("main"), false);
++    }
++
++    @Test public void packagedEarlyModelEvaluatesAndSearchesLegalMoves() throws Exception {
++        verifyPackagedModel(catalog().require("early-a100"), true);
++    }
++
++    @Test public void packagedUntrainedBaselineEvaluatesAndSearchesLegalMoves() throws Exception {
++        ModelCatalog.Entry entry = catalog().require("untrained-baseline");
++        try (TfliteEvaluator evaluator = new TfliteEvaluator(
++                InstrumentationRegistry.getInstrumentation().getTargetContext(), entry.assets())) {
++            assertEquals("mock", evaluator.modelKind());
++            assertTrue(evaluator.modelDescription().contains("Mock / untrained"));
++            PolicyValueEvaluator.Evaluation result = evaluator.evaluate(new GameEngine().snapshot());
++            assertEquals(7, result.policyLogits().length);
++            assertTrue(Float.isFinite(result.value()));
++        }
++    }
++
++    private static void verifyPackagedModel(
++            ModelCatalog.Entry entry, boolean early) throws Exception {
++        try (TfliteEvaluator evaluator = new TfliteEvaluator(
++                InstrumentationRegistry.getInstrumentation().getTargetContext(), entry.assets())) {
++            assertTrue(evaluator.modelKind().equals("mock") || evaluator.modelKind().equals("trained"));
++            if (early) {
++                assertEquals("trained", evaluator.modelKind());
++                assertTrue(evaluator.displayName().toLowerCase(java.util.Locale.ROOT).contains("early"));
++                assertFalse(evaluator.trainingSummary().isEmpty());
++            }
++            assertFalse(evaluator.modelDescription().contains("simulations"));
++            GameEngine engine = new GameEngine();
++            for (int turn = 0; turn < 12 && !engine.snapshot().isTerminal(); turn++) {
++                PolicyValueEvaluator.Evaluation result = evaluator.evaluate(engine.snapshot());
++                assertEquals(7, result.policyLogits().length);
++                assertTrue(Float.isFinite(result.value()));
++                GameAction move = new MctsPlayer(evaluator, 32).chooseAction(engine.snapshot());
++                assertTrue(engine.apply(move));
++            }
++        }
++    }
++
++    private static ModelCatalog catalog() throws Exception {
++        return ModelCatalog.load(InstrumentationRegistry.getInstrumentation()
++                .getTargetContext().getAssets());
++    }
++}
+--- a/app/src/androidTest/java/com/example/connect4/ai/ComputerMoveServiceTest.java
++++ b/app/src/androidTest/java/com/example/connect4/ai/ComputerMoveServiceTest.java
+@@ -0,0 +1,66 @@
++package com.example.connect4.ai;
++
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertFalse;
++import static org.junit.Assert.assertThrows;
++import static org.junit.Assert.assertTrue;
++
++import android.content.Context;
++import android.content.ContextWrapper;
++import android.content.res.AssetManager;
++import androidx.test.ext.junit.runners.AndroidJUnit4;
++import androidx.test.platform.app.InstrumentationRegistry;
++import com.example.connect4.core.GameAction;
++import com.example.connect4.core.GameEngine;
++import com.example.connect4.core.GameState;
++import java.util.concurrent.CancellationException;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++@RunWith(AndroidJUnit4.class)
++public class ComputerMoveServiceTest {
++    private final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
++
++    @Test public void modelReturnsAnActionAndReportsTheActualSearchBudget() throws Exception {
++        GameState snapshot = new GameEngine().snapshot();
++        ModelCatalog.Entry model = ModelCatalog.load(context.getAssets()).require("untrained-baseline");
++        ComputerMoveService.Result result = ComputerMoveService.chooseModelMove(context, model, snapshot, 8);
++        assertTrue(snapshot.legalActions().contains(result.action()));
++        assertTrue(result.status().contains("Mock / untrained"));
++        assertTrue(result.status().contains("MCTS 8 simulations"));
++        assertFalse(result.status().contains("fallback"));
++    }
++
++    @Test public void missingModelFallsBackWithAVisibleReason() {
++        ModelCatalog.Entry missing = new ModelCatalog.Entry("missing", "Missing model",
++                new TfliteEvaluator.AssetPair("missing.tflite", "missing.json", "Missing model"));
++        ComputerMoveService.Result result = ComputerMoveService.chooseModelMove(
++                context, missing, new GameEngine().snapshot(), 8);
++        assertEquals(new GameAction(3), result.action());
++        assertTrue(result.status().startsWith("Missing model · Heuristic fallback · "));
++    }
++
++    @Test public void incompatibleModelFallsBackBeforeSearch() {
++        Context invalidContext = new ContextWrapper(context) {
++            @Override public AssetManager getAssets() {
++                return InstrumentationRegistry.getInstrumentation().getContext().getAssets();
++            }
++        };
++        ComputerMoveService.Result result = ComputerMoveService.chooseModelMove(invalidContext,
++                ModelCatalog.fallback().require(ModelCatalog.DEFAULT_MODEL_ID),
++                new GameEngine().snapshot(), 8);
++        assertEquals(new GameAction(3), result.action());
++        assertTrue(result.status().contains("Heuristic fallback · Wrong game"));
++    }
++
++    @Test public void cancellationDoesNotFallBack() {
++        Thread.currentThread().interrupt();
++        try {
++            assertThrows(CancellationException.class, () -> ComputerMoveService.chooseModelMove(
++                    context, ModelCatalog.fallback().require(ModelCatalog.DEFAULT_MODEL_ID),
++                    new GameEngine().snapshot(), 8));
++        } finally {
++            Thread.interrupted();
++        }
++    }
++}
+--- a/app/src/main/assets/early_policy_value.json
++++ b/app/src/main/assets/early_policy_value.json
+@@ -0,0 +1,78 @@
++{
++  "game": "connect4",
++  "contract_version": 1,
++  "model_kind": "trained",
++  "model_sha256": "b559247dfbd899e7490c628b0ed8c6c21a8e659c30022b88833fe3d032d9d792",
++  "signature_key": "serving_default",
++  "input": {
++    "name": "state",
++    "shape": [
++      1,
++      6,
++      7,
++      2
++    ],
++    "dtype": "float32",
++    "layout": "NHWC"
++  },
++  "outputs": {
++    "policy_logits": {
++      "name": "policy_logits",
++      "shape": [
++        1,
++        7
++      ],
++      "dtype": "float32",
++      "meaning": "unnormalized_logits_one_per_column"
++    },
++    "value": {
++      "name": "value",
++      "shape": [
++        1,
++        1
++      ],
++      "dtype": "float32",
++      "range": [
++        -1.0,
++        1.0
++      ],
++      "perspective": "player_to_move"
++    }
++  },
++  "verification": {
++    "positions": 128,
++    "absolute_tolerance": 0.0002,
++    "max_policy_error": 2.384185791015625e-06,
++    "max_value_error": 1.0728836059570312e-06,
++    "legal_masked_argmax_matches": 128,
++    "mcts_positions": 12,
++    "mcts_simulations": 24,
++    "mcts_action_matches": 12,
++    "signature_key": "serving_default"
++  },
++  "notice": "Trained artifact; see evaluation report for measured strength.",
++  "evaluation": {
++    "path": "ml/artifacts/early-a100/evaluation.json",
++    "sha256": "64c18ef96b31b80e05906a737f8195cd22cb25fb976299dd253c99b1cd73e82f"
++  },
++  "training_provenance": {
++    "artifact_id": "early-a100-cycle-3",
++    "purpose": "early checkpoint comparison",
++    "training_status": "partial_run_checkpoint",
++    "cycles_completed": 3,
++    "self_play_games_per_cycle": 1024,
++    "self_play_games_total": 3072,
++    "optimizer_updates_per_cycle": 100,
++    "optimizer_updates_total": 300,
++    "hardware": "NVIDIA A100",
++    "platform": "Google Colab",
++    "source_colab_url": "https://colab.research.google.com/drive/1cDkaagZrgH_bwePZ3uZbDBPduzO77fl8?authuser=2",
++    "parameters_sha256": "a3707669b8668196605e76a55602662c3a53a3644ecafd4082ff6df2f4f926fd",
++    "history_sha256": "daa314cda44f3c59e9a202df2634e17b1447a5a2c57247a9f6e8d949bfeb1d8b",
++    "history_steps": 300,
++    "evaluation_games_per_baseline": 20,
++    "evaluation_search_simulations": 128,
++    "evaluation_seed": 1234,
++    "checkpoint_included": false
++  }
++}
+--- a/app/src/main/assets/mock_policy_value.json
++++ b/app/src/main/assets/mock_policy_value.json
+@@ -0,0 +1,54 @@
++{
++  "game": "connect4",
++  "contract_version": 1,
++  "model_kind": "mock",
++  "model_sha256": "3463d99418f0f6830d2de2a99b522aa84b2f4463801522c58ea1ca85065d46f8",
++  "signature_key": "serving_default",
++  "input": {
++    "name": "state",
++    "shape": [
++      1,
++      6,
++      7,
++      2
++    ],
++    "dtype": "float32",
++    "layout": "NHWC"
++  },
++  "outputs": {
++    "policy_logits": {
++      "name": "policy_logits",
++      "shape": [
++        1,
++        7
++      ],
++      "dtype": "float32",
++      "meaning": "unnormalized_logits_one_per_column"
++    },
++    "value": {
++      "name": "value",
++      "shape": [
++        1,
++        1
++      ],
++      "dtype": "float32",
++      "range": [
++        -1.0,
++        1.0
++      ],
++      "perspective": "player_to_move"
++    }
++  },
++  "verification": {
++    "positions": 128,
++    "absolute_tolerance": 0.0002,
++    "max_policy_error": 3.725290298461914e-07,
++    "max_value_error": 2.5331974029541016e-07,
++    "legal_masked_argmax_matches": 128,
++    "mcts_positions": 12,
++    "mcts_simulations": 24,
++    "mcts_action_matches": 12,
++    "signature_key": "serving_default"
++  },
++  "notice": "Untrained integration artifact; playing strength is not claimed."
++}
+--- a/app/src/main/assets/player_catalog.json
++++ b/app/src/main/assets/player_catalog.json
+@@ -0,0 +1,24 @@
++{
++  "schema_version": 1,
++  "default_player_id": "main",
++  "players": [
++    {
++      "id": "main",
++      "display_name": "A100 · 10 cycles",
++      "model_asset": "policy_value.tflite",
++      "metadata_asset": "policy_value.json"
++    },
++    {
++      "id": "early-a100",
++      "display_name": "Early A100 comparison",
++      "model_asset": "early_policy_value.tflite",
++      "metadata_asset": "early_policy_value.json"
++    },
++    {
++      "id": "untrained-baseline",
++      "display_name": "Untrained baseline",
++      "model_asset": "mock_policy_value.tflite",
++      "metadata_asset": "mock_policy_value.json"
++    }
++  ]
++}
+--- a/app/src/main/assets/policy_value.json
++++ b/app/src/main/assets/policy_value.json
+@@ -0,0 +1,114 @@
++{
++  "game": "connect4",
++  "contract_version": 1,
++  "model_kind": "trained",
++  "model_sha256": "15ef9c7b9b3723df1b7422b952aa46939af3956d8b692c3670f4e705de834bc8",
++  "signature_key": "serving_default",
++  "input": {
++    "name": "state",
++    "shape": [
++      1,
++      6,
++      7,
++      2
++    ],
++    "dtype": "float32",
++    "layout": "NHWC"
++  },
++  "outputs": {
++    "policy_logits": {
++      "name": "policy_logits",
++      "shape": [
++        1,
++        7
++      ],
++      "dtype": "float32",
++      "meaning": "unnormalized_logits_one_per_column"
++    },
++    "value": {
++      "name": "value",
++      "shape": [
++        1,
++        1
++      ],
++      "dtype": "float32",
++      "range": [
++        -1.0,
++        1.0
++      ],
++      "perspective": "player_to_move"
++    }
++  },
++  "verification": {
++    "positions": 128,
++    "absolute_tolerance": 0.0002,
++    "max_policy_error": 2.86102294921875e-06,
++    "max_value_error": 1.1473894119262695e-06,
++    "legal_masked_argmax_matches": 128,
++    "mcts_positions": 12,
++    "mcts_simulations": 24,
++    "mcts_action_matches": 12,
++    "signature_key": "serving_default"
++  },
++  "notice": "Trained artifact; see evaluation report for measured strength.",
++  "evaluation": {
++    "path": "ml/artifacts/a100-cycle-10/evaluation.json",
++    "sha256": "e4a5da24df698354619a4ce128c0048b18692668b3bb757c7877a186c8817602"
++  },
++  "training_provenance": {
++    "artifact_id": "a100-cycle-10",
++    "purpose": "deployed trained policy/value model",
++    "training_status": "completed_10_cycle_checkpoint",
++    "cycles_completed": 10,
++    "self_play_games_total": 10240,
++    "optimizer_updates_total": 1000,
++    "training_seed": 2026,
++    "hardware": {
++      "platform": "Google Colab",
++      "accelerator": "NVIDIA A100-SXM4-40GB",
++      "python": "3.13.15",
++      "jax": "0.4.38",
++      "backend": "gpu"
++    },
++    "source_colab_url": "https://colab.research.google.com/drive/1cDkaagZrgH_bwePZ3uZbDBPduzO77fl8?authuser=2",
++    "parameters_sha256": "df21b6fb3777f17fe59d5e7a12fc9bf5379a54e2a0571deccceb507427dcf23f",
++    "history_sha256": "878c1573f177633f75df56829378ce28bdb8e31b412bdc193bd41d9708341354",
++    "metrics_sha256": "95992863e87a0f4bff00b574852415dbe422fc10bb896e88a9de399ed99622cb",
++    "executed_notebook_sha256": "e439dd420a07aee64d022cab207f962a6b03521cb1d204fa6b0f2b03141fdf40",
++    "history_steps": 1000,
++    "config": {
++      "seed": 2026,
++      "iterations": 10,
++      "self_play_games": 1024,
++      "simulations": 400,
++      "replay_capacity": 1000000,
++      "batch_size": 4096,
++      "training_steps": 100,
++      "learning_rate": 0.002,
++      "weight_decay": 0.0001,
++      "c_puct": 1.5,
++      "dirichlet_alpha": 0.3,
++      "dirichlet_fraction": 0.25,
++      "temperature_moves": 12,
++      "eval_games": 200
++    },
++    "metrics": {
++      "parameter_count": 96456,
++      "self_play_red_wins": 5421,
++      "self_play_yellow_wins": 3565,
++      "self_play_draws": 1254,
++      "self_play_positions": 295007,
++      "self_play_seconds": 1313.9295552990002,
++      "self_play_positions_per_second": 224.52269134996942,
++      "replay_size": 295007,
++      "final_loss": 1.7379159927368164,
++      "final_policy_loss": 1.217734932899475,
++      "final_value_loss": 0.5193498134613037
++    },
++    "evaluation_games_per_baseline": 20,
++    "evaluation_search_simulations": 128,
++    "evaluation_seed": 1234,
++    "checkpoint_included": false,
++    "planned_100_cycle_continuation_complete": false
++  }
++}
+--- a/app/src/main/java/com/example/connect4/ai/ModelCatalog.java
++++ b/app/src/main/java/com/example/connect4/ai/ModelCatalog.java
+@@ -0,0 +1,136 @@
++package com.example.connect4.ai;
++
++import android.content.res.AssetManager;
++import java.io.ByteArrayOutputStream;
++import java.io.InputStream;
++import java.nio.charset.StandardCharsets;
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.HashSet;
++import java.util.List;
++import java.util.Set;
++import org.json.JSONArray;
++import org.json.JSONObject;
++
++/** Stable model IDs and explicit model/sidecar pairs supplied by one asset registry. */
++public final class ModelCatalog {
++    public static final String ASSET_NAME = "player_catalog.json";
++    public static final String DEFAULT_MODEL_ID = "main";
++
++    private final String defaultModelId;
++    private final List<Entry> entries;
++
++    private ModelCatalog(String defaultModelId, List<Entry> entries) {
++        this.defaultModelId = defaultModelId;
++        this.entries = Collections.unmodifiableList(new ArrayList<>(entries));
++    }
++
++    /** Loads and validates the complete model registry packaged in application assets. */
++    public static ModelCatalog load(AssetManager assets) throws Exception {
++        byte[] bytes;
++        try (InputStream input = assets.open(ASSET_NAME);
++             ByteArrayOutputStream output = new ByteArrayOutputStream()) {
++            byte[] buffer = new byte[4096];
++            int count;
++            while ((count = input.read(buffer)) != -1) output.write(buffer, 0, count);
++            bytes = output.toByteArray();
++        }
++        JSONObject json = new JSONObject(new String(bytes, StandardCharsets.UTF_8));
++        if (json.getInt("schema_version") != 1) {
++            throw new IllegalArgumentException("Unsupported model catalog version");
++        }
++        // Preserve the shipped JSON keys while naming Java objects for their model role.
++        String defaultId = validId(json.getString("default_player_id"));
++        JSONArray models = json.getJSONArray("players");
++        if (models.length() == 0) throw new IllegalArgumentException("Model catalog is empty");
++        List<Entry> result = new ArrayList<>();
++        Set<String> ids = new HashSet<>();
++        for (int index = 0; index < models.length(); index++) {
++            JSONObject model = models.getJSONObject(index);
++            String id = validId(model.getString("id"));
++            if (!ids.add(id)) throw new IllegalArgumentException("Duplicate model id " + id);
++            String displayName = model.getString("display_name").trim();
++            if (displayName.isEmpty() || displayName.length() > 80 || hasControlCharacter(displayName)) {
++                throw new IllegalArgumentException("Invalid model display name");
++            }
++            TfliteEvaluator.AssetPair pair = new TfliteEvaluator.AssetPair(
++                    model.getString("model_asset"),
++                    model.getString("metadata_asset"),
++                    displayName);
++            result.add(new Entry(id, displayName, pair));
++        }
++        if (!ids.contains(defaultId)) {
++            throw new IllegalArgumentException("Default model is not in catalog");
++        }
++        return new ModelCatalog(defaultId, result);
++    }
++
++    /** Provides the legacy single-model configuration if the catalog cannot be read. */
++    public static ModelCatalog fallback() {
++        List<Entry> entries = new ArrayList<>();
++        entries.add(new Entry(
++                DEFAULT_MODEL_ID,
++                "Current model",
++                TfliteEvaluator.DEFAULT_ASSETS));
++        return new ModelCatalog(DEFAULT_MODEL_ID, entries);
++    }
++
++    /** Returns the configured model identifier selected for a fresh session. */
++    public String defaultModelId() { return defaultModelId; }
++
++    /** Returns immutable model entries in the order intended for the computer-player picker. */
++    public List<Entry> entries() { return entries; }
++
++    /** Finds an entry by its stable identifier, or returns {@code null} if it is absent. */
++    public Entry find(String id) {
++        for (Entry entry : entries) if (entry.id().equals(id)) return entry;
++        return null;
++    }
++
++    /** Finds an entry or rejects an unknown identifier. */
++    public Entry require(String id) {
++        Entry entry = find(id);
++        if (entry == null) throw new IllegalArgumentException("Unknown model id " + id);
++        return entry;
++    }
++
++    private static String validId(String id) {
++        if (id == null || id.isEmpty() || id.length() > 40) {
++            throw new IllegalArgumentException("Invalid model id");
++        }
++        for (int index = 0; index < id.length(); index++) {
++            char character = id.charAt(index);
++            boolean safe = character >= 'a' && character <= 'z'
++                    || character >= '0' && character <= '9'
++                    || index > 0 && (character == '_' || character == '-');
++            if (!safe) throw new IllegalArgumentException("Invalid model id");
++        }
++        return id;
++    }
++
++    private static boolean hasControlCharacter(String value) {
++        for (int index = 0; index < value.length(); index++) {
++            if (Character.isISOControl(value.charAt(index))) return true;
++        }
++        return false;
++    }
++
++    /** One named model choice and the files required to evaluate it. */
++    public static final class Entry {
++        private final String id;
++        private final String displayName;
++        private final TfliteEvaluator.AssetPair assets;
++
++        Entry(String id, String displayName, TfliteEvaluator.AssetPair assets) {
++            this.id = id;
++            this.displayName = displayName;
++            this.assets = assets;
++        }
++
++        public String id() { return id; }
++
++        public String displayName() { return displayName; }
++
++        public TfliteEvaluator.AssetPair assets() { return assets; }
++    }
++}
+--- a/app/src/main/java/com/example/connect4/ai/TfliteEvaluator.java
++++ b/app/src/main/java/com/example/connect4/ai/TfliteEvaluator.java
+@@ -0,0 +1,187 @@
++package com.example.connect4.ai;
++
++import android.content.Context;
++import com.example.connect4.core.GameState;
++import com.example.connect4.core.PolicyValueEvaluator;
++import com.example.connect4.core.StateEncoder;
++import org.json.JSONArray;
++import org.json.JSONObject;
++import org.tensorflow.lite.DataType;
++import org.tensorflow.lite.Interpreter;
++import org.tensorflow.lite.Tensor;
++import java.io.InputStream;
++import java.io.ByteArrayOutputStream;
++import java.io.IOException;
++import java.nio.ByteBuffer;
++import java.nio.ByteOrder;
++import java.nio.charset.StandardCharsets;
++import java.security.MessageDigest;
++import java.util.Arrays;
++import java.util.HashMap;
++import java.util.Map;
++
++/** CPU interpreter owned and used by a single AI worker. No network is required. */
++public final class TfliteEvaluator implements PolicyValueEvaluator, AutoCloseable {
++    public static final AssetPair DEFAULT_ASSETS = new AssetPair(
++            "policy_value.tflite", "policy_value.json", null);
++
++    private final Interpreter interpreter;
++    private final String signature;
++    private final String inputName;
++    private final String policyName;
++    private final String valueName;
++    private final String kind;
++    private final String displayName;
++    private final String trainingSummary;
++
++    public TfliteEvaluator(Context context) throws Exception {
++        this(context, DEFAULT_ASSETS);
++    }
++
++    public TfliteEvaluator(Context context, AssetPair assets) throws Exception {
++        if (context == null) throw new NullPointerException("context");
++        if (assets == null) throw new NullPointerException("assets");
++        byte[] model;
++        JSONObject metadata;
++        try (InputStream input = context.getAssets().open(assets.modelAsset())) {
++            model = readBytes(input);
++        }
++        try (InputStream input = context.getAssets().open(assets.metadataAsset())) {
++            metadata = new JSONObject(new String(readBytes(input), StandardCharsets.UTF_8));
++        }
++        require("connect4".equals(metadata.getString("game")), "Wrong game");
++        require(metadata.getInt("contract_version") == 1, "Wrong contract version");
++        kind = metadata.getString("model_kind");
++        require(kind.equals("mock") || kind.equals("trained"), "Unknown model kind");
++        String defaultName = assets.fallbackDisplayName() != null
++                ? assets.fallbackDisplayName()
++                : (kind.equals("mock") ? "Mock / untrained" : "Trained");
++        displayName = metadata.optString("display_name", defaultName).trim();
++        require(!displayName.isEmpty() && displayName.length() <= 100,
++                "Invalid model display name");
++        JSONObject provenance = metadata.optJSONObject("training_provenance");
++        int cycles = provenance == null ? -1 : provenance.optInt("cycles_completed", -1);
++        int updates = provenance == null ? -1 : provenance.optInt("optimizer_updates_total", -1);
++        trainingSummary = cycles >= 0 && updates >= 0
++                ? cycles + " cycles / " + updates + " updates"
++                : "";
++        StringBuilder hash = new StringBuilder();
++        for (byte item : MessageDigest.getInstance("SHA-256").digest(model)) hash.append(String.format("%02x", item & 255));
++        require(hash.toString().equals(metadata.getString("model_sha256")), "Model hash mismatch");
++        JSONObject input = metadata.getJSONObject("input");
++        JSONObject policy = metadata.getJSONObject("outputs").getJSONObject("policy_logits");
++        JSONObject value = metadata.getJSONObject("outputs").getJSONObject("value");
++        checkMetadata(input, new int[]{1, 6, 7, 2});
++        checkMetadata(policy, new int[]{1, 7});
++        checkMetadata(value, new int[]{1, 1});
++        require("NHWC".equals(input.getString("layout")), "Wrong layout");
++        require("unnormalized_logits_one_per_column".equals(policy.getString("meaning")), "Wrong policy meaning");
++        require("player_to_move".equals(value.getString("perspective")), "Wrong value perspective");
++        JSONArray range = value.getJSONArray("range");
++        require(range.length() == 2 && range.getDouble(0) == -1 && range.getDouble(1) == 1, "Wrong value range");
++        signature = metadata.getString("signature_key");
++        inputName = input.getString("name");
++        policyName = policy.getString("name");
++        valueName = value.getString("name");
++        ByteBuffer bytes = ByteBuffer.allocateDirect(model.length).order(ByteOrder.nativeOrder());
++        bytes.put(model).rewind();
++        Interpreter loaded = new Interpreter(bytes, new Interpreter.Options().setNumThreads(2));
++        try {
++            require(Arrays.asList(loaded.getSignatureKeys()).contains(signature), "Missing signature");
++            require(Arrays.equals(loaded.getSignatureInputs(signature), new String[]{inputName}), "Wrong signature inputs");
++            require(loaded.getSignatureOutputs(signature).length == 2, "Wrong signature outputs");
++            checkTensor(loaded.getInputTensorFromSignature(inputName, signature), new int[]{1, 6, 7, 2});
++            checkTensor(loaded.getOutputTensorFromSignature(policyName, signature), new int[]{1, 7});
++            checkTensor(loaded.getOutputTensorFromSignature(valueName, signature), new int[]{1, 1});
++        } catch (Exception exception) {
++            loaded.close();
++            throw exception;
++        }
++        interpreter = loaded;
++    }
++
++    /** Describes the model only; search budgets belong to the caller that runs MCTS. */
++    public String modelDescription() {
++        String kindLabel = kind.equals("mock") ? "Mock / untrained" : "Trained";
++        return displayName + (displayName.equals(kindLabel) ? "" : " · " + kindLabel)
++                + (trainingSummary.isEmpty() ? "" : " · " + trainingSummary);
++    }
++
++    public String modelKind() { return kind; }
++
++    public String displayName() { return displayName; }
++
++    public String trainingSummary() { return trainingSummary; }
++
++    @Override public Evaluation evaluate(GameState state) {
++        if (state.isTerminal()) throw new IllegalArgumentException("Do not evaluate terminal positions");
++        float[][] policy = new float[1][7];
++        float[][] value = new float[1][1];
++        Map<String, Object> inputs = new HashMap<>();
++        Map<String, Object> outputs = new HashMap<>();
++        inputs.put(inputName, StateEncoder.encode(state));
++        outputs.put(policyName, policy);
++        outputs.put(valueName, value);
++        interpreter.runSignature(inputs, outputs, signature);
++        return new Evaluation(policy[0], value[0][0]);
++    }
++
++    private static void checkMetadata(JSONObject tensor, int[] expected) throws Exception {
++        require("float32".equals(tensor.getString("dtype")), "Wrong metadata dtype");
++        JSONArray shape = tensor.getJSONArray("shape");
++        require(shape.length() == expected.length, "Wrong metadata shape");
++        for (int i = 0; i < expected.length; i++) require(shape.getInt(i) == expected[i], "Wrong metadata shape");
++    }
++
++    private static void checkTensor(Tensor tensor, int[] shape) {
++        require(tensor.dataType() == DataType.FLOAT32 && Arrays.equals(tensor.shape(), shape), "Incompatible model tensor");
++    }
++
++    private static void require(boolean condition, String message) {
++        if (!condition) throw new IllegalArgumentException(message);
++    }
++
++    private static byte[] readBytes(InputStream input) throws IOException {
++        ByteArrayOutputStream output = new ByteArrayOutputStream();
++        byte[] buffer = new byte[8192];
++        int count;
++        while ((count = input.read(buffer)) != -1) output.write(buffer, 0, count);
++        return output.toByteArray();
++    }
++
++    @Override public void close() { interpreter.close(); }
++
++    /** Validated leaf asset names keep an explicit model/sidecar pair together. */
++    public static final class AssetPair {
++        private final String modelAsset;
++        private final String metadataAsset;
++        private final String fallbackDisplayName;
++
++        public AssetPair(String modelAsset, String metadataAsset, String fallbackDisplayName) {
++            this.modelAsset = validAssetName(modelAsset, ".tflite");
++            this.metadataAsset = validAssetName(metadataAsset, ".json");
++            this.fallbackDisplayName = fallbackDisplayName;
++        }
++
++        public String modelAsset() { return modelAsset; }
++
++        public String metadataAsset() { return metadataAsset; }
++
++        String fallbackDisplayName() { return fallbackDisplayName; }
++
++        private static String validAssetName(String name, String suffix) {
++            if (name == null || !name.endsWith(suffix) || name.length() > 100) {
++                throw new IllegalArgumentException("Invalid model asset name");
++            }
++            for (int index = 0; index < name.length(); index++) {
++                char character = name.charAt(index);
++                boolean safe = character >= 'a' && character <= 'z'
++                        || character >= 'A' && character <= 'Z'
++                        || character >= '0' && character <= '9'
++                        || character == '_' || character == '-' || character == '.';
++                if (!safe) throw new IllegalArgumentException("Invalid model asset name");
++            }
++            return name;
++        }
++    }
++}
+--- a/app/src/main/java/com/example/connect4/core/MctsPlayer.java
++++ b/app/src/main/java/com/example/connect4/core/MctsPlayer.java
+@@ -0,0 +1,155 @@
++package com.example.connect4.core;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.concurrent.CancellationException;
++
++/** Deterministic AlphaZero-style PUCT search over authoritative Java states. */
++public final class MctsPlayer implements ComputerPlayer {
++    public static final int DEFAULT_PHONE_SIMULATIONS = 128;
++    private static final double DEFAULT_C_PUCT = 1.5;
++
++    private final PolicyValueEvaluator evaluator;
++    private final int simulations;
++    private final double cPuct;
++
++    /** Creates a phone-oriented search using the standard exploration constant. */
++    public MctsPlayer(PolicyValueEvaluator evaluator, int simulations) {
++        this(evaluator, simulations, DEFAULT_C_PUCT);
++    }
++
++    /** Creates a deterministic PUCT search with explicit search and exploration budgets. */
++    public MctsPlayer(PolicyValueEvaluator evaluator, int simulations, double cPuct) {
++        if (evaluator == null) {
++            throw new NullPointerException("evaluator");
++        }
++        if (simulations < 1) {
++            throw new IllegalArgumentException("simulations must be positive");
++        }
++        if (!Double.isFinite(cPuct) || cPuct < 0.0) {
++            throw new IllegalArgumentException("cPuct must be finite and nonnegative");
++        }
++        this.evaluator = evaluator;
++        this.simulations = simulations;
++        this.cPuct = cPuct;
++    }
++
++    @Override
++    public GameAction chooseAction(GameState state) {
++        if (state == null) {
++            throw new NullPointerException("state");
++        }
++        if (state.isTerminal() || state.legalActions().isEmpty()) {
++            throw new IllegalArgumentException("Cannot choose an action without a legal move");
++        }
++        Node root = new Node(state, -1, 1.0);
++        for (int simulation = 0; simulation < simulations; simulation++) {
++            if (Thread.currentThread().isInterrupted()) {
++                throw new CancellationException("MCTS search interrupted");
++            }
++            runSimulation(root);
++        }
++        Node best = null;
++        for (Node child : root.children) {
++            if (best == null || child.visits > best.visits
++                    || (child.visits == best.visits && child.action < best.action)) {
++                best = child;
++            }
++        }
++        if (Thread.currentThread().isInterrupted()) {
++            throw new CancellationException("MCTS search interrupted");
++        }
++        return best == null ? state.legalActions().get(0) : new GameAction(best.action);
++    }
++
++    private void runSimulation(Node root) {
++        List<Node> path = new ArrayList<>();
++        Node node = root;
++        path.add(node);
++        while (node.expanded && !node.state.isTerminal()) {
++            node = selectChild(node);
++            path.add(node);
++        }
++
++        double value;
++        if (node.state.isTerminal()) {
++            value = terminalValue(node.state);
++        } else {
++            PolicyValueEvaluator.Evaluation evaluation = evaluator.evaluate(node.state);
++            expand(node, evaluation.policyLogits());
++            value = evaluation.value();
++        }
++
++        for (int index = path.size() - 1; index >= 0; index--) {
++            Node visited = path.get(index);
++            visited.visits++;
++            visited.valueSum += value;
++            value = -value;
++        }
++    }
++
++    private Node selectChild(Node parent) {
++        Node best = null;
++        double bestScore = Double.NEGATIVE_INFINITY;
++        double parentScale = Math.sqrt(parent.visits);
++        for (Node child : parent.children) {
++            double qFromParent = child.visits == 0 ? 0.0 : -child.valueSum / child.visits;
++            double exploration = cPuct * child.prior * parentScale / (1.0 + child.visits);
++            double score = qFromParent + exploration;
++            if (score > bestScore || (score == bestScore && child.action < best.action)) {
++                best = child;
++                bestScore = score;
++            }
++        }
++        return best;
++    }
++
++    private static void expand(Node node, float[] logits) {
++        List<GameAction> legal = node.state.legalActions();
++        double maxLogit = Double.NEGATIVE_INFINITY;
++        for (GameAction action : legal) {
++            maxLogit = Math.max(maxLogit, logits[action.column()]);
++        }
++        double sum = 0.0;
++        double[] weights = new double[GameState.COLUMNS];
++        for (GameAction action : legal) {
++            double weight = Math.exp(logits[action.column()] - maxLogit);
++            weights[action.column()] = weight;
++            sum += weight;
++        }
++        for (GameAction action : legal) {
++            GameEngine simulation = new GameEngine(node.state);
++            if (!simulation.apply(action)) {
++                throw new IllegalStateException("legal action was rejected by GameEngine");
++            }
++            node.children.add(new Node(
++                    simulation.snapshot(),
++                    action.column(),
++                    weights[action.column()] / sum));
++        }
++        node.expanded = true;
++    }
++
++    private static double terminalValue(GameState state) {
++        if (state.winner() == GameState.EMPTY) {
++            return 0.0;
++        }
++        return state.winner() == state.currentPlayer() ? 1.0 : -1.0;
++    }
++
++    private static final class Node {
++        final GameState state;
++        final int action;
++        final double prior;
++        final List<Node> children = new ArrayList<>();
++        int visits;
++        double valueSum;
++        boolean expanded;
++
++        Node(GameState state, int action, double prior) {
++            this.state = state;
++            this.action = action;
++            this.prior = prior;
++        }
++    }
++}
+--- a/app/src/main/java/com/example/connect4/core/PolicyValueEvaluator.java
++++ b/app/src/main/java/com/example/connect4/core/PolicyValueEvaluator.java
+@@ -0,0 +1,38 @@
++package com.example.connect4.core;
++
++/** Position scores for search, not move instructions. Contains no Android dependencies. */
++public interface PolicyValueEvaluator {
++    /** Evaluates a non-terminal state from its current player's perspective. */
++    Evaluation evaluate(GameState state);
++
++    /** Immutable model output: one raw score per column and a bounded position value. */
++    final class Evaluation {
++        private final float[] policyLogits;
++        private final float value;
++
++        /** Validates and defensively copies one model evaluation. */
++        public Evaluation(float[] policyLogits, float value) {
++            if (policyLogits == null || policyLogits.length != GameState.COLUMNS) {
++                throw new IllegalArgumentException("policy must contain 7 logits");
++            }
++            for (float logit : policyLogits) {
++                if (!Float.isFinite(logit)) {
++                    throw new IllegalArgumentException("policy logits must be finite");
++                }
++            }
++            if (!Float.isFinite(value) || value < -1.0f || value > 1.0f) {
++                throw new IllegalArgumentException("value must be finite and in [-1, 1]");
++            }
++            this.policyLogits = policyLogits.clone();
++            this.value = value;
++        }
++
++        public float[] policyLogits() {
++            return policyLogits.clone();
++        }
++
++        public float value() {
++            return value;
++        }
++    }
++}
+--- a/app/src/main/java/com/example/connect4/core/StateEncoder.java
++++ b/app/src/main/java/com/example/connect4/core/StateEncoder.java
+@@ -0,0 +1,45 @@
++package com.example.connect4.core;
++
++/** Converts immutable game states to the policy/value model contract. */
++public final class StateEncoder {
++    private StateEncoder() {
++    }
++
++    /**
++     * Encodes a position as the contract's NHWC {@code [1, 6, 7, 2]} tensor.
++     * Plane zero holds the player to move; plane one holds that player's opponent.
++     */
++    // TWIN-ID: CONNECT4.STATE_ENCODING (TWIN-PYTHON: ml/game_env.py::encode)
++    public static float[][][][] encode(GameState state) {
++        if (state == null) {
++            throw new NullPointerException("state");
++        }
++        float[][][][] encoded = new float[1][GameState.ROWS][GameState.COLUMNS][2];
++        int current = state.currentPlayer();
++        int opponent = current == GameState.RED ? GameState.YELLOW : GameState.RED;
++        for (int row = 0; row < GameState.ROWS; row++) {
++            for (int column = 0; column < GameState.COLUMNS; column++) {
++                int cell = state.cell(row, column);
++                if (cell == current) {
++                    encoded[0][row][column][0] = 1.0f;
++                } else if (cell == opponent) {
++                    encoded[0][row][column][1] = 1.0f;
++                }
++            }
++        }
++        return encoded;
++    }
++
++    /** Returns a seven-item mask whose true entries are currently playable columns. */
++    // TWIN-ID: CONNECT4.LEGAL_ACTION_MASK (TWIN-PYTHON: ml/game_env.py::legal_mask)
++    public static boolean[] legalMask(GameState state) {
++        if (state == null) {
++            throw new NullPointerException("state");
++        }
++        boolean[] mask = new boolean[GameState.COLUMNS];
++        for (GameAction action : state.legalActions()) {
++            mask[action.column()] = true;
++        }
++        return mask;
++    }
++}
+--- a/app/src/test/java/com/example/connect4/core/ComputerPlayerTest.java
++++ b/app/src/test/java/com/example/connect4/core/ComputerPlayerTest.java
+@@ -0,0 +1,42 @@
++package com.example.connect4.core;
++
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertTrue;
++import static org.junit.Assert.assertThrows;
++
++import java.util.concurrent.CancellationException;
++import org.junit.Test;
++
++/** Both implementations obey the same state-in/action-out contract. */
++public class ComputerPlayerTest {
++    private final ComputerPlayer[] players = {
++            new HeuristicPlayer(),
++            new MctsPlayer(state -> new PolicyValueEvaluator.Evaluation(new float[7], 0), 16)
++    };
++
++    @Test public void choosesLegalActionsForBothSidesWithoutChangingTheGame() {
++        for (ComputerPlayer player : players) {
++            GameEngine game = new GameEngine();
++            for (int turn = 0; turn < 12 && !game.snapshot().isTerminal(); turn++) {
++                GameState before = game.snapshot();
++                GameAction action = player.chooseAction(before);
++                assertTrue(before.legalActions().contains(action));
++                assertEquals(before, game.snapshot());
++                assertTrue(game.apply(action));
++                assertEquals(turn, before.moveCount());
++            }
++        }
++    }
++
++    @Test public void interruptionDoesNotProduceAnAction() {
++        for (ComputerPlayer player : players) {
++            Thread.currentThread().interrupt();
++            try {
++                assertThrows(CancellationException.class,
++                        () -> player.chooseAction(new GameEngine().snapshot()));
++            } finally {
++                Thread.interrupted();
++            }
++        }
++    }
++}
+--- a/app/src/test/java/com/example/connect4/core/GameEngineTest.java
++++ b/app/src/test/java/com/example/connect4/core/GameEngineTest.java
+@@ -111,8 +111,57 @@
+         assertTrue(engine.apply(new GameAction(3)));
+         assertEquals(GameState.EMPTY, snapshot.cell(4, 3));
+     }
+ 
++    @Test
++    public void constructorCopiesAndDetachesSnapshot() {
++        GameState original = play("303122").snapshot();
++        GameEngine restored = new GameEngine(original);
++
++        assertEquals(original, restored.snapshot());
++        assertTrue(restored.apply(new GameAction(4)));
++        assertFalse(original.equals(restored.snapshot()));
++    }
++
++    @Test
++    public void copiedTerminalPositionsPreserveResultAndRejectMoves() {
++        for (String history : new String[]{"0101010", "051434605223061623660540405114233565141232"}) {
++            GameState original = play(history).snapshot();
++            GameEngine copy = new GameEngine(original);
++            assertEquals(original, copy.snapshot());
++            assertFalse(copy.apply(new GameAction(2)));
++            assertEquals(original, copy.snapshot());
++        }
++    }
++
++    @Test
++    public void hypotheticalWinsUseTheSameRulesInEveryDirection() {
++        String[] wins = {"0101010", "342211650", "130315605411450024546152540042",
++                "331546634615526", "430312363514266141646452040520335600522115"};
++        for (String history : wins) {
++            GameEngine game = play(history.substring(0, history.length() - 1));
++            GameState before = game.snapshot();
++            GameAction action = new GameAction(history.charAt(history.length() - 1) - '0');
++            assertTrue(GameEngine.wouldWin(before, action, before.currentPlayer()));
++            assertEquals(before, game.snapshot());
++            assertTrue(game.apply(action));
++            assertEquals(before.currentPlayer(), game.snapshot().winner());
++        }
++    }
++
++    @Test
++    public void hypotheticalOpponentDropIsOnlyAnAnalysisAndRejectsIllegalActions() {
++        GameState state = play("01010").snapshot();
++        assertTrue(GameEngine.wouldWin(state, new GameAction(0), GameState.RED));
++        assertFalse(GameEngine.wouldWin(state, new GameAction(0), GameState.YELLOW));
++        assertEquals(GameState.YELLOW, state.currentPlayer());
++        assertEquals("01010", state.moves());
++        assertFalse(GameEngine.wouldWin(state, new GameAction(-1), GameState.RED));
++        assertFalse(GameEngine.wouldWin(state, new GameAction(7), GameState.RED));
++        assertFalse(GameEngine.wouldWin(play("000000").snapshot(), new GameAction(0), GameState.RED));
++        assertFalse(GameEngine.wouldWin(play("0101010").snapshot(), new GameAction(1), GameState.YELLOW));
++    }
++
+     private static GameEngine play(String moves) {
+         GameEngine engine = new GameEngine();
+         for (int index = 0; index < moves.length(); index++) {
+             assertTrue("move " + index + " should be legal",
+--- a/app/src/test/java/com/example/connect4/core/MctsPlayerTest.java
++++ b/app/src/test/java/com/example/connect4/core/MctsPlayerTest.java
+@@ -0,0 +1,100 @@
++package com.example.connect4.core;
++
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertThrows;
++
++import java.util.concurrent.CancellationException;
++import org.junit.Test;
++
++public class MctsPlayerTest {
++    private static final PolicyValueEvaluator UNIFORM = state ->
++            new PolicyValueEvaluator.Evaluation(new float[7], 0.0f);
++
++    @Test
++    public void findsForcedImmediateWinUsingExactTerminalValue() {
++        MctsPlayer player = new MctsPlayer(UNIFORM, 96);
++        assertEquals(new GameAction(0), player.chooseAction(play("010101")));
++    }
++
++    @Test
++    public void blocksOpponentsForcedImmediateWin() {
++        MctsPlayer player = new MctsPlayer(UNIFORM, 700);
++        assertEquals(new GameAction(0), player.chooseAction(play("01010")));
++    }
++
++    @Test
++    public void backsUpLeafValueFromTheCorrectPerspective() {
++        PolicyValueEvaluator evaluator = state -> {
++            float value = 0.0f;
++            if (state.moveCount() == 1) {
++                value = state.cell(5, 5) == GameState.RED ? -1.0f : 1.0f;
++            }
++            return new PolicyValueEvaluator.Evaluation(new float[7], value);
++        };
++        MctsPlayer player = new MctsPlayer(evaluator, 96);
++
++        assertEquals(new GameAction(5), player.chooseAction(new GameEngine().snapshot()));
++    }
++
++    @Test
++    public void masksIllegalPolicyLogitsAndUsesLegalPriors() {
++        GameState state = play("000000");
++        PolicyValueEvaluator evaluator = ignored -> new PolicyValueEvaluator.Evaluation(
++                new float[] {100.0f, 0.0f, 0.0f, 0.0f, 10.0f, 0.0f, 0.0f}, 0.0f);
++        MctsPlayer player = new MctsPlayer(evaluator, 64);
++
++        assertEquals(new GameAction(4), player.chooseAction(state));
++    }
++
++    @Test
++    public void equalVisitCountsChooseLowestColumn() {
++        MctsPlayer player = new MctsPlayer(UNIFORM, 8);
++        assertEquals(new GameAction(0), player.chooseAction(new GameEngine().snapshot()));
++    }
++
++    @Test
++    public void neverEvaluatesTerminalState() {
++        MctsPlayer player = new MctsPlayer(state -> {
++            throw new AssertionError("terminal state must not reach evaluator");
++        }, 8);
++
++        assertThrows(IllegalArgumentException.class,
++                () -> player.chooseAction(play("0101010")));
++    }
++
++    @Test
++    public void evaluationRejectsInvalidModelOutputs() {
++        assertThrows(IllegalArgumentException.class,
++                () -> new PolicyValueEvaluator.Evaluation(new float[6], 0.0f));
++        assertThrows(IllegalArgumentException.class,
++                () -> new PolicyValueEvaluator.Evaluation(
++                        new float[] {0, 0, 0, Float.NaN, 0, 0, 0}, 0.0f));
++        assertThrows(IllegalArgumentException.class,
++                () -> new PolicyValueEvaluator.Evaluation(new float[7], Float.POSITIVE_INFINITY));
++        assertThrows(IllegalArgumentException.class,
++                () -> new PolicyValueEvaluator.Evaluation(new float[7], 1.01f));
++    }
++
++    @Test
++    public void interruptedSearchAbortsBeforeModelEvaluation() {
++        MctsPlayer player = new MctsPlayer(state -> {
++            throw new AssertionError("interrupted search must not evaluate");
++        }, 8);
++        Thread.currentThread().interrupt();
++        try {
++            assertThrows(CancellationException.class,
++                    () -> player.chooseAction(new GameEngine().snapshot()));
++        } finally {
++            // JUnit reuses its worker thread, so do not leak the test's interrupt flag.
++            Thread.interrupted();
++        }
++    }
++
++    private static GameState play(String moves) {
++        GameEngine engine = new GameEngine();
++        for (int index = 0; index < moves.length(); index++) {
++            engine.apply(new GameAction(moves.charAt(index) - '0'));
++        }
++        return engine.snapshot();
++    }
++}
+--- a/app/src/test/java/com/example/connect4/core/StateEncoderTest.java
++++ b/app/src/test/java/com/example/connect4/core/StateEncoderTest.java
+@@ -0,0 +1,50 @@
++package com.example.connect4.core;
++
++import static org.junit.Assert.assertArrayEquals;
++import static org.junit.Assert.assertEquals;
++
++import org.junit.Test;
++
++public class StateEncoderTest {
++    @Test
++    public void encodesPlanesRelativeToPlayerToMove() {
++        GameEngine engine = new GameEngine();
++        engine.apply(new GameAction(3));
++        GameState state = engine.snapshot();
++
++        float[][][][] encoded = StateEncoder.encode(state);
++        assertEquals(1, encoded.length);
++        assertEquals(6, encoded[0].length);
++        assertEquals(7, encoded[0][0].length);
++        assertEquals(2, encoded[0][0][0].length);
++        assertArrayEquals(new float[] {0.0f, 1.0f}, encoded[0][5][3], 0.0f);
++        assertArrayEquals(new float[] {0.0f, 0.0f}, encoded[0][5][2], 0.0f);
++    }
++
++    @Test
++    public void terminalWinnerIsOnOpponentPlaneAfterTurnAdvances() {
++        GameState state = play("0101010");
++        float[][][][] encoded = StateEncoder.encode(state);
++
++        assertEquals(GameState.YELLOW, state.currentPlayer());
++        assertArrayEquals(new float[] {0.0f, 1.0f}, encoded[0][2][0], 0.0f);
++        assertArrayEquals(new float[] {1.0f, 0.0f}, encoded[0][5][1], 0.0f);
++        assertArrayEquals(new boolean[7], StateEncoder.legalMask(state));
++    }
++
++    @Test
++    public void legalMaskExcludesOnlyFullColumnBeforeTerminal() {
++        GameState state = play("000000");
++        assertArrayEquals(
++                new boolean[] {false, true, true, true, true, true, true},
++                StateEncoder.legalMask(state));
++    }
++
++    private static GameState play(String moves) {
++        GameEngine engine = new GameEngine();
++        for (int index = 0; index < moves.length(); index++) {
++            engine.apply(new GameAction(moves.charAt(index) - '0'));
++        }
++        return engine.snapshot();
++    }
++}

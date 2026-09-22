@@ -1,0 +1,121 @@
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -35,8 +35,9 @@
+     }
+ }
+ 
+ dependencies {
++    implementation("androidx.lifecycle:lifecycle-viewmodel:2.10.0")
+     implementation(libs.activity.ktx)
+     implementation(libs.appcompat)
+     implementation(libs.constraintlayout)
+     implementation(libs.material)
+--- a/app/src/main/java/com/example/connect4/GameSession.java
++++ b/app/src/main/java/com/example/connect4/GameSession.java
+@@ -0,0 +1,10 @@
++package com.example.connect4;
++
++import androidx.lifecycle.ViewModel;
++import com.example.connect4.core.GameEngine;
++
++/** Retains the game across Activity recreation, without keeping a View or Activity. */
++public final class GameSession extends ViewModel {
++    public GameEngine engine = new GameEngine();
++    public boolean restored;
++}
+--- a/app/src/main/java/com/example/connect4/MainActivity.java
++++ b/app/src/main/java/com/example/connect4/MainActivity.java
+@@ -1,7 +1,8 @@
+ package com.example.connect4;
+ 
+ import android.os.Bundle;
++import androidx.lifecycle.ViewModelProvider;
+ import com.example.connect4.core.GameAction;
+ import com.example.connect4.core.GameEngine;
+ import com.example.connect4.core.GameState;
+ 
+@@ -14,9 +15,9 @@
+ import androidx.core.view.WindowInsetsCompat;
+ 
+ public class MainActivity extends AppCompatActivity {
+     private ActivityMainBinding binding;
+-    private GameEngine engine = new GameEngine();
++    private GameSession session;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -27,22 +28,43 @@
+             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+             return insets;
+         });
++        session = new ViewModelProvider(this).get(GameSession.class);
++        if (!session.restored) {
++            String moves = getPreferences(MODE_PRIVATE).getString("moves", "");
++            GameEngine restored = new GameEngine();
++            for (int i = 0; i < moves.length(); i++) {
++                if (!restored.apply(new GameAction(moves.charAt(i) - '0'))) break;
++            }
++            session.engine = restored;
++            session.restored = true;
++        }
+         binding.board.setColumnListener(column -> {
+-            if (engine.apply(new GameAction(column))) render();
++            if (session.engine.apply(new GameAction(column))) { persist(); render(); }
+         });
+         binding.restart.setOnClickListener(v -> {
+-            engine = new GameEngine();
++            session.engine = new GameEngine();
++            persist();
+             render();
+         });
+         render();
+     }
+     /** Presents the model; drawing does not change the game. */
+     private void render() {
+-        GameState state = engine.snapshot();
++        GameState state = session.engine.snapshot();
+         binding.board.show(state);
+         if (state.isDraw()) binding.status.setText("Draw — board full");
+         else if (state.isTerminal()) binding.status.setText(state.winner() == GameState.RED ? "Red wins!" : "Yellow wins!");
+         else binding.status.setText(state.currentPlayer() == GameState.RED ? "Red to play" : "Yellow to play");
+     }
++
++    /** Saves only accepted column history; the engine reconstructs the rest. */
++    private void persist() {
++        getPreferences(MODE_PRIVATE).edit().putString("moves", session.engine.snapshot().moves()).apply();
++    }
++
++    @Override protected void onStop() {
++        persist();
++        super.onStop();
++    }
+ }
+--- a/app/src/androidTest/java/com/example/connect4/CourseRestoreTest.java
++++ b/app/src/androidTest/java/com/example/connect4/CourseRestoreTest.java
+@@ -0,0 +1,24 @@
++package com.example.connect4;
++import android.content.Context;
++import androidx.lifecycle.ViewModelProvider;
++import androidx.test.core.app.ActivityScenario;
++import androidx.test.core.app.ApplicationProvider;
++import org.junit.Test;
++import static org.junit.Assert.*;
++
++public class CourseRestoreTest {
++    @Test public void validPrefixSurvivesRecreationAndNewActivity() {
++        Context context=ApplicationProvider.getApplicationContext();
++        context.getSharedPreferences("MainActivity",Context.MODE_PRIVATE)
++                .edit().clear().putString("moves","01010106").commit();
++        try(ActivityScenario<MainActivity> s=ActivityScenario.launch(MainActivity.class)) {
++            s.onActivity(a -> assertEquals("0101010",new ViewModelProvider(a).get(GameSession.class).engine.snapshot().moves()));
++            s.recreate();
++            s.onActivity(a -> assertTrue(new ViewModelProvider(a).get(GameSession.class).engine.snapshot().isTerminal()));
++        }
++        try(ActivityScenario<MainActivity> s=ActivityScenario.launch(MainActivity.class)) {
++            s.onActivity(a -> assertEquals("0101010",new ViewModelProvider(a).get(GameSession.class).engine.snapshot().moves()));
++        }
++        context.getSharedPreferences("MainActivity",Context.MODE_PRIVATE).edit().clear().commit();
++    }
++}

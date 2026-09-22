@@ -1,0 +1,543 @@
+--- a/app/src/main/java/com/example/connect4/core/GameState.java
++++ b/app/src/main/java/com/example/connect4/core/GameState.java
+@@ -1,25 +1,184 @@
+ package com.example.connect4.core;
+ 
+-/** A detached board snapshot. Only GameEngine changes the live game. */
++import java.util.ArrayList;
++import java.util.Arrays;
++import java.util.Collections;
++import java.util.List;
++import java.util.Objects;
++
++/** Immutable, detached snapshot of a Connect Four position. */
+ public final class GameState {
+     public static final int ROWS = 6;
+     public static final int COLUMNS = 7;
+     public static final int EMPTY = 0;
+     public static final int RED = 1;
+     public static final int YELLOW = 2;
++
+     private final int[][] board;
+     private final int currentPlayer;
++    private final int winner;
++    private final boolean terminal;
++    private final String moves;
++    private final List<Cell> winningCells;
+ 
+-    /** Copies every row so future engine changes cannot change this snapshot. */
+-    GameState(int[][] source, int currentPlayer) {
+-        board = new int[ROWS][COLUMNS];
+-        for (int row = 0; row < ROWS; row++) board[row] = source[row].clone();
++    GameState(
++            int[][] board,
++            int currentPlayer,
++            int winner,
++            boolean terminal,
++            String moves,
++            List<Cell> winningCells) {
++        this.board = copyBoard(board);
+         this.currentPlayer = currentPlayer;
++        this.winner = winner;
++        this.terminal = terminal;
++        this.moves = Objects.requireNonNull(moves, "moves");
++        this.winningCells = Collections.unmodifiableList(new ArrayList<>(winningCells));
+     }
+ 
+-    /** Returns the occupant of a zero-based cell. */
+-    public int cell(int row, int column) { return board[row][column]; }
++    /** Returns the occupant at a zero-based board coordinate. */
++    public int cell(int row, int column) {
++        checkCoordinates(row, column);
++        return board[row][column];
++    }
+ 
+-    /** Returns whose turn comes next. */
+-    public int currentPlayer() { return currentPlayer; }
++    /** Returns the player whose turn is next, even after a terminal move. */
++    public int currentPlayer() {
++        return currentPlayer;
++    }
++
++    /** Returns 0 when no player has won, including for an unfinished game or draw. */
++    public int winner() {
++        return winner;
++    }
++
++    /** Reports whether no more moves may be applied to this snapshot. */
++    public boolean isTerminal() {
++        return terminal;
++    }
++
++    /** Reports a terminal state with no winning player. */
++    public boolean isDraw() {
++        return terminal && winner == EMPTY;
++    }
++
++    /** Successful zero-based column actions, concatenated without separators. */
++    public String moves() {
++        return moves;
++    }
++
++    /** Returns the number of accepted moves represented by this state. */
++    public int moveCount() {
++        return moves.length();
++    }
++
++    /** Returns all cells participating in one or more winning four-in-a-row lines. */
++    public List<Cell> winningCells() {
++        return winningCells;
++    }
++
++    /** Legal actions in ascending-column order. Terminal positions have no actions. */
++    public List<GameAction> legalActions() {
++        if (terminal) {
++            return Collections.emptyList();
++        }
++        List<GameAction> actions = new ArrayList<>(COLUMNS);
++        for (int column = 0; column < COLUMNS; column++) {
++            if (board[0][column] == EMPTY) {
++                actions.add(new GameAction(column));
++            }
++        }
++        return Collections.unmodifiableList(actions);
++    }
++
++    /** Returns a deep copy so callers cannot mutate this immutable snapshot. */
++    public int[][] boardCopy() {
++        return copyBoard(board);
++    }
++
++    private static int[][] copyBoard(int[][] source) {
++        if (source == null || source.length != ROWS) {
++            throw new IllegalArgumentException("board must have 6 rows");
++        }
++        int[][] result = new int[ROWS][COLUMNS];
++        for (int row = 0; row < ROWS; row++) {
++            if (source[row] == null || source[row].length != COLUMNS) {
++                throw new IllegalArgumentException("board rows must have 7 columns");
++            }
++            result[row] = source[row].clone();
++        }
++        return result;
++    }
++
++    private static void checkCoordinates(int row, int column) {
++        if (row < 0 || row >= ROWS || column < 0 || column >= COLUMNS) {
++            throw new IndexOutOfBoundsException("cell outside 6x7 board");
++        }
++    }
++
++    @Override
++    public boolean equals(Object other) {
++        if (this == other) {
++            return true;
++        }
++        if (!(other instanceof GameState)) {
++            return false;
++        }
++        GameState state = (GameState) other;
++        return currentPlayer == state.currentPlayer
++                && winner == state.winner
++                && terminal == state.terminal
++                && moves.equals(state.moves)
++                && winningCells.equals(state.winningCells)
++                && Arrays.deepEquals(board, state.board);
++    }
++
++    @Override
++    public int hashCode() {
++        int result = Arrays.deepHashCode(board);
++        result = 31 * result + Objects.hash(currentPlayer, winner, terminal, moves, winningCells);
++        return result;
++    }
++
++    /** Immutable board coordinate. */
++    public static final class Cell {
++        private final int row;
++        private final int column;
++
++        /** Creates a coordinate inside the standard 6-by-7 board. */
++        public Cell(int row, int column) {
++            checkCoordinates(row, column);
++            this.row = row;
++            this.column = column;
++        }
++
++        /** Returns the zero-based row, measured from the board's top edge. */
++        public int row() {
++            return row;
++        }
++
++        /** Returns the zero-based column, measured from the board's left edge. */
++        public int column() {
++            return column;
++        }
++
++        @Override
++        public boolean equals(Object other) {
++            if (!(other instanceof Cell)) {
++                return false;
++            }
++            Cell cell = (Cell) other;
++            return row == cell.row && column == cell.column;
++        }
++
++        @Override
++        public int hashCode() {
++            return Objects.hash(row, column);
++        }
++
++        @Override
++        public String toString() {
++            return "Cell{" + "row=" + row + ", column=" + column + '}';
++        }
++    }
+ }
+--- a/app/src/main/java/com/example/connect4/core/GameEngine.java
++++ b/app/src/main/java/com/example/connect4/core/GameEngine.java
+@@ -1,25 +1,119 @@
+ package com.example.connect4.core;
+ 
+-/** Owns gravity, alternating turns and the mutable board. */
++import java.util.ArrayList;
++import java.util.LinkedHashSet;
++import java.util.List;
++import java.util.Set;
++
++/** The authoritative mutable Connect Four rules engine. */
+ public final class GameEngine {
+-    private final int[][] board = new int[GameState.ROWS][GameState.COLUMNS];
+-    private int currentPlayer = GameState.RED;
++    private final int[][] board;
++    private final StringBuilder moves;
++    private int currentPlayer;
++    private int winner;
++    private boolean terminal;
++    private List<GameState.Cell> winningCells;
+ 
+-    /** Returns a detached copy for the screen. */
+-    public GameState snapshot() { return new GameState(board, currentPlayer); }
++    /** Creates a new empty game with Red to move first. */
++    public GameEngine() {
++        board = new int[GameState.ROWS][GameState.COLUMNS];
++        moves = new StringBuilder();
++        currentPlayer = GameState.RED;
++        winner = GameState.EMPTY;
++        winningCells = new ArrayList<>();
++    }
+ 
+-    /** Rejects invalid or full columns without changing the turn. */
++    /** Returns a detached immutable snapshot suitable for rendering or AI simulation. */
++    public GameState snapshot() {
++        return new GameState(
++                board,
++                currentPlayer,
++                winner,
++                terminal,
++                moves.toString(),
++                winningCells);
++    }
++
++    /**
++     * Applies a legal action and returns true. Invalid, full-column, and terminal
++     * actions return false without changing the game.
++     */
++    // TWIN-ID: CONNECT4.APPLY_MOVE (TWIN-PYTHON: ml/game_env.py::apply_move)
+     public boolean apply(GameAction action) {
+-        if (action == null) return false;
++        if (action == null || terminal) {
++            return false;
++        }
+         int column = action.column();
+-        if (column < 0 || column >= GameState.COLUMNS) return false;
++        if (column < 0 || column >= GameState.COLUMNS) {
++            return false;
++        }
++        int landingRow = findLandingRow(board, column);
++        if (landingRow < 0) {
++            return false;
++        }
++
++        int movingPlayer = currentPlayer;
++        board[landingRow][column] = movingPlayer;
++        moves.append(column);
++        currentPlayer = opponent(movingPlayer);
++
++        winningCells = findWinningCells(board, movingPlayer);
++        if (!winningCells.isEmpty()) {
++            winner = movingPlayer;
++            terminal = true;
++        } else if (moves.length() == GameState.ROWS * GameState.COLUMNS) {
++            // TWIN-ID: CONNECT4.TERMINAL_CHECK (TWIN-PYTHON: ml/game_env.py::is_terminal)
++            terminal = true;
++        }
++        return true;
++    }
++
++    private static int findLandingRow(int[][] board, int column) {
+         for (int row = GameState.ROWS - 1; row >= 0; row--) {
+             if (board[row][column] == GameState.EMPTY) {
+-                board[row][column] = currentPlayer;
+-                currentPlayer = currentPlayer == GameState.RED ? GameState.YELLOW : GameState.RED;
+-                return true;
++                return row;
+             }
+         }
+-        return false;
++        return -1;
++    }
++
++    private static int opponent(int player) {
++        return player == GameState.RED ? GameState.YELLOW : GameState.RED;
++    }
++
++    // TWIN-ID: CONNECT4.WIN_CHECK (TWIN-PYTHON: ml/game_env.py::winner)
++    private static List<GameState.Cell> findWinningCells(int[][] board, int player) {
++        int[][] directions = {{0, 1}, {1, 0}, {1, 1}, {1, -1}};
++        Set<GameState.Cell> result = new LinkedHashSet<>();
++        for (int[] direction : directions) {
++            int rowStep = direction[0];
++            int columnStep = direction[1];
++            for (int row = 0; row < GameState.ROWS; row++) {
++                for (int column = 0; column < GameState.COLUMNS; column++) {
++                    int endRow = row + 3 * rowStep;
++                    int endColumn = column + 3 * columnStep;
++                    if (endRow < 0 || endRow >= GameState.ROWS
++                            || endColumn < 0 || endColumn >= GameState.COLUMNS) {
++                        continue;
++                    }
++                    boolean connected = true;
++                    for (int offset = 0; offset < 4; offset++) {
++                        if (board[row + offset * rowStep][column + offset * columnStep]
++                                != player) {
++                            connected = false;
++                            break;
++                        }
++                    }
++                    if (connected) {
++                        for (int offset = 0; offset < 4; offset++) {
++                            result.add(new GameState.Cell(
++                                    row + offset * rowStep,
++                                    column + offset * columnStep));
++                        }
++                    }
++                }
++            }
++        }
++        return new ArrayList<>(result);
+     }
+ }
+--- a/app/src/main/java/com/example/connect4/ui/BoardView.java
++++ b/app/src/main/java/com/example/connect4/ui/BoardView.java
+@@ -45,8 +45,20 @@
+                 paint.setColor(player == GameState.RED ? 0xffd32f2f
+                         : player == GameState.YELLOW ? 0xffffc107 : 0xffeeeeee);
+                 canvas.drawCircle((column + .5f) * size, (row + .5f) * size,
+                         size * .38f, paint);
++                if (state != null) {
++                    for (GameState.Cell cell : state.winningCells()) {
++                        if (cell.row() == row && cell.column() == column) {
++                            paint.setStyle(Paint.Style.STROKE);
++                            paint.setStrokeWidth(size * .07f);
++                            paint.setColor(0xffffffff);
++                            canvas.drawCircle((column + .5f) * size, (row + .5f) * size,
++                                    size * .29f, paint);
++                            paint.setStyle(Paint.Style.FILL);
++                        }
++                    }
++                }
+             }
+         }
+     }
+ 
+--- a/app/src/main/java/com/example/connect4/MainActivity.java
++++ b/app/src/main/java/com/example/connect4/MainActivity.java
+@@ -40,7 +40,9 @@
+     /** Presents the model; drawing does not change the game. */
+     private void render() {
+         GameState state = engine.snapshot();
+         binding.board.show(state);
+-        binding.status.setText(state.currentPlayer() == GameState.RED ? "Red to play" : "Yellow to play");
++        if (state.isDraw()) binding.status.setText("Draw — board full");
++        else if (state.isTerminal()) binding.status.setText(state.winner() == GameState.RED ? "Red wins!" : "Yellow wins!");
++        else binding.status.setText(state.currentPlayer() == GameState.RED ? "Red to play" : "Yellow to play");
+     }
+ }
+--- a/app/src/androidTest/java/com/example/connect4/CourseFlowTest.java
++++ b/app/src/androidTest/java/com/example/connect4/CourseFlowTest.java
+@@ -0,0 +1,38 @@
++package com.example.connect4;
++import android.content.Context;
++import android.view.MotionEvent;
++import android.widget.TextView;
++import androidx.test.core.app.ActivityScenario;
++import androidx.test.core.app.ApplicationProvider;
++import androidx.test.ext.junit.runners.AndroidJUnit4;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++import static org.junit.Assert.*;
++import com.example.connect4.ui.BoardView;
++
++/** Exercises real input -> Activity -> engine -> rendered outcome. */
++@RunWith(AndroidJUnit4.class)
++public class CourseFlowTest {
++    @Test public void verticalWinBlocksFurtherInputAndRestarts() {
++        ApplicationProvider.<Context>getApplicationContext()
++                .getSharedPreferences("MainActivity", Context.MODE_PRIVATE).edit().clear().commit();
++        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
++            scenario.onActivity(activity -> {
++                BoardView board = activity.findViewById(R.id.board);
++                float size = Math.min(board.getWidth()/7f,board.getHeight()/6f);
++                assertTrue("Board must be laid out", size > 0);
++                for (char col : "0101010".toCharArray()) tap(board,(col-'0'+.5f)*size,size/2);
++                TextView status = activity.findViewById(R.id.status);
++                assertEquals("Red wins!",status.getText().toString());
++                tap(board,3.5f*size,size/2);
++                assertEquals("Red wins!",status.getText().toString());
++                activity.findViewById(R.id.restart).performClick();
++                assertEquals("Red to play",status.getText().toString());
++            });
++        }
++    }
++    private static void tap(BoardView board,float x,float y) {
++        MotionEvent event=MotionEvent.obtain(0,0,MotionEvent.ACTION_UP,x,y,0);
++        try { board.dispatchTouchEvent(event); } finally { event.recycle(); }
++    }
++}
+--- a/app/src/test/java/com/example/connect4/core/GameEngineTest.java
++++ b/app/src/test/java/com/example/connect4/core/GameEngineTest.java
+@@ -0,0 +1,133 @@
++package com.example.connect4.core;
++
++import static org.junit.Assert.assertArrayEquals;
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertFalse;
++import static org.junit.Assert.assertNotSame;
++import static org.junit.Assert.assertThrows;
++import static org.junit.Assert.assertTrue;
++
++import java.util.Arrays;
++import java.util.Collections;
++import org.junit.Test;
++
++public class GameEngineTest {
++    @Test
++    public void gravityAlternatesPlayersAndRecordsCompactHistory() {
++        GameEngine engine = play("33");
++        GameState state = engine.snapshot();
++
++        assertEquals(GameState.RED, state.cell(5, 3));
++        assertEquals(GameState.YELLOW, state.cell(4, 3));
++        assertEquals(GameState.RED, state.currentPlayer());
++        assertEquals("33", state.moves());
++        assertEquals(2, state.moveCount());
++    }
++
++    @Test
++    public void invalidAndFullColumnMovesLeaveWholeStateUnchanged() {
++        GameEngine engine = play("000000");
++        GameState before = engine.snapshot();
++
++        assertFalse(engine.apply(new GameAction(-1)));
++        assertEquals(before, engine.snapshot());
++        assertFalse(engine.apply(new GameAction(7)));
++        assertEquals(before, engine.snapshot());
++        assertFalse(engine.apply(new GameAction(0)));
++        assertEquals(before, engine.snapshot());
++        assertFalse(engine.apply(null));
++        assertEquals(before, engine.snapshot());
++    }
++
++    @Test
++    public void detectsVerticalWinAndAdvancesTurn() {
++        GameState state = play("0101010").snapshot();
++
++        assertWin(state, GameState.RED, GameState.YELLOW,
++                new GameState.Cell(2, 0), new GameState.Cell(3, 0),
++                new GameState.Cell(4, 0), new GameState.Cell(5, 0));
++    }
++
++    @Test
++    public void detectsHorizontalWinAtLeftBoundary() {
++        GameState state = play("342211650").snapshot();
++
++        assertWin(state, GameState.RED, GameState.YELLOW,
++                new GameState.Cell(5, 0), new GameState.Cell(5, 1),
++                new GameState.Cell(5, 2), new GameState.Cell(5, 3));
++    }
++
++    @Test
++    public void detectsBothDiagonalDirectionsAtBoundaries() {
++        GameState downRight = play("130315605411450024546152540042").snapshot();
++        assertWin(downRight, GameState.YELLOW, GameState.RED,
++                new GameState.Cell(2, 1), new GameState.Cell(3, 2),
++                new GameState.Cell(4, 3), new GameState.Cell(5, 4));
++
++        GameState downLeft = play("331546634615526").snapshot();
++        assertWin(downLeft, GameState.RED, GameState.YELLOW,
++                new GameState.Cell(2, 6), new GameState.Cell(3, 5),
++                new GameState.Cell(4, 4), new GameState.Cell(5, 3));
++    }
++
++    @Test
++    public void finalCellDrawHasNoWinnerAndRejectsFurtherMoves() {
++        GameEngine engine = play("051434605223061623660540405114233565141232");
++        GameState state = engine.snapshot();
++
++        assertTrue(state.isTerminal());
++        assertTrue(state.isDraw());
++        assertEquals(GameState.EMPTY, state.winner());
++        assertEquals(GameState.RED, state.currentPlayer());
++        assertTrue(state.legalActions().isEmpty());
++        assertFalse(engine.apply(new GameAction(0)));
++        assertEquals(state, engine.snapshot());
++    }
++
++    @Test
++    public void winOnFinalCellWinsBeforeBoardCanBeDeclaredDraw() {
++        GameState state = play("430312363514266141646452040520335600522115").snapshot();
++
++        assertWin(state, GameState.YELLOW, GameState.RED,
++                new GameState.Cell(0, 3), new GameState.Cell(0, 4),
++                new GameState.Cell(0, 5), new GameState.Cell(0, 6));
++        assertFalse(state.isDraw());
++    }
++
++    @Test
++    public void snapshotIsDetachedAndCollectionsAreImmutable() {
++        GameEngine engine = play("30");
++        GameState snapshot = engine.snapshot();
++        int[][] board = snapshot.boardCopy();
++        board[5][3] = GameState.EMPTY;
++
++        assertEquals(GameState.RED, snapshot.cell(5, 3));
++        assertNotSame(board, snapshot.boardCopy());
++        assertThrows(UnsupportedOperationException.class,
++                () -> snapshot.legalActions().clear());
++        assertThrows(UnsupportedOperationException.class,
++                () -> snapshot.winningCells().clear());
++
++        assertTrue(engine.apply(new GameAction(3)));
++        assertEquals(GameState.EMPTY, snapshot.cell(4, 3));
++    }
++
++    private static GameEngine play(String moves) {
++        GameEngine engine = new GameEngine();
++        for (int index = 0; index < moves.length(); index++) {
++            assertTrue("move " + index + " should be legal",
++                    engine.apply(new GameAction(moves.charAt(index) - '0')));
++        }
++        return engine;
++    }
++
++    private static void assertWin(
++            GameState state, int winner, int nextPlayer, GameState.Cell... winningCells) {
++        assertTrue(state.isTerminal());
++        assertFalse(state.isDraw());
++        assertEquals(winner, state.winner());
++        assertEquals(nextPlayer, state.currentPlayer());
++        assertEquals(Arrays.asList(winningCells), state.winningCells());
++        assertEquals(Collections.emptyList(), state.legalActions());
++    }
++}

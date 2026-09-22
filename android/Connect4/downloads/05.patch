@@ -1,0 +1,406 @@
+--- a/app/src/main/java/com/example/connect4/core/ComputerPlayer.java
++++ b/app/src/main/java/com/example/connect4/core/ComputerPlayer.java
+@@ -0,0 +1,16 @@
++package com.example.connect4.core;
++
++/** A replaceable computer opponent. Human input and online transport use other paths. */
++@FunctionalInterface
++public interface ComputerPlayer {
++    /**
++     * Chooses one legal action for the player to move in this detached snapshot.
++     * The caller runs this blocking calculation on a worker thread, then checks
++     * that the turn is still current before applying the action to the live engine.
++     * Implementations must not mutate the live game or access Android views.
++     *
++     * @throws IllegalArgumentException if the snapshot has no legal actions
++     * @throws java.util.concurrent.CancellationException if calculation is interrupted
++     */
++    GameAction chooseAction(GameState snapshot);
++}
+--- a/app/src/main/java/com/example/connect4/core/GameEngine.java
++++ b/app/src/main/java/com/example/connect4/core/GameEngine.java
+@@ -67,8 +67,30 @@
+         }
+         return true;
+     }
+ 
++    /**
++     * Tests a hypothetical drop for either side without changing the snapshot.
++     * The heuristic uses this for both winning moves and opponent threats, so
++     * gravity and win detection remain the same rules used by apply().
++     */
++    public static boolean wouldWin(GameState state, GameAction action, int player) {
++        if (player != GameState.RED && player != GameState.YELLOW) {
++            throw new IllegalArgumentException("player must be Red or Yellow");
++        }
++        if (state.isTerminal() || action == null
++                || action.column() < 0 || action.column() >= GameState.COLUMNS) {
++            return false;
++        }
++        int[][] board = state.boardCopy();
++        int row = findLandingRow(board, action.column());
++        if (row < 0) {
++            return false;
++        }
++        board[row][action.column()] = player;
++        return !findWinningCells(board, player).isEmpty();
++    }
++
+     private static int findLandingRow(int[][] board, int column) {
+         for (int row = GameState.ROWS - 1; row >= 0; row--) {
+             if (board[row][column] == GameState.EMPTY) {
+                 return row;
+--- a/app/src/main/java/com/example/connect4/core/HeuristicPlayer.java
++++ b/app/src/main/java/com/example/connect4/core/HeuristicPlayer.java
+@@ -0,0 +1,46 @@
++package com.example.connect4.core;
++
++import java.util.List;
++
++/** Deterministic fallback: win, block, then take the closest column to center. */
++public final class HeuristicPlayer implements ComputerPlayer {
++    private static final int[] CENTER_ORDER = {3, 2, 4, 1, 5, 0, 6};
++
++    @Override
++    public GameAction chooseAction(GameState state) {
++        if (state == null) {
++            throw new NullPointerException("state");
++        }
++        List<GameAction> legal = state.legalActions();
++        if (legal.isEmpty()) {
++            throw new IllegalArgumentException("Cannot choose an action without a legal move");
++        }
++
++        GameAction winning = immediateWinningAction(state, state.currentPlayer());
++        if (winning != null) {
++            return winning;
++        }
++        int opponent = state.currentPlayer() == GameState.RED ? GameState.YELLOW : GameState.RED;
++        GameAction blocking = immediateWinningAction(state, opponent);
++        if (blocking != null) {
++            return blocking;
++        }
++        for (int column : CENTER_ORDER) {
++            GameAction action = new GameAction(column);
++            if (legal.contains(action)) {
++                return action;
++            }
++        }
++        throw new IllegalStateException("No preferred column matched a legal action");
++    }
++
++    /** Returns null when this side has no immediate winning action. */
++    private static GameAction immediateWinningAction(GameState state, int player) {
++        for (GameAction action : state.legalActions()) {
++            if (GameEngine.wouldWin(state, action, player)) {
++                return action;
++            }
++        }
++        return null;
++    }
++}
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -1,3 +1,11 @@
+ <resources>
+     <string name="app_name">Connect4</string>
++    <string-array name="game_modes">
++        <item>Two players · this device</item>
++        <item>Play heuristic</item>
++    </string-array>
++    <string-array name="player_sides">
++        <item>You are Red · play first</item>
++        <item>You are Yellow · play second</item>
++    </string-array>
+ </resources>
+--- a/app/src/main/res/layout/spinner_item.xml
++++ b/app/src/main/res/layout/spinner_item.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<TextView xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent" android:layout_height="wrap_content"
++    android:padding="12dp" android:textSize="16sp" />
+--- a/app/src/main/res/layout/fragment_game_setup.xml
++++ b/app/src/main/res/layout/fragment_game_setup.xml
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="match_parent" android:layout_height="wrap_content"
++    android:orientation="vertical">
++    <Spinner android:id="@+id/mode" android:layout_width="match_parent"
++        android:layout_height="48dp" android:contentDescription="Game mode" />
++    <Spinner android:id="@+id/side" android:layout_width="match_parent"
++        android:layout_height="48dp" android:contentDescription="Your color" />
++</LinearLayout>
+--- a/app/src/main/java/com/example/connect4/GameSetupFragment.java
++++ b/app/src/main/java/com/example/connect4/GameSetupFragment.java
+@@ -0,0 +1,79 @@
++package com.example.connect4;
++
++import android.os.Bundle;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.AdapterView;
++import android.widget.ArrayAdapter;
++import androidx.fragment.app.Fragment;
++import com.example.connect4.databinding.FragmentGameSetupBinding;
++import java.util.function.IntConsumer;
++
++/** Owns the setup controls; the activity owns game state and responds to selections. */
++public class GameSetupFragment extends Fragment {
++    interface Listener {
++        void onModeSelected(int position);
++        void onSideSelected(int position);
++    }
++
++    private FragmentGameSetupBinding binding;
++    private Listener listener;
++    private boolean configured;
++    private int mode;
++    private int side;
++
++    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
++        binding = FragmentGameSetupBinding.inflate(inflater, container, false);
++        if (configured) bindControls();
++        return binding.getRoot();
++    }
++
++    void configure(int mode, int side, Listener listener) {
++        this.listener = listener;
++        configured = true;
++        this.mode = mode;
++        this.side = side;
++        // Restored fragments can receive configuration before their view is recreated.
++        if (binding != null) bindControls();
++    }
++
++    private void bindControls() {
++        binding.mode.setAdapter(adapter(getResources().getStringArray(R.array.game_modes)));
++        binding.side.setAdapter(adapter(getResources().getStringArray(R.array.player_sides)));
++        binding.mode.setSelection(mode);
++        binding.side.setSelection(side);
++        binding.mode.setOnItemSelectedListener(selection(position -> this.listener.onModeSelected(position)));
++        binding.side.setOnItemSelectedListener(selection(position -> this.listener.onSideSelected(position)));
++        showMode(mode);
++    }
++
++    void showMode(int mode) {
++        this.mode = mode;
++        if (binding == null) return;
++        binding.side.setVisibility(mode == GameSession.MODE_HEURISTIC ? View.VISIBLE : View.GONE);
++    }
++
++    private ArrayAdapter<String> adapter(String[] items) {
++        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, items);
++        adapter.setDropDownViewResource(R.layout.spinner_item);
++        return adapter;
++    }
++
++    private AdapterView.OnItemSelectedListener selection(IntConsumer action) {
++        return new AdapterView.OnItemSelectedListener() {
++            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
++                if (listener != null) action.accept(position);
++            }
++            @Override public void onNothingSelected(AdapterView<?> parent) { }
++        };
++    }
++
++    FragmentGameSetupBinding viewBinding() { return binding; }
++
++    @Override public void onDestroyView() {
++        listener = null;
++        binding = null;
++        super.onDestroyView();
++    }
++}
+--- a/app/src/main/res/layout/activity_main.xml
++++ b/app/src/main/res/layout/activity_main.xml
+@@ -6,16 +6,24 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     tools:context=".MainActivity">
+ 
++    <androidx.fragment.app.FragmentContainerView
++        android:id="@+id/gameSetup"
++        android:name="com.example.connect4.GameSetupFragment"
++        android:layout_width="0dp" android:layout_height="wrap_content"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintEnd_toEndOf="parent" />
++
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:id="@+id/status"
+         android:text="Tap a column"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+-        app:layout_constraintTop_toTopOf="parent" />
++        app:layout_constraintTop_toBottomOf="@id/gameSetup" />
+ 
+     <com.example.connect4.ui.BoardView
+         android:id="@+id/board"
+         android:layout_width="0dp"
+--- a/app/src/main/java/com/example/connect4/GameSession.java
++++ b/app/src/main/java/com/example/connect4/GameSession.java
+@@ -4,7 +4,11 @@
+ import com.example.connect4.core.GameEngine;
+ 
+ /** Retains the game across Activity recreation, without keeping a View or Activity. */
+ public final class GameSession extends ViewModel {
++    public static final int MODE_LOCAL = 0;
++    public static final int MODE_HEURISTIC = 1;
++    public int mode = MODE_LOCAL;
++    public int humanSide = com.example.connect4.core.GameState.RED;
+     public GameEngine engine = new GameEngine();
+     public boolean restored;
+ }
+--- a/app/src/main/java/com/example/connect4/MainActivity.java
++++ b/app/src/main/java/com/example/connect4/MainActivity.java
+@@ -4,8 +4,10 @@
+ import androidx.lifecycle.ViewModelProvider;
+ import com.example.connect4.core.GameAction;
+ import com.example.connect4.core.GameEngine;
+ import com.example.connect4.core.GameState;
++import com.example.connect4.core.ComputerPlayer;
++import com.example.connect4.core.HeuristicPlayer;
+ 
+ import com.example.connect4.databinding.ActivityMainBinding;
+ 
+ import androidx.activity.EdgeToEdge;
+@@ -16,8 +18,9 @@
+ 
+ public class MainActivity extends AppCompatActivity {
+     private ActivityMainBinding binding;
+     private GameSession session;
++    private GameSetupFragment setup;
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -29,42 +32,75 @@
+             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+             return insets;
+         });
+         session = new ViewModelProvider(this).get(GameSession.class);
++        setup = (GameSetupFragment) getSupportFragmentManager().findFragmentById(R.id.gameSetup);
+         if (!session.restored) {
++            session.mode = getPreferences(MODE_PRIVATE).getInt("mode", GameSession.MODE_LOCAL);
++            if (session.mode < 0 || session.mode > GameSession.MODE_HEURISTIC) session.mode = GameSession.MODE_LOCAL;
++            session.humanSide = getPreferences(MODE_PRIVATE).getInt("side", GameState.RED);
++            if (session.humanSide != GameState.RED && session.humanSide != GameState.YELLOW) session.humanSide = GameState.RED;
+             String moves = getPreferences(MODE_PRIVATE).getString("moves", "");
+             GameEngine restored = new GameEngine();
+             for (int i = 0; i < moves.length(); i++) {
+                 if (!restored.apply(new GameAction(moves.charAt(i) - '0'))) break;
+             }
+             session.engine = restored;
+             session.restored = true;
+         }
++        setup.configure(session.mode, session.humanSide - 1, new GameSetupFragment.Listener() {
++            @Override public void onModeSelected(int position) {
++                if (session.mode != position) { session.mode = position; newGame(); }
++                setup.showMode(session.mode);
++            }
++            @Override public void onSideSelected(int position) {
++                if (session.humanSide != position + 1) { session.humanSide = position + 1; newGame(); }
++            }
++        });
+         binding.board.setColumnListener(column -> {
++            if (!humanTurn()) return;
+             if (session.engine.apply(new GameAction(column))) { persist(); render(); }
+         });
+-        binding.restart.setOnClickListener(v -> {
+-            session.engine = new GameEngine();
+-            persist();
+-            render();
+-        });
++        binding.restart.setOnClickListener(v -> newGame());
+         render();
+     }
++    /** Resets the game after changing a player or pressing New game. */
++    private void newGame() {
++        session.engine = new GameEngine();
++        persist();
++        render();
++    }
++
++    private boolean humanTurn() {
++        return !session.engine.snapshot().isTerminal()
++                && (session.mode == GameSession.MODE_LOCAL
++                || session.engine.snapshot().currentPlayer() == session.humanSide);
++    }
++
+     /** Presents the model; drawing does not change the game. */
+     private void render() {
+         GameState state = session.engine.snapshot();
+         binding.board.show(state);
+         if (state.isDraw()) binding.status.setText("Draw — board full");
+         else if (state.isTerminal()) binding.status.setText(state.winner() == GameState.RED ? "Red wins!" : "Yellow wins!");
+         else binding.status.setText(state.currentPlayer() == GameState.RED ? "Red to play" : "Yellow to play");
++        if (session.mode == GameSession.MODE_HEURISTIC && !state.isTerminal() && !humanTurn()) {
++            ComputerPlayer player = new HeuristicPlayer();
++            GameAction action = player.chooseAction(state);
++            if (session.engine.apply(action)) { persist(); render(); }
++        }
+     }
+ 
+     /** Saves only accepted column history; the engine reconstructs the rest. */
+     private void persist() {
+-        getPreferences(MODE_PRIVATE).edit().putString("moves", session.engine.snapshot().moves()).apply();
++        getPreferences(MODE_PRIVATE).edit().putString("moves", session.engine.snapshot().moves())
++                .putInt("mode", session.mode).putInt("side", session.humanSide).apply();
+     }
+ 
+     @Override protected void onStop() {
+         persist();
+         super.onStop();
+     }
++
++    ActivityMainBinding viewBinding() { return binding; }
++    com.example.connect4.databinding.FragmentGameSetupBinding setupBinding() { return setup.viewBinding(); }
+ }
+--- a/app/src/test/java/com/example/connect4/core/HeuristicPlayerTest.java
++++ b/app/src/test/java/com/example/connect4/core/HeuristicPlayerTest.java
+@@ -0,0 +1,40 @@
++package com.example.connect4.core;
++
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertThrows;
++
++import org.junit.Test;
++
++public class HeuristicPlayerTest {
++    private final HeuristicPlayer player = new HeuristicPlayer();
++
++    @Test
++    public void takesImmediateWinBeforeAnyOtherPreference() {
++        assertEquals(new GameAction(0), player.chooseAction(play("010101")));
++    }
++
++    @Test
++    public void blocksImmediateOpponentWin() {
++        assertEquals(new GameAction(0), player.chooseAction(play("01010")));
++    }
++
++    @Test
++    public void prefersCenterThenDeterministicallyMovesOutward() {
++        assertEquals(new GameAction(3), player.chooseAction(new GameEngine().snapshot()));
++        assertEquals(new GameAction(2), player.chooseAction(play("333333")));
++    }
++
++    @Test
++    public void rejectsTerminalState() {
++        assertThrows(IllegalArgumentException.class,
++                () -> player.chooseAction(play("0101010")));
++    }
++
++    private static GameState play(String moves) {
++        GameEngine engine = new GameEngine();
++        for (int index = 0; index < moves.length(); index++) {
++            engine.apply(new GameAction(moves.charAt(index) - '0'));
++        }
++        return engine.snapshot();
++    }
++}

@@ -1,0 +1,372 @@
+--- a/app/src/main/java/com/example/connect4/multiplayer/RoomSnapshot.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/RoomSnapshot.java
+@@ -38,5 +38,14 @@
+     public RoomStatus getStatus() {
+         return status;
+     }
+ 
++    /** Reports whether this role owns the side to move in an active, validated room. */
++    public boolean canMove() {
++        if (status != RoomStatus.PLAYING || role == RoomRole.SPECTATOR) {
++            return false;
++        }
++        int player = gameState.currentPlayer();
++        return (role == RoomRole.RED && player == 1)
++                || (role == RoomRole.YELLOW && player == 2);
++    }
+ }
+--- a/app/src/main/java/com/example/connect4/multiplayer/MultiplayerRepository.java
++++ b/app/src/main/java/com/example/connect4/multiplayer/MultiplayerRepository.java
+@@ -1,6 +1,8 @@
+ package com.example.connect4.multiplayer;
+ 
++import com.example.connect4.core.GameAction;
++import com.example.connect4.core.GameState;
+ import com.google.firebase.auth.FirebaseAuth;
+ import com.google.firebase.auth.FirebaseUser;
+ import com.google.firebase.auth.GoogleAuthProvider;
+ import com.google.firebase.database.DataSnapshot;
+@@ -31,8 +33,9 @@
+     private final DatabaseReference gamesReference;
+ 
+     private String pendingCreateRoomId;
+     private String pendingJoinRoomId;
++    private PendingMove pendingMove;
+ 
+     /** Creates a repository backed by the configured production Firebase instances. */
+     public MultiplayerRepository() {
+         this(FirebaseAuth.getInstance(), FirebaseRefs.database());
+@@ -383,9 +386,113 @@
+             }
+         }, false);
+     }
+ 
+-
++    /** Appends one column only when the server still has the captured expected history. */
++    public void submitMove(String roomId, int column, String expectedMoves,
++                           ResultCallback<String> callback) {
++        String uid = currentUid();
++        if (uid == null) {
++            callback.onError(error(RepositoryError.Code.AUTH_REQUIRED,
++                    "Sign in before playing a move", roomId));
++            return;
++        }
++        if (!validRoomId(roomId) || column < 0 || column > 6
++                || expectedMoves == null || !expectedMoves.matches("[0-6]{0,42}")) {
++            callback.onError(error(RepositoryError.Code.INVALID_ARGUMENT,
++                    "Move request is invalid", roomId));
++            return;
++        }
++        PendingMove operation = new PendingMove(roomId, expectedMoves, column);
++        synchronized (this) {
++            if (pendingMove != null) {
++                callback.onError(error(RepositoryError.Code.BUSY,
++                        "A move is already pending", pendingMove.roomId));
++                return;
++            }
++            pendingMove = operation;
++        }
++
++        DatabaseReference roomReference = gamesReference.child(roomId);
++        roomReference.get().addOnCompleteListener(readTask -> {
++            if (!readTask.isSuccessful()) {
++                clearPendingMove(operation);
++                callback.onError(firebaseError(readTask.getException(), roomId));
++                return;
++            }
++            if (!readTask.getResult().exists()) {
++                clearPendingMove(operation);
++                callback.onError(error(RepositoryError.Code.MISSING_ROOM,
++                        "This room no longer exists", roomId));
++                return;
++            }
++            ParsedRoom baseline = parseRoom(readTask.getResult());
++            if (baseline.error != null) {
++                clearPendingMove(operation);
++                callback.onError(error(RepositoryError.Code.INVALID_ROOM,
++                        baseline.error, roomId));
++                return;
++            }
++            runMoveTransaction(roomReference, uid, baseline.room, operation, callback);
++        });
++    }
++
++    private void runMoveTransaction(DatabaseReference roomReference, String uid, RoomData baseline,
++                                    PendingMove operation, ResultCallback<String> callback) {
++        AtomicReference<String> rejection = new AtomicReference<>("Room changed before the move");
++        roomReference.runTransaction(new Transaction.Handler() {
++            @Override
++            public Transaction.Result doTransaction(MutableData currentData) {
++                seedEmptyTransaction(currentData, baseline);
++                MutableRoom parsed = parseMutableRoom(currentData);
++                if (parsed.error != null) {
++                    rejection.set(parsed.error);
++                    return Transaction.abort();
++                }
++                RoomData room = parsed.room;
++                RoomValidation.Result validation = parsed.validation;
++                if (!operation.expectedMoves.equals(room.getMoves())) {
++                    rejection.set("Move history changed; refresh the room");
++                    return Transaction.abort();
++                }
++                if (room.getPlayerYellow().isEmpty()) {
++                    rejection.set("Wait for a Yellow player before moving");
++                    return Transaction.abort();
++                }
++                int player = validation.getState().currentPlayer();
++                boolean ownsTurn = (player == GameState.RED && uid.equals(room.getPlayerRed()))
++                        || (player == GameState.YELLOW && uid.equals(room.getPlayerYellow()));
++                if (!ownsTurn) {
++                    rejection.set("It is not this user's turn");
++                    return Transaction.abort();
++                }
++                if (!new com.example.connect4.core.GameEngine(validation.getState())
++                        .apply(new GameAction(operation.column))) {
++                    rejection.set("That column is full or the game is finished");
++                    return Transaction.abort();
++                }
++                String newMoves = room.getMoves() + operation.column;
++                currentData.child("moves").setValue(newMoves);
++                currentData.child("updatedAt").setValue(ServerValue.TIMESTAMP);
++                rejection.set(null);
++                return Transaction.success(currentData);
++            }
++
++            @Override
++            public void onComplete(DatabaseError databaseError, boolean committed,
++                                   DataSnapshot snapshot) {
++                clearPendingMove(operation);
++                if (databaseError != null) {
++                    callback.onError(databaseError(databaseError, operation.roomId));
++                } else if (!committed) {
++                    callback.onError(error(RepositoryError.Code.CONFLICT,
++                            rejection.get(), operation.roomId));
++                } else {
++                    callback.onSuccess(operation.expectedMoves + operation.column);
++                }
++            }
++        }, false);
++    }
+ 
+     public synchronized String pendingCreateRoomId() {
+         return pendingCreateRoomId;
+     }
+@@ -393,8 +500,11 @@
+     public synchronized String pendingJoinRoomId() {
+         return pendingJoinRoomId;
+     }
+ 
++    public synchronized String pendingMoveRoomId() {
++        return pendingMove == null ? null : pendingMove.roomId;
++    }
+ 
+     private synchronized void clearPendingCreate(String roomId) {
+         if (roomId != null && roomId.equals(pendingCreateRoomId)) {
+             pendingCreateRoomId = null;
+@@ -406,8 +516,13 @@
+             pendingJoinRoomId = null;
+         }
+     }
+ 
++    private synchronized void clearPendingMove(PendingMove operation) {
++        if (pendingMove == operation) {
++            pendingMove = null;
++        }
++    }
+ 
+     private static ParsedRoom parseRoom(DataSnapshot snapshot) {
+         RoomData room;
+         try {
+@@ -554,8 +669,20 @@
+             this.error = error;
+         }
+     }
+ 
++    private static final class PendingMove {
++        private final String roomId;
++        private final String expectedMoves;
++        private final int column;
++
++        private PendingMove(String roomId, String expectedMoves, int column) {
++            this.roomId = roomId;
++            this.expectedMoves = expectedMoves;
++            this.column = column;
++        }
++    }
++
+     public interface Subscription extends AutoCloseable {
+         Subscription EMPTY = () -> { };
+ 
+         @Override
+--- a/app/src/main/java/com/example/connect4/OnlineController.java
++++ b/app/src/main/java/com/example/connect4/OnlineController.java
+@@ -245,13 +245,36 @@
+         session.onlineMessage = "Choose a room or create a new one. Previous rooms are preserved.";
+         refreshScreen();
+     }
+ 
+-
++    void move(int column) {
++        if (!canMove()) return;
++        long token = session.onlineGeneration;
++        String prefix = session.room.getRoom().getMoves();
++        session.onlineMessage = "Sending move…";
++        session.repository.submitMove(session.roomId, column, prefix, new MultiplayerRepository.ResultCallback<String>() {
++            @Override public void onSuccess(String moves) {
++                if (token != session.onlineGeneration) return;
++                session.onlineMessage = "Move accepted";
++                refreshLatestScreen();
++            }
++            @Override public void onError(RepositoryError error) {
++                if (token != session.onlineGeneration) return;
++                showError(error);
++                refreshLatestScreen();
++            }
++        });
++        host.changed();
++    }
++
++    boolean canMove() {
++        return active && !pending()
++                && session.room != null && session.room.canMove();
++    }
+ 
+     private boolean pending() {
+         MultiplayerRepository repo = session.repository;
+-        return repo != null && (repo.pendingCreateRoomId() != null || repo.pendingJoinRoomId() != null);
++        return repo != null && (repo.pendingCreateRoomId() != null || repo.pendingJoinRoomId() != null || repo.pendingMoveRoomId() != null);
+     }
+ 
+     private void showError(RepositoryError error) {
+         session.onlineMessage = error.getMessage();
+--- a/app/src/main/java/com/example/connect4/MainActivity.java
++++ b/app/src/main/java/com/example/connect4/MainActivity.java
+@@ -144,16 +144,17 @@
+ 
+ 
+     private boolean humanTurn() {
+         GameState state = session.engine.snapshot();
+-        if (session.mode == GameSession.MODE_ONLINE) return false;
++        if (session.mode == GameSession.MODE_ONLINE) return online != null && online.canMove();
+         return started && !state.isTerminal() && !session.isComputerThinking()
+                 && (session.mode == GameSession.MODE_LOCAL
+                 || state.currentPlayer() == session.humanSide);
+     }
+ 
+     private void playColumn(int column) {
+         if (!humanTurn()) return;
++        if (session.mode == GameSession.MODE_ONLINE) { online.move(column); return; }
+         if (session.engine.apply(new GameAction(column))) { persist(); render(); }
+     }
+ 
+     private void render() {
+--- a/app/src/androidTest/java/com/example/connect4/multiplayer/MultiplayerRepositoryEmulatorTest.java
++++ b/app/src/androidTest/java/com/example/connect4/multiplayer/MultiplayerRepositoryEmulatorTest.java
+@@ -71,9 +71,9 @@
+         testApps.clear();
+     }
+ 
+     @Test
+-    public void concurrentJoinKeepsOneYellowAndOneSpectator() throws Exception {
++    public void concurrentJoinReturningRolesAndMoveRaceStayConsistent() throws Exception {
+         String roomId = await(callback -> red.repository.createRoom(
+                 "Repository emulator test", callback));
+         RoomSnapshot waiting = await(callback -> red.repository.getRoom(roomId, callback));
+         assertEquals(RoomStatus.WAITING, waiting.getStatus());
+@@ -100,16 +100,67 @@
+         assertEquals(RoomRole.SPECTATOR,
+                 MultiplayerRepositoryEmulatorTest.<RoomRole>await(
+                         callback -> spectator.repository.joinRoom(roomId, callback)));
+ 
+-        assertEquals(RoomStatus.PLAYING, MultiplayerRepositoryEmulatorTest.<RoomSnapshot>await(
+-                callback -> spectator.repository.getRoom(roomId,callback)).getStatus());
++        assertEquals("3", MultiplayerRepositoryEmulatorTest.<String>await(
++                callback -> red.repository.submitMove(
++                roomId, 3, "", callback)));
++        assertEquals("34", MultiplayerRepositoryEmulatorTest.<String>await(
++                callback -> yellow.repository.submitMove(
++                roomId, 4, "3", callback)));
++
++        AsyncResult<String> moveA = begin(callback -> red.repository.submitMove(
++                roomId, 2, "34", callback));
++        AsyncResult<String> moveB = begin(callback -> secondRedSession.repository.submitMove(
++                roomId, 5, "34", callback));
++        int accepted = moveA.successCount() + moveB.successCount();
++        assertEquals(1, accepted);
++
++        RoomSnapshot finalRoom = await(callback -> red.repository.getRoom(roomId, callback));
++        assertTrue(finalRoom.getRoom().getMoves().equals("342")
++                || finalRoom.getRoom().getMoves().equals("345"));
++    }
++
++    @Test
++    public void completeGameConvergesForPlayersAndSpectator() throws Exception {
++        String id=await(cb -> red.repository.createRoom("Course complete game",cb));
++        assertEquals(RoomRole.YELLOW, MultiplayerRepositoryEmulatorTest.<RoomRole>await(cb -> yellowCandidate.repository.joinRoom(id,cb)));
++        assertEquals(RoomRole.SPECTATOR, MultiplayerRepositoryEmulatorTest.<RoomRole>await(cb -> spectatorCandidate.repository.joinRoom(id,cb)));
++        CountDownLatch endings=new CountDownLatch(3);
++        List<MultiplayerRepository.Subscription> subscriptions=new ArrayList<>();
++        List<AtomicReference<RoomSnapshot>> observed=new ArrayList<>();
++        for(Client client:new Client[]{red,yellowCandidate,spectatorCandidate}) {
++            AtomicReference<RoomSnapshot> latest=new AtomicReference<>();
++            observed.add(latest);
++            subscriptions.add(client.repository.subscribeRoom(id,new MultiplayerRepository.RoomListener(){
++                public void onRoom(RoomSnapshot room) {
++                    RoomSnapshot previous=latest.getAndSet(room);
++                    if(room.getGameState().isTerminal() && (previous==null || !previous.getGameState().isTerminal())) endings.countDown();
++                }
++                public void onError(RepositoryError error) { }
++            }));
++        }
++        try {
++            String history="";
++            for(char column:"0011223".toCharArray()) {
++                String expected=history;
++                Client player=history.length()%2==0 ? red : yellowCandidate;
++                history=await(cb -> player.repository.submitMove(id,column-'0',expected,cb));
++            }
++            assertTrue("All clients must observe the win",endings.await(15,TimeUnit.SECONDS));
++            for(AtomicReference<RoomSnapshot> observedRoom:observed) {
++                assertEquals("0011223",observedRoom.get().getRoom().getMoves());
++                assertEquals(1,observedRoom.get().getGameState().winner());
++            }
++            AsyncResult<String> spectatorMove=begin(cb -> spectatorCandidate.repository.submitMove(id,4,"0011223",cb));
++            assertEquals(0,spectatorMove.successCount());
++        } finally { for(MultiplayerRepository.Subscription subscription:subscriptions) subscription.close(); }
+     }
+ 
+     private Client client(String appName, String email) {
+         Context context = ApplicationProvider.getApplicationContext();
+         FirebaseOptions options = new FirebaseOptions.Builder()
+-                .setApiKey("fake-api-key")
++                .setApiKey("fake-api-key-" + appName)
+                 .setApplicationId("1:1234567890:android:connect4test")
+                 .setProjectId("demo-connect4")
+                 .setDatabaseUrl(DEMO_DATABASE_URL)
+                 .build();
+--- a/firebase/connect4.rules.fragment.json
++++ b/firebase/connect4.rules.fragment.json
+@@ -2,9 +2,9 @@
+   "Connect4Rtdb": {
+     "games": {
+       ".read": "auth != null",
+       "$roomId": {
+-        ".write": "auth != null && ((!data.exists() && newData.exists() && newData.child('schemaVersion').val() === 1 && newData.child('playerRed').val() === auth.uid && newData.child('playerYellow').val() === '' && newData.child('moves').val() === '' && newData.child('createdAt').val() === now && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() === '' && data.child('moves').val() === '' && newData.child('playerYellow').val() === auth.uid && auth.uid !== data.child('playerRed').val() && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('moves').val() === data.child('moves').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('updatedAt').val() === now))",
++        ".write": "auth != null && ((!data.exists() && newData.exists() && newData.child('schemaVersion').val() === 1 && newData.child('playerRed').val() === auth.uid && newData.child('playerYellow').val() === '' && newData.child('moves').val() === '' && newData.child('createdAt').val() === now && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() === '' && data.child('moves').val() === '' && newData.child('playerYellow').val() === auth.uid && auth.uid !== data.child('playerRed').val() && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('moves').val() === data.child('moves').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() !== '' && data.child('playerRed').val() !== data.child('playerYellow').val() && ((data.child('moves').val().length % 2 === 0 && auth.uid === data.child('playerRed').val()) || (data.child('moves').val().length % 2 === 1 && auth.uid === data.child('playerYellow').val())) && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('playerYellow').val() === data.child('playerYellow').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('moves').val().length === data.child('moves').val().length + 1 && newData.child('moves').val().beginsWith(data.child('moves').val()) && newData.child('moves').val().matches(/^[0-6]{1,42}$/) && newData.child('updatedAt').val() === now))",
+         ".validate": "newData.hasChildren(['schemaVersion', 'name', 'playerRed', 'playerYellow', 'moves', 'createdAt', 'updatedAt'])",
+         "schemaVersion": {
+           ".validate": "newData.isNumber() && newData.val() === 1"
+         },
+--- a/firebase/emulator.rules.json
++++ b/firebase/emulator.rules.json
+@@ -13,9 +13,9 @@
+     "Connect4Rtdb": {
+       "games": {
+         ".read": "auth != null",
+         "$roomId": {
+-          ".write": "auth != null && ((!data.exists() && newData.exists() && newData.child('schemaVersion').val() === 1 && newData.child('playerRed').val() === auth.uid && newData.child('playerYellow').val() === '' && newData.child('moves').val() === '' && newData.child('createdAt').val() === now && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() === '' && data.child('moves').val() === '' && newData.child('playerYellow').val() === auth.uid && auth.uid !== data.child('playerRed').val() && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('moves').val() === data.child('moves').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('updatedAt').val() === now))",
++          ".write": "auth != null && ((!data.exists() && newData.exists() && newData.child('schemaVersion').val() === 1 && newData.child('playerRed').val() === auth.uid && newData.child('playerYellow').val() === '' && newData.child('moves').val() === '' && newData.child('createdAt').val() === now && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() === '' && data.child('moves').val() === '' && newData.child('playerYellow').val() === auth.uid && auth.uid !== data.child('playerRed').val() && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('moves').val() === data.child('moves').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('updatedAt').val() === now) || (data.exists() && newData.exists() && data.child('playerYellow').val() !== '' && data.child('playerRed').val() !== data.child('playerYellow').val() && ((data.child('moves').val().length % 2 === 0 && auth.uid === data.child('playerRed').val()) || (data.child('moves').val().length % 2 === 1 && auth.uid === data.child('playerYellow').val())) && newData.child('schemaVersion').val() === data.child('schemaVersion').val() && newData.child('name').val() === data.child('name').val() && newData.child('playerRed').val() === data.child('playerRed').val() && newData.child('playerYellow').val() === data.child('playerYellow').val() && newData.child('createdAt').val() === data.child('createdAt').val() && newData.child('moves').val().length === data.child('moves').val().length + 1 && newData.child('moves').val().beginsWith(data.child('moves').val()) && newData.child('moves').val().matches(/^[0-6]{1,42}$/) && newData.child('updatedAt').val() === now))",
+           ".validate": "newData.hasChildren(['schemaVersion', 'name', 'playerRed', 'playerYellow', 'moves', 'createdAt', 'updatedAt'])",
+           "schemaVersion": {
+             ".validate": "newData.isNumber() && newData.val() === 1"
+           },
