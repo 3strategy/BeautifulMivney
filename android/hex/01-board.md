@@ -37,7 +37,6 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 **מיקום:** app > res > values. החליפו את שני הצבעים הקיימים בצבעי הלוח. השאירו את הצהרת ה־XML ואת תגיות `<resources>` במקומן.
 
 ```diff
-@@ -1,5 +1,11 @@
  <?xml version="1.0" encoding="utf-8"?>
  <resources>
 -    <color name="black">#FF000000</color>
@@ -58,7 +57,6 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 **מיקום:** app > res > values. המשאב מרכז צבעים, מחרוזות או theme שהמסך משתמש בהם. שנו רק את השורות המוצגות.
 
 ```diff
-@@ -1,3 +1,7 @@
  <resources>
 -    <string name="app_name">hex</string>
 -</resources>
@@ -197,7 +195,6 @@ public final class HexBoardView extends View {
 **מיקום:** app > res > layout. עורכים דרך app > res > layout בתצוגת Code. אין למחוק רכיבי תבנית שאינם ב־diff.
 
 ```diff
-@@ -1,19 +1,34 @@
  <?xml version="1.0" encoding="utf-8"?>
 -<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 -    xmlns:app="http://schemas.android.com/apk/res-auto"

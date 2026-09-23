@@ -173,7 +173,6 @@ public final class ModelCatalog {
 **מיקום:** app > res > layout. עורכים דרך app > res > layout בתצוגת Code. אין למחוק רכיבי תבנית שאינם ב־diff.
 
 ```diff
-@@ -66,6 +66,37 @@
                  android:text="@string/human_vs_human" />
          </RadioGroup>
  
@@ -276,7 +275,6 @@ public final class ModelCatalog {
 <details open markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
 
 ```diff
-@@ -1,90 +1,185 @@
  package com.example.hex;
  
  import android.os.Bundle;
@@ -486,7 +484,6 @@ public final class ModelCatalog {
          aiThinking = true;
          render();
          int generation = gameGeneration;
-@@ -92,28 +187,36 @@ public final class MainActivity extends AppCompatActivity {
          aiTask = aiExecutor.submit(() -> {
              try {
                  HexGame.Move move = new HexAi(model).chooseMove(position);
@@ -540,7 +537,6 @@ public final class ModelCatalog {
      private void restartGame() {
          gameGeneration++;
          aiThinking = false;
-@@ -122,14 +225,17 @@ public final class MainActivity extends AppCompatActivity {
              aiTask = null;
          }
          game = new HexGame();
@@ -560,7 +556,6 @@ public final class ModelCatalog {
          if (game.getWinner() == HexGame.RED) {
              binding.statusText.setText(R.string.status_red_wins);
          } else if (game.getWinner() == HexGame.BLUE) {
-@@ -146,19 +252,34 @@ public final class MainActivity extends AppCompatActivity {
              binding.statusText.setText(game.getCurrentPlayer() == HexGame.RED
                      ? R.string.status_red_turn : R.string.status_blue_turn);
          }

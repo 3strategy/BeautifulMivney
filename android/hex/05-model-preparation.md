@@ -62,7 +62,6 @@ full-width: true
 <details open markdown="1"><summary>פתחו את השינוי המלא ב־HexGame.java</summary>
 
 ```diff
-@@ -1,40 +1,161 @@
  package com.example.hex;
  
  import java.util.ArrayDeque;
@@ -234,7 +233,6 @@ full-width: true
          boolean[] visited = new boolean[CELL_COUNT];
          ArrayDeque<Integer> frontier = new ArrayDeque<>();
          for (int i = 0; i < SIZE; i++) {
-@@ -46,16 +167,21 @@ public final class HexGame {
                  frontier.add(start);
              }
          }
@@ -258,7 +256,6 @@ full-width: true
                  int next = index(nextRow, nextColumn);
                  if (!visited[next] && cells[next] == player) {
                      visited[next] = true;
-@@ -66,17 +192,35 @@ public final class HexGame {
          return false;
      }
  
@@ -303,7 +300,6 @@ full-width: true
      public int getCell(int row, int column) {
          if (isOutside(row, column)) {
              throw new IndexOutOfBoundsException("Cell is outside the 7x7 board");
-@@ -84,20 +228,44 @@ public final class HexGame {
          return cells[index(row, column)];
      }
  
@@ -353,7 +349,6 @@ full-width: true
          throw new IllegalArgumentException("Player must be RED or BLUE");
      }
  
-@@ -108,4 +276,52 @@ public final class HexGame {
      private static boolean isOutside(int row, int column) {
          return row < 0 || row >= SIZE || column < 0 || column >= SIZE;
      }

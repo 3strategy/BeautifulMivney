@@ -31,7 +31,6 @@ full-width: true
 **מיקום:** app > res > values. המשאב מרכז צבעים, מחרוזות או theme שהמסך משתמש בהם. שנו רק את השורות המוצגות.
 
 ```diff
-@@ -4,4 +4,6 @@
      <string name="red_goal">RED · TOP ↕ BOTTOM</string>
      <string name="blue_goal">BLUE · LEFT ↔ RIGHT</string>
      <string name="board_description">Seven by seven Hex board</string>
@@ -124,7 +123,6 @@ public final class HexGame {
 <details open markdown="1"><summary>פתחו את השינוי המלא ב־HexBoardView.java</summary>
 
 ```diff
-@@ -5,28 +5,55 @@ import android.graphics.Canvas;
  import android.graphics.Paint;
  import android.graphics.Path;
  import android.util.AttributeSet;
@@ -186,7 +184,6 @@ public final class HexGame {
      public HexBoardView(Context context, @Nullable AttributeSet attributes) {
          super(context, attributes);
          emptyColor = ContextCompat.getColor(context, R.color.hex_empty);
-@@ -37,6 +64,27 @@ public final class HexBoardView extends View {
          strokePaint.setStrokeJoin(Paint.Join.ROUND);
          sidePaint.setStyle(Paint.Style.STROKE);
          sidePaint.setStrokeCap(Paint.Cap.ROUND);
@@ -214,7 +211,6 @@ public final class HexGame {
      }
  
      @Override
-@@ -44,12 +92,17 @@ public final class HexBoardView extends View {
          super.onDraw(canvas);
          calculateGeometry();
          drawGoalSides(canvas);
@@ -236,7 +232,6 @@ public final class HexGame {
                  fillPaint.setStyle(Paint.Style.FILL);
                  canvas.drawPath(hexPath, fillPaint);
                  canvas.drawPath(hexPath, strokePaint);
-@@ -57,32 +110,37 @@ public final class HexBoardView extends View {
          }
      }
  
@@ -292,7 +287,6 @@ public final class HexGame {
      }
  
      private void makeHexagon(float centerX, float centerY) {
-@@ -91,12 +149,60 @@ public final class HexBoardView extends View {
              double angle = Math.toRadians(-90 + 60 * corner);
              float x = centerX + radius * (float) Math.cos(angle);
              float y = centerY + radius * (float) Math.sin(angle);
@@ -364,7 +358,6 @@ public final class HexGame {
 **מיקום:** app > res > layout. עורכים דרך app > res > layout בתצוגת Code. אין למחוק רכיבי תבנית שאינם ב־diff.
 
 ```diff
-@@ -15,6 +15,13 @@
              android:layout_height="wrap_content"
              android:text="@string/title_hex"
              android:textSize="34sp" />
@@ -385,7 +378,6 @@ public final class HexGame {
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק והמסך. השאירו את הקוד שאינו מוצג ב־diff. מחקו גם את שלוש השורות הריקות המסומנות ב־`-`: אחרי `import android.os.Bundle;`, אחרי `import androidx.core.view.WindowInsetsCompat;` ואחרי `setContentView(binding.getRoot());`. השורה הבאה צריכה לבוא מיד אחריהן.
 
 ```diff
-@@ -1,29 +1,44 @@
  package com.example.hex;
  
  import android.os.Bundle;

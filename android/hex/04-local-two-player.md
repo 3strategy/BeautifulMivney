@@ -33,7 +33,6 @@ full-width: true
 שתי מחרוזות התור שמסומנות ב־`-` מופיעות שוב בהמשך ב־`+`: מחקו אותן מהמקום הישן והוסיפו אותן במקום החדש. בקובץ צריכה להישאר הגדרה אחת לכל שם.
 
 ```diff
-@@ -1,11 +1,27 @@
  <resources>
      <string name="app_name">Hex 7×7</string>
      <string name="title_hex">HEX</string>
@@ -70,7 +69,6 @@ full-width: true
 **מיקום:** app > res > values-night > themes.xml. Android בוחרת את המשאבים האלה כשהמכשיר במצב כהה. כדי לשמור גם במצב הזה על צבעי המסך הבהירים, הגדירו כאן את `Base.Theme.Hex` עם ההורה `Theme.Material3.Light.NoActionBar`. השאירו את ההורה `Theme.Material3.DayNight.NoActionBar` ואת `android:colorAccent` בקובץ הרגיל שבתיקיית `values`.
 
 ```diff
-@@ -1,7 +1,14 @@
 -<resources xmlns:tools="http://schemas.android.com/tools">
 -    <!-- Base application theme. -->
 -    <style name="Base.Theme.Hex" parent="Theme.Material3.DayNight.NoActionBar">
@@ -95,7 +93,6 @@ full-width: true
 **מיקום:** app > res > values > themes.xml. השאירו כאן את `Theme.Material3.DayNight.NoActionBar` ואת `android:colorAccent`; בתיקיית `values-night` הוגדר להם עיצוב בהיר נפרד למצב כהה.
 
 ```diff
-@@ -1,9 +1,14 @@
 -<resources xmlns:tools="http://schemas.android.com/tools">
 -    <!-- Base application theme. -->
 +<resources>
@@ -123,7 +120,6 @@ full-width: true
 <details open markdown="1"><summary>פתחו את השינוי המלא ב־activity_main.xml</summary>
 
 ```diff
-@@ -1,41 +1,106 @@
  <?xml version="1.0" encoding="utf-8"?>
  <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 +    xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -247,7 +243,6 @@ full-width: true
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
 
 ```diff
-@@ -27,6 +27,7 @@ public final class MainActivity extends AppCompatActivity {
          game = new HexGame();
          binding.boardView.setGame(game);
          binding.boardView.setOnCellClickListener(this::onCellClicked);
@@ -255,7 +250,6 @@ full-width: true
          render();
      }
  
-@@ -36,9 +37,15 @@ public final class MainActivity extends AppCompatActivity {
          }
      }
  

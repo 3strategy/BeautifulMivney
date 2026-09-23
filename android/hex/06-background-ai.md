@@ -116,7 +116,6 @@ public final class HexAi {
 **מיקום:** app > res > layout. עורכים דרך app > res > layout בתצוגת Code. אין למחוק רכיבי תבנית שאינם ב־diff.
 
 ```diff
-@@ -33,6 +33,39 @@
              android:textColor="@color/muted"
              android:textSize="14sp" />
  
@@ -169,7 +168,6 @@ public final class HexAi {
 <details open markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
 
 ```diff
-@@ -7,11 +7,21 @@ import androidx.core.graphics.Insets;
  import androidx.core.view.ViewCompat;
  import androidx.core.view.WindowInsetsCompat;
  import com.example.hex.databinding.ActivityMainBinding;
@@ -192,7 +190,6 @@ public final class HexAi {
  
      @Override
      protected void onCreate(Bundle savedInstanceState) {
-@@ -24,35 +34,133 @@ public final class MainActivity extends AppCompatActivity {
              v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
              return insets;
          });

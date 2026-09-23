@@ -31,7 +31,6 @@ full-width: true
 **מיקום:** app > res > values. המשאב מרכז צבעים, מחרוזות או theme שהמסך משתמש בהם. שנו רק את השורות המוצגות.
 
 ```diff
-@@ -6,4 +6,6 @@
      <string name="board_description">Seven by seven Hex board</string>
      <string name="status_red_turn">Red to move</string>
      <string name="status_blue_turn">Blue to move</string>
@@ -47,14 +46,12 @@ full-width: true
 תנאי `play` מתרחב כדי לדחות גם משחק שכבר הוכרע; השינוי המלא מופיע ב־diff שלהלן.
 
 ```diff
-@@ -1,5 +1,6 @@
  package com.example.hex;
  
 +import java.util.ArrayDeque;
  import java.util.Arrays;
  
  /** The board state and rules, independent of pixels and Android widgets. */
-@@ -10,19 +11,71 @@ public final class HexGame {
      public static final int RED = 1;
      public static final int BLUE = 2;
  
@@ -134,7 +131,6 @@ full-width: true
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
 
 ```diff
-@@ -38,7 +38,14 @@ public final class MainActivity extends AppCompatActivity {
  
      private void render() {
          binding.boardView.setGame(game);
