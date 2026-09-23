@@ -246,6 +246,7 @@ navbar-links:
 
   א תרגול:
   - Connect4 — מסלול משחק מלא: "/android/Connect4/"
+  - Hex — משחק חיבור ומחשב אופליין: "/android/hex/"
   - תרגילי בסיס:
     - ToDo List: "/android/amjad/Ex3.ToDoList"
     - SQLite בסיסי: "/android/amjad/5.DbWorkSqlite"

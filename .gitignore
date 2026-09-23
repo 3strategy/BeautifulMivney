@@ -17,3 +17,4 @@ beautiful-jekyll-theme-*.gem
 node_modules/
 mdx-pages/
 assets/generated/mdx/
+/test-results/

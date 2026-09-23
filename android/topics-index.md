@@ -22,7 +22,7 @@ full-width: true
 
 לעיתים אותו נושא מופיע בכמה פרויקטים. כדאי לבחור תחילה את הקישור ששייך לפרויקט שלכם, ואחר כך לקרוא קישור נוסף כדי לראות שימוש אחר באותו רעיון.
 
-## ארבעה מסלולי למידה מרכזיים
+## חמישה מסלולי למידה מרכזיים
 
 ### TicTacMenu — ממסכים ותפריטים למשחק רשת
 
@@ -58,6 +58,18 @@ full-width: true
 2. [קשר רבים־לרבים עם דירוג ושדרוג סכימה](/android/sqlite/02.requery-rated-relationship)
 3. [INNER JOIN typed ושלושה טפסי הוספה](/android/sqlite/03.requery-join-and-inserts)
 4. [RecyclerView ומחיקה לפי מפתח מורכב](/android/sqlite/04.requery-recyclerview-delete)
+
+### Hex — מלוח משושים למשחק אופליין מול מחשב
+
+[שבעת פרקי Hex](/android/hex/) מתחילים ב־Empty Views Activity עם View Binding.
+התלמיד בונה Canvas, מגע, חוקיות, חיפוש חיבור, משחק מקומי וחיבור מודל ערך
+מסופק שעובד ברקע. אימון ה־RL והמודלים המאומנים נמסרים על ידי המורה.
+
+| נושא | עומק | שיעור |
+|---:|---:|---:|
+| ציור משושים וגאומטריית מגע | שיעור מעשי | [לוח](/android/hex/01-board/), [מהלכים](/android/hex/02-moves-and-turns/) |
+| מודל מצב וחיפוש גרפי לזיהוי ניצחון | שיעור מעשי | [תורות](/android/hex/02-moves-and-turns/), [ניצחון](/android/hex/03-win-detection/) |
+| Executor, פסילת תשובה ישנה ומודל ערך מסופק | שיעור מעשי באינטגרציה | [מחשב ברקע](/android/hex/05-background-ai/), [בחירת מודל](/android/hex/06-supplied-rl-models/) |
 
 ---
 
