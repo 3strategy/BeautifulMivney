@@ -10,7 +10,6 @@ full-width: true
 
 [מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/01-board/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/03-win-detection/' | relative_url }}) ·
 
-<!-- [patch הפרק]({{ '/android/hex/downloads/02.patch' | relative_url }}) -->
 
 {: .box-success}
 **בסוף הפרק:** שני אנשים מניחים אבנים בתור; נגיעה מחוץ ללוח או בתא תפוס אינה משנה את התור.
@@ -21,11 +20,11 @@ full-width: true
 
 ## מתחילים מהמצב שעבד
 
-פתחו את `hexT` במצב סוף הפרק הקודם. שמרו את קובצי התבנית שאינם מוזכרים כאן, כולל test ו־androidTest המקוריים. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
+המשיכו בפרויקט שבו השלמתם את פרק 1. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
 
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. ה־patch להורדה מכיל את שינויי הטקסט המדויקים של הפרק. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
+עבדו לפי סדר התלות: משאבים לפני קוד שמפנה אליהם; מחלקת החוקים לפני ה־Activity. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
 
 ### strings.xml
 
@@ -43,7 +42,7 @@ full-width: true
 
 ### HexGame.java
 
-**מיקום:** app > kotlin+java > com.example.hex. מחלקת החוקים העצמאית. בחנו היכן המשחק משנה מצב והיכן הוא רק קורא אותו.
+**מיקום:** app > kotlin+java > com.example.hex. צרו קובץ `HexGame.java` חדש והעתיקו את בלוק הקוד המלא. זו מחלקת החוקים העצמאית; בחנו היכן המשחק משנה מצב והיכן הוא רק קורא אותו.
 
 ```java
 package com.example.hex;
@@ -108,7 +107,7 @@ public final class HexGame {
 
 ### HexBoardView.java
 
-**מיקום:** app > kotlin+java > com.example.hex. מחלקת הציור. בפרק 2 היא מקבלת game, callback ובדיקת מגע; בפרק 1 היא סטטית.
+**מיקום:** app > kotlin+java > com.example.hex. מחלקת הציור מקבלת כעת game, callback ובדיקת מגע. פתחו את ה־diff המלא ועברו עליו מתחילתו עד סופו. העתיקו את כל `onTouchEvent()` כפי שהוא מוצג, כולל בדיקת `isEnabled()`. מחקו הצהרות ומתודות שהחלפתם כדי שלא יופיעו פעמיים.
 
 קבוע גודל הלוח עובר למחלקת המשחק; זו תוספת קטנה בתוך שורת קוד קיימת:
 
@@ -383,7 +382,7 @@ public final class HexGame {
 
 ### MainActivity.java
 
-**מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
+**מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק והמסך. השאירו את הקוד שאינו מוצג ב־diff. מחקו גם את שלוש השורות הריקות המסומנות ב־`-`: אחרי `import android.os.Bundle;`, אחרי `import androidx.core.view.WindowInsetsCompat;` ואחרי `setContentView(binding.getRoot());`. השורה הבאה צריכה לבוא מיד אחריהן.
 
 ```diff
 @@ -1,29 +1,44 @@
@@ -439,37 +438,8 @@ public final class HexGame {
 +}
 ```
 
-### HexGameTest.java
-
-**מיקום:** app > kotlin+java > com.example.hex > test. בדיקות JVM לחוקי משחק בלי להריץ Android.
-
-```java
-package com.example.hex;
-
-import org.junit.Test;
-import static org.junit.Assert.*;
-
-/** Tests the move rules without drawing or launching Android. */
-public final class HexGameTest {
-    @Test
-    public void legalAndIllegalTapsKeepCorrectTurn() {
-        HexGame game = new HexGame();
-        assertFalse(game.play(-1, 0));
-        assertEquals(HexGame.RED, game.getCurrentPlayer());
-        assertTrue(game.play(0, 0));
-        assertEquals(HexGame.RED, game.getCell(0, 0));
-        assertEquals(HexGame.BLUE, game.getCurrentPlayer());
-        assertFalse(game.play(0, 0));
-        assertFalse(game.play(7, 0));
-        assertEquals(HexGame.BLUE, game.getCurrentPlayer());
-        assertTrue(game.play(0, 1));
-        assertEquals(HexGame.RED, game.getCurrentPlayer());
-    }
-}
-```
-
 ## מריצים ומוודאים
 
-בצעו Sync אם שיניתם Gradle, הריצו `testDebugUnitTest assembleDebug` ואז הפעילו את האפליקציה. הניחו שתי אבנים, געו שוב בתא תפוס וברווח שמחוץ ללוח. מספר האבנים והתור לא משתנים במגע לא חוקי. הריצו את בדיקת ה־JVM.
+בצעו Sync אם שיניתם Gradle, בנו את הפרויקט (`assembleDebug`) ואז הפעילו את האפליקציה. הניחו שתי אבנים, געו שוב בתא תפוס וברווח שמחוץ ללוח. מספר האבנים והתור לא משתנים במגע לא חוקי.
 
 **שאלת הבנה:** למה נגיעה בתא תפוס אינה מעבירה תור?

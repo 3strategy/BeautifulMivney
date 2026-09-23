@@ -8,28 +8,29 @@ lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/03-win-detection/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/05-background-ai/' | relative_url }}) ·
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/03-win-detection/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/05a-model-preparation/' | relative_url }})
 
-<!-- [patch הפרק]({{ '/android/hex/downloads/04.patch' | relative_url }}) -->
 
 {: .box-success}
 **בסוף הפרק:** משחק מקומי מלא עם תור, תוצאה, כפתור Restart ומסך בסגנון יישום הייחוס.
 
 ## הרעיון
 
-מסך המשחק יכול עכשיו להציג משחק שלם מקצה לקצה. `restartGame` יוצר `HexGame` חדש; `render` מעדכן את הלוח, שורת המצב וזמינות המגע. XML ומשאבי `strings`, `colors` ו־`themes` אחראים להצגה. משאירים את קוד EdgeToEdge,‏ View Binding, ה־Manifest ובדיקות התבנית. אין עדיין כפתור מחשב לא פעיל.
+מסך המשחק יכול עכשיו להציג משחק שלם מקצה לקצה. `restartGame` יוצר `HexGame` חדש; `render` מעדכן את הלוח, שורת המצב וזמינות המגע. XML ומשאבי `strings`, `colors` ו־`themes` אחראים להצגה. משאירים את קוד EdgeToEdge,‏ View Binding, ה־Manifest וקובצי התבנית האחרים. אין עדיין כפתור מחשב לא פעיל.
 
 ## מתחילים מהמצב שעבד
 
-פתחו את `hexT` במצב סוף הפרק הקודם. שמרו את קובצי התבנית שאינם מוזכרים כאן, כולל test ו־androidTest המקוריים. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
+המשיכו בפרויקט שבו השלמתם את פרק 3. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
 
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. ה־patch להורדה מכיל את שינויי הטקסט המדויקים של הפרק. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
+עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. השתמשו בדיפים המוצגים בעמוד; במעבר עליהם אל תקלידו את סמלי `+` ו־`-` עצמם.
 
 ### strings.xml
 
 **מיקום:** app > res > values. המשאב מרכז צבעים, מחרוזות או theme שהמסך משתמש בהם. שנו רק את השורות המוצגות.
+
+שתי מחרוזות התור שמסומנות ב־`-` מופיעות שוב בהמשך ב־`+`: מחקו אותן מהמקום הישן והוסיפו אותן במקום החדש. בקובץ צריכה להישאר הגדרה אחת לכל שם.
 
 ```diff
 @@ -1,11 +1,27 @@
@@ -64,39 +65,12 @@ full-width: true
  </resources>
 ```
 
-### themes.xml
+### themes.xml ב־values-night
 
-**מיקום:** app > res > values. המשאב מרכז צבעים, מחרוזות או theme שהמסך משתמש בהם. שנו רק את השורות המוצגות.
-
-```diff
-@@ -1,9 +1,14 @@
--<resources xmlns:tools="http://schemas.android.com/tools">
--    <!-- Base application theme. -->
-+<resources>
-     <style name="Base.Theme.Hex" parent="Theme.Material3.DayNight.NoActionBar">
--        <!-- Customize your light theme here. -->
--        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-+        <item name="colorPrimary">@color/hex_blue</item>
-+        <item name="colorSecondary">@color/hex_red</item>
-+        <item name="android:colorAccent">@color/hex_blue</item>
-+        <item name="android:fontFamily">sans</item>
-+        <item name="android:windowLightStatusBar">true</item>
-+        <item name="android:navigationBarColor">@color/paper</item>
-+        <item name="android:statusBarColor">@color/paper</item>
-+        <item name="android:windowBackground">@color/paper</item>
-     </style>
- 
-     <style name="Theme.Hex" parent="Base.Theme.Hex" />
--</resources>
-+</resources>
-```
-
-### themes.xml
-
-**מיקום:** app > res > values. המשאב מרכז צבעים, מחרוזות או theme שהמסך משתמש בהם. שנו רק את השורות המוצגות.
+**מיקום:** app > res > values-night > themes.xml. Android בוחרת את המשאבים האלה כשהמכשיר במצב כהה. כדי לשמור גם במצב הזה על צבעי המסך הבהירים, הגדירו כאן את `Base.Theme.Hex` עם ההורה `Theme.Material3.Light.NoActionBar`. השאירו את ההורה `Theme.Material3.DayNight.NoActionBar` ואת `android:colorAccent` בקובץ הרגיל שבתיקיית `values`.
 
 ```diff
-@@ -1,7 +1,11 @@
+@@ -1,7 +1,14 @@
 -<resources xmlns:tools="http://schemas.android.com/tools">
 -    <!-- Base application theme. -->
 -    <style name="Base.Theme.Hex" parent="Theme.Material3.DayNight.NoActionBar">
@@ -114,6 +88,32 @@ full-width: true
      </style>
 -</resources>
 +</resources>
+```
+
+### themes.xml
+
+**מיקום:** app > res > values > themes.xml. השאירו כאן את `Theme.Material3.DayNight.NoActionBar` ואת `android:colorAccent`; בתיקיית `values-night` הוגדר להם עיצוב בהיר נפרד למצב כהה.
+
+```diff
+@@ -1,9 +1,14 @@
+-<resources xmlns:tools="http://schemas.android.com/tools">
+-    <!-- Base application theme. -->
++<resources>
+     <style name="Base.Theme.Hex" parent="Theme.Material3.DayNight.NoActionBar">
+-        <!-- Customize your light theme here. -->
+-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
++        <item name="colorPrimary">@color/hex_blue</item>
++        <item name="colorSecondary">@color/hex_red</item>
++        <item name="android:colorAccent">@color/hex_blue</item>
++        <item name="android:fontFamily">sans</item>
++        <item name="android:windowLightStatusBar">true</item>
++        <item name="android:navigationBarColor">@color/paper</item>
++        <item name="android:statusBarColor">@color/paper</item>
++        <item name="android:windowBackground">@color/paper</item>
+    </style>
+
+    <style name="Theme.Hex" parent="Base.Theme.Hex" />
+ </resources>
 ```
 
 ### activity_main.xml
@@ -275,6 +275,6 @@ full-width: true
 
 ## מריצים ומוודאים
 
-בצעו Sync אם שיניתם Gradle, הריצו `testDebugUnitTest assembleDebug` ואז הפעילו את האפליקציה. לחצו Restart באמצע משחק ואחרי ניצחון: הלוח ריק, הסטטוס הוא Red to move ואפשר לשחק שוב.
+בצעו Sync אם שיניתם Gradle, בנו את הפרויקט (`assembleDebug`) ואז הפעילו את האפליקציה. לחצו Restart באמצע משחק ואחרי ניצחון: הלוח ריק, הסטטוס הוא Red to move ואפשר לשחק שוב.
 
 **שאלת הבנה:** מה ההבדל בין HexGame חדש לבין צביעה של כל התאים כלא תפוסים ב־View?

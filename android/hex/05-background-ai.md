@@ -8,9 +8,11 @@ lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/04-local-two-player/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/06-supplied-rl-models/' | relative_url }}) ·
+[מפת המסלול]({{ '/android/hex/' | relative_url }})
 
-<!-- [patch הפרק]({{ '/android/hex/downloads/05.patch' | relative_url }}) -->
+{: .box-note}
+זו הגרסה המאוחדת של פרק 5, שנשמרה לעיון. במסלול הלמידה עברו מ[פרק 4]({{ '/android/hex/04-local-two-player/' | relative_url }}) ל[פרק 5א]({{ '/android/hex/05a-model-preparation/' | relative_url }}) ואז ל[פרק 5ב]({{ '/android/hex/05b-background-ai/' | relative_url }}).
+
 
 {: .box-success}
 **בסוף הפרק:** האדם משחק אדום מול תשובת מחשב כחולה אופליין ממודל בדיקה לא מאומן; התשובה הישנה נפסלת אחרי Restart או שינוי מצב.
@@ -21,54 +23,40 @@ full-width: true
 
 ## מתחילים מהמצב שעבד
 
-פתחו את `hexT` במצב סוף הפרק הקודם. שמרו את קובצי התבנית שאינם מוזכרים כאן, כולל test ו־androidTest המקוריים. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
+המשיכו בפרויקט שבו השלמתם את פרק 4. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
 
 {: .box-note}
-[הורידו את מודל הבדיקה של המורה]({{ '/android/hex/downloads/05-untrained-model.zip' | relative_url }}) ופרשו את שני קבציו לתוך `app > assets`. `untrained_mock: true` אומר שהמודל בודק את החיבור בלבד ואינו שחקן מאומן. יש להתקין אותו לפני הרצת מסך המחשב.
+[הורידו את חבילת המורה]({{ '/android/hex/downloads/05-teacher-bundle.zip' | relative_url }}) ופרשו אותה. העתיקו את `hex_value_v1.tflite` ואת `model_info.json` אל `app > assets` (צרו את התיקייה אם אינה קיימת), ואת `TfliteValueModel.java` אל `app > kotlin+java > com.example.hex`. המודל אינו מאומן; הוא מאפשר לבדוק את חיבור המחשב לאפליקציה בלי לטעון שהוא שחקן חזק.
 
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. ה־patch להורדה מכיל את שינויי הטקסט המדויקים של הפרק. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
+עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם. פתחו כל תיבת קוד של שינוי מלא וקראו עד סוף התוכן; אם הקוד ממשיך מתחת למסך, גללו בעמוד.
 
 ### libs.versions.toml
 
-**מיקום:** Gradle Scripts. משאב או הגדרת בנייה של השלב. שנו רק את השורות המוצגות.
+**מיקום:** Gradle Scripts. הוסיפו שורה אחת בכל אזור.
+
+ב־`[versions]`:
 
 ```diff
-@@ -7,6 +7,7 @@ appcompat = "1.8.0"
- material = "1.14.0"
- activityKtx = "1.13.0"
  constraintlayout = "2.2.2"
 +tflite = "2.17.0"
- 
- [libraries]
- junit = { group = "junit", name = "junit", version.ref = "junit" }
-@@ -16,7 +17,7 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
- material = { group = "com.google.android.material", name = "material", version.ref = "material" }
- activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+```
+
+ב־`[libraries]`:
+
+```diff
  constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 +tflite = { group = "org.tensorflow", name = "tensorflow-lite", version.ref = "tflite" }
- 
- [plugins]
- android-application = { id = "com.android.application", version.ref = "agp" }
--
 ```
 
 ### build.gradle.kts
 
-**מיקום:** Gradle Scripts > build.gradle.kts (Module :app). משאב או הגדרת בנייה של השלב. שנו רק את השורות המוצגות.
+**מיקום:** Gradle Scripts > build.gradle.kts (Module :app). בתוך `dependencies` הוסיפו:
 
 ```diff
-@@ -39,7 +39,8 @@ dependencies {
-     implementation(libs.appcompat)
-     implementation(libs.constraintlayout)
      implementation(libs.material)
 +    implementation(libs.tflite)
-     testImplementation(libs.junit)
-     androidTestImplementation(libs.espresso.core)
-     androidTestImplementation(libs.ext.junit)
--}
-+}
 ```
 
 ### HexGame.java
@@ -533,276 +521,9 @@ public final class HexAi {
 }
 ```
 
-### TfliteValueModel.java
+### TfliteValueModel.java — קובץ מסופק
 
-**מיקום:** app > kotlin+java > com.example.hex. קוד שילוב מסופק של המורה. העתיקו בשלמותו וקראו את אימות ה־metadata, צורת הטנזור וה־SHA-256; אין כאן אימון.
-
-<details markdown="1"><summary>פתחו את השינוי המלא ב־TfliteValueModel.java</summary>
-
-```java
-package com.example.hex;
-
-import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.Interpreter;
-import org.tensorflow.lite.Tensor;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.util.Arrays;
-import java.util.List;
-
-/** Loads and evaluates TFLite models that satisfy the strict {@code hex-value-v1} contract. */
-public final class TfliteValueModel implements ValueModel {
-    /** Default bundled TFLite model asset. */
-    public static final String MODEL_ASSET = "hex_value_v1.tflite";
-    /** Default bundled metadata asset. */
-    public static final String METADATA_ASSET = "model_info.json";
-    private static final String CONTRACT = "hex-value-v1";
-    private static final int ENCODED_FLOATS = HexGame.CELL_COUNT * 3;
-
-    private final Interpreter interpreter;
-    private final boolean untrainedMock;
-    private final boolean dynamicBatch;
-    private boolean closed;
-
-    /**
-     * Loads the default bundled value model and metadata.
-     *
-     * @param context Android context used to open application assets
-     * @throws Exception if the assets cannot be read or fail contract validation
-     */
-    public TfliteValueModel(Context context) throws Exception {
-        this(context, MODEL_ASSET, METADATA_ASSET);
-    }
-
-    /**
-     * Loads a value model and metadata from the specified bundled assets.
-     *
-     * @param context Android context used to open application assets
-     * @param modelAsset relative asset path ending in {@code .tflite}
-     * @param metadataAsset relative asset path ending in {@code .json}
-     * @throws Exception if an asset cannot be read or the model, metadata, or hash is invalid
-     */
-    public TfliteValueModel(Context context, String modelAsset, String metadataAsset)
-            throws Exception {
-        modelAsset = checkedAssetPath(modelAsset, ".tflite");
-        metadataAsset = checkedAssetPath(metadataAsset, ".json");
-        JSONObject metadata = readMetadata(context, metadataAsset);
-        validateMetadata(metadata);
-        validateHashWhenPresent(context, modelAsset, metadata);
-        untrainedMock = metadata.getBoolean("untrained_mock");
-
-        Interpreter.Options options = new Interpreter.Options();
-        options.setNumThreads(2);
-        interpreter = new Interpreter(mapAsset(context, modelAsset), options);
-        try {
-            validateTensors(interpreter);
-            dynamicBatch = interpreter.getInputTensor(0).shapeSignature()[0] == -1;
-        } catch (Exception exception) {
-            interpreter.close();
-            throw exception;
-        }
-    }
-
-    @Override
-    public synchronized float[] evaluate(List<float[]> encodedStates) {
-        if (closed) {
-            throw new IllegalStateException("Model is closed");
-        }
-        if (encodedStates.isEmpty()) {
-            return new float[0];
-        }
-        validateStates(encodedStates);
-        if (dynamicBatch) {
-            return evaluateDynamicBatch(encodedStates);
-        }
-
-        float[] values = new float[encodedStates.size()];
-        for (int stateIndex = 0; stateIndex < encodedStates.size(); stateIndex++) {
-            float[] state = encodedStates.get(stateIndex);
-            ByteBuffer input = ByteBuffer.allocateDirect(ENCODED_FLOATS * Float.BYTES)
-                    .order(ByteOrder.nativeOrder());
-            for (float value : state) {
-                input.putFloat(value);
-            }
-            input.rewind();
-
-            ByteBuffer output = ByteBuffer.allocateDirect(Float.BYTES)
-                    .order(ByteOrder.nativeOrder());
-            interpreter.run(input, output);
-            output.rewind();
-            values[stateIndex] = checkedValue(output.getFloat());
-        }
-        return values;
-    }
-
-    private float[] evaluateDynamicBatch(List<float[]> encodedStates) {
-        int batchSize = encodedStates.size();
-        interpreter.resizeInput(0, new int[]{batchSize, 7, 7, 3}, true);
-        interpreter.allocateTensors();
-
-        ByteBuffer input = ByteBuffer
-                .allocateDirect(batchSize * ENCODED_FLOATS * Float.BYTES)
-                .order(ByteOrder.nativeOrder());
-        for (float[] state : encodedStates) {
-            for (float value : state) {
-                input.putFloat(value);
-            }
-        }
-        input.rewind();
-        ByteBuffer output = ByteBuffer.allocateDirect(batchSize * Float.BYTES)
-                .order(ByteOrder.nativeOrder());
-        interpreter.run(input, output);
-        output.rewind();
-
-        float[] values = new float[batchSize];
-        for (int i = 0; i < batchSize; i++) {
-            values[i] = checkedValue(output.getFloat());
-        }
-        return values;
-    }
-
-    private static void validateStates(List<float[]> states) {
-        for (float[] state : states) {
-            if (state == null || state.length != ENCODED_FLOATS) {
-                throw new IllegalArgumentException("Each model state must contain 147 floats");
-            }
-        }
-    }
-
-    private static float checkedValue(float value) {
-        if (!Float.isFinite(value) || value < -1.05f || value > 1.05f) {
-            throw new IllegalStateException("Model value is outside the [-1, 1] contract");
-        }
-        return Math.max(-1.0f, Math.min(1.0f, value));
-    }
-
-    @Override
-    public boolean isUntrainedMock() {
-        return untrainedMock;
-    }
-
-    @Override
-    public synchronized void close() {
-        if (!closed) {
-            closed = true;
-            interpreter.close();
-        }
-    }
-
-    private static void validateTensors(Interpreter interpreter) {
-        if (interpreter.getInputTensorCount() != 1 || interpreter.getOutputTensorCount() != 1) {
-            throw new IllegalArgumentException("Model must have one input and one output tensor");
-        }
-        Tensor input = interpreter.getInputTensor(0);
-        Tensor output = interpreter.getOutputTensor(0);
-        if (input.dataType() != DataType.FLOAT32
-                || !Arrays.equals(input.shape(), new int[]{1, 7, 7, 3})) {
-            throw new IllegalArgumentException("Model input must be FLOAT32 [1,7,7,3]");
-        }
-        if (output.dataType() != DataType.FLOAT32
-                || !Arrays.equals(output.shape(), new int[]{1, 1})) {
-            throw new IllegalArgumentException("Model output must be FLOAT32 [1,1]");
-        }
-    }
-
-    private static JSONObject readMetadata(Context context, String metadataAsset) throws Exception {
-        StringBuilder jsonText = new StringBuilder();
-        try (InputStreamReader reader = new InputStreamReader(
-                context.getAssets().open(metadataAsset), StandardCharsets.UTF_8)) {
-            char[] buffer = new char[1024];
-            int count;
-            while ((count = reader.read(buffer)) != -1) {
-                jsonText.append(buffer, 0, count);
-            }
-        }
-        return new JSONObject(jsonText.toString());
-    }
-
-    private static void validateHashWhenPresent(Context context, String modelAsset,
-                                                JSONObject metadata)
-            throws Exception {
-        if (!metadata.has("sha256")) {
-            return;
-        }
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        try (InputStream stream = context.getAssets().open(modelAsset)) {
-            byte[] buffer = new byte[8192];
-            int count;
-            while ((count = stream.read(buffer)) != -1) {
-                digest.update(buffer, 0, count);
-            }
-        }
-        StringBuilder actual = new StringBuilder(64);
-        for (byte value : digest.digest()) {
-            actual.append(String.format("%02x", value & 0xff));
-        }
-        if (!actual.toString().equalsIgnoreCase(metadata.getString("sha256"))) {
-            throw new IllegalArgumentException("Model bytes do not match metadata SHA-256");
-        }
-    }
-
-    private static void validateMetadata(JSONObject metadata) throws Exception {
-        if (!CONTRACT.equals(metadata.getString("contract"))
-                || metadata.getInt("board_size") != HexGame.SIZE
-                || !"float32".equals(metadata.getString("input_dtype"))
-                || !"float32".equals(metadata.getString("output_dtype"))
-                || !metadata.has("untrained_mock")) {
-            throw new IllegalArgumentException("Model metadata does not match hex-value-v1");
-        }
-        assertShape(metadata.getJSONArray("input_shape"), new int[]{1, 7, 7, 3});
-        assertShape(metadata.getJSONArray("output_shape"), new int[]{1, 1});
-    }
-
-    private static void assertShape(JSONArray actual, int[] expected) throws Exception {
-        if (actual.length() != expected.length) {
-            throw new IllegalArgumentException("Model metadata tensor shape is invalid");
-        }
-        for (int i = 0; i < expected.length; i++) {
-            if (actual.getInt(i) != expected[i]) {
-                throw new IllegalArgumentException("Model metadata tensor shape is invalid");
-            }
-        }
-    }
-
-    private static String checkedAssetPath(String path, String suffix) {
-        if (path == null || path.isEmpty() || path.startsWith("/")
-                || path.contains("\\") || !path.endsWith(suffix)) {
-            throw new IllegalArgumentException("Invalid model asset path");
-        }
-        for (String segment : path.split("/")) {
-            if (segment.isEmpty() || ".".equals(segment) || "..".equals(segment)) {
-                throw new IllegalArgumentException("Invalid model asset path");
-            }
-        }
-        return path;
-    }
-
-    private static MappedByteBuffer mapAsset(Context context, String name) throws IOException {
-        try (AssetFileDescriptor descriptor = context.getAssets().openFd(name);
-             FileInputStream input = new FileInputStream(descriptor.getFileDescriptor());
-             FileChannel channel = input.getChannel()) {
-            return channel.map(FileChannel.MapMode.READ_ONLY,
-                    descriptor.getStartOffset(), descriptor.getDeclaredLength());
-        }
-    }
-}
-```
-
-</details>
+**מיקום:** app > kotlin+java > com.example.hex. העתיקו לכאן את `TfliteValueModel.java` מחבילת המורה שהורדתם. הקובץ חייב להישאר בשם הזה ועם `package com.example.hex;` בראשו. אינכם צריכים להקליד את מחלקת השילוב: היא מממשת את `ValueModel`, בודקת את קובצי המודל ומחזירה ערך לכל מצב. בפרק הזה התמקדו בקידוד, בבחירת המהלך ובהרצה ברקע.
 
 ### activity_main.xml
 
@@ -851,31 +572,9 @@ public final class TfliteValueModel implements ValueModel {
              android:layout_height="wrap_content"
 ```
 
-### model_info.json
+### model_info.json — קובץ מסופק
 
-**מיקום:** app > assets. משאב או הגדרת בנייה של השלב. שנו רק את השורות המוצגות.
-
-```json
-{
-  "contract": "hex-value-v1",
-  "board_size": 7,
-  "input_shape": [
-    1,
-    7,
-    7,
-    3
-  ],
-  "output_shape": [
-    1,
-    1
-  ],
-  "input_dtype": "float32",
-  "output_dtype": "float32",
-  "untrained_mock": true,
-  "description": "Untrained zero-value integration mock; no learned strength",
-  "sha256": "b71233bbc4719bd28b0c7fa534d5100125a871f2e34f6f2dc45680f246581b68"
-}
-```
+**מיקום:** app > assets. זהו קובץ המטא־דאטה מחבילת המורה, לצד `hex_value_v1.tflite`. אין להקליד או לשנות אותו. `untrained_mock: true` מציין שזה מודל בדיקה לחיבור, ו־`sha256` מזהה את קובץ המודל שאליו הוא שייך.
 
 ### MainActivity.java
 
@@ -1051,220 +750,8 @@ public final class TfliteValueModel implements ValueModel {
 
 </details>
 
-### HexGameTest.java
-
-**מיקום:** app > kotlin+java > com.example.hex > test. בדיקות JVM לחוקי משחק בלי להריץ Android.
-
-<details markdown="1"><summary>פתחו את השינוי המלא ב־HexGameTest.java</summary>
-
-```diff
-@@ -1,45 +1,92 @@
- package com.example.hex;
- 
- import org.junit.Test;
--import static org.junit.Assert.*;
- 
--/** Tests the move rules without drawing or launching Android. */
-+import java.util.List;
-+
-+import static org.junit.Assert.assertEquals;
-+import static org.junit.Assert.assertFalse;
-+import static org.junit.Assert.assertTrue;
-+
- public final class HexGameTest {
-     @Test
--    public void legalAndIllegalTapsKeepCorrectTurn() {
-+    public void redConnectsTopToBottom() {
-+        int[] cells = new int[HexGame.CELL_COUNT];
-+        for (int row = 0; row < HexGame.SIZE; row++) {
-+            cells[row * HexGame.SIZE + 2] = HexGame.RED;
-+        }
-+
-+        HexGame game = HexGame.restore(cells, HexGame.BLUE);
-+
-+        assertEquals(HexGame.RED, game.getWinner());
-+        assertTrue(game.hasConnection(HexGame.RED));
-+        assertFalse(game.hasConnection(HexGame.BLUE));
-+        assertTrue(game.legalMoves().isEmpty());
-+    }
-+
-+    @Test
-+    public void blueConnectsLeftToRightThroughDiagonalNeighbors() {
-+        int[] cells = new int[HexGame.CELL_COUNT];
-+        for (int column = 0; column < HexGame.SIZE; column++) {
-+            cells[3 * HexGame.SIZE + column] = HexGame.BLUE;
-+        }
-+
-+        HexGame game = HexGame.restore(cells, HexGame.RED);
-+
-+        assertEquals(HexGame.BLUE, game.getWinner());
-+        assertTrue(game.hasConnection(HexGame.BLUE));
-+    }
-+
-+    @Test
-+    public void legalMoveAlternatesEvenWhenItWins() {
-+        int[] cells = new int[HexGame.CELL_COUNT];
-+        for (int row = 0; row < HexGame.SIZE - 1; row++) {
-+            cells[row * HexGame.SIZE + 3] = HexGame.RED;
-+        }
-+        HexGame game = HexGame.restore(cells, HexGame.RED);
-+
-+        assertTrue(game.play(6, 3));
-+
-+        assertEquals(HexGame.RED, game.getWinner());
-+        assertEquals(HexGame.BLUE, game.getCurrentPlayer());
-+        assertFalse(game.play(6, 4));
-+    }
-+
-+    @Test
-+    public void occupiedAndOutsideMovesAreRejectedWithoutChangingTurn() {
-         HexGame game = new HexGame();
-         assertFalse(game.play(-1, 0));
--        assertEquals(HexGame.RED, game.getCurrentPlayer());
-         assertTrue(game.play(0, 0));
--        assertEquals(HexGame.RED, game.getCell(0, 0));
-         assertEquals(HexGame.BLUE, game.getCurrentPlayer());
-         assertFalse(game.play(0, 0));
--        assertFalse(game.play(7, 0));
-         assertEquals(HexGame.BLUE, game.getCurrentPlayer());
--        assertTrue(game.play(0, 1));
--        assertEquals(HexGame.RED, game.getCurrentPlayer());
-     }
-+
-     @Test
--    public void redConnectsTopToBottomAndEndsGame() {
--        HexGame game = new HexGame();
--        for (int row = 0; row < 6; row++) {
--            assertTrue(game.play(row, 3));
--            assertTrue(game.play(row, 0));
--        }
--        assertTrue(game.play(6, 3));
--        assertEquals(HexGame.RED, game.getWinner());
--        assertTrue(game.isOver());
--        assertFalse(game.play(6, 4));
-+    public void encodingIsChannelLastAndPlayerRelative() {
-+        int[] cells = new int[HexGame.CELL_COUNT];
-+        cells[0] = HexGame.RED;
-+        cells[1] = HexGame.BLUE;
-+        HexGame game = HexGame.restore(cells, HexGame.BLUE);
-+
-+        float[] encoded = game.encodeForCurrentPlayer();
-+
-+        assertEquals(147, encoded.length);
-+        assertEquals(0.0f, encoded[0], 0.0f);
-+        assertEquals(1.0f, encoded[1], 0.0f);
-+        assertEquals(0.0f, encoded[2], 0.0f);
-+        assertEquals(1.0f, encoded[3], 0.0f);
-+        assertEquals(0.0f, encoded[4], 0.0f);
-+        assertEquals(0.0f, encoded[5], 0.0f);
-     }
- 
-     @Test
--    public void blueConnectsLeftToRightAndEndsGame() {
-+    public void legalMovesAreStableRowMajorIndices() {
-         HexGame game = new HexGame();
--        for (int column = 0; column < 7; column++) {
--            assertTrue(game.play(0, column));
--            assertTrue(game.play(3, column));
--        }
--        assertEquals(HexGame.BLUE, game.getWinner());
--        assertFalse(game.play(1, 0));
-+        game.play(0, 0);
-+        List<HexGame.Move> moves = game.legalMoves();
-+        assertEquals(48, moves.size());
-+        assertEquals(1, moves.get(0).index());
-+        assertEquals(48, moves.get(47).index());
-     }
- }
-```
-
-</details>
-
-### HexAiTest.java
-
-**מיקום:** app > kotlin+java > com.example.hex > test. מודל מזויף בבדיקת JVM מבודד את בחירת המהלך מן המימוש של TFLite.
-
-```java
-package com.example.hex;
-
-import org.junit.Test;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-
-public final class HexAiTest {
-    @Test
-    public void negatesSuccessorValueBecauseNextPlayerIsEncoded() {
-        ValueModel model = new FakeModel() {
-            @Override
-            protected float value(float[] state) {
-                int redStone = opponentStoneIndex(state);
-                return redStone == 7 ? -0.9f : 0.2f;
-            }
-        };
-
-        HexGame.Move move = new HexAi(model).chooseMove(new HexGame());
-
-        assertEquals(7, move.index());
-    }
-
-    @Test
-    public void exactWinBeatsModelEstimate() {
-        int[] cells = new int[HexGame.CELL_COUNT];
-        for (int row = 0; row < HexGame.SIZE - 1; row++) {
-            cells[row * HexGame.SIZE + 3] = HexGame.RED;
-        }
-        cells[44] = HexGame.BLUE;
-        cells[46] = HexGame.BLUE;
-        HexGame game = HexGame.restore(cells, HexGame.RED);
-        ValueModel model = new FakeModel() {
-            @Override
-            protected float value(float[] state) {
-                return 1.0f;
-            }
-        };
-
-        HexGame.Move move = new HexAi(model).chooseMove(game);
-
-        assertEquals(45, move.index());
-    }
-
-    private static int opponentStoneIndex(float[] state) {
-        for (int cell = 0; cell < HexGame.CELL_COUNT; cell++) {
-            if (state[cell * 3 + 1] == 1.0f) {
-                return cell;
-            }
-        }
-        return -1;
-    }
-
-    private abstract static class FakeModel implements ValueModel {
-        @Override
-        public float[] evaluate(List<float[]> states) {
-            float[] result = new float[states.size()];
-            for (int i = 0; i < states.size(); i++) {
-                result[i] = value(states.get(i));
-            }
-            return result;
-        }
-
-        protected abstract float value(float[] state);
-
-        @Override
-        public boolean isUntrainedMock() {
-            return true;
-        }
-
-        @Override
-        public void close() {
-        }
-    }
-}
-```
-
 ## מריצים ומוודאים
 
-בצעו Sync אם שיניתם Gradle, הריצו `testDebugUnitTest assembleDebug` ואז הפעילו את האפליקציה. שחקו מהלך אדום וחכו לכחול. בזמן שהמחשב מחשב, לחצו Restart או עברו ל־Two players; מהלך ישן לא יופיע במשחק החדש. בדקו גם הודעת שגיאה על מודל חסר בעותק בדיקה.
+בצעו Sync אם שיניתם Gradle, בנו את הפרויקט (`assembleDebug`) ואז הפעילו את האפליקציה. שחקו מהלך אדום וחכו לכחול. בזמן שהמחשב מחשב, לחצו Restart או עברו ל־Two players; מהלך ישן לא יופיע במשחק החדש.
 
 **שאלת הבנה:** אם המודל מעריך את מצב היורש כטוב ליריב, איזה סימן יקבל מהלך השחקן הנוכחי?

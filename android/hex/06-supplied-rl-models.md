@@ -8,12 +8,11 @@ lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/05-background-ai/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/07-final-presentation/' | relative_url }}) ·
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/05b-background-ai/' | relative_url }})
 
-<!-- [patch הפרק]({{ '/android/hex/downloads/06.patch' | relative_url }}) -->
 
 {: .box-success}
-**בסוף הפרק:** ששת השחקנים המסופקים נבחרים מן הקטלוג. בחירה מחליפה מודל ומתחילה משחק חדש.
+**בסוף הפרק:** אפשר לבחור אחד משישה שחקני מחשב. כל בחירה מתחילה משחק חדש.
 
 ## הרעיון
 
@@ -21,18 +20,14 @@ full-width: true
 
 ## מתחילים מהמצב שעבד
 
-פתחו את `hexT` במצב סוף הפרק הקודם. שמרו את קובצי התבנית שאינם מוזכרים כאן, כולל test ו־androidTest המקוריים. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
+המשיכו בפרויקט שבו השלמתם את פרק 5ב. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
 
 {: .box-note}
-[הורידו את חבילת שחקני המורה]({{ '/android/hex/downloads/06-players.zip' | relative_url }}) ופרשו את תיקיות `players/` תחת `app > assets`. כל תיקייה מכילה `hex_value_v1.tflite` וגם `model_info.json`. המורה כבר הכין את האימון; התלמיד מעדכן רק את הקטלוג לאחר קבלת הזוגות.
-
-הכנת זוג לדוגמה בצד המורה מתבצעת משורש פרויקט הייחוס באמצעות
-`.venv-ml/Scripts/python.exe ml/player_to_android.py ml/runs/a100_paper_seed_7_final/retained/iteration_001000.npz`.
-הסקריפט קיים בפרויקט הייחוס ומעתיק זוג נכסים; הוא אינו עורך את `model_catalog.json`.
+[הורידו את חבילת שחקני המורה]({{ '/android/hex/downloads/06-players.zip' | relative_url }}) ופרשו את תיקיות `players/` תחת `app > assets`. בכל תיקייה יש שני קבצים ששייכים זה לזה: `hex_value_v1.tflite` ו־`model_info.json`. הם כבר מוכנים לשימוש; אין צורך לאמן מודלים.
 
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. ה־patch להורדה מכיל את שינויי הטקסט המדויקים של הפרק. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
+עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. השתמשו בדיפים המוצגים בעמוד; במעבר עליהם אל תקלידו את סמלי `+` ו־`-` עצמם.
 
 ### ModelCatalog.java
 
@@ -611,159 +606,17 @@ public final class ModelCatalog {
 
 </details>
 
-### TfliteValueModelTest.java
-
-**מיקום:** app > kotlin+java > com.example.hex. בדיקת Android אמיתית טוענת את כל המודלים ומבקשת מהלך חוקי.
-
-<details markdown="1"><summary>פתחו את השינוי המלא ב־TfliteValueModelTest.java</summary>
-
-```java
-package com.example.hex;
-
-import android.content.Context;
-
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.Interpreter;
-
-import java.io.File;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assume.assumeTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-@RunWith(AndroidJUnit4.class)
-public final class TfliteValueModelTest {
-    @Test
-    public void everyCatalogPlayerLoadsAndPlaysLegalMoves() throws Exception {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        String referenceId = InstrumentationRegistry.getArguments().getString("reference_level");
-        String referenceValue = InstrumentationRegistry.getArguments().getString("reference_value");
-        if (referenceId != null) {
-            assertNotNull(findLevel(ModelCatalog.load(context), referenceId));
-        }
-        for (ModelCatalog.Level level : ModelCatalog.load(context)) {
-            try (TfliteValueModel model = new TfliteValueModel(
-                    context, level.modelAsset, level.metadataAsset)) {
-                HexGame position = new HexGame();
-                float value = model.evaluate(Arrays.asList(position.encodeForCurrentPlayer()))[0];
-                assertTrue(level.id, Float.isFinite(value));
-                if (level.id.equals(referenceId)) {
-                    assertNotNull(referenceValue);
-                    assertEquals(Float.parseFloat(referenceValue), value, 0.00002f);
-                }
-                for (int turn = 0; turn < 6; turn++) {
-                    HexGame.Move move = new HexAi(model).chooseMove(position);
-                    assertNotNull(level.id, move);
-                    assertTrue(level.id, position.play(move.row, move.column));
-                }
-            }
-        }
-    }
-
-    private static ModelCatalog.Level findLevel(List<ModelCatalog.Level> levels, String id) {
-        for (ModelCatalog.Level level : levels) {
-            if (id.equals(level.id)) {
-                return level;
-            }
-        }
-        return null;
-    }
-
-    @Test
-    public void bundledModelLoadsAndEvaluatesDynamicBatch() throws Exception {
-        try (TfliteValueModel model = new TfliteValueModel(
-                InstrumentationRegistry.getInstrumentation().getTargetContext())) {
-            List<float[]> states = new ArrayList<>();
-            for (int i = 0; i < HexGame.CELL_COUNT; i++) {
-                states.add(new HexGame().encodeForCurrentPlayer());
-            }
-
-            float[] values = model.evaluate(states);
-
-            assertEquals(HexGame.CELL_COUNT, values.length);
-            for (float value : values) {
-                assertTrue(Float.isFinite(value));
-                assertTrue(value >= -1.0f && value <= 1.0f);
-            }
-        }
-    }
-
-    /**
-     * Optional export compatibility check. Inject hex_value_export_test.tflite
-     * into the target app's files directory before running this method.
-     */
-    @Test
-    public void injectedExportLoadsInAndroidRuntime() {
-        File modelFile = new File(
-                InstrumentationRegistry.getInstrumentation().getTargetContext().getFilesDir(),
-                "hex_value_export_test.tflite");
-        assumeTrue("No candidate export injected", modelFile.isFile());
-
-        try (Interpreter interpreter = new Interpreter(modelFile)) {
-            String expectedText = InstrumentationRegistry.getArguments()
-                    .getString("expected_value");
-            assertEquals(DataType.FLOAT32, interpreter.getInputTensor(0).dataType());
-            assertEquals(DataType.FLOAT32, interpreter.getOutputTensor(0).dataType());
-            int inputBatch = interpreter.getInputTensor(0).shapeSignature()[0];
-            int outputBatch = interpreter.getOutputTensor(0).shapeSignature()[0];
-            assertTrue(inputBatch == -1 || inputBatch == 1);
-            assertTrue(outputBatch == -1 || outputBatch == 1);
-            assertTrue(Arrays.equals(new int[]{1, 7, 7, 3},
-                    interpreter.getInputTensor(0).shape()));
-            assertTrue(Arrays.equals(new int[]{1, 1},
-                    interpreter.getOutputTensor(0).shape()));
-
-            int batchSize = inputBatch == -1 ? 7 : 1;
-            if (inputBatch == -1) {
-                interpreter.resizeInput(0, new int[]{batchSize, 7, 7, 3}, true);
-                interpreter.allocateTensors();
-            }
-            ByteBuffer input = ByteBuffer.allocateDirect(batchSize * 147 * Float.BYTES)
-                    .order(ByteOrder.nativeOrder());
-            for (int batch = 0; batch < batchSize; batch++) {
-                for (int cell = 0; cell < HexGame.CELL_COUNT; cell++) {
-                    input.putFloat(0.0f);
-                    input.putFloat(0.0f);
-                    input.putFloat(1.0f);
-                }
-            }
-            input.rewind();
-            ByteBuffer output = ByteBuffer.allocateDirect(batchSize * Float.BYTES)
-                    .order(ByteOrder.nativeOrder());
-            interpreter.run(input, output);
-            output.rewind();
-            for (int batch = 0; batch < batchSize; batch++) {
-                float value = output.getFloat();
-                assertTrue(Float.isFinite(value));
-                assertTrue(value >= -1.0f && value <= 1.0f);
-                if (expectedText != null) {
-                    assertEquals(Float.parseFloat(expectedText), value, 0.00001f);
-                }
-            }
-        }
-    }
-}
-```
-
-</details>
-
 {: .box-warning}
 מטא־דאטה וזוגות `.tflite` של ששת השחקנים מגיעים יחד בחבילת המורה ואינם נכתבים ידנית. אל תערבבו קובץ מודל משורה אחת עם `model_info.json` משורה אחרת. ברירת המחדל היא `early-test`. המטא־דאטה שלה מכילה `untrained_mock: true`, ולכן מסך הייחוס מכנה אותה מודל בדיקה אף ששמה מציין שלוש איטרציות. אל תציגו אותה כבעלת חוזק נמדד.
 
 ## מריצים ומוודאים
 
-בצעו Sync אם שיניתם Gradle, הריצו `testDebugUnitTest assembleDebug` ואז הפעילו את האפליקציה. עברו על כל שש הבחירות: כל מעבר מאפס את הלוח; לאחר מהלך אדום מתקבלת תשובה כחולה חוקית. בדיקת Android טוענת את כל שורות הקטלוג.
+בצעו Sync אם שיניתם Gradle, בנו את הפרויקט (`assembleDebug`) ואז הפעילו את האפליקציה. עברו על כל שש הבחירות: כל מעבר מאפס את הלוח; לאחר מהלך אדום מתקבלת תשובה כחולה חוקית.
 
 **שאלת הבנה:** למה יש לשמור קובץ TFLite והמטא־דאטה שלו כזוג?
+
+## כך נראה המסך בסיום הפרק
+
+![מסך Hex הסופי: לוח ריק, בחירת מצב משחק ורשימת שחקני המחשב]({{ '/android/hex/final.png' | relative_url }})
+
+בתמונה נבחר שחקן המחשב הראשון. אפשר להחליף אותו בתפריט שמעל הלוח.

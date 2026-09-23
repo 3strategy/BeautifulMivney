@@ -10,38 +10,38 @@ full-width: true
 
 [מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/02-moves-and-turns/' | relative_url }}) ·
 
-<!-- [patch הפרק]({{ '/android/hex/downloads/01.patch' | relative_url }}) -->
 
 {: .box-success}
 **בסוף הפרק:** לוח 7×7 ריק, עם סימון אדום מלמעלה ומלמטה וסימון כחול משמאל ומימין.
+
+![לוח Hex ריק של 49 משושים, עם שפות אדומות למעלה ולמטה ושפות כחולות משמאל ומימין]({{ '/android/hex/board-after-01.png' | relative_url }})
+
+כך ייראה מרכז המסך בסיום הפרק: שבע שורות של שבעה משושים ריקים.
 
 ## הרעיון
 
 Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהשפה העליונה לתחתונה וכחול משמאל לימין. בשלב הזה ה־View מצייר בלבד. `calculateGeometry()` גוזרת את הרדיוס מנפח התצוגה. `centerX` מוסיפה לכל שורה הסטה של חצי משושה; `makeHexagon` משתמשת בשש זוויות במרווחי 60°. הגדרת צבעים ב־resources שומרת על קוד ציור קריא. אין עדיין מחלקת חוקים או מגע.
 
-Todo: add picture of the board after this lesson.
-
 ## מתחילים מהמצב שעבד
 
-התחילו ב־`hexT`:‏ Empty Views Activity ב־Java, חבילה `com.example.hex`, ‏API 31,‏ XML ו־View Binding פעיל. `MainActivity` כבר מנפחת `ActivityMainBinding`. אין ליצור Activity חדש.
+התחילו בפרויקט Empty Views Activity ב־Java, חבילה `com.example.hex`, ‏API 31,‏ XML ו־View Binding פעיל. `MainActivity` כבר מנפחת `ActivityMainBinding`. אין ליצור Activity חדש.
 
 [להסבת פרוייקט חדש ל-View Bindings ראו 222](/android/projectSteps/019bBindingsForMainActivity)
 
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. ה־patch להורדה מכיל את שינויי הטקסט המדויקים של הפרק. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
+עבדו לפי סדר התלות: משאבים לפני קוד שמפנה אליהם. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
 
 ### colors.xml
 
-**מיקום:** app > res > values. המשאב מרכז צבעים, מחרוזות או theme שהמסך משתמש בהם. שנו רק את השורות המוצגות.
+**מיקום:** app > res > values. החליפו את שני הצבעים הקיימים בצבעי הלוח. השאירו את הצהרת ה־XML ואת תגיות `<resources>` במקומן.
 
 ```diff
-@@ -1,5 +1,10 @@
--<?xml version="1.0" encoding="utf-8"?>
+@@ -1,5 +1,11 @@
+ <?xml version="1.0" encoding="utf-8"?>
  <resources>
 -    <color name="black">#FF000000</color>
 -    <color name="white">#FFFFFFFF</color>
--</resources>
 +    <color name="ink">#152238</color>
 +    <color name="paper">#F5F0E6</color>
 +    <color name="surface">#FFFDF8</color>
@@ -50,7 +50,7 @@ Todo: add picture of the board after this lesson.
 +    <color name="hex_blue">#2374AB</color>
 +    <color name="hex_line">#324154</color>
 +    <color name="muted">#667085</color>
-+</resources>
+ </resources>
 ```
 
 ### strings.xml
@@ -72,7 +72,7 @@ Todo: add picture of the board after this lesson.
 
 ### HexBoardView.java
 
-**מיקום:** app > kotlin+java > com.example.hex. מחלקת הציור. בפרק 2 היא מקבלת game, callback ובדיקת מגע; בפרק 1 היא סטטית.
+**מיקום:** app > kotlin+java > com.example.hex. צרו כאן קובץ Java חדש בשם `HexBoardView.java` והעתיקו את הקוד המלא שלהלן בדיוק, כולל ירידות השורה והסוגריים. בפרק 2 המחלקה תקבל game, callback ובדיקת מגע; בפרק 1 היא סטטית.
 
 <details markdown="1"><summary>פתחו את השינוי המלא ב־HexBoardView.java</summary>
 
@@ -250,6 +250,8 @@ public final class HexBoardView extends View {
 
 ## מריצים ומוודאים
 
-בצעו Sync אם שיניתם Gradle, הריצו `testDebugUnitTest assembleDebug` ואז הפעילו את האפליקציה. פתחו את האפליקציה וספרו 49 משושים. בדקו את שתי השפות האדומות ושתי הכחולות ושנו את גודל חלון האמולטור.
+בצעו Sync אם שיניתם Gradle, בנו את הפרויקט (`assembleDebug`) ואז הפעילו את האפליקציה. פתחו את האפליקציה וספרו 49 משושים. בדקו את שתי השפות האדומות ואת שתי השפות הכחולות.
+
+אם האמולטור פתוח בחלון שאפשר לגרור את שוליו, הקטינו והגדילו את החלון. בכל גודל בדקו שכל 49 המשושים ושפות היעד נשארים גלויים. אם האמולטור מוטמע ב־Android Studio או פועל ללא חלון, דלגו על בדיקת שינוי הגודל; בדיקת הלוח בגודל המקורי מספיקה לפרק הזה.
 
 **שאלת הבנה:** למה חוק הניצחון אינו שייך ל־HexBoardView?

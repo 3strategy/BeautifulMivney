@@ -10,7 +10,6 @@ full-width: true
 
 [מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/02-moves-and-turns/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/04-local-two-player/' | relative_url }}) · 
 
-<!-- [patch הפרק]({{ '/android/hex/downloads/03.patch' | relative_url }}) -->
 
 {: .box-success}
 **בסוף הפרק:** חיבור אדום מלמעלה למטה או כחול משמאל לימין מוכרז כניצחון, ומשחק נוסף נחסם.
@@ -21,11 +20,11 @@ full-width: true
 
 ## מתחילים מהמצב שעבד
 
-פתחו את `hexT` במצב סוף הפרק הקודם. שמרו את קובצי התבנית שאינם מוזכרים כאן, כולל test ו־androidTest המקוריים. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
+המשיכו בפרויקט שבו השלמתם את פרק 2. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
 
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. ה־patch להורדה מכיל את שינויי הטקסט המדויקים של הפרק. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
+עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
 
 ### strings.xml
 
@@ -154,43 +153,8 @@ full-width: true
  }
 ```
 
-### HexGameTest.java
-
-**מיקום:** app > kotlin+java > com.example.hex > test. בדיקות JVM לחוקי משחק בלי להריץ Android.
-
-```diff
-@@ -19,4 +19,27 @@ public final class HexGameTest {
-         assertTrue(game.play(0, 1));
-         assertEquals(HexGame.RED, game.getCurrentPlayer());
-     }
-+    @Test
-+    public void redConnectsTopToBottomAndEndsGame() {
-+        HexGame game = new HexGame();
-+        for (int row = 0; row < 6; row++) {
-+            assertTrue(game.play(row, 3));
-+            assertTrue(game.play(row, 0));
-+        }
-+        assertTrue(game.play(6, 3));
-+        assertEquals(HexGame.RED, game.getWinner());
-+        assertTrue(game.isOver());
-+        assertFalse(game.play(6, 4));
-+    }
-+
-+    @Test
-+    public void blueConnectsLeftToRightAndEndsGame() {
-+        HexGame game = new HexGame();
-+        for (int column = 0; column < 7; column++) {
-+            assertTrue(game.play(0, column));
-+            assertTrue(game.play(3, column));
-+        }
-+        assertEquals(HexGame.BLUE, game.getWinner());
-+        assertFalse(game.play(1, 0));
-+    }
- }
-```
-
 ## מריצים ומוודאים
 
-בצעו Sync אם שיניתם Gradle, הריצו `testDebugUnitTest assembleDebug` ואז הפעילו את האפליקציה. שחקו מסלול אדום ומסלול כחול בשני משחקים. אחרי הודעת הניצחון, נגיעה נוספת לא מניחה אבן. הריצו את בדיקות שני הצבעים.
+בצעו Sync אם שיניתם Gradle, בנו את הפרויקט (`assembleDebug`) ואז הפעילו את האפליקציה. שחקו מסלול אדום ומסלול כחול בשני משחקים. אחרי הודעת הניצחון, נגיעה נוספת לא מניחה אבן.
 
 **שאלת הבנה:** למה אבנים שנראות סמוכות על המסך חייבות להיבדק לפי ששת ההיסטים?
