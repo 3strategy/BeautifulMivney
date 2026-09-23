@@ -1,8 +1,8 @@
 ---
 layout: page
-title: "Hex — 05: מחשב שעובד ברקע"
+title: "Hex — 05old (גרסה ישנה): מחשב שעובד ברקע"
 subtitle: "קידוד 7×7×3, בחירת מהלך, TFLite ו־Executor"
-permalink: /android/hex/05-background-ai/
+permalink: /android/hex/05old-background-ai/
 tags: [Android, Java, Hex, ViewBinding]
 lang: he
 full-width: true
@@ -11,7 +11,7 @@ full-width: true
 [מפת המסלול]({{ '/android/hex/' | relative_url }})
 
 {: .box-note}
-זו הגרסה המאוחדת של פרק 5, שנשמרה לעיון. במסלול הלמידה עברו מ[פרק 4]({{ '/android/hex/04-local-two-player/' | relative_url }}) ל[פרק 5א]({{ '/android/hex/05a-model-preparation/' | relative_url }}) ואז ל[פרק 5ב]({{ '/android/hex/05b-background-ai/' | relative_url }}).
+זו הגרסה המאוחדת הישנה של פרקים 5 ו־6, שנשמרה לעיון ואינה חלק ממסלול הלמידה הנוכחי. במסלול הנוכחי עברו מ[פרק 4]({{ '/android/hex/04-local-two-player/' | relative_url }}) ל[פרק 5]({{ '/android/hex/05-model-preparation/' | relative_url }}) ואז ל[פרק 6]({{ '/android/hex/06-background-ai/' | relative_url }}).
 
 
 {: .box-success}
@@ -63,7 +63,7 @@ full-width: true
 
 **מיקום:** app > kotlin+java > com.example.hex. מחלקת החוקים העצמאית. בחנו היכן המשחק משנה מצב והיכן הוא רק קורא אותו.
 
-<details markdown="1"><summary>פתחו את השינוי המלא ב־HexGame.java</summary>
+<details open markdown="1"><summary>פתחו את השינוי המלא ב־HexGame.java</summary>
 
 ```diff
 @@ -1,40 +1,161 @@
@@ -580,7 +580,7 @@ public final class HexAi {
 
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
 
-<details markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
+<details open markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
 
 ```diff
 @@ -7,11 +7,21 @@ import androidx.core.graphics.Insets;

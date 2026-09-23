@@ -1,14 +1,14 @@
 ---
 layout: page
-title: "Hex — 05ב: מחשב שעובד ברקע"
+title: "Hex — 06: מחשב שעובד ברקע"
 subtitle: "בחירת מהלך, TFLite ו־Executor"
-permalink: /android/hex/05b-background-ai/
+permalink: /android/hex/06-background-ai/
 tags: [Android, Java, Hex, ViewBinding]
 lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/05a-model-preparation/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/06-supplied-rl-models/' | relative_url }})
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/05-model-preparation/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/07-supplied-rl-models/' | relative_url }})
 
 {: .box-success}
 **בסוף הפרק:** האדם משחק אדום מול תשובת מחשב כחולה ממודל בדיקה לא מאומן. Restart או החלפת מצב פוסלים תשובת מחשב ממשחק קודם.
@@ -19,7 +19,7 @@ full-width: true
 
 ## מתחילים מהמצב שעבד
 
-המשיכו בפרויקט שנבנה בפרק 5א. `HexGame`,‏ `ValueModel` וקובצי המורה כבר נמצאים בו, והוא עדיין מציג משחק מקומי. בפרק הזה מוסיפים את בחירת המהלך ואת חיבור המחשב למסך. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
+המשיכו בפרויקט שנבנה בפרק 5. `HexGame`,‏ `ValueModel` וקובצי המורה כבר נמצאים בו, והוא עדיין מציג משחק מקומי. בפרק הזה מוסיפים את בחירת המהלך ואת חיבור המחשב למסך. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
 
 ## עורכים את הקבצים
 
@@ -109,7 +109,7 @@ public final class HexAi {
 
 ### TfliteValueModel.java — קובץ מסופק
 
-**מיקום:** app > kotlin+java > com.example.hex. הקובץ `TfliteValueModel.java` כבר הועתק מחבילת המורה בפרק 5א. הקובץ חייב להישאר בשם הזה ועם `package com.example.hex;` בראשו. אינכם צריכים להקליד את מחלקת השילוב: היא מממשת את `ValueModel`, בודקת את קובצי המודל ומחזירה ערך לכל מצב. בפרק הזה התמקדו בבחירת המהלך ובהרצה ברקע.
+**מיקום:** app > kotlin+java > com.example.hex. הקובץ `TfliteValueModel.java` כבר הועתק מחבילת המורה בפרק 5. הקובץ חייב להישאר בשם הזה ועם `package com.example.hex;` בראשו. אינכם צריכים להקליד את מחלקת השילוב: היא מממשת את `ValueModel`, בודקת את קובצי המודל ומחזירה ערך לכל מצב. בפרק הזה התמקדו בבחירת המהלך ובהרצה ברקע.
 
 ### activity_main.xml
 
@@ -160,13 +160,13 @@ public final class HexAi {
 
 ### model_info.json — קובץ מסופק
 
-**מיקום:** app > assets. הקובץ כבר הועתק מחבילת המורה בפרק 5א, לצד `hex_value_v1.tflite`. אין להקליד או לשנות אותו. `untrained_mock: true` מציין שזה מודל בדיקה לחיבור, ו־`sha256` מזהה את קובץ המודל שאליו הוא שייך.
+**מיקום:** app > assets. הקובץ כבר הועתק מחבילת המורה בפרק 5, לצד `hex_value_v1.tflite`. אין להקליד או לשנות אותו. `untrained_mock: true` מציין שזה מודל בדיקה לחיבור, ו־`sha256` מזהה את קובץ המודל שאליו הוא שייך.
 
 ### MainActivity.java
 
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
 
-<details markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
+<details open markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
 
 ```diff
 @@ -7,11 +7,21 @@ import androidx.core.graphics.Insets;

@@ -121,7 +121,7 @@ public final class HexGame {
 
 {% endcode_diff %}
 
-<details markdown="1"><summary>פתחו את השינוי המלא ב־HexBoardView.java</summary>
+<details open markdown="1"><summary>פתחו את השינוי המלא ב־HexBoardView.java</summary>
 
 ```diff
 @@ -5,28 +5,55 @@ import android.graphics.Canvas;

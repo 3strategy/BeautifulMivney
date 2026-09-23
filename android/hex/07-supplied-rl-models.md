@@ -1,14 +1,14 @@
 ---
 layout: page
-title: "Hex — 06: שחקני RL מסופקים"
+title: "Hex — 07: שחקני RL מסופקים"
 subtitle: "קטלוג JSON, בחירת שחקן ומטא־דאטה"
-permalink: /android/hex/06-supplied-rl-models/
+permalink: /android/hex/07-supplied-rl-models/
 tags: [Android, Java, Hex, ViewBinding]
 lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/05b-background-ai/' | relative_url }})
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/06-background-ai/' | relative_url }})
 
 
 {: .box-success}
@@ -20,7 +20,7 @@ full-width: true
 
 ## מתחילים מהמצב שעבד
 
-המשיכו בפרויקט שבו השלמתם את פרק 5ב. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
+המשיכו בפרויקט שבו השלמתם את פרק 6. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
 
 {: .box-note}
 [הורידו את חבילת שחקני המורה]({{ '/android/hex/downloads/06-players.zip' | relative_url }}) ופרשו את תיקיות `players/` תחת `app > assets`. בכל תיקייה יש שני קבצים ששייכים זה לזה: `hex_value_v1.tflite` ו־`model_info.json`. הם כבר מוכנים לשימוש; אין צורך לאמן מודלים.
@@ -33,7 +33,7 @@ full-width: true
 
 **מיקום:** app > kotlin+java > com.example.hex. קורא את JSON הנכסים, מאמת את השורות ומחזיר אותן בסדר התפריט.
 
-<details markdown="1"><summary>פתחו את השינוי המלא ב־ModelCatalog.java</summary>
+<details open markdown="1"><summary>פתחו את השינוי המלא ב־ModelCatalog.java</summary>
 
 ```java
 package com.example.hex;
@@ -273,7 +273,7 @@ public final class ModelCatalog {
 
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
 
-<details markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
+<details open markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
 
 ```diff
 @@ -1,90 +1,185 @@

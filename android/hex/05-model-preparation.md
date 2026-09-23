@@ -1,21 +1,21 @@
 ---
 layout: page
-title: "Hex — 05א: מכינים את המחשב"
+title: "Hex — 05: מכינים את המחשב"
 subtitle: "העתקי מצב, מהלכים חוקיים וקידוד 7×7×3"
-permalink: /android/hex/05a-model-preparation/
+permalink: /android/hex/05-model-preparation/
 tags: [Android, Java, Hex, ViewBinding]
 lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/04-local-two-player/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/05b-background-ai/' | relative_url }})
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/04-local-two-player/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/06-background-ai/' | relative_url }})
 
 {: .box-success}
 **בסוף הפרק:** המשחק המקומי עדיין עובד. מחלקת החוקים יכולה להעתיק מצב, להחזיר מהלכים חוקיים ולקודד לוח עבור מודל ערך. קובצי המודל המסופקים נמצאים בפרויקט והקוד נבנה.
 
 ## הרעיון
 
-כדי להשוות מהלכים, המחשב יצטרך ליצור עותק של מצב המשחק, לשחק בו מהלך חוקי ולקודד את מצב היורש. לכל תא בקידוד יש שלושה ערוצים: האבן שלי, אבן היריב וכיוון החיבור שלי. כאן מכינים את הנתונים ואת חוזה המודל; בפרק 5ב נחבר אותם למסך. עדיין לא תופיע תשובת מחשב במשחק.
+כדי להשוות מהלכים, המחשב יצטרך ליצור עותק של מצב המשחק, לשחק בו מהלך חוקי ולקודד את מצב היורש. לכל תא בקידוד יש שלושה ערוצים: האבן שלי, אבן היריב וכיוון החיבור שלי. כאן מכינים את הנתונים ואת חוזה המודל; בפרק 6 נחבר אותם למסך. עדיין לא תופיע תשובת מחשב במשחק.
 
 ## מתחילים מהמצב שעבד
 
@@ -59,7 +59,7 @@ full-width: true
 
 **מיקום:** app > kotlin+java > com.example.hex. מחלקת החוקים העצמאית. בחנו היכן המשחק משנה מצב והיכן הוא רק קורא אותו.
 
-<details markdown="1"><summary>פתחו את השינוי המלא ב־HexGame.java</summary>
+<details open markdown="1"><summary>פתחו את השינוי המלא ב־HexGame.java</summary>
 
 ```diff
 @@ -1,40 +1,161 @@

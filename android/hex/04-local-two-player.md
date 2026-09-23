@@ -8,7 +8,7 @@ lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/03-win-detection/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/05a-model-preparation/' | relative_url }})
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/03-win-detection/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/05-model-preparation/' | relative_url }})
 
 
 {: .box-success}
@@ -120,7 +120,7 @@ full-width: true
 
 **מיקום:** app > res > layout. עורכים דרך app > res > layout בתצוגת Code. אין למחוק רכיבי תבנית שאינם ב־diff.
 
-<details markdown="1"><summary>פתחו את השינוי המלא ב־activity_main.xml</summary>
+<details open markdown="1"><summary>פתחו את השינוי המלא ב־activity_main.xml</summary>
 
 ```diff
 @@ -1,41 +1,106 @@

@@ -69,8 +69,8 @@ full-width: true
 |---:|---:|---:|
 | ציור משושים וגאומטריית מגע | שיעור מעשי | [לוח](/android/hex/01-board/), [מהלכים](/android/hex/02-moves-and-turns/) |
 | מודל מצב וחיפוש גרפי לזיהוי ניצחון | שיעור מעשי | [תורות](/android/hex/02-moves-and-turns/), [ניצחון](/android/hex/03-win-detection/) |
-| העתקי מצב, מהלכים חוקיים וקידוד למודל ערך | שיעור מעשי | [הכנת המחשב](/android/hex/05a-model-preparation/) |
-| Executor, פסילת תשובה ישנה ומודל ערך מסופק | שיעור מעשי באינטגרציה | [מחשב ברקע](/android/hex/05b-background-ai/), [בחירת מודל](/android/hex/06-supplied-rl-models/) |
+| העתקי מצב, מהלכים חוקיים וקידוד למודל ערך | שיעור מעשי | [הכנת המחשב](/android/hex/05-model-preparation/) |
+| Executor, פסילת תשובה ישנה ומודל ערך מסופק | שיעור מעשי באינטגרציה | [מחשב ברקע](/android/hex/06-background-ai/), [בחירת מודל](/android/hex/07-supplied-rl-models/) |
 
 ---
 

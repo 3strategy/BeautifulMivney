@@ -74,7 +74,7 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 
 **מיקום:** app > kotlin+java > com.example.hex. צרו כאן קובץ Java חדש בשם `HexBoardView.java` והעתיקו את הקוד המלא שלהלן בדיוק, כולל ירידות השורה והסוגריים. בפרק 2 המחלקה תקבל game, callback ובדיקת מגע; בפרק 1 היא סטטית.
 
-<details markdown="1"><summary>פתחו את השינוי המלא ב־HexBoardView.java</summary>
+<details open markdown="1"><summary>פתחו את השינוי המלא ב־HexBoardView.java</summary>
 
 ```java
 package com.example.hex;
