@@ -67,9 +67,10 @@ full-width: true
 
 | נושא | עומק | שיעור |
 |---:|---:|---:|
+| הפרדת אחריות וזרימת מהלך: מסך, חוקים, בוחר מהלך ומודל ערך | העמקה עם תרשימים ושאלות הבנה | [מפת אחריות](/android/hex/#architecture), [מנגיעה למהלך](/android/hex/02-moves-and-turns/#move-flow), [בחירת מהלך לפי ערך](/android/hex/06-background-ai/#move-selection) |
 | ציור משושים וגאומטריית מגע | שיעור מעשי | [לוח](/android/hex/01-board/), [מהלכים](/android/hex/02-moves-and-turns/) |
 | מודל מצב וחיפוש גרפי לזיהוי ניצחון | שיעור מעשי | [תורות](/android/hex/02-moves-and-turns/), [ניצחון](/android/hex/03-win-detection/) |
-| העתקי מצב, מהלכים חוקיים וקידוד למודל ערך | שיעור מעשי | [הכנת המחשב](/android/hex/05-model-preparation/) |
+| העתקי מצב, מהלכים חוקיים וקידוד למודל ערך | שיעור מעשי ודוגמת קידוד משתי נקודות מבט | [הכנת המחשב](/android/hex/05-model-preparation/#value-contract) |
 | Executor, פסילת תשובה ישנה ומודל ערך מסופק | שיעור מעשי באינטגרציה | [מחשב ברקע](/android/hex/06-background-ai/), [בחירת מודל](/android/hex/07-supplied-rl-models/) |
 | ערכות נושא ליום וללילה, משאבי צבע ו־Material 3 | שיעור מעשי | [ערכות נושא ב־Hex](/android/hex/08-day-night-themes/) |
 

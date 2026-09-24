@@ -1,0 +1,43 @@
+/* Keep the Hex architecture maps readable at their natural size on small screens. */
+.hex-diagram {
+  direction: ltr;
+  overflow-x: auto;
+  margin-block: 1.5rem;
+}
+
+.hex-diagram .mermaid {
+  min-width: 40rem;
+  text-align: center;
+}
+
+.hex-diagram--wide .mermaid {
+  min-width: 64rem;
+}
+
+.hex-diagram--graph .mermaid {
+  min-width: 12rem;
+}
+
+.hex-diagram svg {
+  display: block;
+  margin-inline: auto;
+}
+
+/* The shared arrow color follows the page theme, so group backgrounds must too. */
+.hex-diagram .cluster rect {
+  fill: var(--page-col) !important;
+  stroke: var(--text-col) !important;
+}
+
+.hex-diagram .cluster-label,
+.hex-diagram .cluster-label *,
+.hex-diagram .sectionTitle,
+.hex-diagram .sectionTitle tspan {
+  color: var(--text-col) !important;
+  fill: var(--text-col) !important;
+}
+
+/* Preserve the distinction between the winning path and other graph edges. */
+.hex-diagram--graph .mermaid .edge-thickness-thick {
+  stroke-width: 0.25rem !important;
+}

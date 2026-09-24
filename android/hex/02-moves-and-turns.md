@@ -6,6 +6,7 @@ permalink: /android/hex/02-moves-and-turns/
 tags: [Android, Java, Hex, ViewBinding]
 lang: he
 full-width: true
+css: [/assets/css/hex-diagrams.css]
 ---
 
 [מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/01-board/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/03-win-detection/' | relative_url }}) ·
@@ -17,6 +18,33 @@ full-width: true
 ## הרעיון
 
 המצב עובר ל־`HexGame`, מחלקת Java ללא תלות ב־Android. תא נשמר במערך לפי `row * 7 + column`. רק `play` משנה את המערך ואת התור. ה־View מחזיר שורה ועמודה דרך `OnCellClickListener` ואינו מחליט אם מותר לשחק. אותו חישוב מרכז משמש לציור ולבדיקת מגע; `containsPoint` דוחה נגיעה ברווח שבין משושים. `performClick()` ממלא את חוזה הנגישות של View.
+
+## מנגיעה למהלך ולציור מחדש {#move-flow}
+
+נגיעה היא **בקשה לשחק בתא**. ה־View מתרגמת את מיקום האצבע לשורה ועמודה; רק מחלקת המשחק מחליטה אם הבקשה חוקית. לאחר מהלך חוקי ה־Activity מעדכנת את התצוגה מתוך המצב החדש.
+
+<div markdown="1" class="hex-diagram">
+
+```mermaid
+%%{init: {'flowchart': {'rankSpacing': 28, 'nodeSpacing': 30, 'padding': 12}}}%%
+%% dir: rtl %%
+flowchart TB
+    tap["נגיעה במסך"] --> hit["HexBoardView<br/>איתור תא לפי גאומטריית הלוח"]
+    hit -->|"מחוץ לתאים"| outside["אין דיווח על מהלך"]
+    hit -->|"בתוך תא"| callback["OnCellClickListener<br/>דיווח על שורה ועמודה"]
+    callback --> activity["MainActivity.onCellClicked"]
+    activity --> rules{"HexGame.play<br/>האם המהלך חוקי?"}
+    rules -->|"לא"| unchanged["הלוח והתור נשארים כפי שהיו"]
+    rules -->|"כן"| update["הנחת אבן והחלפת תור"]
+    update --> render["MainActivity.render<br/>עדכון הסטטוס ובקשת ציור מחדש"]
+```
+
+</div>
+
+אותו חישוב מרכזים משמש לציור ולזיהוי התא שנלחץ. לעומת זאת, בדיקת תא תפוס עובדת על מערך התאים ב־`HexGame`, בלי תלות בגודל המסך. חלוקת האחריות הזו תאפשר בהמשך למחשב לבקש מהלך באמצעות אותם חוקים.
+
+{: .box-note}
+**לפני הקוד:** מדוע נגיעה בתא תפוס אינה אמורה להעביר את התור? באיזה חלק בתרשים נקבעת התשובה?
 
 ## עורכים את הקבצים
 
