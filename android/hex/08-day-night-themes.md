@@ -19,9 +19,7 @@ full-width: true
 
 עד עכשיו `values-night/themes.xml` כפה ערכת נושא בהירה גם כשהמכשיר היה במצב לילה. בפרק הזה נותנים ל־`Theme.Hex` של הלילה לרשת את `Base.Theme.Hex` המשותפת, שההורה שלה הוא `Theme.Material3.DayNight.NoActionBar`. נוסיף צבעי לילה לאותם שמות שכבר קיימים ביום, ונחבר גם את רכיבי Material לצבעי המשחק.
 
-## מתחילים מהמצב שעבד
-
-המשיכו מהפרויקט של פרק 7. משנים **שלושה קובצי משאבים בלבד**; `values/colors.xml`,‏ `activity_main.xml`,‏ `HexBoardView.java` וה־Manifest נשארים כפי שהם. בקטעי ה־diff שורות `-` נמחקות ושורות `+` נוספות; אין להקליד את הסימנים עצמם.
+השינויים בפרק הזה מוגבלים ל**שלושה קובצי משאבים בלבד**; `values/colors.xml`,‏ `activity_main.xml`,‏ `HexBoardView.java` וה־Manifest נשארים כפי שהם.
 
 ## 1. מוסיפים צבעי לילה
 

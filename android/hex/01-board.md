@@ -22,7 +22,7 @@ full-width: true
 
 Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהשפה העליונה לתחתונה וכחול משמאל לימין. בשלב הזה ה־View מצייר בלבד. `calculateGeometry()` גוזרת את הרדיוס מנפח התצוגה. `centerX` מוסיפה לכל שורה הסטה של חצי משושה; `makeHexagon` משתמשת בשש זוויות במרווחי 60°. הגדרת צבעים ב־resources שומרת על קוד ציור קריא. אין עדיין מחלקת חוקים או מגע.
 
-## מתחילים מהמצב שעבד
+## נקודת ההתחלה
 
 התחילו בפרויקט Empty Views Activity ב־Java, חבילה `com.example.hex`, ‏API 31,‏ XML ו־View Binding פעיל. `MainActivity` כבר מנפחת `ActivityMainBinding`. אין ליצור Activity חדש.
 
@@ -30,7 +30,7 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים לפני קוד שמפנה אליהם. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
+עבדו לפי סדר התלות: משאבים לפני קוד שמפנה אליהם.
 
 ### colors.xml
 
@@ -72,7 +72,7 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 
 **מיקום:** app > kotlin+java > com.example.hex. צרו כאן קובץ Java חדש בשם `HexBoardView.java` והעתיקו את הקוד המלא שלהלן בדיוק, כולל ירידות השורה והסוגריים. בפרק 2 המחלקה תקבל game, callback ובדיקת מגע; בפרק 1 היא סטטית.
 
-<details open markdown="1"><summary>פתחו את השינוי המלא ב־HexBoardView.java</summary>
+<details open markdown="1"><summary>הוסיפו את הקובץ החדש HexBoardView.java</summary>
 
 ```java
 package com.example.hex;

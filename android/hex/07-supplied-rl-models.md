@@ -18,22 +18,18 @@ full-width: true
 
 `model_catalog.json` קובע את סדר השחקנים בתפריט ואת הנתיב המדויק לזוג קובצי מודל ומטא־דאטה. `ModelCatalog` בודקת גרסה, מזהים ייחודיים ונתיבי נכסים. החלפת שחקן מתבצעת ברקע, מאפסת משחק ופוסלת טעינה/תשובה ישנה. אם הזוג שנבחר פגום, המסך מציג שהמחשב לא זמין; מצב שני שחקנים ממשיך לעבוד. מספר איטרציות הוא שם checkpoint, לא דירוג עוצמה.
 
-## מתחילים מהמצב שעבד
-
-המשיכו בפרויקט שבו השלמתם את פרק 6. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
-
 {: .box-note}
 [הורידו את חבילת שחקני המורה]({{ '/android/hex/downloads/06-players.zip' | relative_url }}) ופרשו את תיקיות `players/` תחת `app > assets`. בכל תיקייה יש שני קבצים ששייכים זה לזה: `hex_value_v1.tflite` ו־`model_info.json`. הם כבר מוכנים לשימוש; אין צורך לאמן מודלים.
 
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. השתמשו בדיפים המוצגים בעמוד; במעבר עליהם אל תקלידו את סמלי `+` ו־`-` עצמם.
+עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity.
 
 ### ModelCatalog.java
 
-**מיקום:** app > kotlin+java > com.example.hex. קורא את JSON הנכסים, מאמת את השורות ומחזיר אותן בסדר התפריט.
+**מיקום:** app > kotlin+java > com.example.hex. הקובץ החדש קורא את JSON הנכסים, מאמת את השורות ומחזיר אותן בסדר התפריט.
 
-<details open markdown="1"><summary>פתחו את השינוי המלא ב־ModelCatalog.java</summary>
+<details open markdown="1"><summary>הוסיפו את הקובץ החדש ModelCatalog.java</summary>
 
 ```java
 package com.example.hex;
@@ -214,7 +210,7 @@ public final class ModelCatalog {
 
 ### model_catalog.json
 
-**מיקום:** app > assets. הוסיפו שורה רק לאחר שקיבלתם זוג model/metadata מתאים. השורה הראשונה היא ברירת המחדל.
+**מיקום:** app > assets. צרו קובץ חדש בשם `model_catalog.json`. הוסיפו שורה לקטלוג רק לאחר שקיבלתם זוג model/metadata מתאים; השורה הראשונה היא ברירת המחדל.
 
 סדר השורות הוא סדר ה־Spinner: `early-test`,‏ `trained-000010`,‏ `trained-000100`,‏ `trained-001000`,‏ `trained-002620`,‏ `trained-005000`. זהו הסדר של הייחוס הנוכחי.
 
@@ -272,7 +268,7 @@ public final class ModelCatalog {
 
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
 
-<details open markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
+<details open markdown="1"><summary>השינוי המלא ב־MainActivity.java</summary>
 
 ```diff
  package com.example.hex;

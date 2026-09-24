@@ -18,13 +18,9 @@ full-width: true
 
 המצב עובר ל־`HexGame`, מחלקת Java ללא תלות ב־Android. תא נשמר במערך לפי `row * 7 + column`. רק `play` משנה את המערך ואת התור. ה־View מחזיר שורה ועמודה דרך `OnCellClickListener` ואינו מחליט אם מותר לשחק. אותו חישוב מרכז משמש לציור ולבדיקת מגע; `containsPoint` דוחה נגיעה ברווח שבין משושים. `performClick()` ממלא את חוזה הנגישות של View.
 
-## מתחילים מהמצב שעבד
-
-המשיכו בפרויקט שבו השלמתם את פרק 1. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
-
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים לפני קוד שמפנה אליהם; מחלקת החוקים לפני ה־Activity. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם.
+עבדו לפי סדר התלות: משאבים לפני קוד שמפנה אליהם; מחלקת החוקים לפני ה־Activity.
 
 ### strings.xml
 
@@ -106,7 +102,7 @@ public final class HexGame {
 
 ### HexBoardView.java
 
-**מיקום:** app > kotlin+java > com.example.hex. מחלקת הציור מקבלת כעת game, callback ובדיקת מגע. פתחו את ה־diff המלא ועברו עליו מתחילתו עד סופו. העתיקו את כל `onTouchEvent()` כפי שהוא מוצג, כולל בדיקת `isEnabled()`. מחקו הצהרות ומתודות שהחלפתם כדי שלא יופיעו פעמיים.
+**מיקום:** app > kotlin+java > com.example.hex. מחלקת הציור מקבלת כעת game, callback ובדיקת מגע. העתיקו את כל `onTouchEvent()` כפי שהוא מוצג, כולל בדיקת `isEnabled()`. מחקו הצהרות ומתודות שהחלפתם כדי שלא יופיעו פעמיים.
 
 קבוע גודל הלוח עובר למחלקת המשחק; זו תוספת קטנה בתוך שורת קוד קיימת:
 
@@ -120,7 +116,7 @@ public final class HexGame {
 
 {% endcode_diff %}
 
-<details open markdown="1"><summary>פתחו את השינוי המלא ב־HexBoardView.java</summary>
+<details open markdown="1"><summary>השינוי המלא ב־HexBoardView.java</summary>
 
 ```diff
  import android.graphics.Paint;

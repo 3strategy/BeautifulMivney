@@ -17,17 +17,13 @@ full-width: true
 
 `HexAi` בודקת עותק לכל מהלך חוקי ומקודדת את מצב היורש. המודל מעריך את המצב מנקודת מבטו של השחקן הבא, ולכן הופכים את סימן הערך כשחוזרים לנקודת מבטו של בוחר המהלך. ניצחון מיידי מקבל ערך `+1`. העבודה עם המודל רצה ב־`ExecutorService`, ו־`gameGeneration` מונע מתשובה ישנה לשנות משחק שהופעל מחדש. אין כאן מודל מאומן או דירוג של חוזק המשחק.
 
-## מתחילים מהמצב שעבד
-
-המשיכו בפרויקט שנבנה בפרק 5. `HexGame`,‏ `ValueModel` וקובצי המורה כבר נמצאים בו, והוא עדיין מציג משחק מקומי. בפרק הזה מוסיפים את בחירת המהלך ואת חיבור המחשב למסך. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
-
 ## עורכים את הקבצים
 
-עבדו לפי הסדר: קודם `HexAi`, אחר כך משאב המסך, ולבסוף `MainActivity`. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם. פתחו כל תיבת קוד של שינוי מלא וקראו עד סוף התוכן.
+עבדו לפי הסדר: קודם `HexAi`, אחר כך משאב המסך, ולבסוף `MainActivity`.
 
 ### HexAi.java
 
-**מיקום:** app > kotlin+java > com.example.hex. המחשב בודק כל מהלך חוקי פעם אחת; שימו לב ל־copy ולסימן השלילי בערך היורש.
+**מיקום:** app > kotlin+java > com.example.hex. הוסיפו קובץ Java חדש בשם `HexAi.java`. המחשב בודק כל מהלך חוקי פעם אחת; שימו לב ל־copy ולסימן השלילי בערך היורש.
 
 ```java
 package com.example.hex;
@@ -165,7 +161,7 @@ public final class HexAi {
 
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
 
-<details open markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
+<details open markdown="1"><summary>השינוי המלא ב־MainActivity.java</summary>
 
 ```diff
  import androidx.core.view.ViewCompat;

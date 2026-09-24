@@ -21,16 +21,12 @@ full-width: true
 
 מחשב Hex אינו מקבל "פעולה" ישירה מן הרשת. הוא יוצר עותק לכל מהלך חוקי, משחק בו פעם אחת, ומקודד את היורש מנקודת מבטו של השחקן הבא. לכל תא יש שלושה ערוצים: האבן שלי, אבן היריב, כיוון החיבור שלי. אם המודל מחזיר ליורש `+0.8` עבור היריב, ערך המהלך לבוחר הוא `-0.8`. ניצחון מיידי מקבל `+1` לפי החוקים. `HexAi` בוחרת את המקסימום; `TfliteValueModel` של המורה טוענת ומאמתת את נכס הבדיקה. `ExecutorService` שומר על המסך מגיב, ו־`gameGeneration` פוסל תשובות ממשחק קודם. אין fallback היוריסטי.
 
-## מתחילים מהמצב שעבד
-
-המשיכו בפרויקט שבו השלמתם את פרק 4. השאירו ללא שינוי קובצי תבנית שאינם מוזכרים כאן. שורות `-` ב־diff מוחלפות ב־`+`; שורות הקשר נשארות. קובץ חדש מוצג במלואו.
-
 {: .box-note}
 [הורידו את חבילת המורה]({{ '/android/hex/downloads/05-teacher-bundle.zip' | relative_url }}) ופרשו אותה. העתיקו את `hex_value_v1.tflite` ואת `model_info.json` אל `app > assets` (צרו את התיקייה אם אינה קיימת), ואת `TfliteValueModel.java` אל `app > kotlin+java > com.example.hex`. המודל אינו מאומן; הוא מאפשר לבדוק את חיבור המחשב לאפליקציה בלי לטעון שהוא שחקן חזק.
 
 ## עורכים את הקבצים
 
-עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity. במעבר על diff אל תקלידו את סמלי `+` ו־`-` עצמם. פתחו כל תיבת קוד של שינוי מלא וקראו עד סוף התוכן; אם הקוד ממשיך מתחת למסך, גללו בעמוד.
+עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity.
 
 ### libs.versions.toml
 
@@ -63,7 +59,7 @@ full-width: true
 
 **מיקום:** app > kotlin+java > com.example.hex. מחלקת החוקים העצמאית. בחנו היכן המשחק משנה מצב והיכן הוא רק קורא אותו.
 
-<details open markdown="1"><summary>פתחו את השינוי המלא ב־HexGame.java</summary>
+<details open markdown="1"><summary>השינוי המלא ב־HexGame.java</summary>
 
 ```diff
  package com.example.hex;
@@ -411,7 +407,7 @@ full-width: true
 
 ### ValueModel.java
 
-**מיקום:** app > kotlin+java > com.example.hex. חוזה קטן: רשימת מצבים מקודדים נכנסת וערך אחד לכל מצב יוצא.
+**מיקום:** app > kotlin+java > com.example.hex. הוסיפו קובץ Java חדש בשם `ValueModel.java`. זהו חוזה קטן: רשימת מצבים מקודדים נכנסת וערך אחד לכל מצב יוצא.
 
 ```java
 package com.example.hex;
@@ -436,7 +432,7 @@ public interface ValueModel extends Closeable {
 
 ### HexAi.java
 
-**מיקום:** app > kotlin+java > com.example.hex. המחשב בודק כל מהלך חוקי פעם אחת; שימו לב ל־copy ולסימן השלילי בערך היורש.
+**מיקום:** app > kotlin+java > com.example.hex. הוסיפו קובץ Java חדש בשם `HexAi.java`. המחשב בודק כל מהלך חוקי פעם אחת; שימו לב ל־copy ולסימן השלילי בערך היורש.
 
 ```java
 package com.example.hex;
@@ -574,7 +570,7 @@ public final class HexAi {
 
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
 
-<details open markdown="1"><summary>פתחו את השינוי המלא ב־MainActivity.java</summary>
+<details open markdown="1"><summary>השינוי המלא ב־MainActivity.java</summary>
 
 ```diff
  import androidx.core.view.ViewCompat;
