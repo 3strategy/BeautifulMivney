@@ -8,7 +8,7 @@ lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/06-background-ai/' | relative_url }})
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/06-background-ai/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/08-day-night-themes/' | relative_url }})
 
 
 {: .box-success}

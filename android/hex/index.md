@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Hex — מלוח ריק למשחק אופליין מול מחשב"
-subtitle: "שבעה שלבים ניתנים להרצה ב־Java, XML ו־View Binding"
+subtitle: "שמונה שלבים ניתנים להרצה ב־Java, XML ו־View Binding"
 permalink: /android/hex/
 tags: [Android, Java, Hex]
 lang: he
@@ -26,6 +26,7 @@ full-width: true
 | [05 — מכינים את המחשב]({{ '/android/hex/05-model-preparation/' | relative_url }}) | העתקי מצב, מהלכים חוקיים וקידוד 7×7×3 | המשחק המקומי עדיין עובד, וקוד הכנת המצבים והמודל המסופק נבנים בפרויקט. |
 | [06 — מחשב שעובד ברקע]({{ '/android/hex/06-background-ai/' | relative_url }}) | בחירת מהלך, TFLite ו־Executor | האדם משחק אדום מול תשובת מחשב כחולה; Restart או שינוי מצב פוסלים תשובה ישנה. |
 | [07 — שחקני RL מסופקים]({{ '/android/hex/07-supplied-rl-models/' | relative_url }}) | קטלוג JSON, בחירת שחקן ומטא־דאטה | ששת השחקנים המסופקים נבחרים מן הקטלוג. בחירה מחליפה מודל ומתחילה משחק חדש. |
+| [08 — ערכות נושא ליום וללילה]({{ '/android/hex/08-day-night-themes/' | relative_url }}) | `values-night`, משאבי צבע וערכת Material 3 | צבעי המסך, הלוח והפקדים מתאימים את עצמם להגדרת התצוגה של המכשיר. |
 
 ## מי עושה מה?
 
@@ -41,6 +42,7 @@ full-width: true
 ב[פרק 6]({{ '/android/hex/06-background-ai/' | relative_url }}) נבדוק יריב באמצעות מודל לא מאומן,
 וב[פרק 7]({{ '/android/hex/07-supplied-rl-models/' | relative_url }}) נבחר בין השחקנים שסופקו.
 מספר איטרציות מאוחר יותר אינו מבטיח מודל חזק יותר.
+ב[פרק 8]({{ '/android/hex/08-day-night-themes/' | relative_url }}) נוסיף צבעי יום ולילה לאותו מסך.
 
 {: .box-note}
 בכל פרק ממשיכים מהמצב שבניתם בפרק הקודם, ושינויי הקוד מוסברים בגוף המדריך. חבילת המורה לפרק 5 וחבילת השחקנים לפרק 7 זמינות בקישורים שבפרקים. הגרסה המאוחדת הישנה של פרק 5 נשמרה כ[פרק 5old לעיון בלבד]({{ '/android/hex/05old-background-ai/' | relative_url }}).
