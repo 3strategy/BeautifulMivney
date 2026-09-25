@@ -330,6 +330,13 @@ sequenceDiagram
 +        });
      }
  
+     /**
+-     * Plays a legal move from a board tap and updates the screen.
++     * Plays a legal human move and starts the computer turn when appropriate.
+     *
+     * @param row zero-based row of the tapped cell
+     * @param column zero-based column of the tapped cell
+     */
      private void onCellClicked(int row, int column) {
 -        if (game.play(row, column)) {
 -            render();
@@ -348,6 +355,7 @@ sequenceDiagram
 +        }
 +    }
 +
++    /** Evaluates the computer's turn from a board copy on the AI executor. */
 +    private void startAiMove() {
 +        TfliteValueModel model = valueModel;
 +        if (!vsAi || model == null || game.isOver()
@@ -369,6 +377,12 @@ sequenceDiagram
 +        });
 +    }
 +
++    /**
++     * Applies a completed computer move only if the game has not been restarted.
++     *
++     * @param generation game ID captured when evaluation began
++     * @param move chosen cell, or {@code null} if no legal move was found
++     */
 +    private void applyAiMove(int generation, HexGame.Move move) {
 +        if (isFinishing() || isDestroyed() || generation != gameGeneration || !aiThinking) {
 +            return;
@@ -380,6 +394,12 @@ sequenceDiagram
 +        render();
 +    }
 +
++    /**
++     * Clears a failed computer turn and releases its model.
++     *
++     * @param generation game ID captured when evaluation began
++     * @param failedModel model used by the failed turn
++     */
 +    private void handleAiFailure(int generation, TfliteValueModel failedModel) {
 +        if (isFinishing() || isDestroyed() || generation != gameGeneration) {
 +            return;
@@ -390,6 +410,8 @@ sequenceDiagram
 +        render();
      }
  
+-    /** Resets the current game and refreshes the screen. */
++    /** Resets the board and invalidates pending computer moves. */
      private void restartGame() {
 +        gameGeneration++;
 +        aiThinking = false;
@@ -436,6 +458,7 @@ sequenceDiagram
 +        }
 +    }
 +
++    /** Invalidates pending callbacks and releases background work when the screen closes. */
 +    @Override
 +    protected void onDestroy() {
 +        gameGeneration++;

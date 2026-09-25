@@ -233,6 +233,7 @@ full-width: true
          }
      }
  
++    /** Resets the current game and refreshes the screen. */
 +    private void restartGame() {
 +        game = new HexGame();
 +        render();

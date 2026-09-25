@@ -397,6 +397,7 @@ public final class HexGame {
      private ActivityMainBinding binding;
 +    private HexGame game;
 +
++    /** Creates the game screen and connects its controls to the current game. */
      @Override
      protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
@@ -415,12 +416,19 @@ public final class HexGame {
 +        render();
 +    }
 +
++    /**
++     * Plays a legal move from a board tap and updates the screen.
++     *
++     * @param row zero-based row of the tapped cell
++     * @param column zero-based column of the tapped cell
++     */
 +    private void onCellClicked(int row, int column) {
 +        if (game.play(row, column)) {
 +            render();
 +        }
 +    }
 +
++    /** Updates the board and status text from the current game state. */
 +    private void render() {
 +        binding.boardView.setGame(game);
 +        binding.statusText.setText(game.getCurrentPlayer() == HexGame.RED

@@ -41,7 +41,8 @@
       "/android/hex/05-model-preparation/",
       "/android/hex/06-background-ai/",
       "/android/hex/07-supplied-rl-models/",
-      "/android/hex/08-day-night-themes/"
+      "/android/hex/08-hint/",
+      "/android/hex/09-day-night-themes/"
     ]
   },
   "pages": {
@@ -223,10 +224,14 @@
     },
     "/android/hex/07-supplied-rl-models/": {
       "prev": "/android/hex/06-background-ai/",
-      "next": "/android/hex/08-day-night-themes/"
+      "next": "/android/hex/08-hint/"
     },
-    "/android/hex/08-day-night-themes/": {
+    "/android/hex/08-hint/": {
       "prev": "/android/hex/07-supplied-rl-models/",
+      "next": "/android/hex/09-day-night-themes/"
+    },
+    "/android/hex/09-day-night-themes/": {
+      "prev": "/android/hex/08-hint/",
       "next": null
     }
   }

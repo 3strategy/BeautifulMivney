@@ -1,14 +1,14 @@
 ---
 layout: page
-title: "Hex — 08: ערכות נושא ליום וללילה"
+title: "Hex — 09: ערכות נושא ליום וללילה"
 subtitle: "הצגת צבעים שונים במצב יום ובלילה"
-permalink: /android/hex/08-day-night-themes/
+permalink: /android/hex/09-day-night-themes/
 tags: [Android, Java, Hex, Material3]
 lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/07-supplied-rl-models/' | relative_url }}){: data-sequence-nav="prev"}
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/08-hint/' | relative_url }}){: data-sequence-nav="prev"}
 
 {: .box-success}
 **בסוף הפרק:** צבעי המשחק מתחלפים אוטומטית לפי מצב התצוגה של המכשיר.
@@ -37,6 +37,7 @@ full-width: true
     <color name="hex_red">#800030</color>
     <color name="hex_blue">#30589A</color>
     <color name="hex_line">#9CADBE</color>
+    <color name="hex_hint">#D18B00</color>
     <color name="muted">#AAB8C8</color>
 </resources>
 ```

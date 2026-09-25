@@ -9,7 +9,7 @@ full-width: true
 css: [/assets/css/hex-diagrams.css]
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/06-background-ai/' | relative_url }}){: data-sequence-nav="prev"} · [הפרק הבא]({{ '/android/hex/08-day-night-themes/' | relative_url }}){: data-sequence-nav="next"}
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/06-background-ai/' | relative_url }}){: data-sequence-nav="prev"} · [הפרק הבא]({{ '/android/hex/08-hint/' | relative_url }}){: data-sequence-nav="next"}
 
 
 {: .box-success}
@@ -365,6 +365,7 @@ public final class ModelCatalog {
 +        }
 +    }
 +
++    /** Populates the level picker from the model catalog and loads its initial selection. */
 +    private void setupComputerLevels() {
 +        try {
 +            computerLevels = ModelCatalog.load(getApplicationContext());
@@ -395,12 +396,18 @@ public final class ModelCatalog {
 +        switchComputerLevel(computerLevels.get(0));
 +    }
 +
++    /**
++     * Starts loading a level's model on the AI executor and resets the current game.
++     *
++     * @param level level selected in the computer level picker
++     */
 +    private void switchComputerLevel(ModelCatalog.Level level) {
 +        if (level == selectedLevel && (modelLoading || valueModel != null)) {
 +            return;
 +        }
 +
 +        selectedLevel = level;
++        // A later selection invalidates this load, even if its UI callback is already queued.
 +        int selectionGeneration = modelSelectionGeneration.incrementAndGet();
 +        TfliteValueModel previousModel = valueModel;
 +        valueModel = null;
@@ -449,6 +456,14 @@ public final class ModelCatalog {
 +        });
 +    }
 +
++    /**
++     * Installs a loaded model on the UI thread if its selection is still current.
++     *
++     * @param selectionGeneration selection ID captured when loading began
++     * @param level level associated with the completed load
++     * @param loadedModel loaded model, or {@code null} if loading failed
++     * @param failure loading error, or {@code null} on success
++     */
 +    private void finishModelSwitch(int selectionGeneration, ModelCatalog.Level level,
 +                                   TfliteValueModel loadedModel, Exception failure) {
 +        if (isFinishing() || isDestroyed()
@@ -482,6 +497,14 @@ public final class ModelCatalog {
 ```
 
 ```diff
+     /**
+-     * Clears a failed computer turn and releases its model.
++     * Clears a failed computer turn and releases its model if it remains selected.
+     *
+     * @param generation game ID captured when evaluation began
+     * @param failedModel model used by the failed turn
+     */
+     private void handleAiFailure(int generation, TfliteValueModel failedModel) {
          if (isFinishing() || isDestroyed() || generation != gameGeneration) {
              return;
          }
@@ -536,7 +559,7 @@ public final class ModelCatalog {
 
 **שאלת הבנה:** למה יש לשמור קובץ TFLite והמטא־דאטה שלו כזוג?
 
-[לשיעור הבא: ערכות נושא ליום וללילה ←]({{ '/android/hex/08-day-night-themes/' | relative_url }})
+[לשיעור הבא: רמז למהלך הבא ←]({{ '/android/hex/08-hint/' | relative_url }})
 
 ## כך נראה המסך בסיום הפרק
 
