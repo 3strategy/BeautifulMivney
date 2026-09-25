@@ -16,11 +16,15 @@ css: [/assets/css/hex-diagrams.css]
 
 ## הרעיון
 
-`HexAi` בודקת עותק לכל מהלך חוקי ומקודדת את מצב היורש. המודל מעריך את המצב מנקודת מבטו של השחקן הבא, ולכן הופכים את סימן הערך כשחוזרים לנקודת מבטו של בוחר המהלך. ניצחון מיידי מקבל ערך `+1`. העבודה עם המודל רצה ב־`ExecutorService`, ו־`gameGeneration` מונע מתשובה ישנה לשנות משחק שהופעל מחדש. אין כאן מודל מאומן או דירוג של חוזק המשחק.
+`HexAi` יוצרת עותק נפרד של המשחק לכל מהלך חוקי, משחקת בו את המהלך ומקודדת את **מצב היורש**: מצב המשחק *אחרי* אותו מהלך. ה״יורש״ הוא מצב, לא שחקן ולא תגובה של היריב. המודל מעריך כל מצב כזה מנקודת מבטו של השחקן הבא, ולכן הופכים את סימן הערך כשחוזרים לנקודת מבטו של בוחר המהלך. ניצחון מיידי מקבל ציון `+1`. העבודה עם המודל רצה ב־`ExecutorService`, ו־`gameGeneration` מונע מתשובה ישנה לשנות משחק שהופעל מחדש. אין כאן מודל מאומן או דירוג של חוזק המשחק.
 
 ## איך הערכת מצב הופכת לבחירת מהלך? {#move-selection}
 
-נניח שכחול צריך לבחור מהלך. לכל תא פנוי ניצור עותק של המשחק ונניח בו אבן כחולה. אלה **חלופות של מהלך אחד מאותו מצב**, ולא רצף מהלכים על הלוח האמיתי. בכל עותק התור כבר עבר לאדום, ולכן המודל מחזיר הערכה עבור אדום. כדי להשוות מנקודת המבט של כחול נהפוך את הסימן.
+נניח שכחול צריך לבחור מהלך. לכל תא פנוי ניצור עותק של המשחק ונניח בו אבן כחולה. אלה **חלופות של מהלך אחד מאותו מצב**, ולא רצף מהלכים על הלוח האמיתי. למשל, אם יש שלושה תאים פנויים, מתקבלים שלושה מצבי יורש: הלוח אחרי מהלך A של כחול, הלוח אחרי מהלך B שלו והלוח אחרי מהלך C שלו. בכל אחד מהם גם רשום שעכשיו תורו של אדום. שלושת המצבים אינם תגובות של אדום; הם שלוש תוצאות אפשריות של *המהלך הנוכחי של כחול*.
+
+**מה בדיוק מחשבים?** `ValueModel` מקבל את הקידוד של כל אחד ממצבי היורש ומחזיר **ערך אחד לכל מצב**, באותו סדר. הערך אומר עד כמה המצב נראה טוב לשחקן שבתור בו, כאן אדום. הוא אינו מחזיר ציון ישיר למהלך כחול, אינו מונה את התגובות האפשריות של אדום לכל מהלך כחול ואינו משווה ביניהן בזמן הבחירה. כדי לקבל ציון למהלך של כחול, `HexAi` הופכת את הסימן: מצב שטוב לאדום רע לכחול. רק אם כחול כבר ניצח במהלך הזה, חוקי המשחק נותנים למהלך ציון מדויק של `+1`, בלי להסתמך על תחזית המודל.
+
+לכן **״מבט של צעד אחד קדימה״** פירושו יצירת מצב אחד קדימה *לכל מהלך מועמד*, והערכתו. אין כאן שכבה שנייה של מהלכי היריב. מודל מאומן יכול לשקף בהערכה שלו דפוסים ותוצאות שנלמדו ממשחקים קודמים, אבל `chooseMove` אינה בודקת כעת כיצד אדום יענה בפועל. בפרק הזה המודל עדיין לא מאומן ומחזיר אפס, כך שאין לפרש את הערכים שלו כתחזית אמינה.
 
 <div markdown="1" class="hex-diagram">
 
@@ -41,7 +45,7 @@ flowchart TB
 
 </div>
 
-בקוד שלנו שולחים את **כל** היורשים להערכה יחד, ואז מחשבים ציון לכל מהלך. אם החוקים קובעים שזה ניצחון מיידי, הציון הוא `+1` גם אם המודל חזה משהו אחר. החוקים מכריעים תוצאה סופית; המודל נחוץ להערכת מצבים שטרם הסתיימו. הבדיקה מסתכלת מהלך אחד קדימה, בלי להמשיך לעץ של תגובות ותגובות־נגד.
+בקוד שלנו שולחים את **כל** היורשים להערכה יחד, ואז מחשבים ציון לכל מהלך: בניצחון מיידי הציון הוא `+1`; אחרת הוא מינוס ערך היורש שהחזיר המודל. החוקים מכריעים תוצאה סופית; ערך המודל משמש להערכת מצבים שטרם הסתיימו. בוחרים את המהלך בעל הציון הגבוה ביותר.
 
 המספרים בטבלה הם דוגמה להמחשה, ולא תוצאות שנמדדו במודל המסופק:
 
@@ -62,7 +66,7 @@ flowchart TB
 
 ### HexAi.java
 
-**מיקום:** app > kotlin+java > com.example.hex. הוסיפו קובץ Java חדש בשם `HexAi.java`. המחשב בודק כל מהלך חוקי פעם אחת; שימו לב ל־copy ולסימן השלילי בערך היורש.
+**מיקום:** app > kotlin+java > com.example.hex. הוסיפו קובץ Java חדש בשם `HexAi.java`. הלולאה הראשונה יוצרת מצב יורש וקלט למודל לכל מהלך חוקי; הלולאה השנייה מתאימה את הערכים שחזרו לאותם מהלכים ובוחרת את הטוב ביותר. הרשימות והמערך נשארים באותו סדר, ולכן האינדקס `i` מצביע בכל אחד מהם על אותו מועמד.
 
 ```java
 package com.example.hex;
@@ -100,21 +104,29 @@ public final class HexAi {
      *                               non-finite value
      */
     public HexGame.Move chooseMove(HexGame position) {
+        // A finished game has no move to choose.
         if (position.isOver()) {
             return null;
         }
 
+        // Save whose move we are choosing before a copy advances the turn.
         int movingPlayer = position.getCurrentPlayer();
         List<HexGame.Move> legalMoves = position.legalMoves();
         List<HexGame> successors = new ArrayList<>(legalMoves.size());
         List<float[]> modelInputs = new ArrayList<>(legalMoves.size());
+        // Build one independent successor and one model input per candidate move.
         for (HexGame.Move move : legalMoves) {
+            // Copy so testing this candidate cannot change the real position.
             HexGame successor = position.copy();
+            // Play exactly this candidate on its copy; the turn then advances.
             successor.play(move.row, move.column);
+            // Keep the resulting state at the same index as its move.
             successors.add(successor);
+            // Encode it for the next player, whose turn it now is.
             modelInputs.add(successor.encodeForCurrentPlayer());
         }
 
+        // Evaluate all candidates; each result matches its input by index.
         float[] nextPlayerValues = model.evaluate(modelInputs);
         if (nextPlayerValues.length != legalMoves.size()) {
             throw new IllegalStateException("Model returned the wrong number of values");
@@ -122,18 +134,23 @@ public final class HexAi {
 
         HexGame.Move bestMove = null;
         float bestValue = Float.NEGATIVE_INFINITY;
+        // Convert each successor value into the original mover's move score.
         for (int i = 0; i < legalMoves.size(); i++) {
+            // Read the state produced by legalMoves.get(i).
             HexGame successor = successors.get(i);
-            // A terminal win is exact. Otherwise the successor is encoded for the
-            // next player, so negate its value to recover the mover's perspective.
+            // An immediate win scores +1; otherwise negate the next player's value.
             float moverValue = successor.getWinner() == movingPlayer
                     ? 1.0f
                     : -nextPlayerValues[i];
+            // A non-finite model prediction cannot be used to rank moves.
             if (Float.isNaN(moverValue) || Float.isInfinite(moverValue)) {
                 throw new IllegalStateException("Model produced a non-finite value");
             }
+            // Replace the current choice only for the first or a strictly better move.
             if (bestMove == null || moverValue > bestValue) {
+                // The same index connects this score to its original legal move.
                 bestMove = legalMoves.get(i);
+                // Remember its score for comparison with later candidates.
                 bestValue = moverValue;
             }
         }
@@ -402,6 +419,6 @@ sequenceDiagram
 
 ## מריצים ומוודאים
 
-בצעו Sync אם שיניתם Gradle, בנו את הפרויקט (`assembleDebug`) ואז הפעילו את האפליקציה. שחקו מהלך אדום וחכו לכחול. בזמן שהמחשב מחשב, לחצו Restart או עברו ל־Two players; מהלך ישן לא יופיע במשחק החדש.
+בצעו Sync אם שיניתם Gradle,  ואז הפעילו את האפליקציה. שחקו מהלך אדום וחכו לכחול. בזמן שהמחשב מחשב, לחצו Restart או עברו ל־Two players; מהלך ישן לא יופיע במשחק החדש.
 
 **שאלת הבנה:** אם המודל מעריך את מצב היורש כטוב ליריב, איזה סימן יקבל מהלך השחקן הנוכחי?

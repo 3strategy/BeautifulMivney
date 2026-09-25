@@ -28,7 +28,7 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 
 התחילו בפרויקט Empty Views Activity ב־Java, חבילה `com.example.hex`, ‏API 31,‏ XML ו־View Binding פעיל. `MainActivity` כבר מנפחת `ActivityMainBinding`. אין ליצור Activity חדש.
 
-[להסבת פרוייקט חדש ל-View Bindings ראו 222](/android/projectSteps/019bBindingsForMainActivity)
+[להסבת פרוייקט חדש ל-View Bindings ראו חלק 1 כאן](/android/projectSteps/019bBindingsForMainActivity)
 
 ## עורכים את הקבצים
 
@@ -249,7 +249,7 @@ public final class HexBoardView extends View {
 
 ## מריצים ומוודאים
 
-בצעו Sync אם שיניתם Gradle, בנו את הפרויקט (`assembleDebug`) ואז הפעילו את האפליקציה. פתחו את האפליקציה וספרו 49 משושים. בדקו את שתי השפות האדומות ואת שתי השפות הכחולות.
+בצעו Sync אם שיניתם Gradle,  ואז הפעילו את האפליקציה. פתחו את האפליקציה וספרו 49 משושים. בדקו את שתי השפות האדומות ואת שתי השפות הכחולות.
 
 אם האמולטור פתוח בחלון שאפשר לגרור את שוליו, הקטינו והגדילו את החלון. בכל גודל בדקו שכל 49 המשושים ושפות היעד נשארים גלויים. אם האמולטור מוטמע ב־Android Studio או פועל ללא חלון, דלגו על בדיקת שינוי הגודל; בדיקת הלוח בגודל המקורי מספיקה לפרק הזה.
 
