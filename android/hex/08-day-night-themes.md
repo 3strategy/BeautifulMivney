@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Hex — 08: ערכות נושא ליום וללילה"
-subtitle: "צבעים לפי מצב המכשיר, רכיבי Material 3 ואייקוני שורת המצב"
+subtitle: "צבעי משחק לפי מצב המכשיר, בלי לשנות את ערכת הנושא הקיימת"
 permalink: /android/hex/08-day-night-themes/
 tags: [Android, Java, Hex, Material3]
 lang: he
@@ -11,17 +11,25 @@ full-width: true
 [מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/07-supplied-rl-models/' | relative_url }})
 
 {: .box-success}
-**בסוף הפרק:** Hex מציגה צבעים בהירים במצב יום וצבעים כהים במצב לילה, לפי הגדרת המכשיר. הלוח, הכרטיס, הפקדים ושורת המצב נשארים קריאים בשני המצבים.
+**בסוף הפרק:** Hex מציגה צבעי משחק בהירים במצב יום וכהים במצב לילה, לפי הגדרת המכשיר. בודקים את שני המצבים באמולטור ומבינים כיצד Android בוחרת משאב צבע מתאים.
 
 ## הרעיון
 
 למסך של פרק 7 כבר יש שמות צבעים כגון `paper`,‏ `ink` ו־`hex_red`. ה־XML משתמש בשמות האלה, ו־`HexBoardView` קוראת את צבעי הלוח דרך `R.color`. לכן אין צורך בשני מסכים או בתנאי Java שבודק אם חשוך: Android יכולה לבחור ערך אחר לאותו שם משאב מתוך `values-night`.
 
-עד עכשיו `values-night/themes.xml` כפה ערכת נושא בהירה גם כשהמכשיר היה במצב לילה. בפרק הזה נותנים ל־`Theme.Hex` של הלילה לרשת את `Base.Theme.Hex` המשותפת, שההורה שלה הוא `Theme.Material3.DayNight.NoActionBar`. נוסיף צבעי לילה לאותם שמות שכבר קיימים ביום, ונחבר גם את רכיבי Material לצבעי המשחק.
+ערכת הנושא הקיימת כבר יורשת מ־`Theme.Material3.DayNight.NoActionBar`. בקובץ `values-night/themes.xml` נשאר סגנון `Base.Theme.Hex` שנוצר עם הפרויקט; אין שם הגדרה נוספת של `Theme.Hex`, ואין צורך להוסיף אותה כדי ש־Android תבחר צבעי לילה. לפני הוספת הצבעים נבדוק איך המסך נראה בחושך; אחר כך נוסיף ערכי לילה לאותם שמות צבעים ונבדוק שוב.
 
-השינויים בפרק הזה מוגבלים ל**שלושה קובצי משאבים בלבד**; `values/colors.xml`,‏ `activity_main.xml`,‏ `HexBoardView.java` וה־Manifest נשארים כפי שהם.
+השינוי בקוד של הפרק מוגבל ל**קובץ משאבים אחד**, `values-night/colors.xml`. קובצי `themes.xml`,‏ `values/colors.xml`,‏ `activity_main.xml`,‏ `HexBoardView.java` וה־Manifest נשארים כפי שהם.
 
-## 1. מוסיפים צבעי לילה
+## לפני שמתחילים: בודקים מצב לילה
+
+הריצו את האפליקציה והפעילו מצב לילה באמולטור. שימו לב לצבעי הרקע, הלוח, הכרטיס, הטקסט והפקדים לפני שיש קובץ `values-night/colors.xml`. אין צורך לשנות את `values-night/themes.xml`: בשלב הזה `Theme.Hex` עדיין מוגדר רק בתיקיית `values`.
+
+**שינוי מצב התצוגה באמולטור של Android Studio:** בסרגל העליון של חלון האמולטור לחצו על **Device UI Shortcuts** (הכפתור המסומן בצהוב בתמונה). בחלונית **Device Settings** הפעילו או כבו את **Dark Theme** (המתג המסומן באדום). חזרו לאפליקציה לאחר כל שינוי.
+
+![הכפתור Device UI Shortcuts בסרגל האמולטור ומתג Dark Theme בחלונית Device Settings]({{ '/android/hex/emulator-dark-theme-toggle.png' | relative_url }})
+
+## מוסיפים צבעי לילה
 
 **מיקום:** app > res > values-night. לחצו לחיצה ימנית על התיקייה, בחרו **New > Values Resource File**, קראו לקובץ `colors.xml` והכניסו את כולו:
 
@@ -32,8 +40,8 @@ full-width: true
     <color name="paper">#101A25</color>
     <color name="surface">#1D2B3B</color>
     <color name="hex_empty">#344252</color>
-    <color name="hex_red">#FF7780</color>
-    <color name="hex_blue">#70B8EA</color>
+    <color name="hex_red">#800030</color>
+    <color name="hex_blue">#30589A</color>
     <color name="hex_line">#9CADBE</color>
     <color name="muted">#AAB8C8</color>
 </resources>
@@ -44,51 +52,11 @@ full-width: true
 {: .box-note}
 השאירו את שמות המשאבים זהים בשתי התיקיות. אין צורך לשכפל את קובץ ה־layout: ההפניות הקיימות לצבעים ייבחרו מחדש בהתאם למצב המכשיר.
 
-## 2. מחברים את צבעי המשחק לרכיבי Material
-
-**מיקום:** app > res > values > themes.xml. בתוך `Base.Theme.Hex`, אחרי `colorSecondary`, הוסיפו חמש שורות. ההורה `Theme.Material3.DayNight.NoActionBar` כבר נמצא בקובץ; משאירים אותו כפי שהוא.
-
-```diff
- <style name="Base.Theme.Hex" parent="Theme.Material3.DayNight.NoActionBar">
-     <item name="colorPrimary">@color/hex_blue</item>
-     <item name="colorSecondary">@color/hex_red</item>
-+    <item name="colorSurface">@color/surface</item>
-+    <item name="colorOnSurface">@color/ink</item>
-+    <item name="colorOnSurfaceVariant">@color/muted</item>
-+    <item name="colorSecondaryContainer">@color/hex_empty</item>
-+    <item name="colorOnSecondaryContainer">@color/ink</item>
-     <item name="android:colorAccent">@color/hex_blue</item>
-```
-
-`colorSurface`/`colorOnSurface` הם זוג של רקע וטקסט עליו; `colorOnSurfaceVariant` משמש טקסט משני. `colorSecondaryContainer`/`colorOnSecondaryContainer` הם זוג נוסף שרכיבי Material יכולים להשתמש בו, למשל הכפתור הטונאלי. הגדרת הזוגות עוזרת לפקדים שאינם צבועים במפורש ב־layout להשתלב בלוח הצבעים שלנו. הערכים עצמם משתנים עם מצב המכשיר כי הם מצביעים אל שמות הצבעים של שלב 1.
-
-## 3. מפשטים את ערכת הלילה
-
-**מיקום:** app > res > values-night > themes.xml. החליפו את הסגנון הישן בקטע הבא:
-
-```diff
- <resources>
--    <style name="Base.Theme.Hex" parent="Theme.Material3.Light.NoActionBar">
--        <item name="colorPrimary">@color/hex_blue</item>
--        <item name="colorSecondary">@color/hex_red</item>
--        <item name="android:fontFamily">sans</item>
--        <item name="android:windowLightStatusBar">true</item>
--        <item name="android:navigationBarColor">@color/paper</item>
--        <item name="android:statusBarColor">@color/paper</item>
--        <item name="android:windowBackground">@color/paper</item>
-+    <style name="Theme.Hex" parent="Base.Theme.Hex">
-+        <item name="android:windowLightStatusBar">false</item>
-     </style>
- </resources>
-```
-
-ב־`values/themes.xml`, הסגנון `Theme.Hex` כבר יורש את `Base.Theme.Hex`; זו גם הערכה שה־Manifest מפנה אליה. בלילה Android בוחרת את ההגדרה של `Theme.Hex` מתוך `values-night`, ולכן היא יורשת את כל ההגדרות המשותפות בלי להעתיק אותן. `android:windowLightStatusBar` שווה `true` ביום כדי לקבל אייקונים כהים על רקע בהיר, ו־`false` בלילה כדי לקבל אייקונים בהירים על רקע כהה. צבע הרקע של שורת המצב נשאר `@color/paper`, שמשנה ערך בין יום ללילה.
-
 ## מריצים ובודקים
 
-1. ודאו ש־**Dark theme** כבוי בהגדרות המכשיר או ב־Quick Settings. ב־Android Studio בחרו בתצורת ההרצה `app`, בחרו את המכשיר או האמולטור ולחצו **Run** (▶). בדקו שרקע המסך בהיר, הטקסט כהה והמשחק עדיין מקבל מהלכים.
-2. שנו בהגדרות המכשיר או ב־Quick Settings את **Dark theme** למצב פעיל וחזרו לאפליקציה. בדקו שרקע המסך כהה, הטקסט בהיר, תאי הלוח והאבנים ברורים, הכרטיס והכפתור קריאים, והאייקונים בשורת המצב בהירים.
-3. כבו את **Dark theme** ובדקו שצבעי היום חוזרים. אין בפרק הזה מתג ערכת נושא בתוך האפליקציה; הבחירה מגיעה מהמכשיר.
+1. השאירו את `values-night/themes.xml` ללא שינוי. הריצו שוב את האפליקציה כש־**Dark Theme** פעיל והשוו למסך שראיתם לפני יצירת `colors.xml`. בדקו שרקע המסך והכרטיס כהים, הטקסט בהיר, צבעי הלוח השתנו והפקדים קריאים. `Theme.Hex` עדיין אינו מוגדר בקובץ הלילה, ובכל זאת צבעי הלילה נבחרים.
+2. אם תרצו לאמת איזה קובץ צבעים נבחר, שנו זמנית את `hex_red` בקובץ החדש ל־`#00FF80`, הריצו שוב וראו שהאבנים והכיתוב האדומים נעשים ירוקים בלילה. החזירו את הערך ל־`#FF7780` לאחר הבדיקה.
+3. כבו את **Dark Theme** באותה חלונית **Device Settings** ובדקו שצבעי היום חוזרים ושהמשחק עדיין מקבל מהלכים. אין בפרק הזה מתג ערכת נושא בתוך האפליקציה; הבחירה מגיעה מהמכשיר.
 
 {: .box-warning}
 החלפת מצב התצוגה עשויה ליצור מחדש את ה־Activity. במימוש הנוכחי המשחק נוצר מחדש ב־`onCreate`, לכן מעבר בין יום ללילה באמצע משחק עשוי לאפס את הלוח. השינוי בפרק הזה מטפל בצבעים; שמירת משחק לאורך שינוי תצורה היא נושא נפרד.

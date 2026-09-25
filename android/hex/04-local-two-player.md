@@ -62,33 +62,9 @@ full-width: true
  </resources>
 ```
 
-### themes.xml ב־values-night
-
-**מיקום:** app > res > values-night > themes.xml. Android בוחרת את המשאבים האלה כשהמכשיר במצב כהה. כדי לשמור גם במצב הזה על צבעי המסך הבהירים, הגדירו כאן את `Base.Theme.Hex` עם ההורה `Theme.Material3.Light.NoActionBar`. השאירו את ההורה `Theme.Material3.DayNight.NoActionBar` ואת `android:colorAccent` בקובץ הרגיל שבתיקיית `values`.
-
-```diff
--<resources xmlns:tools="http://schemas.android.com/tools">
--    <!-- Base application theme. -->
--    <style name="Base.Theme.Hex" parent="Theme.Material3.DayNight.NoActionBar">
--        <!-- Customize your dark theme here. -->
--        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-+<resources>
-+    <style name="Base.Theme.Hex" parent="Theme.Material3.Light.NoActionBar">
-+        <item name="colorPrimary">@color/hex_blue</item>
-+        <item name="colorSecondary">@color/hex_red</item>
-+        <item name="android:fontFamily">sans</item>
-+        <item name="android:windowLightStatusBar">true</item>
-+        <item name="android:navigationBarColor">@color/paper</item>
-+        <item name="android:statusBarColor">@color/paper</item>
-+        <item name="android:windowBackground">@color/paper</item>
-     </style>
--</resources>
-+</resources>
-```
-
 ### themes.xml
 
-**מיקום:** app > res > values > themes.xml. השאירו כאן את `Theme.Material3.DayNight.NoActionBar` ואת `android:colorAccent`; בתיקיית `values-night` הוגדר להם עיצוב בהיר נפרד למצב כהה.
+**מיקום:** app > res > values > themes.xml. ההורה `Theme.Material3.DayNight.NoActionBar` מאפשר ל־Material לבחור ערכת יום או לילה לפי מצב המכשיר. השאירו את `values-night/themes.xml` כפי שנוצר בפרויקט התבנית; נוסיף צבעי לילה לפרויקט בפרק 8.
 
 ```diff
 -<resources xmlns:tools="http://schemas.android.com/tools">
