@@ -14,15 +14,18 @@ to 018b or continuing to 018d. Optional shortcut links remain ordinary links.
 013 is the swipe boundary; its existing manual link to 012 remains available.
 
 CollectCircles follows 1 → 2 → 3 → 4 → 5 → 6 → 8 → 9 → 10 → 11 → 12 →
-13 → 14 → 15 → 16 → 17 → 18. The student route skips teacher cloud setup (7),
-and the full route through 15–18 is the default after 14. Chapter 4 now has a
-back-link to 3; chapter 5's back-link goes to 4 so the main route is reciprocal.
+13 → 14 → 15b. The student route skips teacher cloud setup (7), and the short
+route ends at 15b after introducing periodic notifications and Brag. From 14,
+students can also choose the optional long sequence 15 → 16 → 17 → 18. Chapter
+4 now has a back-link to 3; chapter 5's back-link goes to 4 so the main route is
+reciprocal.
 
 Side pages retain their existing choices: 1a goes back to 1 or forward to 2;
 the 5–7 roadmap goes back to 3 or forward to 5; chapter 7 goes back to 6 or
 forward to the 8–18 roadmap; that roadmap goes back to 6 or forward to 8.
-15b goes back to 14 and is an ending, with no next swipe. Return swipes from
-the main route follow that route, not the previously visited side page.
+15b goes back to 14 and is an ending, with no next swipe. The optional long
+sequence is still swipeable when a student chooses chapter 15. Return swipes
+from the main route follow that route, not the previously visited side page.
 The teacher/development plan is not enabled.
 
 

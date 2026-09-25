@@ -83,23 +83,23 @@ for (const [name, chain] of Object.entries(androidSequences.chains)) {
   });
 }
 
-test('Android lessons and branches render exactly one correct link per swipe direction', async ({ page, request }) => {
+test('Android lessons and branches render consistent swipe links', async ({ page, request }) => {
   test.setTimeout(90000);
   for (const [url, navigation] of Object.entries(androidSequences.pages)) {
     const response = await page.goto(base + url);
     expect(response.status(), url).toBe(200);
     for (const [direction, destination] of Object.entries(navigation)) {
       const links = page.locator(`main a[data-sequence-nav="${direction}"]`);
-      await expect(links, `${url}: ${direction}`).toHaveCount(destination ? 1 : 0);
       if (destination) {
-        await expect(links).toHaveAttribute('href', destination);
+        await expect(links, `${url}: ${direction}`).not.toHaveCount(0);
+        for (const link of await links.all()) await expect(link).toHaveAttribute('href', destination);
         expect((await request.get(base + destination)).status(), destination).toBe(200);
-      }
+      } else await expect(links, `${url}: ${direction}`).toHaveCount(0);
     }
   }
 });
 
-for (const [name, index] of [['tictacmenu', 8], ['collectcircles', 5], ['collectcircles', 12], ['hex', 3]]) {
+for (const [name, index] of [['tictacmenu', 8], ['collectcircles', 5], ['collectcircles', 6], ['collectcircles', 12], ['hex', 3]]) {
   test(`${name} step ${index}: native swipes follow the chosen route both ways`, async ({ page }) => {
     const chain = androidSequences.chains[name];
     await page.goto(base + chain[index]);
@@ -120,6 +120,18 @@ test('native touch swipe right goes next, swipe left goes previous, including af
   await readingSurface(page);
   await swipe(page, [285, 330], [100, 334]);
   await expect(page).toHaveURL(`${base}/modelim/${lessons[0].replace('.html', '')}`);
+});
+
+test('CollectCircles 8: swiping its introduction advances to chapter 9', async ({ page }) => {
+  const current = '/android/CollectCircles/08.collect-circles-persistent-economy';
+  const next = '/android/CollectCircles/09.collect-circles-autonomous-mode';
+  await page.goto(base + current);
+  const paragraph = page.locator('main p.box-note').first();
+  await paragraph.evaluate(el => el.scrollIntoView({ block: 'center' }));
+  const box = await paragraph.boundingBox();
+  const y = box.y + box.height / 2;
+  await swipe(page, [100, y], [285, y + 2]);
+  await expect(page).toHaveURL(base + next);
 });
 
 test('swiping an actual lesson paragraph navigates and ordinary navigation links still work', async ({ page }) => {

@@ -31,10 +31,7 @@
       "/android/CollectCircles/12.collect-circles-pushers-work",
       "/android/CollectCircles/13.collect-circles-offline-progress",
       "/android/CollectCircles/14.collect-circles-first-worker",
-      "/android/CollectCircles/15.collect-circles-periodic-work",
-      "/android/CollectCircles/16.collect-circles-json-schedule",
-      "/android/CollectCircles/17.collect-circles-worker-settlement",
-      "/android/CollectCircles/18.collect-circles-pusher-brag"
+      "/android/CollectCircles/15b.collect-circles-notification-only"
     ],
     "hex": [
       "/android/hex/01-board/",
@@ -158,7 +155,7 @@
     },
     "/android/CollectCircles/14.collect-circles-first-worker": {
       "prev": "/android/CollectCircles/13.collect-circles-offline-progress",
-      "next": "/android/CollectCircles/15.collect-circles-periodic-work"
+      "next": "/android/CollectCircles/15b.collect-circles-notification-only"
     },
     "/android/CollectCircles/15.collect-circles-periodic-work": {
       "prev": "/android/CollectCircles/14.collect-circles-first-worker",
