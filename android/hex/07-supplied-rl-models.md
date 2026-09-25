@@ -536,6 +536,8 @@ public final class ModelCatalog {
 
 **שאלת הבנה:** למה יש לשמור קובץ TFLite והמטא־דאטה שלו כזוג?
 
+[לשיעור הבא: ערכות נושא ליום וללילה ←]({{ '/android/hex/08-day-night-themes/' | relative_url }})
+
 ## כך נראה המסך בסיום הפרק
 
 ![מסך Hex הסופי: לוח ריק, בחירת מצב משחק ורשימת שחקני המחשב]({{ '/android/hex/final.png' | relative_url }})
