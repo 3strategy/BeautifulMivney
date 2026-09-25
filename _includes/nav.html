@@ -4,6 +4,10 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
+  {%- if page.title -%}
+    <span class="navbar-page-title" dir="auto" aria-hidden="true">{{ page.title | strip_html | escape }}</span>
+  {%- endif -%}
+
   {%- if site.title-img -%}
     <a class="navbar-brand navbar-brand-logo" href="{{ '/' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
   {%- elsif site.title -%}

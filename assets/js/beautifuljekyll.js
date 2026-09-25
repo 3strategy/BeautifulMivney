@@ -9,13 +9,11 @@ let BeautifulJekyllJS = {
     setTimeout(BeautifulJekyllJS.initNavbar, 10);
 
     // Shorten the navbar after scrolling a little bit down
-    $(window).scroll(function() {
-        if ($(".navbar").offset().top > 50) {
-            $(".navbar").addClass("top-nav-short");
-        } else {
-            $(".navbar").removeClass("top-nav-short");
-        }
-    });
+    const updateNavbarOnScroll = function() {
+      $(".navbar").toggleClass("top-nav-short", $(window).scrollTop() > 50);
+    };
+    $(window).on('scroll', updateNavbarOnScroll);
+    updateNavbarOnScroll();
 
     // On mobile, hide the avatar when expanding the navbar menu
     $('#main-navbar').on('show.bs.collapse', function () {
