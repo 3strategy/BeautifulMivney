@@ -174,16 +174,16 @@ full-width: true
 +        return new HexGame(Arrays.copyOf(cells, CELL_COUNT), currentPlayer, winner, moveCount);
 +    }
 +
-+    /**
-+     * Places the current player's stone and advances the turn.
-+     *
-+     * <p>TWIN-ID: HEX.APPLY_MOVE
-+     *
-+     * @param row zero-based board row
-+     * @param column zero-based board column
-+     * @return {@code true} if the move was played, or {@code false} if the cell is unavailable,
-+     *         outside the board, or the game is already over
-+     */
+     /**
+      * Places the current player's stone and advances the turn.
+      *
+      * <p>TWIN-ID: HEX.APPLY_MOVE
+      *
+      * @param row zero-based board row
+      * @param column zero-based board column
+      * @return {@code true} if the move was played, or {@code false} if the cell is unavailable,
+      *         outside the board, or the game is already over
+      */
      public boolean play(int row, int column) {
 -        if (winner != EMPTY || isOutside(row, column)
 -                || cells[index(row, column)] != EMPTY) {
@@ -208,7 +208,14 @@ full-width: true
          return true;
      }
  
--    /** Searches adjacent stones from the player's first goal edge to the opposite edge. */
+-    /**
+-     * Detects a win by searching the player's connected stones between both goal edges.
+-     * This check reads the board without placing a stone or changing the game state.
+-     *
+-     * @param player RED (top to bottom) or BLUE (left to right)
+-     * @return true if the player's stones connect their two goal edges
+-     * @throws IllegalArgumentException if player is neither RED nor BLUE
+-     */
 +    /**
 +     * Lists every legal move in row-major order.
 +     *

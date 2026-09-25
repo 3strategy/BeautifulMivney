@@ -91,7 +91,7 @@ flowchart TB
 
 **מיקום:** app > kotlin+java > com.example.hex. מחלקת החוקים העצמאית. בחנו היכן המשחק משנה מצב והיכן הוא רק קורא אותו.
 
-תנאי `play` מתרחב כדי לדחות גם משחק שכבר הוכרע; השינוי המלא מופיע ב־diff שלהלן.
+`play` אינה רק בדיקת רשות: היא דוחה מהלך לא חוקי, אבל אם הוא חוקי היא **מניחה את האבן בלוח**, בודקת אם נוצר ניצחון ומקדמת את התור. `hasConnection` רק קוראת את מצב הלוח כדי לבדוק חיבור; היא אינה מניחה אבן. תנאי `play` מתרחב כדי לדחות גם משחק שכבר הוכרע; השינוי המלא מופיע ב־diff שלהלן.
 
 ```diff
  package com.example.hex;
@@ -110,7 +110,17 @@ flowchart TB
      private final int[] cells = new int[CELL_COUNT];
      private int currentPlayer = RED;
  
-     /** Places a stone only when the coordinate is empty and on the board. */
+-    /** Places a stone only when the coordinate is empty and on the board. */
++    /**
++     * Places the current player's stone and advances the turn.
++     *
++     * <p>TWIN-ID: HEX.APPLY_MOVE
++     *
++     * @param row zero-based board row
++     * @param column zero-based board column
++     * @return {@code true} if the move was played, or {@code false} if the cell is unavailable,
++     *         outside the board, or the game is already over
++     */
      public boolean play(int row, int column) {
 -        if (isOutside(row, column) || cells[index(row, column)] != EMPTY) {
 +        if (winner != EMPTY || isOutside(row, column)
@@ -123,39 +133,59 @@ flowchart TB
          return true;
      }
  
-+    /** Searches adjacent stones from the player's first goal edge to the opposite edge. */
++    /**
++     * Detects a win by searching the player's connected stones between both goal edges.
++     * This check reads the board without placing a stone or changing the game state.
++     *
++     * @param player RED (top to bottom) or BLUE (left to right)
++     * @return true if the player's stones connect their two goal edges
++     * @throws IllegalArgumentException if player is neither RED nor BLUE
++     */
 +    public boolean hasConnection(int player) {
++        // A win check requires one of the two actual players.
 +        if (player != RED && player != BLUE) {
 +            throw new IllegalArgumentException("Player must be RED or BLUE");
 +        }
++        // Mark cells when queued so each stone is examined at most once.
 +        boolean[] visited = new boolean[CELL_COUNT];
++        // Breadth-first search: cells waiting to be examined.
 +        ArrayDeque<Integer> frontier = new ArrayDeque<>();
++        // Seed every stone on the player's starting edge.
 +        for (int i = 0; i < SIZE; i++) {
++            // Red starts on row 0; Blue starts on column 0.
 +            int row = player == RED ? 0 : i;
 +            int column = player == RED ? i : 0;
 +            int start = index(row, column);
++            // Empty and opposing cells cannot begin this player's path.
 +            if (cells[start] == player) {
 +                visited[start] = true;
 +                frontier.add(start);
 +            }
 +        }
++        // Expand the connected region until it reaches the goal or runs out.
 +        while (!frontier.isEmpty()) {
 +            int position = frontier.removeFirst();
++            // Convert the one-dimensional cell index back to board coordinates.
 +            int row = position / SIZE;
 +            int column = position % SIZE;
++            // The opposite edge completes Red's vertical or Blue's horizontal path.
 +            if ((player == RED && row == SIZE - 1)
 +                    || (player == BLUE && column == SIZE - 1)) return true;
++            // Follow only the six neighboring cells on the Hex grid.
 +            for (int[] offset : NEIGHBORS) {
 +                int nextRow = row + offset[0];
 +                int nextColumn = column + offset[1];
++                // Ignore coordinates outside the board before computing an index.
 +                if (isOutside(nextRow, nextColumn)) continue;
 +                int next = index(nextRow, nextColumn);
++                // An unvisited stone of this color extends the connected path.
 +                if (!visited[next] && cells[next] == player) {
 +                    visited[next] = true;
 +                    frontier.addLast(next);
 +                }
 +            }
 +        }
++        // Every reachable stone was checked without finding the goal edge.
 +        return false;
 +    }
 +
