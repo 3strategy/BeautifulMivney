@@ -72,28 +72,59 @@ package com.example.hex;
 
 import java.util.Arrays;
 
-/** The board state and rules, independent of pixels and Android widgets. */
+/**
+ * Stores a 7x7 Hex position and its game rules.
+ *
+ * <p>This class is pure Java and has no Android or rendering dependencies. Red connects the
+ * top and bottom edges; Blue connects the left and right edges.
+ */
 public final class HexGame {
+    /** Number of rows and columns on the square board. */
     public static final int SIZE = 7;
+    /** Total number of cells on the board. */
     public static final int CELL_COUNT = SIZE * SIZE;
+    /** Cell value used for an unoccupied cell. */
     public static final int EMPTY = 0;
+    /** Player value for Red, whose goal is to connect top to bottom. */
     public static final int RED = 1;
+    /** Player value for Blue, whose goal is to connect left to right. */
     public static final int BLUE = 2;
 
     private final int[] cells = new int[CELL_COUNT];
     private int currentPlayer = RED;
 
-    /** Places a stone only when the coordinate is empty and on the board. */
+    /**
+     * Places the current player's stone and advances the turn when the move is legal.
+     *
+     * <p>TWIN-ID: HEX.APPLY_MOVE
+     *
+     * @param row zero-based board row
+     * @param column zero-based board column
+     * @return {@code true} if the move was played; {@code false} if the rules reject it,
+     *         leaving the board and turn unchanged
+     */
     public boolean play(int row, int column) {
-        if (isOutside(row, column) || cells[index(row, column)] != EMPTY) {
+        if (isOutside(row, column)) {
             return false;
         }
-        cells[index(row, column)] = currentPlayer;
+        int index = index(row, column);
+        if (cells[index] != EMPTY) {
+            return false;
+        }
+
+        cells[index] = currentPlayer;
         currentPlayer = otherPlayer(currentPlayer);
         return true;
     }
 
-    /** Returns the stone at one legal board coordinate. */
+    /**
+     * Returns the value stored at one board coordinate.
+     *
+     * @param row zero-based board row
+     * @param column zero-based board column
+     * @return {@link #EMPTY}, {@link #RED}, or {@link #BLUE}
+     * @throws IndexOutOfBoundsException if the coordinate is outside the board
+     */
     public int getCell(int row, int column) {
         if (isOutside(row, column)) {
             throw new IndexOutOfBoundsException("Cell is outside the 7x7 board");
@@ -101,20 +132,34 @@ public final class HexGame {
         return cells[index(row, column)];
     }
 
-    /** Returns a copy rather than exposing the mutable board array. */
+    /**
+     * Copies all board cells in row-major order.
+     *
+     * @return an independent 49-element array
+     */
     public int[] getCells() {
         return Arrays.copyOf(cells, CELL_COUNT);
     }
 
-    /** Returns the player whose turn is next. */
+    /** @return the player that will make the next move */
     public int getCurrentPlayer() {
         return currentPlayer;
     }
 
-    /** Returns the other player. */
+    /**
+     * Returns the opponent of a player.
+     *
+     * @param player {@link #RED} or {@link #BLUE}
+     * @return the other player
+     * @throws IllegalArgumentException if {@code player} is not a player value
+     */
     public static int otherPlayer(int player) {
-        if (player == RED) return BLUE;
-        if (player == BLUE) return RED;
+        if (player == RED) {
+            return BLUE;
+        }
+        if (player == BLUE) {
+            return RED;
+        }
         throw new IllegalArgumentException("Player must be RED or BLUE");
     }
 
@@ -130,29 +175,16 @@ public final class HexGame {
 
 ### HexBoardView.java
 
-**מיקום:** app > kotlin+java > com.example.hex. מחלקת הציור מקבלת כעת game, callback ובדיקת מגע. העתיקו את כל `onTouchEvent()` כפי שהוא מוצג, כולל בדיקת `isEnabled()`. מחקו הצהרות ומתודות שהחלפתם כדי שלא יופיעו פעמיים.
-
-קבוע גודל הלוח עובר למחלקת המשחק; זו תוספת קטנה בתוך שורת קוד קיימת:
-
-{% code_diff %}
-
--        for (int row = 0; row < SIZE; row++) {
-
-+        for (int row = 0; row < HexGame.SIZE; row++) {
-             ⁞
-         }
-
-{% endcode_diff %}
-
-<details open markdown="1"><summary>השינוי המלא ב־HexBoardView.java</summary>
+**מיקום:** app > kotlin+java > com.example.hex. מחלקת הציור מקבלת כעת משחק, callback ובדיקת מגע. בצעו את השינויים לפי הסדר. שאר הקוד נשאר כפי שנכתב בפרק 1.
 
 ```diff
+ import android.graphics.Canvas;
  import android.graphics.Paint;
  import android.graphics.Path;
  import android.util.AttributeSet;
 +import android.view.MotionEvent;
  import android.view.View;
-+
+ 
  import androidx.annotation.NonNull;
  import androidx.annotation.Nullable;
  import androidx.core.content.ContextCompat;
@@ -178,36 +210,22 @@ public final class HexGame {
 +    }
 +
      private static final float SQRT_THREE = (float) Math.sqrt(3.0);
-+
+ 
      private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
      private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
      private final Paint sidePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
      private final Path hexPath = new Path();
-+
+ 
 +    private HexGame game = new HexGame();
 +    private OnCellClickListener listener;
-+    private float radius;
-+    private float startX;
-+    private float startY;
-+
-     private final int emptyColor;
-     private final int redColor;
-     private final int blueColor;
-     private final int lineColor;
--    private float radius;
--    private float startX;
--    private float startY;
+     private float radius;
+     private float startX;
+     private float startY;
  
--    /** Creates a board view inflated from the activity's XML layout. */
-+    /**
-+     * Creates a board view inflated from XML.
-+     *
-+     * @param context Android context used to resolve resources
-+     * @param attributes XML attributes supplied by the layout inflater
-+     */
-     public HexBoardView(Context context, @Nullable AttributeSet attributes) {
-         super(context, attributes);
-         emptyColor = ContextCompat.getColor(context, R.color.hex_empty);
+```
+
+```diff
+         strokePaint.setStyle(Paint.Style.STROKE);
          strokePaint.setStrokeJoin(Paint.Join.ROUND);
          sidePaint.setStyle(Paint.Style.STROKE);
          sidePaint.setStrokeCap(Paint.Cap.ROUND);
@@ -235,92 +253,60 @@ public final class HexGame {
      }
  
      @Override
-         super.onDraw(canvas);
-         calculateGeometry();
+     protected void onDraw(@NonNull Canvas canvas) {
+```
+
+```diff
          drawGoalSides(canvas);
-+
+ 
          strokePaint.setColor(lineColor);
          strokePaint.setStrokeWidth(dp(1.5f));
 -        for (int row = 0; row < SIZE; row++) {
 -            for (int column = 0; column < SIZE; column++) {
--                makeHexagon(centerX(row, column), centerY(row));
--                fillPaint.setColor(emptyColor);
 +        for (int row = 0; row < HexGame.SIZE; row++) {
 +            for (int column = 0; column < HexGame.SIZE; column++) {
-+                float centerX = centerX(row, column);
-+                float centerY = centerY(row);
-+                makeHexagon(centerX, centerY);
+                 float centerX = centerX(row, column);
+                 float centerY = centerY(row);
+                 makeHexagon(centerX, centerY);
+-                fillPaint.setColor(emptyColor);
 +                int cell = game.getCell(row, column);
 +                fillPaint.setColor(cell == HexGame.RED
 +                        ? redColor : cell == HexGame.BLUE ? blueColor : emptyColor);
                  fillPaint.setStyle(Paint.Style.FILL);
                  canvas.drawPath(hexPath, fillPaint);
                  canvas.drawPath(hexPath, strokePaint);
-         }
-     }
+             }
+```
+
+{% code_diff %}
+     private void drawGoalSides(Canvas canvas) {
+         sidePaint.setStrokeWidth(Math.max(dp(4), radius * 0.18f));
  
-+    private void drawGoalSides(Canvas canvas) {
-+        sidePaint.setStrokeWidth(Math.max(dp(4), radius * 0.18f));
-+
-+        sidePaint.setColor(redColor);
-+        canvas.drawLine(centerX(0, 0), centerY(0) - radius * 1.18f,
-+                centerX(0, HexGame.SIZE - 1), centerY(0) - radius * 1.18f, sidePaint);
-+        canvas.drawLine(centerX(HexGame.SIZE - 1, 0), centerY(HexGame.SIZE - 1) + radius * 1.18f,
-+                centerX(HexGame.SIZE - 1, HexGame.SIZE - 1),
-+                centerY(HexGame.SIZE - 1) + radius * 1.18f, sidePaint);
-+
-+        sidePaint.setColor(blueColor);
-+        canvas.drawLine(centerX(0, 0) - radius, centerY(0),
-+                centerX(HexGame.SIZE - 1, 0) - radius, centerY(HexGame.SIZE - 1), sidePaint);
-+        canvas.drawLine(centerX(0, HexGame.SIZE - 1) + radius, centerY(0),
-+                centerX(HexGame.SIZE - 1, HexGame.SIZE - 1) + radius,
-+                centerY(HexGame.SIZE - 1), sidePaint);
-+    }
-+
-     private void calculateGeometry() {
-         float inset = dp(14);
-         float availableWidth = Math.max(1, getWidth() - 2 * inset);
-         float availableHeight = Math.max(1, getHeight() - 2 * inset);
-         radius = Math.min(availableWidth / (SQRT_THREE * 10.0f),
-                 availableHeight / 11.5f);
-+
-         float boardWidth = SQRT_THREE * radius * 10.0f;
-         float boardHeight = radius * 11.0f;
--        startX = (getWidth() - boardWidth) / 2.0f + SQRT_THREE * radius / 2.0f;
--        startY = (getHeight() - boardHeight) / 2.0f + radius;
--    }
--
--    private void drawGoalSides(Canvas canvas) {
--        sidePaint.setStrokeWidth(Math.max(dp(4), radius * 0.18f));
--        sidePaint.setColor(redColor);
--        canvas.drawLine(centerX(0, 0), centerY(0) - radius * 1.18f,
+         sidePaint.setColor(redColor);
+         canvas.drawLine(centerX(0, 0), centerY(0) - radius * 1.18f,
 -                centerX(0, SIZE - 1), centerY(0) - radius * 1.18f, sidePaint);
 -        canvas.drawLine(centerX(SIZE - 1, 0), centerY(SIZE - 1) + radius * 1.18f,
 -                centerX(SIZE - 1, SIZE - 1),
 -                centerY(SIZE - 1) + radius * 1.18f, sidePaint);
--        sidePaint.setColor(blueColor);
--        canvas.drawLine(centerX(0, 0) - radius, centerY(0),
++                centerX(0, HexGame.SIZE - 1), centerY(0) - radius * 1.18f, sidePaint);
++        canvas.drawLine(centerX(HexGame.SIZE - 1, 0), centerY(HexGame.SIZE - 1) + radius * 1.18f,
++                centerX(HexGame.SIZE - 1, HexGame.SIZE - 1),
++                centerY(HexGame.SIZE - 1) + radius * 1.18f, sidePaint);
+ 
+         sidePaint.setColor(blueColor);
+         canvas.drawLine(centerX(0, 0) - radius, centerY(0),
 -                centerX(SIZE - 1, 0) - radius, centerY(SIZE - 1), sidePaint);
 -        canvas.drawLine(centerX(0, SIZE - 1) + radius, centerY(0),
 -                centerX(SIZE - 1, SIZE - 1) + radius,
 -                centerY(SIZE - 1), sidePaint);
-+        float left = (getWidth() - boardWidth) / 2.0f;
-+        float top = (getHeight() - boardHeight) / 2.0f;
-+        startX = left + SQRT_THREE * radius / 2.0f;
-+        startY = top + radius;
++                centerX(HexGame.SIZE - 1, 0) - radius, centerY(HexGame.SIZE - 1), sidePaint);
++        canvas.drawLine(centerX(0, HexGame.SIZE - 1) + radius, centerY(0),
++                centerX(HexGame.SIZE - 1, HexGame.SIZE - 1) + radius,
++                centerY(HexGame.SIZE - 1), sidePaint);
      }
- 
-     private void makeHexagon(float centerX, float centerY) {
-             double angle = Math.toRadians(-90 + 60 * corner);
-             float x = centerX + radius * (float) Math.cos(angle);
-             float y = centerY + radius * (float) Math.sin(angle);
--            if (corner == 0) hexPath.moveTo(x, y);
--            else hexPath.lineTo(x, y);
-+            if (corner == 0) {
-+                hexPath.moveTo(x, y);
-+            } else {
-+                hexPath.lineTo(x, y);
-+            }
+{% endcode_diff %}
+
+```diff
          }
          hexPath.close();
      }
@@ -373,9 +359,8 @@ public final class HexGame {
      private float centerX(int row, int column) {
          return startX + SQRT_THREE * radius * (column + row * 0.5f);
      }
+ 
 ```
-
-</details>
 
 ### activity_main.xml
 
@@ -399,19 +384,11 @@ public final class HexGame {
 
 ### MainActivity.java
 
-**מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק והמסך. השאירו את הקוד שאינו מוצג ב־diff. מחקו גם את שלוש השורות הריקות המסומנות ב־`-`: אחרי `import android.os.Bundle;`, אחרי `import androidx.core.view.WindowInsetsCompat;` ואחרי `setContentView(binding.getRoot());`. השורה הבאה צריכה לבוא מיד אחריהן.
+**מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק והמסך. הוסיפו את חיבור הלוח ואת המתודות החדשות במקומות המוצגים.
 
 ```diff
- package com.example.hex;
- 
- import android.os.Bundle;
--
- import androidx.activity.EdgeToEdge;
- import androidx.appcompat.app.AppCompatActivity;
- import androidx.core.graphics.Insets;
- import androidx.core.view.ViewCompat;
  import androidx.core.view.WindowInsetsCompat;
--
+ 
  import com.example.hex.databinding.ActivityMainBinding;
  
 -public class MainActivity extends AppCompatActivity {
@@ -424,15 +401,14 @@ public final class HexGame {
      protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
          EdgeToEdge.enable(this);
--
-         binding = ActivityMainBinding.inflate(getLayoutInflater());
-         setContentView(binding.getRoot());
--
-         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
+```
+
+```diff
              Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
              v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
              return insets;
          });
++
 +        game = new HexGame();
 +        binding.boardView.setGame(game);
 +        binding.boardView.setOnCellClickListener(this::onCellClicked);
@@ -450,8 +426,7 @@ public final class HexGame {
 +        binding.statusText.setText(game.getCurrentPlayer() == HexGame.RED
 +                ? R.string.status_red_turn : R.string.status_blue_turn);
      }
--}
-+}
+ }
 ```
 
 ## מריצים ומוודאים

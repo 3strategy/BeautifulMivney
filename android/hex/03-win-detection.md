@@ -93,59 +93,79 @@ flowchart TB
 
 `play` אינה רק בדיקת רשות: היא דוחה מהלך לא חוקי, אבל אם הוא חוקי היא **מניחה את האבן בלוח**, בודקת אם נוצר ניצחון ומקדמת את התור. `hasConnection` רק קוראת את מצב הלוח כדי לבדוק חיבור; היא אינה מניחה אבן. תנאי `play` מתרחב כדי לדחות גם משחק שכבר הוכרע; השינוי המלא מופיע ב־diff שלהלן.
 
+הוסיפו את השכנויות, את שמירת המנצח ואת חיפוש החיבור. התיעוד הכללי של `play` כבר קיים מפרק 2; כאן מרחיבים את החוקים שהיא מפעילה.
+
 ```diff
  package com.example.hex;
  
 +import java.util.ArrayDeque;
  import java.util.Arrays;
  
- /** The board state and rules, independent of pixels and Android widgets. */
+ /**
+  * Stores a 7x7 Hex position and its game rules.
+```
+
+```diff
      public static final int RED = 1;
+     /** Player value for Blue, whose goal is to connect left to right. */
      public static final int BLUE = 2;
  
 +    private static final int[][] NEIGHBORS = {
 +            {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}
 +    };
-+    private int winner = EMPTY;
++
      private final int[] cells = new int[CELL_COUNT];
      private int currentPlayer = RED;
++    private int winner = EMPTY;
  
--    /** Places a stone only when the coordinate is empty and on the board. */
-+    /**
-+     * Places the current player's stone and advances the turn.
-+     *
-+     * <p>TWIN-ID: HEX.APPLY_MOVE
-+     *
-+     * @param row zero-based board row
-+     * @param column zero-based board column
-+     * @return {@code true} if the move was played, or {@code false} if the cell is unavailable,
-+     *         outside the board, or the game is already over
-+     */
+     /**
+      * Places the current player's stone and advances the turn when the move is legal.
+      *
+```
+
+תחילה הרחיבו את תנאי הדחייה בתחילת `play`:
+
+{% code_diff %}
      public boolean play(int row, int column) {
--        if (isOutside(row, column) || cells[index(row, column)] != EMPTY) {
-+        if (winner != EMPTY || isOutside(row, column)
-+                || cells[index(row, column)] != EMPTY) {
+-        if (isOutside(row, column)) {
++        if (isOutside(row, column) || winner != EMPTY) {
              return false;
          }
-         cells[index(row, column)] = currentPlayer;
-+        if (hasConnection(currentPlayer)) winner = currentPlayer;
+         int index = index(row, column);
+{% endcode_diff %}
+
+בהמשך `play`, מיד אחרי הנחת האבן, בדקו אם השחקן ניצח. לאחר סיום המתודה הוסיפו את חיפוש החיבור ואת שתי מתודות הקריאה של תוצאת המשחק:
+
+```diff
+         if (cells[index] != EMPTY) {
+             return false;
+         }
+ 
+         cells[index] = currentPlayer;
++        if (hasConnection(currentPlayer)) {
++            winner = currentPlayer;
++        }
++        // Advance the turn even after the winning move.
          currentPlayer = otherPlayer(currentPlayer);
          return true;
      }
  
 +    /**
 +     * Detects a win by searching the player's connected stones between both goal edges.
++     * <p>TWIN-ID: HEX.WIN_CHECK
++     *
 +     * This check reads the board without placing a stone or changing the game state.
 +     *
-+     * @param player RED (top to bottom) or BLUE (left to right)
-+     * @return true if the player's stones connect their two goal edges
-+     * @throws IllegalArgumentException if player is neither RED nor BLUE
++     * @param player {@link #RED} (top to bottom) or {@link #BLUE} (left to right)
++     * @return {@code true} if the player's stones connect their two goal edges
++     * @throws IllegalArgumentException if {@code player} is neither RED nor BLUE
 +     */
 +    public boolean hasConnection(int player) {
 +        // A win check requires one of the two actual players.
 +        if (player != RED && player != BLUE) {
 +            throw new IllegalArgumentException("Player must be RED or BLUE");
 +        }
++
 +        // Mark cells when queued so each stone is examined at most once.
 +        boolean[] visited = new boolean[CELL_COUNT];
 +        // Breadth-first search: cells waiting to be examined.
@@ -162,6 +182,7 @@ flowchart TB
 +                frontier.add(start);
 +            }
 +        }
++
 +        // Expand the connected region until it reaches the goal or runs out.
 +        while (!frontier.isEmpty()) {
 +            int position = frontier.removeFirst();
@@ -170,13 +191,17 @@ flowchart TB
 +            int column = position % SIZE;
 +            // The opposite edge completes Red's vertical or Blue's horizontal path.
 +            if ((player == RED && row == SIZE - 1)
-+                    || (player == BLUE && column == SIZE - 1)) return true;
++                    || (player == BLUE && column == SIZE - 1)) {
++                return true;
++            }
 +            // Follow only the six neighboring cells on the Hex grid.
 +            for (int[] offset : NEIGHBORS) {
 +                int nextRow = row + offset[0];
 +                int nextColumn = column + offset[1];
 +                // Ignore coordinates outside the board before computing an index.
-+                if (isOutside(nextRow, nextColumn)) continue;
++                if (isOutside(nextRow, nextColumn)) {
++                    continue;
++                }
 +                int next = index(nextRow, nextColumn);
 +                // An unvisited stone of this color extends the connected path.
 +                if (!visited[next] && cells[next] == player) {
@@ -189,19 +214,18 @@ flowchart TB
 +        return false;
 +    }
 +
-+    /** Returns the winner, or EMPTY before a connection is complete. */
++    /** @return the winning player, or {@link #EMPTY} while no player has won */
 +    public int getWinner() {
 +        return winner;
 +    }
 +
-+    /** Returns true when no further moves may be played. */
++    /** @return {@code true} after either player has completed a connection */
 +    public boolean isOver() {
 +        return winner != EMPTY;
 +    }
 +
-     /** Returns the stone at one legal board coordinate. */
-     public int getCell(int row, int column) {
-         if (isOutside(row, column)) {
+     /**
+      * Returns the value stored at one board coordinate.
 ```
 
 ### MainActivity.java

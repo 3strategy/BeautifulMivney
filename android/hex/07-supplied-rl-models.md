@@ -293,9 +293,9 @@ public final class ModelCatalog {
 
 ### MainActivity.java
 
-**מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
+**מיקום:** app > kotlin+java > com.example.hex. הוסיפו את בחירת השחקן ואת החלפת המודל. המתודות המטפלות במהלך מחשב ובכישלון כבר קיימות מפרק 6; כאן מוסיפים את ההגנות הדרושות כאשר אפשר להחליף מודל בזמן שחישוב קודם מסתיים.
 
-<details open markdown="1"><summary>השינוי המלא ב־MainActivity.java</summary>
+בתוך `handleAiFailure` בודקים שהמודל שנכשל הוא עדיין המודל הפעיל לפני שמאפסים אותו. כך כישלון של מודל קודם אינו מוחק מודל חדש שכבר נטען. בצעו את קטעי השינוי לפי הסדר.
 
 ```diff
  package com.example.hex;
@@ -304,15 +304,17 @@ public final class ModelCatalog {
 +import android.view.View;
 +import android.widget.AdapterView;
 +import android.widget.ArrayAdapter;
-+
+ 
  import androidx.activity.EdgeToEdge;
  import androidx.appcompat.app.AppCompatActivity;
  import androidx.core.graphics.Insets;
- import androidx.core.view.ViewCompat;
+```
+
+```diff
  import androidx.core.view.WindowInsetsCompat;
-+
+ 
  import com.example.hex.databinding.ActivityMainBinding;
-+
+ 
 +import java.util.Collections;
 +import java.util.List;
  import java.util.concurrent.ExecutorService;
@@ -320,8 +322,7 @@ public final class ModelCatalog {
  import java.util.concurrent.Future;
 +import java.util.concurrent.atomic.AtomicInteger;
  
--/** Coordinates human moves and an offline computer reply. */
-+/** Hosts the game screen and coordinates board input, model loading, and background AI turns. */
+ /** Hosts the game screen and coordinates board input, model loading, and background AI turns. */
  public final class MainActivity extends AppCompatActivity {
      private ActivityMainBinding binding;
      private HexGame game;
@@ -339,26 +340,9 @@ public final class ModelCatalog {
      @Override
      protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
-         EdgeToEdge.enable(this);
-+
-         binding = ActivityMainBinding.inflate(getLayoutInflater());
-         setContentView(binding.getRoot());
-+
-         ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
-             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-             return insets;
-         });
-+
-         aiExecutor = Executors.newSingleThreadExecutor();
-         game = new HexGame();
-+
-+        binding.modeAi.setChecked(vsAi);
-+        binding.modeHuman.setChecked(!vsAi);
-+        binding.boardView.setGame(game);
-         binding.boardView.setOnCellClickListener(this::onCellClicked);
-         binding.restartButton.setOnClickListener(view -> restartGame());
--        binding.modeAi.setChecked(true);
+```
+
+```diff
          binding.modeGroup.setOnCheckedChangeListener((group, checkedId) -> {
              boolean requestedAi = checkedId == R.id.modeAi;
              if (requestedAi != vsAi) {
@@ -368,15 +352,18 @@ public final class ModelCatalog {
              }
          });
 -        loadModel();
+-
+-        render();
+-    }
+-
+-    private void loadModel() {
 +        setupComputerLevels();
 +
-         render();
++        render();
 +        if (vsAi && game.getCurrentPlayer() == HexGame.BLUE && !game.isOver()) {
 +            startAiMove();
 +        }
 +    }
-+
-+
 +
 +    private void setupComputerLevels() {
 +        try {
@@ -406,9 +393,8 @@ public final class ModelCatalog {
 +                    }
 +                });
 +        switchComputerLevel(computerLevels.get(0));
-     }
- 
--    private void loadModel() {
++    }
++
 +    private void switchComputerLevel(ModelCatalog.Level level) {
 +        if (level == selectedLevel && (modelLoading || valueModel != null)) {
 +            return;
@@ -436,29 +422,33 @@ public final class ModelCatalog {
 -                loaded = new TfliteValueModel(getApplicationContext());
 -            } catch (Exception ignored) {
 -                // The screen will say that the computer is unavailable.
-+                loadedModel = new TfliteValueModel(getApplicationContext(),
-+                        level.modelAsset, level.metadataAsset);
-+            } catch (Exception exception) {
-+                loadFailure = exception;
-             }
+-            }
 -            TfliteValueModel result = loaded;
 -            runOnUiThread(() -> {
 -                if (isFinishing() || isDestroyed()) {
--                    if (result != null) result.close();
+-                    if (result != null) {
+-                        result.close();
+-                    }
 -                    return;
 -                }
 -                valueModel = result;
 -                modelLoading = false;
 -                render();
 -            });
+-        });
++                loadedModel = new TfliteValueModel(getApplicationContext(),
++                        level.modelAsset, level.metadataAsset);
++            } catch (Exception exception) {
++                loadFailure = exception;
++            }
 +
 +            TfliteValueModel result = loadedModel;
 +            Exception failure = loadFailure;
 +            runOnUiThread(() -> finishModelSwitch(
 +                    selectionGeneration, level, result, failure));
-         });
-     }
- 
++        });
++    }
++
 +    private void finishModelSwitch(int selectionGeneration, ModelCatalog.Level level,
 +                                   TfliteValueModel loadedModel, Exception failure) {
 +        if (isFinishing() || isDestroyed()
@@ -473,156 +463,69 @@ public final class ModelCatalog {
 +        modelLoading = false;
 +        valueModel = failure == null ? loadedModel : null;
 +        render();
-+    }
-+
-     private void onCellClicked(int row, int column) {
--        if (aiThinking || game.isOver()
--                || (vsAi && (modelLoading || valueModel == null
--                || game.getCurrentPlayer() != HexGame.RED))) return;
--        if (!game.play(row, column)) return;
-+        if (aiThinking || (vsAi && modelLoading) || game.isOver()
-+                || (vsAi && valueModel == null)
-+                || (vsAi && game.getCurrentPlayer() == HexGame.BLUE)) {
-+            return;
-+        }
-+        if (!game.play(row, column)) {
-+            return;
-+        }
-         render();
--        if (vsAi && !game.isOver()) startAiMove();
-+        if (vsAi && !game.isOver()) {
-+            startAiMove();
-+        }
      }
  
+     private void onCellClicked(int row, int column) {
+         if (aiThinking || (vsAi && modelLoading) || game.isOver()
+```
+
+```diff
      private void startAiMove() {
          TfliteValueModel model = valueModel;
          if (!vsAi || model == null || game.isOver()
--                || game.getCurrentPlayer() != HexGame.BLUE || aiThinking) return;
-+                || game.getCurrentPlayer() != HexGame.BLUE || aiThinking) {
+                 || game.getCurrentPlayer() != HexGame.BLUE || aiThinking) {
 +            render();
-+            return;
-+        }
-+
-         aiThinking = true;
-         render();
-         int generation = gameGeneration;
-         aiTask = aiExecutor.submit(() -> {
-             try {
-                 HexGame.Move move = new HexAi(model).chooseMove(position);
--                runOnUiThread(() -> {
--                    if (isFinishing() || isDestroyed()
--                            || generation != gameGeneration || !aiThinking) return;
--                    aiThinking = false;
--                    if (move != null && game.getCurrentPlayer() == HexGame.BLUE) {
--                        game.play(move.row, move.column);
--                    }
--                    render();
--                });
-+                runOnUiThread(() -> applyAiMove(generation, move));
-             } catch (RuntimeException exception) {
--                runOnUiThread(() -> {
--                    if (isFinishing() || isDestroyed()
--                            || generation != gameGeneration) return;
--                    aiThinking = false;
--                    valueModel = null;
--                    aiExecutor.submit(model::close);
--                    render();
--                });
-+                runOnUiThread(() -> handleAiFailure(generation, model));
-             }
-         });
-     }
+             return;
+         }
  
-+    private void applyAiMove(int generation, HexGame.Move move) {
-+        if (isFinishing() || isDestroyed() || generation != gameGeneration || !aiThinking) {
-+            return;
-+        }
-+        aiThinking = false;
-+        if (move != null && game.getCurrentPlayer() == HexGame.BLUE) {
-+            game.play(move.row, move.column);
-+        }
-+        render();
-+    }
-+
-+    private void handleAiFailure(int generation, TfliteValueModel failedModel) {
-+        if (isFinishing() || isDestroyed() || generation != gameGeneration) {
-+            return;
-+        }
-+        aiThinking = false;
+         aiThinking = true;
+```
+
+```diff
+         if (isFinishing() || isDestroyed() || generation != gameGeneration) {
+             return;
+         }
+         aiThinking = false;
+-        valueModel = null;
+-        aiExecutor.submit(failedModel::close);
 +        if (valueModel == failedModel) {
 +            valueModel = null;
 +            aiExecutor.submit(failedModel::close);
 +        }
-+        render();
-+    }
-+
-     private void restartGame() {
-         gameGeneration++;
-         aiThinking = false;
-             aiTask = null;
-         }
-         game = new HexGame();
-+        binding.boardView.setGame(game);
          render();
      }
  
-     private void render() {
-         binding.boardView.setGame(game);
--        binding.boardView.setEnabled(!aiThinking && !game.isOver()
-+        boolean canTap = !aiThinking && !game.isOver()
-                 && (!vsAi || (!modelLoading && valueModel != null
--                && game.getCurrentPlayer() == HexGame.RED)));
-+                && game.getCurrentPlayer() == HexGame.RED));
-+        binding.boardView.setEnabled(canTap);
-+
-         if (game.getWinner() == HexGame.RED) {
-             binding.statusText.setText(R.string.status_red_wins);
-         } else if (game.getWinner() == HexGame.BLUE) {
-             binding.statusText.setText(game.getCurrentPlayer() == HexGame.RED
-                     ? R.string.status_red_turn : R.string.status_blue_turn);
+     private void restartGame() {
+```
+
+```diff
          }
--        binding.modelText.setText(vsAi
--                ? (valueModel == null ? R.string.model_unavailable_help
--                : R.string.model_untrained)
--                : R.string.model_local);
-+
-+        if (!vsAi) {
-+            binding.modelText.setText(R.string.model_local);
+ 
+         if (!vsAi) {
+             binding.modelText.setText(R.string.model_local);
 +        } else if (selectedLevel == null) {
 +            binding.modelText.setText(R.string.model_unavailable_help);
 +        } else if (modelLoading) {
 +            binding.modelText.setText(getString(R.string.model_loading, selectedLevel.label));
-+        } else if (valueModel == null) {
-+            binding.modelText.setText(R.string.model_unavailable_help);
+         } else if (valueModel == null) {
+             binding.modelText.setText(R.string.model_unavailable_help);
 +        } else if (valueModel.isUntrainedMock()) {
 +            binding.modelText.setText(R.string.model_untrained);
-+        } else {
+         } else {
+-            binding.modelText.setText(R.string.model_untrained);
 +            binding.modelText.setText(selectedLevel.description);
-+        }
+         }
      }
  
      @Override
      protected void onDestroy() {
          gameGeneration++;
--        if (aiTask != null) aiTask.cancel(true);
--        TfliteValueModel model = valueModel;
 +        modelSelectionGeneration.incrementAndGet();
-+        if (aiTask != null) {
-+            aiTask.cancel(true);
-+        }
-+        TfliteValueModel modelToClose = valueModel;
-         valueModel = null;
--        if (model != null) aiExecutor.submit(model::close);
-+        if (modelToClose != null) {
-+            aiExecutor.submit(modelToClose::close);
-+        }
-         aiExecutor.shutdown();
-         binding = null;
-         super.onDestroy();
+         if (aiTask != null) {
+             aiTask.cancel(true);
+         }
+         TfliteValueModel modelToClose = valueModel;
 ```
-
-</details>
 
 {: .box-warning}
 מטא־דאטה וזוגות `.tflite` של ששת השחקנים מגיעים יחד בחבילת המורה ואינם נכתבים ידנית. אל תערבבו קובץ מודל משורה אחת עם `model_info.json` משורה אחרת. ברירת המחדל היא `early-test`. המטא־דאטה שלה מכילה `untrained_mock: true`, ולכן מסך הייחוס מכנה אותה מודל בדיקה אף ששמה מציין שלוש איטרציות. אל תציגו אותה כבעלת חוזק נמדד.

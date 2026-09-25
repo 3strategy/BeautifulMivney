@@ -241,6 +241,7 @@ full-width: true
 **מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק, הפקדים ועבודת המחשב. השאירו את הקוד שאינו מוצג ב־diff.
 
 ```diff
+ 
          game = new HexGame();
          binding.boardView.setGame(game);
          binding.boardView.setOnCellClickListener(this::onCellClicked);
@@ -248,6 +249,11 @@ full-width: true
          render();
      }
  
+     private void onCellClicked(int row, int column) {
+```
+
+```diff
+             render();
          }
      }
  
@@ -263,6 +269,7 @@ full-width: true
          if (game.getWinner() == HexGame.RED) {
              binding.statusText.setText(R.string.status_red_wins);
          } else if (game.getWinner() == HexGame.BLUE) {
+             binding.statusText.setText(R.string.status_blue_wins);
 ```
 
 ## מריצים ומוודאים

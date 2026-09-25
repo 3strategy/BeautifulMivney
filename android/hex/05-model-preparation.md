@@ -70,9 +70,13 @@ full-width: true
 
 ### HexGame.java
 
-**מיקום:** app > kotlin+java > com.example.hex. מחלקת החוקים העצמאית. בחנו היכן המשחק משנה מצב והיכן הוא רק קורא אותו.
+**מיקום:** app > kotlin+java > com.example.hex. בפרק הזה מוסיפים העתקת מצב, שחזור מצב, רשימת מהלכים חוקיים וקידוד למודל.
 
-<details open markdown="1"><summary>השינוי המלא ב־HexGame.java</summary>
+המתודות הקיימות `hasConnection`,‏ `getWinner`,‏ `isOver` ושאר מתודות הקריאה נשארות כפי שנכתבו בפרקים 2–3, כולל התיעוד וההערות שלהן. `legalMoves` היא מתודה חדשה ונכנסת בשלמותה לפני התיעוד של `hasConnection`.
+
+הבנאי הרגיל יוצר לוח ריק, והבנאי הפרטי מאפשר ל־`copy` ול־`restore` לקבל מערך משלהן. לכן אתחול השדות עובר לבנאים. `moveCount` סופר מהלכים שהתקבלו; בתוך `play` מוסיפים רק את הגדלת המונה, מיד לאחר הנחת האבן. החלפת התור לאחר מהלך מנצח כבר קיימת מפרק 3, ולכן גם מצב סופי מקודד מנקודת המבט של השחקן הבא.
+
+בצעו את קטעי השינוי לפי הסדר. כל קטע מציג אזור רציף בקובץ; אין צורך להחליף את המחלקה כולה.
 
 ```diff
  package com.example.hex;
@@ -83,33 +87,19 @@ full-width: true
 +import java.util.Collections;
 +import java.util.List;
  
--/** The board state and rules, independent of pixels and Android widgets. */
-+/**
-+ * Stores a 7x7 Hex position and enforces legal play and win detection.
-+ *
-+ * <p>This class is pure Java and has no Android or rendering dependencies. Red connects the
-+ * top and bottom edges; Blue connects the left and right edges.
-+ */
- public final class HexGame {
-+    /** Number of rows and columns on the square board. */
-     public static final int SIZE = 7;
-+    /** Total number of cells on the board. */
-     public static final int CELL_COUNT = SIZE * SIZE;
-+    /** Cell value used for an unoccupied cell and for no winner. */
-     public static final int EMPTY = 0;
-+    /** Player value for Red, whose goal is to connect top to bottom. */
-     public static final int RED = 1;
-+    /** Player value for Blue, whose goal is to connect left to right. */
-     public static final int BLUE = 2;
- 
+ /**
+  * Stores a 7x7 Hex position and its game rules.
+  *
+```
+
+```diff
      private static final int[][] NEIGHBORS = {
              {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}
      };
--    private int winner = EMPTY;
+ 
 -    private final int[] cells = new int[CELL_COUNT];
 -    private int currentPlayer = RED;
- 
--    /** Places a stone only when the coordinate is empty and on the board. */
+-    private int winner = EMPTY;
 +    private final int[] cells;
 +    private int currentPlayer;
 +    private int winner;
@@ -173,49 +163,26 @@ full-width: true
 +    public HexGame copy() {
 +        return new HexGame(Arrays.copyOf(cells, CELL_COUNT), currentPlayer, winner, moveCount);
 +    }
-+
+ 
      /**
-      * Places the current player's stone and advances the turn.
+      * Places the current player's stone and advances the turn when the move is legal.
       *
-      * <p>TWIN-ID: HEX.APPLY_MOVE
-      *
-      * @param row zero-based board row
-      * @param column zero-based board column
-      * @return {@code true} if the move was played, or {@code false} if the cell is unavailable,
-      *         outside the board, or the game is already over
-      */
-     public boolean play(int row, int column) {
--        if (winner != EMPTY || isOutside(row, column)
--                || cells[index(row, column)] != EMPTY) {
-+        if (isOutside(row, column) || winner != EMPTY) {
-+            return false;
-+        }
-+        int index = index(row, column);
-+        if (cells[index] != EMPTY) {
+```
+
+```diff
              return false;
          }
--        cells[index(row, column)] = currentPlayer;
--        if (hasConnection(currentPlayer)) winner = currentPlayer;
-+
-+        cells[index] = currentPlayer;
+ 
+         cells[index] = currentPlayer;
 +        moveCount++;
-+        if (hasConnection(currentPlayer)) {
-+            winner = currentPlayer;
-+        }
-+        // The contract always describes the successor from the next player's
-+        // perspective, including terminal successors.
+         if (hasConnection(currentPlayer)) {
+             winner = currentPlayer;
+         }
+         // Advance the turn even after the winning move.
          currentPlayer = otherPlayer(currentPlayer);
          return true;
      }
  
--    /**
--     * Detects a win by searching the player's connected stones between both goal edges.
--     * This check reads the board without placing a stone or changing the game state.
--     *
--     * @param player RED (top to bottom) or BLUE (left to right)
--     * @return true if the player's stones connect their two goal edges
--     * @throws IllegalArgumentException if player is neither RED nor BLUE
--     */
 +    /**
 +     * Lists every legal move in row-major order.
 +     *
@@ -236,57 +203,15 @@ full-width: true
 +        return moves;
 +    }
 +
-+    /**
-+     * Tests whether a player has connected their two goal edges.
-+     *
-+     * <p>TWIN-ID: HEX.WIN_CHECK
-+     *
-+     * @param player {@link #RED} or {@link #BLUE}
-+     * @return {@code true} when the player's stones form a complete connection
-+     * @throws IllegalArgumentException if {@code player} is not a player value
-+     */
-     public boolean hasConnection(int player) {
-         if (player != RED && player != BLUE) {
-             throw new IllegalArgumentException("Player must be RED or BLUE");
-         }
-+
-         boolean[] visited = new boolean[CELL_COUNT];
-         ArrayDeque<Integer> frontier = new ArrayDeque<>();
-         for (int i = 0; i < SIZE; i++) {
-                 frontier.add(start);
-             }
-         }
-+
-         while (!frontier.isEmpty()) {
-             int position = frontier.removeFirst();
-             int row = position / SIZE;
-             int column = position % SIZE;
-             if ((player == RED && row == SIZE - 1)
--                    || (player == BLUE && column == SIZE - 1)) return true;
-+                    || (player == BLUE && column == SIZE - 1)) {
-+                return true;
-+            }
-             for (int[] offset : NEIGHBORS) {
-                 int nextRow = row + offset[0];
-                 int nextColumn = column + offset[1];
--                if (isOutside(nextRow, nextColumn)) continue;
-+                if (isOutside(nextRow, nextColumn)) {
-+                    continue;
-+                }
-                 int next = index(nextRow, nextColumn);
-                 if (!visited[next] && cells[next] == player) {
-                     visited[next] = true;
+     /**
+      * Detects a win by searching the player's connected stones between both goal edges.
+```
+
+```diff
+         // Every reachable stone was checked without finding the goal edge.
          return false;
      }
  
--    /** Returns the winner, or EMPTY before a connection is complete. */
--    public int getWinner() {
--        return winner;
--    }
--
--    /** Returns true when no further moves may be played. */
--    public boolean isOver() {
--        return winner != EMPTY;
 +    /**
 +     * TWIN-ID: HEX.STATE_ENCODING
 +     * Encodes the board for the value model using channels
@@ -306,68 +231,15 @@ full-width: true
 +            encoded[base + 2] = orientation;
 +        }
 +        return encoded;
-     }
- 
--    /** Returns the stone at one legal board coordinate. */
-+    /**
-+     * Returns the value stored at one board coordinate.
-+     *
-+     * @param row zero-based board row
-+     * @param column zero-based board column
-+     * @return {@link #EMPTY}, {@link #RED}, or {@link #BLUE}
-+     * @throws IndexOutOfBoundsException if the coordinate is outside the board
-+     */
-     public int getCell(int row, int column) {
-         if (isOutside(row, column)) {
-             throw new IndexOutOfBoundsException("Cell is outside the 7x7 board");
-         return cells[index(row, column)];
-     }
- 
--    /** Returns a copy rather than exposing the mutable board array. */
-+    /**
-+     * Copies all board cells in row-major order.
-+     *
-+     * @return an independent 49-element array
-+     */
-     public int[] getCells() {
-         return Arrays.copyOf(cells, CELL_COUNT);
-     }
- 
--    /** Returns the player whose turn is next. */
-+    /** @return the player that will make the next move */
-     public int getCurrentPlayer() {
-         return currentPlayer;
-     }
- 
--    /** Returns the other player. */
-+    /** @return the winning player, or {@link #EMPTY} while no player has won */
-+    public int getWinner() {
-+        return winner;
 +    }
 +
-+    /** @return {@code true} after either player has completed a connection */
-+    public boolean isOver() {
-+        return winner != EMPTY;
-+    }
-+
-+    /**
-+     * Returns the opponent of a player.
-+     *
-+     * @param player {@link #RED} or {@link #BLUE}
-+     * @return the other player
-+     * @throws IllegalArgumentException if {@code player} is not a player value
-+     */
-     public static int otherPlayer(int player) {
--        if (player == RED) return BLUE;
--        if (player == BLUE) return RED;
-+        if (player == RED) {
-+            return BLUE;
-+        }
-+        if (player == BLUE) {
-+            return RED;
-+        }
-         throw new IllegalArgumentException("Player must be RED or BLUE");
+     /** @return the winning player, or {@link #EMPTY} while no player has won */
+     public int getWinner() {
+         return winner;
      }
+```
+
+```diff
  
      private static boolean isOutside(int row, int column) {
          return row < 0 || row >= SIZE || column < 0 || column >= SIZE;
@@ -422,8 +294,6 @@ full-width: true
 +    }
  }
 ```
-
-</details>
 
 ### ValueModel.java
 

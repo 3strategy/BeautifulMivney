@@ -72,7 +72,7 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 
 ### HexBoardView.java
 
-**מיקום:** app > kotlin+java > com.example.hex. צרו כאן קובץ Java חדש בשם `HexBoardView.java` והעתיקו את הקוד המלא שלהלן בדיוק, כולל ירידות השורה והסוגריים. בפרק 2 המחלקה תקבל game, callback ובדיקת מגע; בפרק 1 היא סטטית.
+**מיקום:** app > kotlin+java > com.example.hex. צרו כאן קובץ Java חדש בשם `HexBoardView.java` והעתיקו את הקוד המלא שלהלן כפי שהוא מוצג. בפרק 2 המחלקה תקבל game, callback ובדיקת מגע; בפרק 1 היא סטטית.
 
 <details open markdown="1"><summary>הוסיפו את הקובץ החדש HexBoardView.java</summary>
 
@@ -85,6 +85,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -93,19 +94,27 @@ import androidx.core.content.ContextCompat;
 public final class HexBoardView extends View {
     private static final int SIZE = 7;
     private static final float SQRT_THREE = (float) Math.sqrt(3.0);
+
     private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint sidePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Path hexPath = new Path();
-    private final int emptyColor;
-    private final int redColor;
-    private final int blueColor;
-    private final int lineColor;
+
     private float radius;
     private float startX;
     private float startY;
 
-    /** Creates a board view inflated from the activity's XML layout. */
+    private final int emptyColor;
+    private final int redColor;
+    private final int blueColor;
+    private final int lineColor;
+
+    /**
+     * Creates a board view inflated from XML.
+     *
+     * @param context Android context used to resolve resources
+     * @param attributes XML attributes supplied by the layout inflater
+     */
     public HexBoardView(Context context, @Nullable AttributeSet attributes) {
         super(context, attributes);
         emptyColor = ContextCompat.getColor(context, R.color.hex_empty);
@@ -123,11 +132,14 @@ public final class HexBoardView extends View {
         super.onDraw(canvas);
         calculateGeometry();
         drawGoalSides(canvas);
+
         strokePaint.setColor(lineColor);
         strokePaint.setStrokeWidth(dp(1.5f));
         for (int row = 0; row < SIZE; row++) {
             for (int column = 0; column < SIZE; column++) {
-                makeHexagon(centerX(row, column), centerY(row));
+                float centerX = centerX(row, column);
+                float centerY = centerY(row);
+                makeHexagon(centerX, centerY);
                 fillPaint.setColor(emptyColor);
                 fillPaint.setStyle(Paint.Style.FILL);
                 canvas.drawPath(hexPath, fillPaint);
@@ -136,26 +148,16 @@ public final class HexBoardView extends View {
         }
     }
 
-    private void calculateGeometry() {
-        float inset = dp(14);
-        float availableWidth = Math.max(1, getWidth() - 2 * inset);
-        float availableHeight = Math.max(1, getHeight() - 2 * inset);
-        radius = Math.min(availableWidth / (SQRT_THREE * 10.0f),
-                availableHeight / 11.5f);
-        float boardWidth = SQRT_THREE * radius * 10.0f;
-        float boardHeight = radius * 11.0f;
-        startX = (getWidth() - boardWidth) / 2.0f + SQRT_THREE * radius / 2.0f;
-        startY = (getHeight() - boardHeight) / 2.0f + radius;
-    }
-
     private void drawGoalSides(Canvas canvas) {
         sidePaint.setStrokeWidth(Math.max(dp(4), radius * 0.18f));
+
         sidePaint.setColor(redColor);
         canvas.drawLine(centerX(0, 0), centerY(0) - radius * 1.18f,
                 centerX(0, SIZE - 1), centerY(0) - radius * 1.18f, sidePaint);
         canvas.drawLine(centerX(SIZE - 1, 0), centerY(SIZE - 1) + radius * 1.18f,
                 centerX(SIZE - 1, SIZE - 1),
                 centerY(SIZE - 1) + radius * 1.18f, sidePaint);
+
         sidePaint.setColor(blueColor);
         canvas.drawLine(centerX(0, 0) - radius, centerY(0),
                 centerX(SIZE - 1, 0) - radius, centerY(SIZE - 1), sidePaint);
@@ -164,14 +166,32 @@ public final class HexBoardView extends View {
                 centerY(SIZE - 1), sidePaint);
     }
 
+    private void calculateGeometry() {
+        float inset = dp(14);
+        float availableWidth = Math.max(1, getWidth() - 2 * inset);
+        float availableHeight = Math.max(1, getHeight() - 2 * inset);
+        radius = Math.min(availableWidth / (SQRT_THREE * 10.0f),
+                availableHeight / 11.5f);
+
+        float boardWidth = SQRT_THREE * radius * 10.0f;
+        float boardHeight = radius * 11.0f;
+        float left = (getWidth() - boardWidth) / 2.0f;
+        float top = (getHeight() - boardHeight) / 2.0f;
+        startX = left + SQRT_THREE * radius / 2.0f;
+        startY = top + radius;
+    }
+
     private void makeHexagon(float centerX, float centerY) {
         hexPath.reset();
         for (int corner = 0; corner < 6; corner++) {
             double angle = Math.toRadians(-90 + 60 * corner);
             float x = centerX + radius * (float) Math.cos(angle);
             float y = centerY + radius * (float) Math.sin(angle);
-            if (corner == 0) hexPath.moveTo(x, y);
-            else hexPath.lineTo(x, y);
+            if (corner == 0) {
+                hexPath.moveTo(x, y);
+            } else {
+                hexPath.lineTo(x, y);
+            }
         }
         hexPath.close();
     }
