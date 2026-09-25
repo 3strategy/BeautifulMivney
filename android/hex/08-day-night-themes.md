@@ -8,7 +8,7 @@ lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/07-supplied-rl-models/' | relative_url }})
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/07-supplied-rl-models/' | relative_url }}){: data-sequence-nav="prev"}
 
 {: .box-success}
 **בסוף הפרק:** צבעי המשחק מתחלפים אוטומטית לפי מצב התצוגה של המכשיר.

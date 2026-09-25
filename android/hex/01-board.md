@@ -8,7 +8,7 @@ lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/02-moves-and-turns/' | relative_url }}) ·
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/02-moves-and-turns/' | relative_url }}){: data-sequence-nav="next"}
 
 
 {: .box-success}

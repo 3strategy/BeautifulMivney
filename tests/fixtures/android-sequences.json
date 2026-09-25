@@ -35,6 +35,16 @@
       "/android/CollectCircles/16.collect-circles-json-schedule",
       "/android/CollectCircles/17.collect-circles-worker-settlement",
       "/android/CollectCircles/18.collect-circles-pusher-brag"
+    ],
+    "hex": [
+      "/android/hex/01-board/",
+      "/android/hex/02-moves-and-turns/",
+      "/android/hex/03-win-detection/",
+      "/android/hex/04-local-two-player/",
+      "/android/hex/05-model-preparation/",
+      "/android/hex/06-background-ai/",
+      "/android/hex/07-supplied-rl-models/",
+      "/android/hex/08-day-night-themes/"
     ]
   },
   "pages": {
@@ -188,6 +198,38 @@
     },
     "/android/CollectCircles/15b.collect-circles-notification-only": {
       "prev": "/android/CollectCircles/14.collect-circles-first-worker",
+      "next": null
+    },
+    "/android/hex/01-board/": {
+      "prev": null,
+      "next": "/android/hex/02-moves-and-turns/"
+    },
+    "/android/hex/02-moves-and-turns/": {
+      "prev": "/android/hex/01-board/",
+      "next": "/android/hex/03-win-detection/"
+    },
+    "/android/hex/03-win-detection/": {
+      "prev": "/android/hex/02-moves-and-turns/",
+      "next": "/android/hex/04-local-two-player/"
+    },
+    "/android/hex/04-local-two-player/": {
+      "prev": "/android/hex/03-win-detection/",
+      "next": "/android/hex/05-model-preparation/"
+    },
+    "/android/hex/05-model-preparation/": {
+      "prev": "/android/hex/04-local-two-player/",
+      "next": "/android/hex/06-background-ai/"
+    },
+    "/android/hex/06-background-ai/": {
+      "prev": "/android/hex/05-model-preparation/",
+      "next": "/android/hex/07-supplied-rl-models/"
+    },
+    "/android/hex/07-supplied-rl-models/": {
+      "prev": "/android/hex/06-background-ai/",
+      "next": "/android/hex/08-day-night-themes/"
+    },
+    "/android/hex/08-day-night-themes/": {
+      "prev": "/android/hex/07-supplied-rl-models/",
       "next": null
     }
   }

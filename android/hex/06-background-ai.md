@@ -9,7 +9,7 @@ full-width: true
 css: [/assets/css/hex-diagrams.css]
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/05-model-preparation/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/07-supplied-rl-models/' | relative_url }})
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/05-model-preparation/' | relative_url }}){: data-sequence-nav="prev"} · [הפרק הבא]({{ '/android/hex/07-supplied-rl-models/' | relative_url }}){: data-sequence-nav="next"}
 
 {: .box-success}
 **בסוף הפרק:** האדם משחק אדום מול תשובת מחשב כחולה ממודל בדיקה לא מאומן. Restart או החלפת מצב פוסלים תשובת מחשב ממשחק קודם.

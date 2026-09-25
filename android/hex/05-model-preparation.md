@@ -8,7 +8,7 @@ lang: he
 full-width: true
 ---
 
-[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/04-local-two-player/' | relative_url }}) · [הפרק הבא]({{ '/android/hex/06-background-ai/' | relative_url }})
+[מפת המסלול]({{ '/android/hex/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex/04-local-two-player/' | relative_url }}){: data-sequence-nav="prev"} · [הפרק הבא]({{ '/android/hex/06-background-ai/' | relative_url }}){: data-sequence-nav="next"}
 
 {: .box-success}
 **בסוף הפרק:** המסך מתנהג כמו בסוף פרק 4: Restart מנקה את הלוח ומתחיל משחק חדש. מחלקת החוקים יכולה להעתיק מצב, להחזיר מהלכים חוקיים ולקודד לוח עבור מודל ערך. קובצי המודל המסופקים נמצאים בפרויקט והקוד נבנה.

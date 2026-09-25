@@ -2,7 +2,7 @@
 
 The shared `assets/js/sequence-navigation.js` is loaded by the footer and activates
 only when `main` contains tagged links. Enabled sequences are the numbered
-`modelim` lessons, TicTacMenu 013–020 (including lettered steps), and CollectCircles.
+`modelim` lessons, TicTacMenu 013–020 (including lettered steps), CollectCircles, and Hex 01–08.
 The `modelim` course map and historical submissions remain outside its sequence.
 
 ## Android routes
@@ -24,6 +24,10 @@ forward to the 8–18 roadmap; that roadmap goes back to 6 or forward to 8.
 15b goes back to 14 and is an ending, with no next swipe. Return swipes from
 the main route follow that route, not the previously visited side page.
 The teacher/development plan is not enabled.
+
+
+Hex follows 01 → 02 → 03 → 04 → 05 → 06 → 07 → 08. The route begins
+at 01 and ends at 08; the map link remains ordinary navigation.
 
 ## Tagging links
 

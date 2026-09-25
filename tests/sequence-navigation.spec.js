@@ -99,7 +99,7 @@ test('Android lessons and branches render exactly one correct link per swipe dir
   }
 });
 
-for (const [name, index] of [['tictacmenu', 8], ['collectcircles', 5], ['collectcircles', 12]]) {
+for (const [name, index] of [['tictacmenu', 8], ['collectcircles', 5], ['collectcircles', 12], ['hex', 3]]) {
   test(`${name} step ${index}: native swipes follow the chosen route both ways`, async ({ page }) => {
     const chain = androidSequences.chains[name];
     await page.goto(base + chain[index]);
