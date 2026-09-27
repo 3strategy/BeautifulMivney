@@ -1,568 +1,412 @@
 ---
 layout: page
-title: "Hex — 07: שחקני RL מסופקים"
-subtitle: "קטלוג JSON, בחירת שחקן ומטא־דאטה"
+title: "Hex — 07: שחקנים לפי גודל לוח"
+subtitle: "קטלוג קטן ב־JSON ובחירת מודל עם קלט קבוע"
 permalink: /android/hex5/07-supplied-rl-models/
 tags: [Android, Java, Hex, ViewBinding]
 lang: he
 full-width: true
-css: [/assets/css/hex-diagrams.css]
 ---
 
 [מפת המסלול]({{ '/android/hex5/' | relative_url }}) · [הפרק הקודם]({{ '/android/hex5/06-background-ai/' | relative_url }}){: data-sequence-nav="prev"} · [הפרק הבא]({{ '/android/hex5/08-hint/' | relative_url }}){: data-sequence-nav="next"}
 
-
 {: .box-success}
-**בסוף הפרק:** אפשר לבחור אחד משישה שחקני מחשב. כל בחירה מתחילה משחק חדש.
+**בסוף הפרק:** בוחרים לוח 7×7 או 11×11, ורשימת שחקני המחשב מציגה רק מודלים שמתאימים לגודל הזה. כל מודל הוא קובץ `.tflite` יחיד.
 
-## הרעיון
+## מודל ידוע, צורת קלט ידועה
 
-`model_catalog.json` קובע את סדר השחקנים בתפריט ואת הנתיב המדויק לזוג קובצי מודל ומטא־דאטה. `ModelCatalog` בודקת גרסה, מזהים ייחודיים ונתיבי נכסים. החלפת שחקן מתבצעת ברקע, מאפסת משחק ופוסלת טעינה/תשובה ישנה. אם הזוג שנבחר פגום, המסך מציג שהמחשב לא זמין; מצב שני שחקנים ממשיך לעבוד. מספר איטרציות הוא שם checkpoint, לא דירוג עוצמה.
+לוח 7×7 מקודד ל־147 מספרים: שבע שורות, שבע עמודות ושלושה ערכים לכל תא. מודל 11×11 מקבל 363 מספרים. כל מודל בפרויקט נבנה לאחת משתי הצורות הקבועות האלה.
 
-## מה משתנה כשבוחרים שחקן אחר? {#player-models}
-
-ששת השחקנים משתמשים באותה `HexAi`: אותם חוקים, אותם מהלכים חוקיים ואותה הסתכלות מהלך אחד קדימה. הבחירה מחליפה את **המודל שמעריך את מצבי היורש**. משקלים אחרים עשויים לתת הערכות אחרות, ולכן אותו בוחר מהלכים יכול להשיב אחרת לאותו לוח.
+הקטלוג מכיל את גודל הלוח לצד נתיב המודל. בחירת לוח מסננת את הקטלוג לפי `boardSize`, ובחירת שחקן טוענת את נתיב ה־`.tflite` שמופיע באותה רשומה.
 
 <div markdown="1" class="hex-diagram">
 
-```mermaid
-%%{init: {'flowchart': {'rankSpacing': 28, 'nodeSpacing': 30, 'padding': 12}}}%%
+~~~mermaid
 %% dir: rtl %%
 flowchart TB
-    selection["בחירת שחקן בתפריט"] --> entry["רשומה בקטלוג<br/>שם ונתיבים לשני קבצים"]
-    entry --> pair["זוג קבצים תואם<br/>hex_value_v1.tflite + model_info.json"]
-    pair --> loader["TfliteValueModel<br/>אימות וטעינה ברקע"]
-    loader -->|"הטעינה הצליחה"| ai["אותה HexAi<br/>עם הערכות המודל שנבחר"]
-    loader -->|"הטעינה נכשלה"| unavailable["המחשב אינו זמין<br/>אפשר לשחק בשני שחקנים"]
-```
+    size["לוח 7×7 או 11×11"] --> filter["סינון רשומות לפי boardSize"]
+    filter --> picker["רשימת שחקנים תואמים"]
+    picker --> model["טעינת קובץ .tflite אחד"]
+    model --> ai["אותו HexAi ואותו משחק"]
+~~~
 
 </div>
 
-הקטלוג מצביע על זוג מסוים: קובץ המודל וקובץ המטא־דאטה שמתאר אותו. החלפת הבחירה מתחילה משחק חדש ופוסלת טעינה או תשובה ישנה, כמו [בדיקת הדור בפרק 6]({{ '/android/hex5/06-background-ai/#background-flow' | relative_url }}). אם הזוג שנבחר פגום, מציגים כשל במקום להחליף בשקט לשחקן אחר.
+לוח 7×7 מציג שלושה שחקנים: איטרציות 100, 2,620 ו־5,000. לוח 11×11 מציג שניים: איטרציות 100 ו־7,350.
 
-{: .box-note}
-מספר האיטרציות מתאר מאיזה שלב באימון נשמר השחקן. הוא אינו דירוג קושי: כדי לטעון ששחקן אחד חזק יותר צריך להשוות שחקנים באותה שיטת בדיקה. מודל הבדיקה מפרק 6 נשאר שימושי לבדיקת השילוב גם כשיש מודלים מאומנים.
+[הורידו את חבילת שחקני המורה]({{ '/android/hex5/downloads/06-players.zip' | relative_url }}), פרשו אותה והעתיקו את תיקיות השחקנים אל `app/src/main/assets/players`. שמרו על שמות התיקיות והקבצים. מודל 7×7 מאיטרציה 100 כבר נמצא בפרויקט מחבילת פרק 5.
 
-**לפני הקוד:** אם נחליף רק את קובץ המודל, אילו חלקים ב[מפת האחריות]({{ '/android/hex5/#architecture' | relative_url }}) ימשיכו לעבוד באותה דרך? מדוע חשוב שהמסך יציג את זהות המודל שבאמת נטען?
+## מוסיפים את Gson
 
-{: .box-note}
-[הורידו את חבילת שחקני המורה]({{ '/android/hex5/downloads/06-players.zip' | relative_url }}) ופרשו את תיקיות `players/` תחת `app > assets`. בכל תיקייה יש שני קבצים ששייכים זה לזה: `hex_value_v1.tflite` ו־`model_info.json`. הם כבר מוכנים לשימוש; אין צורך לאמן מודלים.
+ב־`gradle/libs.versions.toml` הוסיפו את הגרסה ואת הספרייה:
 
-## עורכים את הקבצים
+~~~toml
+[versions]
+gson = "2.14.0"
 
-עבדו לפי סדר התלות: משאבים ותלויות לפני קוד שמפנה אליהם; מחלקת חוקים לפני ה־Activity.
+[libraries]
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+~~~
 
-### ModelCatalog.java
+ב־`app/build.gradle.kts`, תחת `dependencies`, הוסיפו:
 
-**מיקום:** app > kotlin+java > com.example.hex. הקובץ החדש קורא את JSON הנכסים, מאמת את השורות ומחזיר אותן בסדר התפריט.
+~~~kotlin
+implementation(libs.gson)
+~~~
 
-<details open markdown="1"><summary>הוסיפו את הקובץ החדש ModelCatalog.java</summary>
+## יוצרים את קטלוג המודלים
 
-```java
+ב־`app/src/main/assets/model_catalog.json` כתבו רשימת אובייקטים. שמות השדות תואמים לשדות של מחלקת Java שניצור מיד:
+
+~~~json
+[
+  {
+    "id": "trained-000100",
+    "label": "Trained — iteration 100",
+    "description": "A100 self-play training · 100 iterations · 7×7",
+    "modelAsset": "players/trained-000100/hex_value_v1.tflite",
+    "boardSize": 7
+  },
+  {
+    "id": "trained-002620",
+    "label": "Trained — iteration 2,620",
+    "description": "A100 self-play training · 2,620 iterations · 7×7",
+    "modelAsset": "players/trained-002620/hex_value_v1.tflite",
+    "boardSize": 7
+  },
+  {
+    "id": "trained-005000",
+    "label": "Trained — iteration 5,000",
+    "description": "A100 self-play training · 5,000 iterations · 7×7",
+    "modelAsset": "players/trained-005000/hex_value_v1.tflite",
+    "boardSize": 7
+  },
+  {
+    "id": "trained-007350",
+    "label": "Latest training — iteration 7,350 (11×11)",
+    "description": "A100 self-play training · 7,350 iterations · 11×11",
+    "modelAsset": "players/trained-007350/hex_value_v1.tflite",
+    "boardSize": 11
+  },
+  {
+    "id": "trained-11x11-000100",
+    "label": "Early training — iteration 100 (11×11)",
+    "description": "A100 self-play training · 100 iterations · 11×11",
+    "modelAsset": "players/trained-11x11-000100/hex_value_v1.tflite",
+    "boardSize": 11
+  }
+]
+~~~
+
+## ממירים את הרשימה לאובייקטים
+
+צרו את `ModelCatalog.java` ב־`app/src/main/java/com/example/hex`. Gson קורא את המערך ישירות ל־`Level[]`:
+
+~~~java
 package com.example.hex;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
-/**
- * Loads the available bundled computer-player levels from the asset catalog.
- *
- * <p>Preserved training checkpoints can be exposed by adding entries to the catalog asset.
- */
+/** Reads the bundled computer-player list into Java objects. */
 public final class ModelCatalog {
-    /** Asset containing the list of bundled model levels. */
     public static final String CATALOG_ASSET = "model_catalog.json";
-    private static final int CATALOG_VERSION = 1;
 
     private ModelCatalog() {
     }
 
-    /**
-     * Loads and validates all model levels in the bundled catalog.
-     *
-     * @param context Android context used to open application assets
-     * @return an unmodifiable, non-empty list in catalog order
-     * @throws Exception if the catalog cannot be read or does not satisfy its contract
-     */
-    public static List<Level> load(Context context) throws Exception {
-        JSONObject catalog = readJson(context);
-        if (catalog.getInt("catalog_version") != CATALOG_VERSION) {
-            throw new IllegalArgumentException("Unsupported model catalog version");
-        }
-
-        JSONArray entries = catalog.getJSONArray("levels");
-        if (entries.length() == 0) {
-            throw new IllegalArgumentException("Model catalog must contain at least one level");
-        }
-
-        List<Level> levels = new ArrayList<>(entries.length());
-        Set<String> ids = new HashSet<>();
-        for (int i = 0; i < entries.length(); i++) {
-            JSONObject entry = entries.getJSONObject(i);
-            Level level = new Level(
-                    requiredText(entry, "id"),
-                    requiredText(entry, "label"),
-                    requiredText(entry, "description"),
-                    checkedAssetPath(requiredText(entry, "model_asset"), ".tflite"),
-                    checkedAssetPath(requiredText(entry, "metadata_asset"), ".json"));
-            if (!level.id.matches("[a-z0-9][a-z0-9-]*") || !ids.add(level.id)) {
-                throw new IllegalArgumentException("Model catalog level IDs must be unique slugs");
-            }
-            levels.add(level);
-        }
-        return Collections.unmodifiableList(levels);
-    }
-
-    private static String requiredText(JSONObject object, String name) throws Exception {
-        String value = object.getString(name).trim();
-        if (value.isEmpty()) {
-            throw new IllegalArgumentException("Model catalog field is empty: " + name);
-        }
-        return value;
-    }
-
-    private static String checkedAssetPath(String path, String suffix) {
-        if (path.startsWith("/") || path.contains("\\") || !path.endsWith(suffix)) {
-            throw new IllegalArgumentException("Invalid model catalog asset path: " + path);
-        }
-        for (String segment : path.split("/")) {
-            if (segment.isEmpty() || ".".equals(segment) || "..".equals(segment)) {
-                throw new IllegalArgumentException("Invalid model catalog asset path: " + path);
-            }
-        }
-        return path;
-    }
-
-    private static JSONObject readJson(Context context) throws Exception {
-        StringBuilder jsonText = new StringBuilder();
+    /** Loads every level listed in the asset catalog. */
+    public static List<Level> load(Context context) throws IOException {
         try (InputStreamReader reader = new InputStreamReader(
                 context.getAssets().open(CATALOG_ASSET), StandardCharsets.UTF_8)) {
-            char[] buffer = new char[1024];
-            int count;
-            while ((count = reader.read(buffer)) != -1) {
-                jsonText.append(buffer, 0, count);
-            }
+            Level[] levels = new Gson().fromJson(reader, Level[].class);
+            return Arrays.asList(levels);
         }
-        return new JSONObject(jsonText.toString());
     }
 
-    /** Describes one selectable computer-player model and its bundled assets. */
+    /** Fields map directly from one catalog object. */
     public static final class Level {
-        /** Stable slug that uniquely identifies the level. */
-        public final String id;
-        /** Short user-facing level name. */
-        public final String label;
-        /** User-facing explanation of the model or checkpoint. */
-        public final String description;
-        /** Relative asset path to the TFLite model. */
-        public final String modelAsset;
-        /** Relative asset path to the model metadata JSON. */
-        public final String metadataAsset;
+        public String id;
+        public String label;
+        public String description;
+        public String modelAsset;
+        public int boardSize;
 
-        private Level(String id, String label, String description,
-                      String modelAsset, String metadataAsset) {
-            this.id = id;
-            this.label = label;
-            this.description = description;
-            this.modelAsset = modelAsset;
-            this.metadataAsset = metadataAsset;
-        }
-
-        @Override
         @NonNull
+        @Override
         public String toString() {
             return label;
         }
     }
 }
-```
+~~~
 
-</details>
+## מוסיפים את שתי הרשימות למסך
 
-### activity_main.xml
+ב־`activity_main.xml`, הוסיפו ב־`LinearLayout` שמעל הלוח תווית ו־Spinner לגודל:
 
-**מיקום:** app > res > layout. עורכים דרך app > res > layout בתצוגת Code. אין למחוק רכיבי תבנית שאינם ב־diff.
+~~~xml
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/board_size_label"
+    android:textColor="@color/muted"
+    android:textSize="11sp" />
 
-```diff
-                 android:text="@string/human_vs_human" />
-         </RadioGroup>
- 
-+        <LinearLayout
-+            android:id="@+id/computerLevelContainer"
-+            android:layout_width="match_parent"
-+            android:layout_height="wrap_content"
-+            android:layout_marginBottom="12dp"
-+            android:orientation="vertical">
-+
-+            <TextView
-+                android:layout_width="match_parent"
-+                android:layout_height="wrap_content"
-+                android:fontFamily="sans-serif-medium"
-+                android:letterSpacing="0.1"
-+                android:text="@string/computer_level_label"
-+                android:textColor="@color/muted"
-+                android:textSize="11sp" />
-+
-+            <Spinner
-+                android:id="@+id/computerLevelSpinner"
-+                android:layout_width="match_parent"
-+                android:layout_height="48dp"
-+                android:contentDescription="@string/computer_level_label"
-+                android:spinnerMode="dropdown" />
-+
-+            <TextView
-+                android:layout_width="match_parent"
-+                android:layout_height="wrap_content"
-+                android:text="@string/computer_levels_pending"
-+                android:textColor="@color/muted"
-+                android:textSize="12sp" />
-+        </LinearLayout>
-+
-         <com.google.android.material.card.MaterialCardView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-```
+<Spinner
+    android:id="@+id/boardSizeSpinner"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:layout_marginBottom="12dp"
+    android:contentDescription="@string/board_size_label"
+    android:spinnerMode="dropdown" />
+~~~
 
-### model_catalog.json
+מתחתיו הוסיפו את בחירת המודל. המעטפת נעלמת במצב של שני שחקנים:
 
-**מיקום:** app > assets. צרו קובץ חדש בשם `model_catalog.json`. הוסיפו שורה לקטלוג רק לאחר שקיבלתם זוג model/metadata מתאים; השורה הראשונה היא ברירת המחדל.
+~~~xml
+<LinearLayout
+    android:id="@+id/computerLevelContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:orientation="vertical">
 
-סדר השורות הוא סדר ה־Spinner: `early-test`,‏ `trained-000010`,‏ `trained-000100`,‏ `trained-001000`,‏ `trained-002620`,‏ `trained-005000`. זהו הסדר של הייחוס הנוכחי.
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/computer_level_label"
+        android:textColor="@color/muted"
+        android:textSize="11sp" />
 
-```json
-{
-  "catalog_version": 1,
-  "levels": [
-    {
-      "id": "early-test",
-      "label": "Early training - iteration 3",
-      "description": "Only 3 training iterations; strength not established",
-      "model_asset": "players/early-test/hex_value_v1.tflite",
-      "metadata_asset": "players/early-test/model_info.json"
-    },
-    {
-      "id": "trained-000010",
-      "label": "Trained — iteration 10",
-      "description": "A100 self-play training ·10 iterations · fully offline",
-      "model_asset": "players/trained-000010/hex_value_v1.tflite",
-      "metadata_asset": "players/trained-000010/model_info.json"
-    },
-    {
-      "id": "trained-000100",
-      "label": "Trained — iteration 100",
-      "description": "A100 self-play training ·100 iterations · fully offline",
-      "model_asset": "players/trained-000100/hex_value_v1.tflite",
-      "metadata_asset": "players/trained-000100/model_info.json"
-    },
-    {
-      "id": "trained-001000",
-      "label": "Trained — iteration 1000",
-      "description": "A100 self-play training ·1000 iterations · fully offline",
-      "model_asset": "players/trained-001000/hex_value_v1.tflite",
-      "metadata_asset": "players/trained-001000/model_info.json"
-    },
-    {
-      "id": "trained-002620",
-      "label": "Trained — iteration 2,620",
-      "description": "A100 self-play training · 2,620 iterations · fully offline",
-      "model_asset": "players/trained-002620/hex_value_v1.tflite",
-      "metadata_asset": "players/trained-002620/model_info.json"
-    },
-    {
-      "id": "trained-005000",
-      "label": "Trained — iteration 5,000",
-      "description": "A100 self-play training ·5,000 iterations · fully offline",
-      "model_asset": "players/trained-005000/hex_value_v1.tflite",
-      "metadata_asset": "players/trained-005000/model_info.json"
-    }
-  ]
+    <Spinner
+        android:id="@+id/computerLevelSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:contentDescription="@string/computer_level_label"
+        android:spinnerMode="dropdown" />
+</LinearLayout>
+~~~
+
+ב־`strings.xml` הוסיפו את האפשרויות והתוויות, ועדכנו את תיאור הלוח:
+
+~~~diff
++<string name="board_size_label">BOARD SIZE</string>
++<string-array name="board_sizes">
++    <item>7×7</item>
++    <item>11×11</item>
++</string-array>
++<string name="computer_level_label">COMPUTER LEVEL</string>
++<string name="model_loading">Loading %1$s…</string>
+-<string name="board_description">Seven by seven Hex board</string>
++<string name="board_description">%1$d by %2$d Hex board</string>
+~~~
+
+## מסננים ובוחרים
+
+ב־`MainActivity.java`, הוסיפו imports לרכיבי הרשימה ול־`ModelCatalog`:
+
+~~~java
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+~~~
+
+הוסיפו את מצב הקטלוג ובחרו לוח 11 כברירת מחדל:
+
+~~~java
+private List<ModelCatalog.Level> computerLevels = Collections.emptyList();
+private ModelCatalog.Level selectedLevel;
+private int boardSize = 11;
+private int modelRequest;
+~~~
+
+ב־`onCreate`, במקום טעינת מודל יחיד, אתחלו את שתי הרשימות:
+
+~~~java
+setupBoardSizes();
+setupComputerLevels();
+render();
+~~~
+
+`setupBoardSizes` מחברת את תפריט הלוח למספרי הגודל:
+
+~~~java
+/** Builds a board with the size selected in the first dropdown. */
+private void setupBoardSizes() {
+    int[] sizes = {7, 11};
+    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+            R.array.board_sizes, android.R.layout.simple_spinner_item);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    binding.boardSizeSpinner.setAdapter(adapter);
+    binding.boardSizeSpinner.setSelection(1, false);
+    binding.boardSizeSpinner.setOnItemSelectedListener(
+            new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view,
+                                           int position, long id) {
+                    if (boardSize != sizes[position]) {
+                        boardSize = sizes[position];
+                        refreshComputerLevels();
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Keep the current board size.
+                }
+            });
 }
-```
+~~~
 
-### MainActivity.java
+טענו את הרשומות פעם אחת:
 
-**מיקום:** app > kotlin+java > com.example.hex. הוסיפו את בחירת השחקן ואת החלפת המודל. המתודות המטפלות במהלך מחשב ובכישלון כבר קיימות מפרק 6; כאן מוסיפים את ההגנות הדרושות כאשר אפשר להחליף מודל בזמן שחישוב קודם מסתיים.
+~~~java
+/** Reads the Java-shaped entries from the asset catalog. */
+private void setupComputerLevels() {
+    try {
+        computerLevels = ModelCatalog.load(getApplicationContext());
+    } catch (Exception exception) {
+        computerLevels = Collections.emptyList();
+    }
+    refreshComputerLevels();
+}
+~~~
 
-בתוך `handleAiFailure` בודקים שהמודל שנכשל הוא עדיין המודל הפעיל לפני שמאפסים אותו. כך כישלון של מודל קודם אינו מוחק מודל חדש שכבר נטען. בצעו את קטעי השינוי לפי הסדר.
+`refreshComputerLevels` בונה רשימה זמנית עם מודלים שמתאימים לגודל שנבחר, ומחברת אותה ל־Spinner:
 
-```diff
- package com.example.hex;
- 
- import android.os.Bundle;
-+import android.view.View;
-+import android.widget.AdapterView;
-+import android.widget.ArrayAdapter;
- 
- import androidx.activity.EdgeToEdge;
- import androidx.appcompat.app.AppCompatActivity;
- import androidx.core.graphics.Insets;
-```
+~~~java
+/** Shows only computer models whose input shape matches the selected board. */
+private void refreshComputerLevels() {
+    List<ModelCatalog.Level> matchingLevels = new ArrayList<>();
+    for (ModelCatalog.Level level : computerLevels) {
+        if (level.boardSize == boardSize) matchingLevels.add(level);
+    }
 
-```diff
- import androidx.core.view.WindowInsetsCompat;
- 
- import com.example.hex.databinding.ActivityMainBinding;
- 
-+import java.util.Collections;
-+import java.util.List;
- import java.util.concurrent.ExecutorService;
- import java.util.concurrent.Executors;
- import java.util.concurrent.Future;
-+import java.util.concurrent.atomic.AtomicInteger;
- 
- /** Hosts the game screen and coordinates board input, model loading, and background AI turns. */
- public final class MainActivity extends AppCompatActivity {
-     private ActivityMainBinding binding;
-     private HexGame game;
-     private TfliteValueModel valueModel;
-     private ExecutorService aiExecutor;
-     private Future<?> aiTask;
-+    private List<ModelCatalog.Level> computerLevels = Collections.emptyList();
-+    private ModelCatalog.Level selectedLevel;
-     private boolean vsAi = true;
-     private boolean aiThinking;
-     private boolean modelLoading;
-     private int gameGeneration;
-+    private final AtomicInteger modelSelectionGeneration = new AtomicInteger();
- 
-     @Override
-     protected void onCreate(Bundle savedInstanceState) {
-         super.onCreate(savedInstanceState);
-```
+    ArrayAdapter<ModelCatalog.Level> adapter = new ArrayAdapter<>(this,
+            android.R.layout.simple_spinner_item, matchingLevels);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    binding.computerLevelSpinner.setOnItemSelectedListener(null);
+    binding.computerLevelSpinner.setAdapter(adapter);
+    binding.computerLevelSpinner.setEnabled(!matchingLevels.isEmpty());
+    binding.computerLevelSpinner.setSelection(0, false);
+    binding.computerLevelSpinner.setOnItemSelectedListener(
+            new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view,
+                                           int position, long id) {
+                    switchComputerLevel(
+                            (ModelCatalog.Level) parent.getItemAtPosition(position));
+                }
 
-```diff
-         binding.modeGroup.setOnCheckedChangeListener((group, checkedId) -> {
-             boolean requestedAi = checkedId == R.id.modeAi;
-             if (requestedAi != vsAi) {
-                 vsAi = requestedAi;
-+                binding.computerLevelContainer.setVisibility(vsAi ? View.VISIBLE : View.GONE);
-                 restartGame();
-             }
-         });
--        loadModel();
--
--        render();
--    }
--
--    private void loadModel() {
-+        setupComputerLevels();
-+
-+        render();
-+        if (vsAi && game.getCurrentPlayer() == HexGame.BLUE && !game.isOver()) {
-+            startAiMove();
-+        }
-+    }
-+
-+    /** Populates the level picker from the model catalog and loads its initial selection. */
-+    private void setupComputerLevels() {
-+        try {
-+            computerLevels = ModelCatalog.load(getApplicationContext());
-+        } catch (Exception exception) {
-+            computerLevels = Collections.emptyList();
-+            binding.computerLevelSpinner.setEnabled(false);
-+            return;
-+        }
-+
-+        ArrayAdapter<ModelCatalog.Level> adapter = new ArrayAdapter<>(this,
-+                android.R.layout.simple_spinner_item, computerLevels);
-+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-+        binding.computerLevelSpinner.setAdapter(adapter);
-+        binding.computerLevelSpinner.setSelection(0, false);
-+        binding.computerLevelSpinner.setOnItemSelectedListener(
-+                new AdapterView.OnItemSelectedListener() {
-+                    @Override
-+                    public void onItemSelected(AdapterView<?> parent, View view,
-+                                               int position, long id) {
-+                        switchComputerLevel(computerLevels.get(position));
-+                    }
-+
-+                    @Override
-+                    public void onNothingSelected(AdapterView<?> parent) {
-+                        // The current selection remains active.
-+                    }
-+                });
-+        switchComputerLevel(computerLevels.get(0));
-+    }
-+
-+    /**
-+     * Starts loading a level's model on the AI executor and resets the current game.
-+     *
-+     * @param level level selected in the computer level picker
-+     */
-+    private void switchComputerLevel(ModelCatalog.Level level) {
-+        if (level == selectedLevel && (modelLoading || valueModel != null)) {
-+            return;
-+        }
-+
-+        selectedLevel = level;
-+        // A later selection invalidates this load, even if its UI callback is already queued.
-+        int selectionGeneration = modelSelectionGeneration.incrementAndGet();
-+        TfliteValueModel previousModel = valueModel;
-+        valueModel = null;
-         modelLoading = true;
-+        restartGame();
-+
-         aiExecutor.submit(() -> {
--            TfliteValueModel loaded = null;
-+            if (previousModel != null) {
-+                previousModel.close();
-+            }
-+            if (selectionGeneration != modelSelectionGeneration.get()) {
-+                return;
-+            }
-+
-+            TfliteValueModel loadedModel = null;
-+            Exception loadFailure = null;
-             try {
--                loaded = new TfliteValueModel(getApplicationContext());
--            } catch (Exception ignored) {
--                // The screen will say that the computer is unavailable.
--            }
--            TfliteValueModel result = loaded;
--            runOnUiThread(() -> {
--                if (isFinishing() || isDestroyed()) {
--                    if (result != null) {
--                        result.close();
--                    }
--                    return;
--                }
--                valueModel = result;
--                modelLoading = false;
--                render();
--            });
--        });
-+                loadedModel = new TfliteValueModel(getApplicationContext(),
-+                        level.modelAsset, level.metadataAsset);
-+            } catch (Exception exception) {
-+                loadFailure = exception;
-+            }
-+
-+            TfliteValueModel result = loadedModel;
-+            Exception failure = loadFailure;
-+            runOnUiThread(() -> finishModelSwitch(
-+                    selectionGeneration, level, result, failure));
-+        });
-+    }
-+
-+    /**
-+     * Installs a loaded model on the UI thread if its selection is still current.
-+     *
-+     * @param selectionGeneration selection ID captured when loading began
-+     * @param level level associated with the completed load
-+     * @param loadedModel loaded model, or {@code null} if loading failed
-+     * @param failure loading error, or {@code null} on success
-+     */
-+    private void finishModelSwitch(int selectionGeneration, ModelCatalog.Level level,
-+                                   TfliteValueModel loadedModel, Exception failure) {
-+        if (isFinishing() || isDestroyed()
-+                || selectionGeneration != modelSelectionGeneration.get()
-+                || selectedLevel != level) {
-+            if (loadedModel != null) {
-+                loadedModel.close();
-+            }
-+            return;
-+        }
-+
-+        modelLoading = false;
-+        valueModel = failure == null ? loadedModel : null;
-+        render();
-     }
- 
-     private void onCellClicked(int row, int column) {
-         if (aiThinking || (vsAi && modelLoading) || game.isOver()
-```
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Keep the current selection.
+                }
+            });
 
-```diff
-     private void startAiMove() {
-         TfliteValueModel model = valueModel;
-         if (!vsAi || model == null || game.isOver()
-                 || game.getCurrentPlayer() != HexGame.BLUE || aiThinking) {
-+            render();
-             return;
-         }
- 
-         aiThinking = true;
-```
+    switchComputerLevel(matchingLevels.isEmpty() ? null : matchingLevels.get(0));
+}
+~~~
 
-```diff
-     /**
--     * Clears a failed computer turn and releases its model.
-+     * Clears a failed computer turn and releases its model if it remains selected.
-     *
-     * @param generation game ID captured when evaluation began
-     * @param failedModel model used by the failed turn
-     */
-     private void handleAiFailure(int generation, TfliteValueModel failedModel) {
-         if (isFinishing() || isDestroyed() || generation != gameGeneration) {
-             return;
-         }
-         aiThinking = false;
--        valueModel = null;
--        aiExecutor.submit(failedModel::close);
-+        if (valueModel == failedModel) {
-+            valueModel = null;
-+            aiExecutor.submit(failedModel::close);
-+        }
-         render();
-     }
- 
-     private void restartGame() {
-```
+ב־`switchComputerLevel`, שמרו את הבחירה, התחילו משחק חדש וטענו את קובץ המודל ברקע:
 
-```diff
-         }
- 
-         if (!vsAi) {
-             binding.modelText.setText(R.string.model_local);
-+        } else if (selectedLevel == null) {
-+            binding.modelText.setText(R.string.model_unavailable_help);
-+        } else if (modelLoading) {
-+            binding.modelText.setText(getString(R.string.model_loading, selectedLevel.label));
-         } else if (valueModel == null) {
-             binding.modelText.setText(R.string.model_unavailable_help);
-+        } else if (valueModel.isUntrainedMock()) {
-+            binding.modelText.setText(R.string.model_untrained);
-         } else {
--            binding.modelText.setText(R.string.model_untrained);
-+            binding.modelText.setText(selectedLevel.description);
-         }
-     }
- 
-     @Override
-     protected void onDestroy() {
-         gameGeneration++;
-+        modelSelectionGeneration.incrementAndGet();
-         if (aiTask != null) {
-             aiTask.cancel(true);
-         }
-         TfliteValueModel modelToClose = valueModel;
-```
+~~~java
+/** Loads the selected model and starts a new game for its board size. */
+private void switchComputerLevel(ModelCatalog.Level level) {
+    if (level == selectedLevel && (modelLoading || valueModel != null)) return;
 
-{: .box-warning}
-מטא־דאטה וזוגות `.tflite` של ששת השחקנים מגיעים יחד בחבילת המורה ואינם נכתבים ידנית. אל תערבבו קובץ מודל משורה אחת עם `model_info.json` משורה אחרת. ברירת המחדל היא `early-test`. המטא־דאטה שלה מכילה `untrained_mock: true`, ולכן מסך הייחוס מכנה אותה מודל בדיקה אף ששמה מציין שלוש איטרציות. אל תציגו אותה כבעלת חוזק נמדד.
+    selectedLevel = level;
+    int request = ++modelRequest;
+    TfliteValueModel previousModel = valueModel;
+    valueModel = null;
+    modelLoading = level != null;
+    restartGame();
 
-## מריצים ומוודאים
+    aiExecutor.execute(() -> {
+        if (previousModel != null) previousModel.close();
+        if (level == null) return;
 
-בצעו Sync אם שיניתם Gradle,  ואז הפעילו את האפליקציה. עברו על כל שש הבחירות: כל מעבר מאפס את הלוח; לאחר מהלך אדום מתקבלת תשובה כחולה חוקית.
+        TfliteValueModel loaded;
+        try {
+            loaded = new TfliteValueModel(getApplicationContext(), level.modelAsset);
+        } catch (Exception exception) {
+            loaded = null;
+        }
+        TfliteValueModel result = loaded;
+        runOnUiThread(() -> {
+            if (request != modelRequest) {
+                if (result != null) result.close();
+                return;
+            }
+            valueModel = result;
+            modelLoading = false;
+            render();
+        });
+    });
+}
+~~~
 
-**שאלת הבנה:** למה יש לשמור קובץ TFLite והמטא־דאטה שלו כזוג?
+עדכנו גם את `restartGame` כך שישתמש בגודל שנבחר:
+
+~~~diff
+ private void restartGame() {
+-    game = new HexGame();
++    game = new HexGame(boardSize);
+     positionChanged();
+     render();
+ }
+~~~
+
+ב־`render`, עדכנו את התיאור הנגיש של הלוח ואת טקסט פרטי המודל:
+
+לאחר הגדרת הלוח, הציגו את הגודל שנבחר לקוראי מסך:
+
+~~~java
+binding.boardView.setContentDescription(getString(R.string.board_description,
+        game.getSize(), game.getSize()));
+~~~
+
+בקטע הצגת פרטי המודל, הוסיפו את שם השחקן בזמן טעינה ואת התיאור שלו אחרי הטעינה:
+
+~~~java
+if (!vsAi) {
+    binding.modelText.setText(R.string.model_local);
+} else if (selectedLevel == null || valueModel == null && !modelLoading) {
+    binding.modelText.setText(R.string.model_unavailable_help);
+} else if (modelLoading) {
+    binding.modelText.setText(getString(R.string.model_loading, selectedLevel.label));
+} else {
+    binding.modelText.setText(selectedLevel.description);
+}
+~~~
+
+ב־`TfliteValueModel.java`, קבלו את נתיב הנכס שנבחר מהקטלוג:
+
+~~~diff
+-public TfliteValueModel(Context context) throws LiteRtException {
++public TfliteValueModel(Context context, String modelAsset) throws LiteRtException {
+     compiledModel = CompiledModel.create(context.getAssets(),
+-            "hex_value_v1.tflite", CompiledModel.Options.getCPU());
++            modelAsset, CompiledModel.Options.getCPU());
+~~~
+
+## מריצים ומשחקים
+
+בחרו 7×7 ובדקו שתפריט השחקנים מציג את איטרציות 100, 2,620 ו־5,000 בלבד. עברו ל־11×11 ובדקו שמופיעות איטרציות 100 ו־7,350. החליפו שחקן, התחילו משחק חדש ושחקו מול המחשב בכל אחד משני הגדלים.
+
+**שאלת הבנה:** איזה שדה בקטלוג מקשר בין בחירת גודל הלוח לרשומות שמופיעות בתפריט השחקנים?
 
 [לשיעור הבא: רמז למהלך הבא ←]({{ '/android/hex5/08-hint/' | relative_url }})
-
-## כך נראה המסך בסיום הפרק
-
-![מסך Hex הסופי: לוח ריק, בחירת מצב משחק ורשימת שחקני המחשב]({{ '/android/hex5/final.png' | relative_url }})
-
-בתמונה נבחר שחקן המחשב הראשון. אפשר להחליף אותו בתפריט שמעל הלוח.

@@ -26,39 +26,22 @@ full-width: true
 
 ### strings.xml
 
-**מיקום:** app > res > values. המשאב מרכז צבעים, מחרוזות או theme שהמסך משתמש בהם. שנו רק את השורות המוצגות.
-
-העבירו את שתי מחרוזות התור למקום המוצג. בקובץ צריכה להישאר הגדרה אחת לכל שם.
+**מיקום:** app > res > values. נוסיף תווית קצרה למסך, כפתור Restart ותיאור למשחק מקומי. מחרוזות התור והניצחון נשארות כפי שהוגדרו בפרקים הקודמים.
 
 ```diff
  <resources>
      <string name="app_name">Hex 7×7</string>
      <string name="title_hex">HEX</string>
 +    <string name="subtitle">Connect your two sides</string>
-+    <string name="mode_label">GAME MODE</string>
-+    <string name="human_vs_ai">Human vs Computer</string>
-+    <string name="human_vs_human">Two players</string>
-+    <string name="computer_level_label">COMPUTER LEVEL</string>
-+    <string name="computer_levels_pending">Changing the computer player starts a new game.</string>
 +    <string name="restart">Restart game</string>
      <string name="red_goal">RED · TOP ↕ BOTTOM</string>
      <string name="blue_goal">BLUE · LEFT ↔ RIGHT</string>
      <string name="board_description">Seven by seven Hex board</string>
--    <string name="status_red_turn">Red to move</string>
--    <string name="status_blue_turn">Blue to move</string>
-+    <string name="ai_unavailable">Computer model unavailable</string>
++    <string name="model_local">Local two-player game</string>
+     <string name="status_red_turn">Red to move</string>
+     <string name="status_blue_turn">Blue to move</string>
      <string name="status_red_wins">Red wins — top connected to bottom</string>
      <string name="status_blue_wins">Blue wins — left connected to right</string>
-+    <string name="status_model_loading">Loading computer player…</string>
-+    <string name="status_ai_thinking">Blue computer is thinking…</string>
-+    <string name="status_your_turn">Your turn — Red</string>
-+    <string name="status_red_turn">Red to move</string>
-+    <string name="status_blue_turn">Blue to move</string>
-+    <string name="model_local">Local two-player game</string>
-+    <string name="model_unavailable_help">Choose Two players to keep playing</string>
-+    <string name="model_loading">Loading %1$s…</string>
-+    <string name="model_untrained">Untrained mock model · integration testing only</string>
-+    <string name="model_ready">Value model v1 · fully offline</string>
  </resources>
 ```
 

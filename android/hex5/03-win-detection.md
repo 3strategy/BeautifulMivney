@@ -102,7 +102,7 @@ flowchart TB
  import java.util.Arrays;
  
  /**
-  * Stores a 7x7 Hex position and its game rules.
+  * Stores a square Hex position and its game rules.
 ```
 
 ```diff
@@ -114,8 +114,9 @@ flowchart TB
 +            {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}
 +    };
 +
-     private final int[] cells = new int[CELL_COUNT];
-     private int currentPlayer = RED;
+     private final int size;
+     private final int[] cells;
+     private int currentPlayer;
 +    private int winner = EMPTY;
  
      /**
@@ -158,20 +159,15 @@ flowchart TB
 +     *
 +     * @param player {@link #RED} (top to bottom) or {@link #BLUE} (left to right)
 +     * @return {@code true} if the player's stones connect their two goal edges
-+     * @throws IllegalArgumentException if {@code player} is neither RED nor BLUE
 +     */
 +    public boolean hasConnection(int player) {
-+        // A win check requires one of the two actual players.
-+        if (player != RED && player != BLUE) {
-+            throw new IllegalArgumentException("Player must be RED or BLUE");
-+        }
 +
 +        // Mark cells when queued so each stone is examined at most once.
-+        boolean[] visited = new boolean[CELL_COUNT];
++        boolean[] visited = new boolean[cells.length];
 +        // Breadth-first search: cells waiting to be examined.
 +        ArrayDeque<Integer> frontier = new ArrayDeque<>();
 +        // Seed every stone on the player's starting edge.
-+        for (int i = 0; i < SIZE; i++) {
++        for (int i = 0; i < size; i++) {
 +            // Red starts on row 0; Blue starts on column 0.
 +            int row = player == RED ? 0 : i;
 +            int column = player == RED ? i : 0;
@@ -187,11 +183,11 @@ flowchart TB
 +        while (!frontier.isEmpty()) {
 +            int position = frontier.removeFirst();
 +            // Convert the one-dimensional cell index back to board coordinates.
-+            int row = position / SIZE;
-+            int column = position % SIZE;
++            int row = position / size;
++            int column = position % size;
 +            // The opposite edge completes Red's vertical or Blue's horizontal path.
-+            if ((player == RED && row == SIZE - 1)
-+                    || (player == BLUE && column == SIZE - 1)) {
++            if ((player == RED && row == size - 1)
++                    || (player == BLUE && column == size - 1)) {
 +                return true;
 +            }
 +            // Follow only the six neighboring cells on the Hex grid.
