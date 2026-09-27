@@ -224,12 +224,12 @@ import java.util.Collections;
 import java.util.List;
 ~~~
 
-הוסיפו את מצב הקטלוג ובחרו לוח 11 כברירת מחדל:
+הוסיפו את מצב הקטלוג ובחרו לוח 7 כברירת מחדל:
 
 ~~~java
 private List<ModelCatalog.Level> computerLevels = Collections.emptyList();
 private ModelCatalog.Level selectedLevel;
-private int boardSize = 11;
+private int boardSize = 7;
 private int modelRequest;
 ~~~
 
@@ -251,7 +251,7 @@ private void setupBoardSizes() {
             R.array.board_sizes, android.R.layout.simple_spinner_item);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     binding.boardSizeSpinner.setAdapter(adapter);
-    binding.boardSizeSpinner.setSelection(1, false);
+    binding.boardSizeSpinner.setSelection(0, false);
     binding.boardSizeSpinner.setOnItemSelectedListener(
             new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -285,7 +285,7 @@ private void setupComputerLevels() {
 }
 ~~~
 
-`refreshComputerLevels` בונה רשימה זמנית עם מודלים שמתאימים לגודל שנבחר, ומחברת אותה ל־Spinner:
+`refreshComputerLevels` בונה רשימה זמנית עם מודלים שמתאימים לגודל שנבחר, ומחברת אותה ל־Spinner. אם מודל 2,620 האיטרציות נמצא ברשימה, הוא נבחר כברירת מחדל; בגודל אחר נבחר המודל הראשון המתאים:
 
 ~~~java
 /** Shows only computer models whose input shape matches the selected board. */
@@ -295,13 +295,21 @@ private void refreshComputerLevels() {
         if (level.boardSize == boardSize) matchingLevels.add(level);
     }
 
+    int defaultPosition = 0;
+    for (int i = 0; i < matchingLevels.size(); i++) {
+        if ("trained-002620".equals(matchingLevels.get(i).id)) {
+            defaultPosition = i;
+            break;
+        }
+    }
+
     ArrayAdapter<ModelCatalog.Level> adapter = new ArrayAdapter<>(this,
             android.R.layout.simple_spinner_item, matchingLevels);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     binding.computerLevelSpinner.setOnItemSelectedListener(null);
     binding.computerLevelSpinner.setAdapter(adapter);
     binding.computerLevelSpinner.setEnabled(!matchingLevels.isEmpty());
-    binding.computerLevelSpinner.setSelection(0, false);
+    binding.computerLevelSpinner.setSelection(defaultPosition, false);
     binding.computerLevelSpinner.setOnItemSelectedListener(
             new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -317,7 +325,7 @@ private void refreshComputerLevels() {
                 }
             });
 
-    switchComputerLevel(matchingLevels.isEmpty() ? null : matchingLevels.get(0));
+    switchComputerLevel(matchingLevels.isEmpty() ? null : matchingLevels.get(defaultPosition));
 }
 ~~~
 
