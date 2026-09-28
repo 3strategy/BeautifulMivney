@@ -25,4 +25,4 @@ tags: [Android, Java, roadmap]
 - [26 מעבדות נושא]({{ '/android/topics/' | relative_url }}) — לכל נושא יש תוצר עובד, ענף בסיס וענף תוצאה להשוואת הקוד. המעבדות אינן סדרת פרקים אחת; בדקו את בסיס ההשוואה בטבלה לפני תחילת כל מעבדה.
 - [מפת הנושאים]({{ '/android/topics-index' | relative_url }}) — מוצאים היכן נושא נלמד במסלולי הפרויקטים ובאיזה עומק.
 
-אם זו הפעם הראשונה שלכם ב־Android Studio, התחילו ב[היכרות עם Android]({{ '/android/alon/02.Intro.pdf' | relative_url }}), ב[פריסות XML]({{ '/android/alon/03.Layouts.pdf' | relative_url }}) וב[הוספת Activity]({{ '/android/projectSteps/011addingActivities' | relative_url }}). לאחר מכן בחרו מסלול או מעבדה לפי היישום שתרצו לבנות.
+אם זו הפעם הראשונה שלכם ב־Android Studio, התחילו ב[02 — היכרות עם Android]({{ '/android/alon/02.Intro.pdf' | relative_url }}), ב[03 — פריסות XML]({{ '/android/alon/03.Layouts.pdf' | relative_url }}) וב[011 — הוספת Activity]({{ '/android/projectSteps/011addingActivities' | relative_url }}). לאחר מכן בחרו מסלול או מעבדה לפי היישום שתרצו לבנות.

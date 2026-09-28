@@ -12,9 +12,9 @@ tags: [Android, Java, SQLite, Requery, roadmap]
 
 | שלב | מה מוסיפים | מה בודקים בסיום |
 |---:|---:|---:|
-| [1 — טבלת Student]({{ '/android/sqlite/01.requery-student' | relative_url }}) | Entity, יצירת מסד והצגת נתונים | שלושה תלמידים מופיעים על המסך |
-| [2 — קשר עם דירוג]({{ '/android/sqlite/02.requery-rated-relationship' | relative_url }}) | קשר רבים־לרבים ושדרוג סכימה | נתוני הקשר נגישים דרך ניווט |
-| [3 — JOIN והוספות]({{ '/android/sqlite/03.requery-join-and-inserts' | relative_url }}) | שאילתת INNER JOIN טיפוסית ושלושה טפסי הוספה | נתונים חדשים נכנסים ומופיעים ברשימה |
-| [4 — RecyclerView ומחיקה]({{ '/android/sqlite/04.requery-recyclerview-delete' | relative_url }}) | רשימה ממוחזרת ומחיקת קשר לפי מפתח מורכב | המחיקה נשמרת גם אחרי הפעלה מחדש |
+| [01 — טבלת Student]({{ '/android/sqlite/01.requery-student' | relative_url }}) | Entity, יצירת מסד והצגת נתונים | שלושה תלמידים מופיעים על המסך |
+| [02 — קשר עם דירוג]({{ '/android/sqlite/02.requery-rated-relationship' | relative_url }}) | קשר רבים־לרבים ושדרוג סכימה | נתוני הקשר נגישים דרך ניווט |
+| [03 — JOIN והוספות]({{ '/android/sqlite/03.requery-join-and-inserts' | relative_url }}) | שאילתת INNER JOIN טיפוסית ושלושה טפסי הוספה | נתונים חדשים נכנסים ומופיעים ברשימה |
+| [04 — RecyclerView ומחיקה]({{ '/android/sqlite/04.requery-recyclerview-delete' | relative_url }}) | רשימה ממוחזרת ומחיקת קשר לפי מפתח מורכב | המחיקה נשמרת גם אחרי הפעלה מחדש |
 
 לסקירת מושגים כללית על נתונים מקומיים ראו את [מפת הנושאים]({{ '/android/topics-index' | relative_url }}). למעבדה נפרדת על Room ושדרוג מסד ראו [מעבדה 12]({{ '/android/topics/12-room-persistence/' | relative_url }}).

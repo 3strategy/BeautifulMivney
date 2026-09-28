@@ -11,6 +11,28 @@ tags: [Android, Java, topics]
 {: .box-note}
 אלה שיעורי העמקה לפרויקט `com.example.topics`. נקודת ההתחלה היא ענף `master` בפרויקט **topics**:‏ Empty Views Activity עם Java,‏ XML ו־View Binding. רוב המעבדות מתחילות ממנו; כשהנושא הוא refactoring של מעבדה קודמת, בסיס ההשוואה מופיע בטבלה. קראו את בסיס ההשוואה לפני שמעתיקים שינויי קוד.
 
+## פתיחת הפרויקט ומעבר לענף של מעבדה
+
+אחרי שכפול מלא (clone) של הפרויקט, פתחו את חלון **Git** ואת לשונית **Log** ב־Android Studio. תצוגת היומן מציגה את היסטוריית הפרויקט ואת הענפים השונים; ליד כל commit מופיעים הסימונים של הענפים שמצביעים עליו. לכן ייתכן שתראו הרבה שורות וחיבורים בין ענפים — זה צפוי.
+
+![יומן Git אחרי שכפול מלא, עם היסטוריית הענפים וה־commits]({{ '/assets/img/android/topics/git-log-full-clone.png' | relative_url }})
+
+כדי לעבור לענף התוצאה של מעבדה, מצאו ביומן commit שמסומן בשם הענף המבוקש, למשל `codex/location-maps`. לחצו עליו עם הכפתור הימני, פתחו **Checkout**, ובתפריט המשנה בחרו את שם הענף. בתמונה הענף נבחר דרך **Checkout > codex/location-maps**.
+
+![בחירת Checkout לענף מתוך תפריט ה־commit]({{ '/assets/img/android/topics/checkout-branch-menu.png' | relative_url }})
+
+אחרי המעבר, Android Studio מסמן את ה־commit הנוכחי של הענף. בדוגמה, הסימון הירוק מופיע לצד `Guard location callbacks across lifecycle changes`.
+
+![ה־commit הנוכחי אחרי המעבר לענף]({{ '/assets/img/android/topics/after-checkout.png' | relative_url }})
+
+כדי לצמצם את היומן לענף אחד, פתחו את מסנן **Branch** בסרגל העליון ובחרו `codex/location-maps`. הכותרת `Branch: codex/location-maps` מציינת שהיומן מסונן, וברשימה נשארת ההיסטוריה שמגיעה דרך הענף הזה.
+
+![יומן Git לאחר סינון לענף codex/location-maps]({{ '/assets/img/android/topics/filter-branch.png' | relative_url }})
+
+כדי לחזור לתצוגת היומן המלאה, לחצו על **×** שליד `Branch: codex/location-maps`. הפעולה מבטלת את המסנן ומחזירה את כל היסטוריית הענפים לתצוגה; היא לא מעבירה אתכם לענף אחר.
+
+![ביטול מסנן הענף באמצעות ×]({{ '/assets/img/android/topics/clear-branch-filter.png' | relative_url }})
+
 | נושא | בסיס להשוואה | ענף תוצאה | מה בודקים |
 |---:|:---|:---|---:|
 | [01 — מה נשמר אחרי סיבוב, הריגת תהליך והחלפת View?]({{ '/android/topics/01-lifecycle-state/' | relative_url }}) | `master` | `codex/lifecycle-state` | שדה, `Bundle`,‏ `SharedPreferences` ומחזור חיי View של Fragment |
