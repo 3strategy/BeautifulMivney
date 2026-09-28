@@ -26,6 +26,7 @@ package com.example.hex;
 public final class HexAi {
     private final ValueModel model;
 
+    /** Creates a chooser that evaluates each candidate position with the supplied model. */
     public HexAi(ValueModel model) {
         this.model = model;
     }

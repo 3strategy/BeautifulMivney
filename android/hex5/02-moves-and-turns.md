@@ -63,119 +63,112 @@ flowchart TB
  </resources>
 ```
 
-### HexGame.java
+### הרחבת `HexGame.java`
 
-**מיקום:** app > kotlin+java > com.example.hex. צרו קובץ `HexGame.java` חדש והעתיקו את בלוק הקוד המלא. זו מחלקת החוקים העצמאית; בחנו היכן המשחק משנה מצב והיכן הוא רק קורא אותו.
+**מיקום:** app > kotlin+java > com.example.hex. בפרק 1 יצרתם את המחלקה עם גודל ברירת מחדל, שני בנאים ו־`getSize()`. השאירו אותם כפי שהם. הוסיפו את מצב התאים ואת חוקי המשחק מסביב לממשק הזה.
 
-```java
-package com.example.hex;
+הוסיפו את הייבוא בראש הקובץ:
 
-import java.util.Arrays;
+~~~diff
+ package com.example.hex;
++
++import java.util.Arrays;
+~~~
 
-/**
- * Stores a square Hex position and its game rules.
- *
- * <p>This class is pure Java and has no Android or rendering dependencies. Red connects the
- * top and bottom edges; Blue connects the left and right edges.
- */
-public final class HexGame {
-    /** Default board used by the first playable version. */
-    public static final int DEFAULT_SIZE = 7;
-    /** Cell value used for an unoccupied cell. */
-    public static final int EMPTY = 0;
-    /** Player value for Red, whose goal is to connect top to bottom. */
-    public static final int RED = 1;
-    /** Player value for Blue, whose goal is to connect left to right. */
-    public static final int BLUE = 2;
+הוסיפו ערכים לשחקנים ולתא ריק, ושמרו את התאים ואת התור הנוכחי. גודל הלוח נשאר בשדה שכבר כתבתם:
 
-    private final int size;
-    private final int[] cells;
-    private int currentPlayer;
+~~~diff
+     public static final int DEFAULT_SIZE = 7;
++    /** Cell value used for an unoccupied cell. */
++    public static final int EMPTY = 0;
++    /** Player value for Red, whose goal is to connect top to bottom. */
++    public static final int RED = 1;
++    /** Player value for Blue, whose goal is to connect left to right. */
++    public static final int BLUE = 2;
 
-    /** Creates the original 7x7 game. */
-    public HexGame() {
-        this(DEFAULT_SIZE);
-    }
+     private final int size;
++    private final int[] cells;
++    private int currentPlayer;
+~~~
 
-    /** Creates a square game with the given number of rows and columns. */
-    public HexGame(int size) {
-        this.size = size;
-        cells = new int[size * size];
-        currentPlayer = RED;
-    }
+הבנאי שמקבל גודל כבר שומר אותו. אתחלו בו מערך באותו גודל וקבעו שאדום מתחיל:
 
-    /** @return the number of rows and columns on this board */
-    public int getSize() {
-        return size;
-    }
+~~~diff
+     public HexGame(int size) {
+         this.size = size;
++        cells = new int[size * size];
++        currentPlayer = RED;
+     }
+~~~
 
-    /**
-     * Places the current player's stone and advances the turn when the move is legal.
-     *
-     * <p>TWIN-ID: HEX.APPLY_MOVE
-     *
-     * @param row zero-based board row
-     * @param column zero-based board column
-     * @return {@code true} if the move was played; {@code false} if the rules reject it,
-     *         leaving the board and turn unchanged
-     */
-    public boolean play(int row, int column) {
-        if (isOutside(row, column)) {
-            return false;
-        }
-        int index = index(row, column);
-        if (cells[index] != EMPTY) {
-            return false;
-        }
+אחרי `getSize()`, הוסיפו פעולות לקריאת תא, לביצוע מהלך חוקי ולקריאת מצב התור. הוסיפו גם את עזרי האינדקס והגבולות בסוף המחלקה, לפני הסוגר המסולסל האחרון:
 
-        cells[index] = currentPlayer;
-        currentPlayer = otherPlayer(currentPlayer);
-        return true;
-    }
-
-    /**
-     * Returns the value stored at one board coordinate.
-     *
-     * @param row zero-based board row
-     * @param column zero-based board column
-     * @return {@link #EMPTY}, {@link #RED}, or {@link #BLUE}
-     * @throws IndexOutOfBoundsException if the coordinate is outside the board
-     */
-    public int getCell(int row, int column) {
-        if (isOutside(row, column)) {
-            throw new IndexOutOfBoundsException("Cell is outside the board");
-        }
-        return cells[index(row, column)];
-    }
-
-    /**
-     * Copies all board cells in row-major order.
-     *
-     * @return an independent row-major array of board cells
-     */
-    public int[] getCells() {
-        return Arrays.copyOf(cells, cells.length);
-    }
-
-    /** @return the player that will make the next move */
-    public int getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    /** RED is 1 and BLUE is 2, so subtracting either from 3 gives the opponent. */
-    public static int otherPlayer(int player) {
-        return 3 - player;
-    }
-
-    private int index(int row, int column) {
-        return row * size + column;
-    }
-
-    private boolean isOutside(int row, int column) {
-        return row < 0 || row >= size || column < 0 || column >= size;
-    }
-}
-```
+~~~diff
++    /**
++     * Places the current player's stone and advances the turn when the move is legal.
++     *
++     * <p>TWIN-ID: HEX.APPLY_MOVE
++     *
++     * @param row zero-based board row
++     * @param column zero-based board column
++     * @return {@code true} if the move was played; {@code false} if the rules reject it,
++     *         leaving the board and turn unchanged
++     */
++    public boolean play(int row, int column) {
++        if (isOutside(row, column)) {
++            return false;
++        }
++        int index = index(row, column);
++        if (cells[index] != EMPTY) {
++            return false;
++        }
++        cells[index] = currentPlayer;
++        currentPlayer = otherPlayer(currentPlayer);
++        return true;
++    }
++
++    /**
++     * Returns the value stored at one board coordinate.
++     *
++     * @param row zero-based board row
++     * @param column zero-based board column
++     * @return {@link #EMPTY}, {@link #RED}, or {@link #BLUE}
++     * @throws IndexOutOfBoundsException if the coordinate is outside the board
++     */
++    public int getCell(int row, int column) {
++        if (isOutside(row, column)) {
++            throw new IndexOutOfBoundsException("Cell is outside the board");
++        }
++        return cells[index(row, column)];
++    }
++
++    /**
++     * Copies all board cells in row-major order.
++     *
++     * @return an independent row-major array of board cells
++     */
++    public int[] getCells() {
++        return Arrays.copyOf(cells, cells.length);
++    }
++
++    /** @return the player that will make the next move */
++    public int getCurrentPlayer() {
++        return currentPlayer;
++    }
++
++    /** RED is 1 and BLUE is 2, so subtracting either from 3 gives the opponent. */
++    public static int otherPlayer(int player) {
++        return 3 - player;
++    }
++
++    private int index(int row, int column) {
++        return row * size + column;
++    }
++
++    private boolean isOutside(int row, int column) {
++        return row < 0 || row >= size || column < 0 || column >= size;
++    }
+~~~
 
 ### HexBoardView.java
 
@@ -193,15 +186,12 @@ public final class HexGame {
  import androidx.annotation.Nullable;
  import androidx.core.content.ContextCompat;
  
--/** Draws the fixed 7×7 board; game rules will live in a separate class. */
-+/**
-+ * Draws a Hex board on a {@link Canvas} and translates taps into board coordinates.
-+ *
-+ * <p>This view contains rendering and input logic only. All game rules remain in
-+ * {@link HexGame}.
-+ */
+ /**
+  * Draws a Hex board on a {@link Canvas}.
+  *
+  * <p>The view's intended role also includes cell input; game rules stay in a separate class.
+  */
  public final class HexBoardView extends View {
--    private static final int SIZE = 7;
 +    /** Receives taps that land inside a board cell. */
 +    public interface OnCellClickListener {
 +        /**
@@ -220,6 +210,7 @@ public final class HexGame {
      private final Paint sidePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
      private final Path hexPath = new Path();
  
+-    private final HexGame game = new HexGame();
 +    private HexGame game = new HexGame();
 +    private OnCellClickListener listener;
      private float radius;
@@ -265,10 +256,8 @@ public final class HexGame {
  
          strokePaint.setColor(lineColor);
          strokePaint.setStrokeWidth(dp(1.5f));
--        for (int row = 0; row < SIZE; row++) {
--            for (int column = 0; column < SIZE; column++) {
-+        for (int row = 0; row < game.getSize(); row++) {
-+            for (int column = 0; column < game.getSize(); column++) {
+         for (int row = 0; row < game.getSize(); row++) {
+             for (int column = 0; column < game.getSize(); column++) {
                  float centerX = centerX(row, column);
                  float centerY = centerY(row);
                  makeHexagon(centerX, centerY);
@@ -281,35 +270,6 @@ public final class HexGame {
                  canvas.drawPath(hexPath, strokePaint);
              }
 ```
-
-{% code_diff %}
-     private void drawGoalSides(Canvas canvas) {
-+        int last = game.getSize() - 1;
-         sidePaint.setStrokeWidth(Math.max(dp(4), radius * 0.18f));
- 
-         sidePaint.setColor(redColor);
-         canvas.drawLine(centerX(0, 0), centerY(0) - radius * 1.18f,
--                centerX(0, SIZE - 1), centerY(0) - radius * 1.18f, sidePaint);
--        canvas.drawLine(centerX(SIZE - 1, 0), centerY(SIZE - 1) + radius * 1.18f,
--                centerX(SIZE - 1, SIZE - 1),
--                centerY(SIZE - 1) + radius * 1.18f, sidePaint);
-+                centerX(0, last), centerY(0) - radius * 1.18f, sidePaint);
-+        canvas.drawLine(centerX(last, 0), centerY(last) + radius * 1.18f,
-+                centerX(last, last),
-+                centerY(last) + radius * 1.18f, sidePaint);
- 
-         sidePaint.setColor(blueColor);
-         canvas.drawLine(centerX(0, 0) - radius, centerY(0),
--                centerX(SIZE - 1, 0) - radius, centerY(SIZE - 1), sidePaint);
--        canvas.drawLine(centerX(0, SIZE - 1) + radius, centerY(0),
--                centerX(SIZE - 1, SIZE - 1) + radius,
--                centerY(SIZE - 1), sidePaint);
-+                centerX(last, 0) - radius, centerY(last), sidePaint);
-+        canvas.drawLine(centerX(0, last) + radius, centerY(0),
-+                centerX(last, last) + radius,
-+                centerY(last), sidePaint);
-     }
-{% endcode_diff %}
 
 ```diff
          }
@@ -360,53 +320,9 @@ public final class HexGame {
  
 ```
 
-### activity_main.xml
+#### התאמה לגודל המשחק
 
-**מיקום:** app > res > layout. עורכים דרך app > res > layout בתצוגת Code. אין למחוק רכיבי תבנית שאינם ב־diff.
-
-```diff
-             android:layout_height="wrap_content"
-             android:text="@string/title_hex"
-             android:textSize="34sp" />
-+        <TextView
-+            android:id="@+id/statusText"
-+            android:layout_width="wrap_content"
-+            android:layout_height="wrap_content"
-+            android:layout_marginTop="16dp"
-+            android:layout_marginBottom="16dp"
-+            android:textSize="18sp" />
-         <TextView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-```
-
-#### התאמת גאומטריית הלוח ב־`HexBoardView.java`
-
-פתחו את `HexBoardView.java` ומצאו את `calculateGeometry()`. בתוך המתודה, החליפו את החישוב הקבוע של `radius`, `boardWidth` ו־`boardHeight` בקטע הבא. השאירו את חישובי `inset`, `availableWidth` ו־`availableHeight` שלפניו ואת חישובי `left`, `top`, `startX` ו־`startY` שאחריו.
-
-~~~diff
-     private void calculateGeometry() {
-         float inset = dp(14);
-         float availableWidth = Math.max(1, getWidth() - 2 * inset);
-         float availableHeight = Math.max(1, getHeight() - 2 * inset);
--        radius = Math.min(availableWidth / (SQRT_THREE * 10.0f),
--                availableHeight / 11.5f);
--
--        float boardWidth = SQRT_THREE * radius * 10.0f;
--        float boardHeight = radius * 11.0f;
-+        float widthInHexagons = 1.5f * (game.getSize() - 1) + 1;
-+        float heightInRadii = 1.5f * (game.getSize() - 1) + 2;
-+        radius = Math.min(availableWidth / (SQRT_THREE * widthInHexagons),
-+                availableHeight / (heightInRadii + 0.5f));
-+        float boardWidth = SQRT_THREE * radius * widthInHexagons;
-+        float boardHeight = radius * heightInRadii;
-
-         float left = (getWidth() - boardWidth) / 2.0f;
-         float top = (getHeight() - boardHeight) / 2.0f;
-         startX = left + SQRT_THREE * radius / 2.0f;
-         startY = top + radius;
-     }
-~~~
+`drawGoalSides` ו־`calculateGeometry` כבר משתמשות ב־`game.getSize()` מהפרק הקודם, לכן השאירו אותן ללא שינוי. כאן עדכנו רק את `onDraw`: הוא עדיין עובר על כל תא, אבל עכשיו קורא את ערכו מ־`HexGame` וצובע בהתאם.
 
 ### MainActivity.java
 
@@ -454,7 +370,7 @@ public final class HexGame {
 +        }
 +    }
 +
-+    /** Updates the board and status text from the current game state. */
++    /** Refreshes the visible screen from the current game state. */
 +    private void render() {
 +        binding.boardView.setGame(game);
 +        binding.statusText.setText(game.getCurrentPlayer() == HexGame.RED

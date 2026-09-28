@@ -224,12 +224,12 @@ import java.util.Collections;
 import java.util.List;
 ~~~
 
-הוסיפו את מצב הקטלוג ובחרו לוח 7 כברירת מחדל:
+המשחק מתחיל בלוח 7×7, לכן שדה הגודל צריך להתאים לאפשרות הראשונה בתפריט. בהמשך, `setupBoardSizes` תבחר גם את האפשרות הראשונה ב־Spinner בלי להפעיל את המאזין בזמן האתחול. הוסיפו את מצב הקטלוג לצד ברירת המחדל הזו:
 
 ~~~java
 private List<ModelCatalog.Level> computerLevels = Collections.emptyList();
 private ModelCatalog.Level selectedLevel;
-private int boardSize = 7;
+private int boardSize = 7; // Matches the first (7×7) board-size option.
 private int modelRequest;
 ~~~
 
@@ -295,6 +295,7 @@ private void refreshComputerLevels() {
         if (level.boardSize == boardSize) matchingLevels.add(level);
     }
 
+    // Prefer iteration 2,620 for the default 7×7 board when it is available.
     int defaultPosition = 0;
     for (int i = 0; i < matchingLevels.size(); i++) {
         if ("trained-002620".equals(matchingLevels.get(i).id)) {

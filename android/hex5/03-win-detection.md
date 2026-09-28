@@ -230,8 +230,7 @@ flowchart TB
 
 ```diff
  
--    /** Updates the board and status text from the current game state. */
-+    /** Updates the board, available controls, and status text from the current state. */
+     /** Refreshes the visible screen from the current game state. */
      private void render() {
          binding.boardView.setGame(game);
 -        binding.statusText.setText(game.getCurrentPlayer() == HexGame.RED

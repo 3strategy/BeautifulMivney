@@ -20,9 +20,9 @@ full-width: true
 
 ## הרעיון
 
-Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהשפה העליונה לתחתונה וכחול משמאל לימין. בשלב הזה ה־View מצייר בלבד. `calculateGeometry()` גוזרת את הרדיוס מנפח התצוגה. `centerX` מוסיפה לכל שורה הסטה של חצי משושה; `makeHexagon` משתמשת בשש זוויות במרווחי 60°. הגדרת צבעים ב־resources שומרת על קוד ציור קריא. אין עדיין מחלקת חוקים או מגע.
+Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהשפה העליונה לתחתונה וכחול משמאל לימין. `HexGame` מתחילה כאן כמקור יחיד לגודל הלוח; `HexBoardView` משתמשת ב־`getSize()` לציור המשושים, שפות היעד וחישוב ההתאמה למסך. בשלב הזה ה־View מצייר לוח ריק בלבד. `centerX` מוסיפה לכל שורה הסטה של חצי משושה; `makeHexagon` משתמשת בשש זוויות במרווחי 60°. בפרק 2 נוסיף ל־`HexGame` תאים, תורות וחוקים, בלי לשנות את ממשק הגודל או את גאומטריית הציור.
 
-ב[מפת האחריות]({{ '/android/hex5/#architecture' | relative_url }}) זהו החלק של `HexBoardView`: כרגע אנחנו בונים את הדרך להציג את הלוח. חוקיות מהלך תיכנס בהמשך למחלקה נפרדת, ולא לתוך חישובי הציור.
+ב[מפת האחריות]({{ '/android/hex5/#architecture' | relative_url }}) זהו החלק של `HexBoardView`: היא מציירת לפי גודל שמספק `HexGame`, אך עדיין אינה קוראת או משנה תאים. חוקיות מהלך תיכנס בהמשך למחלקה הנפרדת, ולא לתוך חישובי הציור.
 
 ## נקודת ההתחלה
 
@@ -61,18 +61,52 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 ```diff
  <resources>
 -    <string name="app_name">hex</string>
--</resources>
 +    <string name="app_name">Hex 7×7</string>
 +    <string name="title_hex">HEX</string>
 +    <string name="red_goal">RED · TOP ↕ BOTTOM</string>
 +    <string name="blue_goal">BLUE · LEFT ↔ RIGHT</string>
 +    <string name="board_description">Seven by seven Hex board</string>
-+</resources>
+ </resources>
 ```
+
+### HexGame.java
+
+**מיקום:** app > kotlin+java > com.example.hex. צרו קובץ `HexGame.java`. כרגע הוא מספק רק גודל ללוח; בפרק 2 נרחיב את אותו מודל ונוסיף לו את מצב המשחק והחוקים.
+
+~~~java
+package com.example.hex;
+
+/**
+ * Holds the board dimensions, position, and rules for a Hex game.
+ *
+ * <p>Chapter 1 uses the size; following chapters add the board position and rules.
+ */
+public final class HexGame {
+    /** Default board size for the Hex series. */
+    public static final int DEFAULT_SIZE = 7;
+
+    private final int size;
+
+    /** Creates the default 7×7 board. */
+    public HexGame() {
+        this(DEFAULT_SIZE);
+    }
+
+    /** Creates a square board with the given number of rows and columns. */
+    public HexGame(int size) {
+        this.size = size;
+    }
+
+    /** @return the number of rows and columns on this board */
+    public int getSize() {
+        return size;
+    }
+}
+~~~
 
 ### HexBoardView.java
 
-**מיקום:** app > kotlin+java > com.example.hex. צרו כאן קובץ Java חדש בשם `HexBoardView.java` והעתיקו את הקוד המלא שלהלן כפי שהוא מוצג. בפרק 2 המחלקה תקבל game, callback ובדיקת מגע; בפרק 1 היא סטטית.
+**מיקום:** app > kotlin+java > com.example.hex. צרו כאן קובץ Java חדש בשם `HexBoardView.java` והעתיקו את הקוד המלא שלהלן כפי שהוא מוצג. בפרק 2 נחבר אליו את המשחק הפעיל, callback ובדיקת מגע; ממשק הגודל וחישוב הגאומטריה כבר מוכנים.
 
 <details open markdown="1"><summary>הוסיפו את הקובץ החדש HexBoardView.java</summary>
 
@@ -90,10 +124,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-/** Draws the fixed 7×7 board; game rules will live in a separate class. */
+/**
+ * Draws a Hex board on a {@link Canvas}.
+ *
+ * <p>The view's intended role also includes cell input; game rules stay in a separate class.
+ */
 public final class HexBoardView extends View {
-    private static final int SIZE = 7;
     private static final float SQRT_THREE = (float) Math.sqrt(3.0);
+
+    private final HexGame game = new HexGame();
 
     private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -135,8 +174,8 @@ public final class HexBoardView extends View {
 
         strokePaint.setColor(lineColor);
         strokePaint.setStrokeWidth(dp(1.5f));
-        for (int row = 0; row < SIZE; row++) {
-            for (int column = 0; column < SIZE; column++) {
+        for (int row = 0; row < game.getSize(); row++) {
+            for (int column = 0; column < game.getSize(); column++) {
                 float centerX = centerX(row, column);
                 float centerY = centerY(row);
                 makeHexagon(centerX, centerY);
@@ -149,32 +188,36 @@ public final class HexBoardView extends View {
     }
 
     private void drawGoalSides(Canvas canvas) {
+        int last = game.getSize() - 1;
         sidePaint.setStrokeWidth(Math.max(dp(4), radius * 0.18f));
 
         sidePaint.setColor(redColor);
         canvas.drawLine(centerX(0, 0), centerY(0) - radius * 1.18f,
-                centerX(0, SIZE - 1), centerY(0) - radius * 1.18f, sidePaint);
-        canvas.drawLine(centerX(SIZE - 1, 0), centerY(SIZE - 1) + radius * 1.18f,
-                centerX(SIZE - 1, SIZE - 1),
-                centerY(SIZE - 1) + radius * 1.18f, sidePaint);
+                centerX(0, last), centerY(0) - radius * 1.18f, sidePaint);
+        canvas.drawLine(centerX(last, 0), centerY(last) + radius * 1.18f,
+                centerX(last, last),
+                centerY(last) + radius * 1.18f, sidePaint);
 
         sidePaint.setColor(blueColor);
         canvas.drawLine(centerX(0, 0) - radius, centerY(0),
-                centerX(SIZE - 1, 0) - radius, centerY(SIZE - 1), sidePaint);
-        canvas.drawLine(centerX(0, SIZE - 1) + radius, centerY(0),
-                centerX(SIZE - 1, SIZE - 1) + radius,
-                centerY(SIZE - 1), sidePaint);
+                centerX(last, 0) - radius, centerY(last), sidePaint);
+        canvas.drawLine(centerX(0, last) + radius, centerY(0),
+                centerX(last, last) + radius,
+                centerY(last), sidePaint);
     }
 
+    /** Fits and centers the board geometry inside the current view size. */
     private void calculateGeometry() {
         float inset = dp(14);
         float availableWidth = Math.max(1, getWidth() - 2 * inset);
         float availableHeight = Math.max(1, getHeight() - 2 * inset);
-        radius = Math.min(availableWidth / (SQRT_THREE * 10.0f),
-                availableHeight / 11.5f);
+        float widthInHexagons = 1.5f * (game.getSize() - 1) + 1;
+        float heightInRadii = 1.5f * (game.getSize() - 1) + 2;
+        radius = Math.min(availableWidth / (SQRT_THREE * widthInHexagons),
+                availableHeight / (heightInRadii + 0.5f));
 
-        float boardWidth = SQRT_THREE * radius * 10.0f;
-        float boardHeight = radius * 11.0f;
+        float boardWidth = SQRT_THREE * radius * widthInHexagons;
+        float boardHeight = radius * heightInRadii;
         float left = (getWidth() - boardWidth) / 2.0f;
         float top = (getHeight() - boardHeight) / 2.0f;
         startX = left + SQRT_THREE * radius / 2.0f;
@@ -214,64 +257,57 @@ public final class HexBoardView extends View {
 
 ### activity_main.xml
 
-**מיקום:** app > res > layout. עורכים דרך app > res > layout בתצוגת Code. אין למחוק רכיבי תבנית שאינם ב־diff.
+**מיקום:** app > res > layout. פתחו את `activity_main.xml` בתצוגת Code, בחרו את כל תוכן הקובץ והחליפו אותו בקובץ המלא הבא:
 
-```diff
- <?xml version="1.0" encoding="utf-8"?>
--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
--    xmlns:app="http://schemas.android.com/apk/res-auto"
--    xmlns:tools="http://schemas.android.com/tools"
-+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-     android:id="@+id/main"
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
--    tools:context=".MainActivity">
--
--    <TextView
--        android:layout_width="wrap_content"
-+    android:fillViewport="true">
-+    <LinearLayout
-+        android:layout_width="match_parent"
-         android:layout_height="wrap_content"
--        android:text="Hello World!"
--        app:layout_constraintBottom_toBottomOf="parent"
--        app:layout_constraintEnd_toEndOf="parent"
--        app:layout_constraintStart_toStartOf="parent"
--        app:layout_constraintTop_toTopOf="parent" />
--
--</androidx.constraintlayout.widget.ConstraintLayout>
-+        android:gravity="center_horizontal"
-+        android:orientation="vertical"
-+        android:padding="20dp">
-+        <TextView
-+            android:layout_width="wrap_content"
-+            android:layout_height="wrap_content"
-+            android:text="@string/title_hex"
-+            android:textSize="34sp" />
-+        <TextView
-+            android:layout_width="wrap_content"
-+            android:layout_height="wrap_content"
-+            android:text="@string/red_goal"
-+            android:textColor="@color/hex_red" />
-+        <com.example.hex.HexBoardView
-+            android:id="@+id/boardView"
-+            android:layout_width="match_parent"
-+            android:layout_height="360dp"
-+            android:contentDescription="@string/board_description" />
-+        <TextView
-+            android:layout_width="wrap_content"
-+            android:layout_height="wrap_content"
-+            android:text="@string/blue_goal"
-+            android:textColor="@color/hex_blue" />
-+    </LinearLayout>
-+</ScrollView>
-```
+~~~xml
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_hex"
+            android:textSize="34sp" />
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/red_goal"
+            android:textColor="@color/hex_red" />
+        <com.example.hex.HexBoardView
+            android:id="@+id/boardView"
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            android:contentDescription="@string/board_description" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/blue_goal"
+            android:textColor="@color/hex_blue" />
+    </LinearLayout>
+</ScrollView>
+~~~
 
 ## מריצים ומוודאים
 
-בצעו Sync אם שיניתם Gradle,  ואז הפעילו את האפליקציה. פתחו את האפליקציה וספרו 49 משושים. בדקו את שתי השפות האדומות ואת שתי השפות הכחולות.
-
-אם האמולטור פתוח בחלון שאפשר לגרור את שוליו, הקטינו והגדילו את החלון. בכל גודל בדקו שכל 49 המשושים ושפות היעד נשארים גלויים. אם האמולטור מוטמע ב־Android Studio או פועל ללא חלון, דלגו על בדיקת שינוי הגודל; בדיקת הלוח בגודל המקורי מספיקה לפרק הזה.
+הפעילו את האפליקציה ובדקו שמופיעים לוח משושים ריק, כותרת ושתי שפות היעד הצבועות.
 
 **שאלת הבנה:** למה חוק הניצחון אינו שייך ל־HexBoardView?
 

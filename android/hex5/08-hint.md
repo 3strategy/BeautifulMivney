@@ -193,6 +193,7 @@ private void finishMove(int revision, boolean hint, HexGame.Move move, boolean f
 עדכנו את `positionChanged` כך שכל לוח חדש יבטל רמז קודם:
 
 ~~~java
+/** Advances the board version and clears work and hints tied to the previous position. */
 private void positionChanged() {
     positionRevision++;
     aiThinking = false;
@@ -201,13 +202,24 @@ private void positionChanged() {
 }
 ~~~
 
-ב־`render`, שלחו את ההצעה לתצוגה, והפעילו את הכפתור רק בתור האדום מול מודל זמין:
+ב־`render`, הוסיפו שתי קבוצות שורות. הראשונה מעבירה את ההצעה לתצוגת הלוח, לצד עדכון מצב הלוח:
 
-~~~java
-binding.boardView.setHintMove(hintMove);
-binding.hintButton.setVisibility(vsAi ? View.VISIBLE : View.GONE);
-binding.hintButton.setEnabled(vsAi && canTap && valueModel != null
-        && !hintThinking && hintMove == null);
+~~~diff
+     binding.boardView.setGame(game);
++    binding.boardView.setHintMove(hintMove);
+     binding.boardView.setContentDescription(getString(R.string.board_description,
+             game.getSize(), game.getSize()));
+~~~
+
+הקבוצה השנייה קובעת אם כפתור הרמז יוצג ויהיה זמין. `canTap` כבר מציין שזה תור האדם והלוח מוכן לקלט; התנאים הנוספים מונעים בקשת רמז בזמן חישוב או כשכבר מוצגת הצעה:
+
+~~~diff
+     binding.boardView.setEnabled(canTap);
++    binding.hintButton.setVisibility(vsAi ? View.VISIBLE : View.GONE);
++    binding.hintButton.setEnabled(vsAi && canTap && valueModel != null
++            && !hintThinking && hintMove == null);
+
+     if (game.getWinner() == HexGame.RED) {
 ~~~
 
 הציגו את מצב החישוב או את הקואורדינטות:
