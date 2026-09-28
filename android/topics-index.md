@@ -8,7 +8,7 @@ full-width: true
 ---
 
 {: .box-note}
-המפה עוזרת למצוא שיעור לפי **הרעיון שרוצים ללמוד**, ולא רק לפי שם הפרויקט. אם זו הפעם הראשונה שלכם באתר, התחילו באחד מארבעת מסלולי הלמידה; אם כבר יש לכם פרויקט, עברו ישירות לטבלת הנושא הדרוש.
+המפה עוזרת למצוא שיעור לפי **הרעיון שרוצים ללמוד**, ולא רק לפי שם הפרויקט. אם זו הפעם הראשונה שלכם באתר, התחילו באחד מחמשת מסלולי הלמידה; אם כבר יש לכם פרויקט, עברו ישירות לטבלת הנושא הדרוש.
 
 ## איך קוראים את המפה?
 
@@ -29,6 +29,8 @@ full-width: true
 
 ### TicTacMenu — ממסכים ותפריטים למשחק רשת
 
+[מפת מסלול TicTacMenu]({{ '/android/projectSteps/' | relative_url }}) מרכזת את שלבי הפרויקט ואת נקודות הכניסה.
+
 המסלול מתאים למי שרוצה להכיר בהדרגה ניווט, הפרדת מודל, תקשורת, התחברות ו־Firebase:
 
 1. [Activities ותפריט Overflow](/android/projectSteps/013addingActivityToMenu)
@@ -48,6 +50,8 @@ full-width: true
 
 ### CollectCircles — ציור, משחק, שמירה ועבודה ברקע
 
+[מפת מסלול CollectCircles]({{ '/android/CollectCircles/' | relative_url }}) מציגה את התחנות ואת מפות ההמשך.
+
 התחילו ב־[ציור ומחלקות](/android/CollectCircles/01.collect-circles-drawing), המשיכו ל־[מצב משחק ומגע](/android/CollectCircles/02.collect-circles-game), ל־[זמן, שיא ומחזור חיים](/android/CollectCircles/03.collect-circles-finish), ולבסוף קראו את [המחשבה הביקורתית על OOP ו־Views](/android/CollectCircles/04.collect-circles-oop-afterthought).
 
 ההמשך מחולק לשתי מפות קצרות:
@@ -57,6 +61,8 @@ full-width: true
 
 ### Requery — מסד SQLite מקומי בארבעה תוצרים עובדים
 
+[מפת מסלול Requery]({{ '/android/sqlite/' | relative_url }}) מסבירה את רצף ארבעת התוצרים ואת מצב ההתחלה.
+
 1. [Entity ראשון: Student מקצה לקצה](/android/sqlite/01.requery-student)
 2. [קשר רבים־לרבים עם דירוג ושדרוג סכימה](/android/sqlite/02.requery-rated-relationship)
 3. [INNER JOIN typed ושלושה טפסי הוספה](/android/sqlite/03.requery-join-and-inserts)
@@ -64,18 +70,18 @@ full-width: true
 
 ### Hex — מלוח משושים למשחק אופליין מול מחשב
 
-[תשעת פרקי Hex](/android/hex/) מתחילים ב־Empty Views Activity עם View Binding.
+[תשעת פרקי Hex](/android/hex5/) מתחילים ב־Empty Views Activity עם View Binding.
 התלמיד בונה Canvas, מגע, חוקיות, חיפוש חיבור, משחק מקומי וחיבור מודל ערך
 מסופק שעובד ברקע. אימון ה־RL והמודלים המאומנים נמסרים על ידי המורה.
 
 | נושא | עומק | שיעור |
 |---:|---:|---:|
-| הפרדת אחריות וזרימת מהלך: מסך, חוקים, בוחר מהלך ומודל ערך | העמקה עם תרשימים ושאלות הבנה | [מפת אחריות](/android/hex/#architecture), [מנגיעה למהלך](/android/hex/02-moves-and-turns/#move-flow), [בחירת מהלך לפי ערך](/android/hex/06-background-ai/#move-selection) |
-| ציור משושים, גודל לוח ממודל וגאומטריית מגע | שיעור מעשי | [לוח](/android/hex/01-board/), [מהלכים](/android/hex/02-moves-and-turns/) |
-| מודל מצב וחיפוש גרפי לזיהוי ניצחון | שיעור מעשי | [תורות](/android/hex/02-moves-and-turns/), [ניצחון](/android/hex/03-win-detection/) |
-| העתקי מצב, מהלכים חוקיים וקידוד למודל ערך | שיעור מעשי ודוגמת קידוד משתי נקודות מבט | [הכנת המחשב](/android/hex/05-model-preparation/#value-contract) |
-| Executor, פסילת תשובה ישנה ומודל ערך מסופק | שיעור מעשי באינטגרציה | [מחשב ברקע](/android/hex/06-background-ai/), [בחירת מודל](/android/hex/07-supplied-rl-models/), [רמז למהלך](/android/hex/08-hint/) |
-| ערכות נושא ליום וללילה, משאבי צבע ו־Material 3 | שיעור מעשי | [ערכות נושא ב־Hex](/android/hex/09-day-night-themes/) |
+| הפרדת אחריות וזרימת מהלך: מסך, חוקים, בוחר מהלך ומודל ערך | העמקה עם תרשימים ושאלות הבנה | [מפת אחריות](/android/hex5/#architecture), [מנגיעה למהלך](/android/hex5/02-moves-and-turns/#move-flow), [בחירת מהלך לפי ערך](/android/hex5/06-background-ai/#move-selection) |
+| ציור משושים, גודל לוח ממודל וגאומטריית מגע | שיעור מעשי | [לוח](/android/hex5/01-board/), [מהלכים](/android/hex5/02-moves-and-turns/) |
+| מודל מצב וחיפוש גרפי לזיהוי ניצחון | שיעור מעשי | [תורות](/android/hex5/02-moves-and-turns/), [ניצחון](/android/hex5/03-win-detection/) |
+| העתקי מצב, מהלכים חוקיים וקידוד למודל ערך | שיעור מעשי ודוגמת קידוד משתי נקודות מבט | [הכנת המחשב](/android/hex5/05-model-preparation/#value-contract) |
+| Executor, פסילת תשובה ישנה ומודל ערך מסופק | שיעור מעשי באינטגרציה | [מחשב ברקע](/android/hex5/06-background-ai/), [בחירת מודל](/android/hex5/07-supplied-rl-models/), [רמז למהלך](/android/hex5/08-hint/) |
+| ערכות נושא ליום וללילה, משאבי צבע ו־Material 3 | שיעור מעשי | [ערכות נושא ב־Hex](/android/hex5/09-day-night-themes/) |
 
 ---
 

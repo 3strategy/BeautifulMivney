@@ -219,87 +219,82 @@ navbar-links:
     - 11 Simple Agentic - UnitTests: "/agentic/11-beginners-solving-and-unit-testing"
     - Agentic workflows: "/agentic/agentic-workflows-and-harness-engineering-he"
 
-  א יסודות:
-  - מפת נושאים באנדרואיד: "/android/topics-index"
-  - מעבדות נושאי Android: "/android/topics/"
-  - סרטוני AppSchool: "https://appschoolfront.web.app/course/learn/wmdWWTs17sLTO8N20HtO"
-  - מפגשי אנדרואיד עם זאב: "/android/zeev/meetings"
-  - פתיח והתקנה:
-    - 02 היכרות עם אנדרואיד: "/android/alon/02.Intro.pdf"
-    - Ctrl K D: "/android/projectSteps/012androidCodeFormatting"
-  - UI ופריסות:
-    - 03 Layouts בסיסי: "/android/alon/03.Layouts.pdf"
-    - 05 תרגיל Layout: "/android/alon/05.Layout%20Exercise.pdf"
-    - 05 דגם MVC/MVP: "/android/alon/05.LayoutExMVC.MVP"
-    - 05 מודל תרגול: "/android/alon/05.LayoutExModel"
-  - Activities ואינטנטים:
-    - 04 Activity: "/android/alon/04.Activity.pdf"
-    - 07 Activities & Intents: "/android/alon/07.ActivitiesAndIntents.pdf"
-    - 11 Implicit Intents: "/android/alon/11.Implicit%20Intents.pdf"
-    - 12 Activity For Result: "/android/alon/12.ActivityForResult.pdf"
-  - רכיבי UI:
-    - 10 Dialog: "/android/alon/10.Dialog.pdf"
-    - 09 RecyclerView: "/android/alon/09.RecycleView.pdf"
-  - הרשאות:
-    - 13b הרשאות (PDF): "/android/alon/13b.Permissions.pdf"
-    - 13 מדריך הרשאות: "/android/alon/13.android_permissions_tutorial_Version2"
+  מתחילים באנדרואיד:
+    - לאן ממשיכים באנדרואיד?: "/android/"
+    - מפת נושאים ועומק הלימוד: "/android/topics-index"
+    - התחלה ב־Android Studio:
+        - 02 היכרות עם אנדרואיד: "/android/alon/02.Intro.pdf"
+        - 03 Layouts בסיסי: "/android/alon/03.Layouts.pdf"
+        - 04 Activity: "/android/alon/04.Activity.pdf"
+        - הוספת Activities: "/android/projectSteps/011addingActivities"
+        - קיצור דרך לפירמוט קוד: "/android/projectSteps/012androidCodeFormatting"
 
+  מסלולי פרויקט:
+    - TicTacMenu — מסכים עד משחק רשת: "/android/projectSteps/"
+    - CollectCircles — ציור ועבודה ברקע: "/android/CollectCircles/"
+    - Requery — מסד נתונים מקומי: "/android/sqlite/"
+    - Hex — משחק אופליין מול מחשב: "/android/hex5/"
+    - Connect4 — ממשחק מקומי לרשת: "/android/Connect4/"
+    - תרגילים קצרים:
+        - ToDo List: "/android/amjad/Ex3.ToDoList"
+        - SQLite בסיסי: "/android/amjad/5.DbWorkSqlite"
 
-  א תרגול:
-  - Connect4 — מסלול משחק מלא: "/android/Connect4/"
-  - Hex — משחק חיבור ומחשב אופליין: "/android/hex5/"
-  - תרגילי בסיס:
-    - ToDo List: "/android/amjad/Ex3.ToDoList"
-    - SQLite בסיסי: "/android/amjad/5.DbWorkSqlite"
+  מעבדות נושא:
+    - כל 26 המעבדות ובסיסי ההשוואה: "/android/topics/"
+    - מסך, מצב וניווט:
+        - מחזור חיים ושמירת מצב: "/android/topics/01-lifecycle-state/"
+        - נגישות, מסכים ושפות: "/android/topics/02-accessibility-adaptive-localization/"
+        - מצבי מסך ו־Retry: "/android/topics/03-ui-states-retry/"
+        - ניווט וחזרה בין מסכים: "/android/topics/10-navigation-flow/"
+    - ארכיטקטורה ונתונים:
+        - ViewModel ו־Repository: "/android/topics/04-viewmodel-repository/"
+        - HTTP ו־JSON: "/android/topics/08-http-client/"
+        - Room ושדרוג מסד: "/android/topics/12-room-persistence/"
+        - Paging ונתונים בלי רשת: "/android/topics/25-paging-offline-cache/"
+    - יכולות מכשיר ופרטיות:
+        - הרשאות ו־Activity Result: "/android/topics/15-permission-result-contracts/"
+        - מצלמה, גלריה ואחסון: "/android/topics/19-camera-gallery-storage/"
+        - מיקום ומפות: "/android/topics/20-location-maps/"
+        - פרטיות וסודות: "/android/topics/16-privacy-secrets-transport/"
+    - בדיקות, תקלות והפצה:
+        - בדיקות ממשק Android: "/android/topics/05-android-ui-tests/"
+        - איתור תקלות שיטתי: "/android/topics/06-systematic-debugging/"
+        - גרסת Release וחתימה: "/android/topics/17-release-signing-maintenance/"
+        - הצגת פרויקט עם ראיות: "/android/topics/18-project-evidence/"
 
-  - ניהול פרויקט:
-    - 027 עדכוני גרסאות: "/android/projectSteps/027versionUpdates"
-    - 011 הוספת Activities: "/android/projectSteps/011addingActivities"
-    - 013 ישן - הוספת Activity לתפריט: "/android/projectSteps/013addingActivityToMenu"
-    - 014a תפריט פרגמנטים: "/android/projectSteps/014a.creatingFragmentsMenu"
-    - 014b תפריט - הוספת פרגמנטים: "/android/projectSteps/014b.AddingFragmentsToMenu"
-    - 015a הוספת מודל: "/android/projectSteps/015a.creatingTicTacToeModel"
-    - 015b הוספת מודל. המשך: "/android/projectSteps/015b.AddingTicTacToeToMainActivity"
-    - 016 multiplayer: "/android/projectSteps/016.TicTacToeSignalR"
-    - 017 duplicate-add activity: "/android/projectSteps/017DuplicateAndAddActivityToMenu"
-    - 018a עמוד לוגין: "/android/projectSteps/018a.LoginActivityFromGui"
-    - 018b יצירת פיירבייס: "/android/projectSteps/018b.FirebaseProjectRtdbAuthSetup"
-    - 018c לוגין לפיירבייס: "/android/projectSteps/018c.EmailPasswordLoginAndFBRef"
-    - 018d Google OAuth Login and SHA1: "/android/projectSteps/018d.GoogleOAuthLoginAndSHA1"
-    - 019a Binding Instead of FindViewById: "/android/projectSteps/019a.BindingInsteadOfFindByID"
-    - 019b View Binding ב-MainActivity: "/android/projectSteps/019bBindingsForMainActivity"
-    - 020 Touch sensors and Canvas: "/android/CollectCircles/01.collect-circles-drawing"
-    - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
-    - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
-
-  א מתקדם:
-  - תקשורת ונתונים:
-    - Requery 1 - טבלת Student: "/android/sqlite/01.requery-student"
-    - Requery 2 - קשר עם דירוג: "/android/sqlite/02.requery-rated-relationship"
-    - Requery 3 - JOIN והוספות: "/android/sqlite/03.requery-join-and-inserts"
-    - Requery 4 - RecyclerView ומחיקה: "/android/sqlite/04.requery-recyclerview-delete"
-    - 08 Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
-    - 181 חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
-    - 185 Firebase FBRef (חדש): "/android/projectSteps/185newFBref"
-  - שונות:
-    - הכנה לבחינות:
-      - שאלות לדוגמה לבגרות והכנה: "/android/exam-prep/Exemplary Questions to Graduation & Preparation Exams.docx"
-      - מצגת הכנה לפני בחינה: "/android/exam-prep/prompts_before_exam.pptx"
-      - מצגת הכנה לבחינה - יוסי Y64: "/android/exam-prep/exam-prep-yossi-y64.pptx"
-      - שאלות שהמבדק עשוי לשאול: "/android/exam-prep/questions_tester_may_ask"
-    - 14 BroadcastReceiver: "/android/alon/14.BroadCastReceiver.pdf"
-    - 15 Fragments (מצגת): "/android/alon/15.Fragments.pptx"
-    - 15b מדריך Fragments: "/android/alon/15b.FragmentsTutorial"
-    - 16 עבודה ברקע: "/android/alon/16.BackgroundWork.pdf"
-    - 192 KT JetPack Compose: "/android/projectSteps/192supportJetPackCompose"
-
-  #   - תיקון גרסאות: "/android/versionUpdates"
-  #   - הוספת Activity: "/android/projectSteps/addingActivities"
-  #   - הוספת Activity לתפריט: "/android/projectSteps/addingActivityToMenu"
-  #   - תיקון קיצור לפירמוט: "/android/androidCodeFormatting"
-  #   - FBref reloaded: "/android/projectSteps/newFBref"
-  #   - שינוי שם: "/android/projectSteps/renameProject"
-  #   - התחברות ל-Firebase: "/android/projectSteps/connectDatabase"
+  עזר ובגרות באנדרואיד:
+    - סרטונים ומפגשים:
+        - סרטוני AppSchool: "https://appschoolfront.web.app/course/learn/wmdWWTs17sLTO8N20HtO"
+        - מפגשי אנדרואיד עם זאב: "/android/zeev/meetings"
+    - ממשק, פריסות וניווט:
+        - 05 תרגיל Layout: "/android/alon/05.Layout%20Exercise.pdf"
+        - 05 דגם MVC/MVP: "/android/alon/05.LayoutExMVC.MVP"
+        - 05 מודל תרגול: "/android/alon/05.LayoutExModel"
+        - 07 Activities & Intents: "/android/alon/07.ActivitiesAndIntents.pdf"
+        - 09 RecyclerView: "/android/alon/09.RecycleView.pdf"
+        - 10 Dialog: "/android/alon/10.Dialog.pdf"
+        - 11 Implicit Intents: "/android/alon/11.Implicit%20Intents.pdf"
+        - 12 Activity For Result: "/android/alon/12.ActivityForResult.pdf"
+        - 15 Fragments (מצגת): "/android/alon/15.Fragments.pptx"
+        - 15b מדריך Fragments: "/android/alon/15b.FragmentsTutorial"
+    - נתונים, הרשאות ומערכת:
+        - 08 Shared Preferences: "/android/alon/08.SharedPreferences.pdf"
+        - 13b הרשאות (PDF): "/android/alon/13b.Permissions.pdf"
+        - 13 מדריך הרשאות: "/android/alon/13.android_permissions_tutorial_Version2"
+        - 14 BroadcastReceiver: "/android/alon/14.BroadCastReceiver.pdf"
+        - 16 עבודה ברקע: "/android/alon/16.BackgroundWork.pdf"
+        - 181 חיבור למסד נתונים: "/android/projectSteps/181connectDatabase"
+        - 185 Firebase FBRef: "/android/projectSteps/185newFBref"
+        - 192 Kotlin Jetpack Compose: "/android/projectSteps/192supportJetPackCompose"
+    - ניהול פרויקט:
+        - 027 עדכוני גרסאות: "/android/projectSteps/027versionUpdates"
+        - 191 שינוי שם פרויקט: "/android/projectSteps/191renameProject"
+        - 202 Git Pull Requests: "/android/projectSteps/202GitPullRequests"
+    - הכנה לבחינה:
+        - שאלות לדוגמה לבגרות והכנה: "/android/exam-prep/Exemplary Questions to Graduation & Preparation Exams.docx"
+        - מצגת הכנה לפני בחינה: "/android/exam-prep/prompts_before_exam.pptx"
+        - מצגת הכנה לבחינה - יוסי Y64: "/android/exam-prep/exam-prep-yossi-y64.pptx"
+        - שאלות שהמבדק עשוי לשאול: "/android/exam-prep/questions_tester_may_ask"
 
   # חיצוני מדמח:
   #   - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
@@ -338,9 +333,10 @@ navbar-menu-sets:
   android:
     label: אנדרואיד
     items:
-      - א יסודות
-      - א תרגול
-      - א מתקדם
+      - מתחילים באנדרואיד
+      - מסלולי פרויקט
+      - מעבדות נושא
+      - עזר ובגרות באנדרואיד
   modelim:
     label: מודלים חישוביים
     items:
