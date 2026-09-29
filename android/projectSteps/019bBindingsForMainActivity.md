@@ -2,7 +2,7 @@
 layout: page
 title: "019b - View Binding ב-MainActivity"
 subtitle: "אתחול בסיסי לשימוש חוזר, ואז המרת מסך המשחק ל-View Binding"
-tags: [אנדרואיד, Android, View Binding, Java, TicTacToe]
+tags: [אנדרואיד, Android, View Binding, Java, TicTacToe, gitignore]
 lang: he
 full-width: true
 ---
