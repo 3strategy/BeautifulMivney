@@ -101,6 +101,39 @@ import com.example.tictacmenu.databinding.ActivityMainBinding;
 {: .box-success}
 **לשימוש חוזר בפרויקט חדש:** זהו אותו אתחול בסיסי ל־Activity עם View Binding. התאימו את שם מחלקת ה־binding לקובץ ה־layout ואת `binding.main` למזהה של ה־View שעליו מחילים את הריווח; בדוגמה זו הוא `@+id/main`.
 
+<details markdown="1">
+<summary>אפשרות נפרדת — עדכון `.gitignore`</summary>
+
+כשמחברים מכשיר, Android Studio עשוי להוסיף לקובץ `.idea/deploymentTargetSelector.xml` בחירה של מכשיר הפריסה. כדי שהקובץ הזה לא יופיע בכל פעם כשינוי ב-Git, אפשר להוסיף את הנתיב לרשימת הקבצים להתעלמות. השינוי אינו קשור ל-View Binding ואינו נדרש להמשך השיעור.
+
+```diff
+ *.iml
+ .gradle
+ /local.properties
+ /.idea/caches
+ /.idea/libraries
+ /.idea/modules.xml
+ /.idea/workspace.xml
+ /.idea/navEditor.xml
+ /.idea/assetWizardSettings.xml
++/.idea/deploymentTargetSelector.xml
+
+ .DS_Store
+ /build
+ /captures
+ .externalNativeBuild
+ .cxx
+ local.properties
+```
+
+אם הקובץ כבר נוסף ל-Git בעבר, הסירו אותו מהמעקב בלי למחוק את העותק המקומי:
+
+```bash
+git rm --cached -- .idea/deploymentTargetSelector.xml
+```
+
+</details>
+
 **בדיקה לפני שממשיכים:** הריצו `Build > Make Project`, פתחו את המסך ובדקו שהתוכן אינו מוסתר על ידי פסי המערכת או מגרעת המסך, גם בסיבוב לרוחב. מכאן ממשיכים לשינויים של מסך המשחק.
 
 ## שלב 2 - החלפה פשוטה של View יחיד
