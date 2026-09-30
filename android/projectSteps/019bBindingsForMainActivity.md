@@ -104,32 +104,68 @@ import com.example.tictacmenu.databinding.ActivityMainBinding;
 <details markdown="1">
 <summary>אפשרות נפרדת — עדכון `.gitignore`</summary>
 
-כשמחברים מכשיר, Android Studio עשוי להוסיף לקובץ `.idea/deploymentTargetSelector.xml` בחירה של מכשיר הפריסה. כדי שהקובץ הזה לא יופיע בכל פעם כשינוי ב-Git, אפשר להוסיף את הנתיב לרשימת הקבצים להתעלמות. השינוי אינו קשור ל-View Binding ואינו נדרש להמשך השיעור.
+כדי לצמצם שינויים ורעש מיותר ב-Git, מומלץ להחליף את כל תוכן `.gitignore` בתבנית הבאה. היא מתעלמת מהגדרות מקומיות של Android Studio ו-IntelliJ, מקובצי Gradle ובנייה, ומקבצים זמניים שהמחשב יוצר. כך Git יציג בעיקר שינויים ששייכים לפרויקט, במקום להטריד אותנו בפרטים מקומיים.
 
 ```diff
- *.iml
- .gradle
- /local.properties
- /.idea/caches
- /.idea/libraries
- /.idea/modules.xml
- /.idea/workspace.xml
- /.idea/navEditor.xml
- /.idea/assetWizardSettings.xml
-+/.idea/deploymentTargetSelector.xml
+- *.iml
+- .gradle
+- /local.properties
+- /.idea/caches
+- /.idea/libraries
+- /.idea/modules.xml
+- /.idea/workspace.xml
+- /.idea/navEditor.xml
+- /.idea/assetWizardSettings.xml
+- .DS_Store
+- /build
+- /captures
+- .externalNativeBuild
+- .cxx
+- local.properties
 
- .DS_Store
- /build
- /captures
- .externalNativeBuild
- .cxx
- local.properties
++# Android Studio / IntelliJ
++.idea/
++*.iml
++
++# Gradle
++.gradle/
++**/build/
++
++# Local machine configuration
++local.properties
++
++# Android generated files
++captures/
++.externalNativeBuild/
++.cxx/
++
++# Build outputs
++*.apk
++*.aab
++output-metadata.json
++
++# Profiling / logs
++*.hprof
++*.log
++
++# OS junk
++.DS_Store
++Thumbs.db
++
++# Temporary/editor files
++*.swp
++*~
 ```
 
-אם הקובץ כבר נוסף ל-Git בעבר, הסירו אותו מהמעקב בלי למחוק את העותק המקומי:
+אם קבצים מסויימים כבר נוספו ל-Git בעבר, הסירו אותם מהמעקב בלי למחוק את העותק המקומי:
 
 ```bash
-git rm --cached -- .idea/deploymentTargetSelector.xml
+git rm -r --cached .idea
+git rm -r --cached --ignore-unmatch .gradle
+git rm -r --cached --ignore-unmatch build
+git rm -r --cached --ignore-unmatch app/build
+git add .gitignore
+git commit -m "Ignore Android Studio and generated files"
 ```
 
 </details>
