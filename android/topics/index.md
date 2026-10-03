@@ -11,6 +11,38 @@ tags: [Android, Java, topics]
 {: .box-note}
 אלה שיעורי העמקה לפרויקט `com.example.topics`. נקודת ההתחלה היא ענף `master` בפרויקט **topics**:‏ Empty Views Activity עם Java,‏ XML ו־View Binding. רוב המעבדות מתחילות ממנו; כשהנושא הוא refactoring של מעבדה קודמת, בסיס ההשוואה מופיע בטבלה. קראו את בסיס ההשוואה לפני שמעתיקים שינויי קוד.
 
+## איך לומדים מהקוד, לא רק מעתיקים אותו?
+
+בכל מעבדה עברו על אותו רצף: נבאו תוצאה, קראו את זרימת הנתונים, כתבו את השינוי, ובדקו את התחזית. `/** ... */` לפני מתודה היא Javadoc: היא מתארת את החוזה למי שקורא למתודה. `@param` אומר מה מותר למסור, `@return` מה נקבל, ו־`@throws` איזה כשל צפוי. הערת `//` בתוך גוף מתארת החלטת מימוש חשובה, למשל למה תוצאה ישנה נפסלת. אל תכתבו הערה שרק מתרגמת `count++` למילים.
+
+מעל `@Override` של `onCreate` בתבנית שלכם הוסיפו את התיעוד הבא כבר במעבדה הראשונה שתבצעו. השאירו אותו במעבדות המשך; אין צורך לשנות אותו רק משום שמצב המסך עבר ל־ViewModel. `savedInstanceState` הוא פרמטר של callback המערכת, גם כאשר המעבדה המסוימת אינה שומרת בו נתון משלה.
+
+```java
+    /**
+     * Creates the current Activity View tree and connects the screen's actions.
+     *
+     * @param savedInstanceState prior small UI snapshot, or null for a fresh launch
+     */
+```
+
+במעבדות ארוכות יש "קוד משלים במלואו" בתוך `<details>`. זהו חלק מן השיעור, עם כל התיעוד וההערות. בקריאה ישירה של Markdown, פתחו גם את קובצי `code/NN/*.md` המקושרים בה; אין צורך להמתין לפרסום האתר או להעתיק מפרויקט דוגמה אחר. קובץ קיים מוצג כשינוי ממוקד, וקובץ חדש במלואו. השאירו תשתית תבנית שלא נדרשת לשינוי.
+
+## בוחרים מכשיר לפני התקנה ובדיקה
+
+לכל ענפי המעבדות יש אותו `applicationId`:‏ `com.example.topics`. התקנת ענף אחר על אותו מכשיר מעדכנת את אותה אפליקציה; זו אינה אפליקציה נפרדת לכל מעבדה. לכן בוחרים אמולטור למעבדה ומוודאים את שמו לפני התקנה. בדיקת instrumentation מתקינה גם APK נוסף של הבדיקות, ויכולה לשנות את נתוני האפליקציה כחלק מן התרחיש.
+
+ב־Android Studio בחרו את האמולטור ברשימת המכשירים של תצורת ההרצה. בשורת הפקודה, `:app:connectedDebugAndroidTest` אינו בחירה בשם של אמולטור יחיד. כשמחוברים כמה מכשירים, השתמשו במסלול המפורש הבא מתוך שורש הפרויקט. `adb` זמין בתיקיית `platform-tools` של Android SDK; פתחו טרמינל שבו התיקייה נמצאת ב־PATH. החליפו **בכל** פקודה את `emulator-5562` במספר הסידורי שמופיע אצלכם ב־`adb devices -l`:
+
+```powershell
+adb devices -l
+.\gradlew.bat :app:assembleDebug :app:assembleDebugAndroidTest
+adb -s emulator-5562 install -r app/build/outputs/apk/debug/app-debug.apk
+adb -s emulator-5562 install -r app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+adb -s emulator-5562 shell am instrument -w com.example.topics.test/androidx.test.runner.AndroidJUnitRunner
+```
+
+`-s` בוחר מכשיר, `-r` מבקש התקנה מעל גרסה קיימת ו־`-w` מחכה לסיום הבדיקות כדי להציג את התוצאה. ההתקנה אינה הבטחה לשמירת נתונים: הבדיקות עצמן עשויות לנקות אותם. כאן Gradle **בונה** את שני הקבצים, ו־ADB **מתקין ומריץ** רק על המכשיר שנבחר בכל פקודה. בחירת serial בתהליך PowerShell אחד אינה עוברת אוטומטית לתהליך חדש. לתיק הראיות שמרו גם את ה־serial, גרסת Android והפלט; שם ענף לבדו אינו אומר היכן נבדק הקוד. ראו [בחירת מכשיר ב־ADB](https://developer.android.com/tools/adb#directingcommands) ו־[הרצת instrumentation משורת הפקודה](https://developer.android.com/studio/test/command-line#RunTestsDevice).
+
 ## פתיחת הפרויקט ומעבר לענף של מעבדה
 
 אחרי שכפול מלא (clone) של הפרויקט, פתחו את חלון **Git** ואת לשונית **Log** ב־Android Studio. תצוגת היומן מציגה את היסטוריית הפרויקט ואת הענפים השונים; ליד כל commit מופיעים הסימונים של הענפים שמצביעים עליו. לכן ייתכן שתראו הרבה שורות וחיבורים בין ענפים — זה צפוי.

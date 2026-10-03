@@ -31,6 +31,45 @@ stateDiagram-v2
 
 מתחילים מענף `master` בפרויקט **topics** (`com.example.topics`), עם Empty Views Activity,‏ Java/XML ו־View Binding. ענף התוצאה הוא `codex/ui-states-retry`. המקור במעבדה הוא `FakeBookRepository`: הוא מחזיר תוצאות קבועות כדי שאפשר יהיה לשחזר כל מצב בכיתה בלי שרת. הוא **אינו לקוח רשת**; אם מחליפים אותו ב־API או במסד נתונים, את העבודה האמיתית יש לבצע מחוץ ל־main thread. השיעור כאן הוא החוזה בין תוצאת המקור למצב המסך.
 
+## עוקבים אחרי בקשה אחת עד הסוף
+
+נניח שנבחר `FAIL_ONCE`. `scenario` עונה על "מה ביקשנו?", `attempt` על "איזה ניסיון זה?", ו־`state` על "מה מותר למסך להציג עכשיו?" בניסיון 1 נפרסם Loading ואז Error. Retry משאיר את התרחיש, מעלה רק את הניסיון ל־2 ומתחיל שוב. בחירת תרחיש חדש מתחילה ניסיון 1. אם היינו מעלים את הניסיון גם אחרי סיבוב, הסיבוב היה הופך בטעות לפעולת Retry.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Screen as Activity
+    participant Queue as Main message queue
+    participant Source as Fake repository
+    User->>Screen: choose FAIL_ONCE
+    Screen->>Screen: attempt = 1, state = LOADING, render
+    Screen->>Queue: postDelayed runnable
+    Note over Queue: UI thread remains free during the delay
+    Queue->>Source: load FAIL_ONCE, 1
+    Source-->>Screen: ERROR
+    Screen->>Screen: state = ERROR, render
+    User->>Screen: Retry
+    Screen->>Queue: same scenario, attempt = 2
+    Queue->>Source: load FAIL_ONCE, 2
+    Source-->>Screen: books
+    Screen->>Screen: state = SUCCESS, render
+```
+
+ה־`Runnable` הוא פעולה שנמסרת לביצוע מאוחר יותר; ביטוי lambda מתאר את הפעולה ואינו מבצע אותה מיד. `postDelayed` מכניסה אותה לתור של ה־Looper שבחרנו. כאן זה תור ה־main thread: ההמתנה אינה חוסמת אותו, אבל **גוף הפעולה כן רץ בו** כשהתור מגיע אליה. לכן השהיה מדומה אינה הוכחה שעבודה חוסמת תתבצע ברקע.
+
+`render` מרכזת כללים שאמורים להתקיים תמיד: Retry גלוי רק בשגיאה, רשימה גלויה רק בהצלחה, ואין בקשה חדשה בטעינה. אלה כללי עקביות של המסך. כיבוי הכפתורים מספק משוב למשתמש; בדיקת `state` ב־`choose` מגינה גם אם פעולה נקראת ישירות בקוד. ב־`onDestroy` מסירים את הפעולה הישנה מן התור, משום שהיא מחזיקה הפניה ל־Activity הישן. ה־Activity החדש רשאי לתזמן מחדש את הניסוי מתוך צילום המצב, בלי להשתמש ב־binding הישן.
+
+## עצרו ונבאו
+
+בתרחיש FAIL_ONCE טעינה נכשלה. מה יקרה אם Retry תאפס את attempt ל־1? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+נישאר בכשל הראשון שוב ושוב. Retry משתמשת באותו scenario ומתקדמת לניסיון הבא; בחירת scenario חדשה מתחילה רצף חדש. אלה שתי פעולות שונות גם אם שתיהן מסתיימות במסך LOADING.
+
+</details>
+
 ## 1. מקור נתונים צפוי
 
 צרו Java Class בשם `FakeBookRepository` בתוך **app > kotlin+java > com.example.topics**. `Scenario` הוא סוג הבקשה; `Result` מחזיר סטטוס ומערך ספרים. הכשל ב־`FAIL_ONCE` מתרחש רק כאשר `attempt == 1`, ולכן Retry הוא תרגיל שאפשר להוכיח בו התאוששות.
@@ -47,13 +86,25 @@ public final class FakeBookRepository {
         public final Status status;
         public final String[] books;
 
+        /**
+         * Bundles a source outcome with its payload; an empty successful payload is valid.
+         *
+         * @param status success or failure of the source operation
+         * @param books returned titles, possibly an empty array
+         */
         private Result(Status status, String[] books) {
             this.status = status;
             this.books = books;
         }
     }
 
-    /** Returns an error only on the first FAIL_ONCE attempt. */
+    /**
+     * Produces a deterministic source result without network or disk I/O.
+     *
+     * @param scenario response family selected by the user
+     * @param attempt one-based attempt; FAIL_ONCE fails only for 1
+     * @return outcome to translate into ERROR, EMPTY, or SUCCESS in the UI
+     */
     public Result load(Scenario scenario, int attempt) {
         if (scenario == Scenario.FAIL_ONCE && attempt == 1) {
             return new Result(Status.ERROR, new String[0]);
@@ -237,7 +288,11 @@ public final class FakeBookRepository {
 הוסיפו את `choose` ואת `scheduleLoad` אחרי `onCreate`. ההשהיה של 1500ms נועדה רק להפוך את מצב הטעינה לגלוי. אין כאן קריאת רשת. `Handler` מריץ את ה־Runnable על ה־main thread; **אין להחליף** את `repository.load` בקוד HTTP חוסם באותו Runnable. כשהתוצאה מגיעה, ממפים אותה ל־`ERROR`,‏ `EMPTY` או `SUCCESS`, ואז מציירים מחדש.
 
 ```java
-    /** Starts a new scenario; a second tap cannot replace an in-flight load. */
+    /**
+     * Starts a new scenario only when no load is in flight.
+     *
+     * @param selected scenario to remember for both this request and its Retry
+     */
     private void choose(FakeBookRepository.Scenario selected) {
         if (state == UiState.LOADING) {
             return;
@@ -248,15 +303,20 @@ public final class FakeBookRepository {
         scheduleLoad();
     }
 
-    /** Delays a deterministic response so loading and retry remain observable. */
+    /**
+     * Publishes loading now and queues the current deterministic attempt for later.
+     * Runs on the main thread; the delayed callback must never perform blocking I/O.
+     */
     private void scheduleLoad() {
         render();
         pendingLoad = () -> {
+            // This callback is now executing, not waiting in the queue.
             pendingLoad = null;
             FakeBookRepository.Result result = repository.load(scenario, attempt);
             books = result.books;
             if (result.status == FakeBookRepository.Status.ERROR) {
                 state = UiState.ERROR;
+            // A successful request can contain no books; that is not a failure.
             } else if (books.length == 0) {
                 state = UiState.EMPTY;
             } else {
@@ -271,7 +331,10 @@ public final class FakeBookRepository {
 הוסיפו את `render` כמתודה היחידה שמחליטה מה גלוי ומה לחיץ. שלושת כפתורי הבקשה מושבתים בזמן `LOADING`, וכפתור Retry גלוי רק ב־`ERROR`. ב־`SUCCESS` מציגים את הנתונים שהוחזרו, ולא טקסט הצלחה ריק.
 
 ```java
-    /** All visibility and enabled rules follow one explicit state. */
+    /**
+     * Projects the current state onto every output View without changing the model.
+     * All visibility and enabled rules belong here so no stale UI combination remains.
+     */
     private void render() {
         boolean loading = state == UiState.LOADING;
         binding.loadBooks.setEnabled(!loading);
@@ -304,6 +367,11 @@ public final class FakeBookRepository {
 לבסוף הוסיפו שמירת מצב וניקוי. הסרת ה־callback ב־`onDestroy` מונעת מה־Activity הישן לעדכן את ה־binding שלו אחרי שהמסך נוצר מחדש. אם המצב שנשמר היה `LOADING`, ה־Activity החדש יתזמן את הניסוי מחדש כפי שראינו ב־`onCreate`.
 
 ```java
+    /**
+     * Records the request identity and displayed result for recreation.
+     *
+     * @param outState destination for this small UI restoration snapshot
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(STATE_KEY, state.name());
@@ -313,13 +381,27 @@ public final class FakeBookRepository {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Removes this Activity's queued callback so it cannot update an obsolete binding.
+     */
     @Override
     protected void onDestroy() {
         if (pendingLoad != null) {
+            // Cancel the callback owned by this Activity, not the new instance.
             handler.removeCallbacks(pendingLoad);
         }
         super.onDestroy();
     }
+```
+
+מעל `@Override` של `onCreate` הקיימת הוסיפו את ה־Javadoc הבא. אין להחליף את גוף המתודה או למחוק את טיפול ה־insets של התבנית:
+
+```java
+    /**
+     * Creates the current Activity View tree and connects the screen's actions.
+     *
+     * @param savedInstanceState prior small UI snapshot, or null for a fresh launch
+     */
 ```
 
 ## בודקים כל מעבר, כולל כשל

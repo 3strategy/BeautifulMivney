@@ -146,6 +146,8 @@ full-width: true
 
 ההשוואה נעשתה מול [מפת הנושאים באנדרואיד](/android/topics-index), שמבחינה בין שיעור מעשי, העמקה ומקור משלים. זו תמונת מצב של **עומק ההוראה המתועד**, לא חיפוש מילים בלבד: נושא עשוי להופיע בקוד או במצגת ועדיין להזדקק למסלול שבו התלמיד מתרגל, בודק ומסביר אותו.
 
+מעבדות [topics](/android/topics/) הועמקו בכל 26 הנושאים: מודל חשיבה, תרשים זרימה/אחריות, חוזי מתודות ב־Javadoc והערות על החלטות מימוש. זה מחזק את ההבנה בתוך המעבדות הקיימות; הוא אינו סוגר פערי חומרה, נגישות ידנית, שרת אמיתי או העברה עצמאית לפרויקט אחר. לכן הדרישות האלה נשארות בטבלה גם כשנוסף הסבר טוב יותר.
+
 | סטטוס | פירוש |
 |---:|---:|
 | **חסר** | לא נמצא במפה שיעור ממוקד או מסלול לימוד מספק. |
@@ -170,7 +172,7 @@ full-width: true
 
 | נושא יעד | סטטוס נוכחי | מה חסר כדי להגיע ליעד | נקודת פתיחה קיימת |
 |---:|:---:|---:|---:|
-| יסודות HTTP ולקוח API כללי | **נוספה מעבדת API; נותר offline/cache** | [מעבדת HTTP](/android/topics/08-http-client/) מלמדת GET,‏ status,‏ Content-Type,‏ Retrofit/OkHttp, המרת JSON למודל, timeout, ביטול ב־lifecycle ו־retry ידני על כשל מתאים. נבדקו 200/404 באמולטור וארבעה מקרי תשובה ב־MockWebServer; עדיין חסרים cache,‏ offline ושחזור תוצאה אחרי סיבוב | [מעבדת HTTP](/android/topics/08-http-client/), [SignalR](/android/projectSteps/016.TicTacToeSignalR) |
+| יסודות HTTP ולקוח API כללי | **נוספו API ו־offline/cache; נותר שחזור single-item** | [מעבדת HTTP](/android/topics/08-http-client/) מלמדת GET,‏ status,‏ Content-Type,‏ Retrofit/OkHttp, המרת JSON למודל, timeout, ביטול ב־lifecycle ו־retry ידני על כשל מתאים. נבדקו 200/404 באמולטור וארבעה מקרי תשובה ב־MockWebServer; cache ו־offline נלמדים ב[מעבדה 25](/android/topics/25-paging-offline-cache/), עם Room כמקור לתצוגה וכשל refresh ששומר נתון ישן; נותר לתרגל שחזור תוצאת HTTP חד־פריטית אחרי סיבוב | [מעבדת HTTP](/android/topics/08-http-client/), [SignalR](/android/projectSteps/016.TicTacToeSignalR) |
 | אסינכרוניות ותחרות בין פעולות | **נוספה מעבדת תחרות; נותר מקרה נתונים אמיתי** | [מעבדת התשובה הישנה](/android/topics/09-async-races/) מפעילה שתי עבודות חופפות ב־Executor, מסננת callback מיושן לפי דור, מבטלת Future ושומרת תוצאה בסיבוב. שלוש בדיקות UI עברו באמולטור. עדיין כדאי לתרגל תחרות בכתיבה למסד או ברשת אמיתית | [מעבדת תחרות](/android/topics/09-async-races/), [מחשב ברקע ב־Connect4](/android/Connect4/06.connect4-background-turns/), [בדיקת דור הרמז](/android/hex/08-hint/#show-hint-guard) |
 | ניווט מודרני ושחזור זרימה | **נוספה מעבדת ניווט; נותרות הרחבות** | [מעבדת הניווט](/android/topics/10-navigation-flow/) כוללת NavHost/graph,‏ Back מול Up, deep link עם ID, טעינה ממקור, Activity Result Contract ושחזור צבע אחרי סיבוב. ארבע בדיקות UI עברו באמולטור; בהמשך כדאי להרחיב לקישור HTTPS מאומת, nested graph וזרימה עם כמה משימות | [מעבדת ניווט](/android/topics/10-navigation-flow/), [Activities ו־Intents](/android/projectSteps/013addingActivityToMenu) |
 | RecyclerView כרכיב רשימה כללי | **נוספה מעבדת רשימה עם מקור שמור** | [מעבדת RecyclerView](/android/topics/11-recyclerview-diffutil/) מלמדת מיחזור, ID יציב,‏ DiffUtil ושני view types; [מעבדת Room](/android/topics/12-room-persistence/) שומרת את ה־Favorite אחרי סגירת האפליקציה | [מעבדת RecyclerView](/android/topics/11-recyclerview-diffutil/), [מעבדת Room](/android/topics/12-room-persistence/) |

@@ -27,6 +27,36 @@ tags: [Android, Java, RecyclerView, DiffUtil, testing]
 | ViewHolder | מחזיק View Binding של `row_header` או `row_book` בלבד |
 | DiffUtil | משווה רשימה ישנה לחדשה, כדי לעדכן את השורות שהשתנו |
 
+## אותה תצוגה יכולה להציג שני ספרים שונים
+
+דמיינו שה־ViewHolder הראשון מציג Ada מסומנת, ואחרי גלילה משמש להצגת ספר 15 שאינו מסומן. המערכת ממחזרת **את עץ התצוגה**, לא את המשמעות שלו. אם bind מציבה כוכב רק כשהערך true, הספר החדש יירש את הכוכב הישן. לכן כל bind חייב לכתוב גם את מצב false, ולהחליף את המאזין כך שישלח את ID של הספר הנוכחי.
+
+```mermaid
+flowchart LR
+    V["ViewModel: favorite IDs"] --> S["New immutable Book snapshot"]
+    S --> R["New BookRow list"]
+    R --> D["Diff: same ID, changed favorite"]
+    D --> H["Rebind row View"]
+    H -->|"tap sends ID"| V
+```
+
+נשווה ספר בעל ID 1 לפני ואחרי Save: הזהות זהה ולכן `areItemsTheSame` מחזירה true; התוכן השתנה ולכן `areContentsTheSame` מחזירה false. אובייקט חדש אינו בהכרח פריט חדש. אם נעביר ל־DiffUtil את אותו אובייקט ונשנה אותו במקום, הצד "לפני" עשוי כבר להכיל את הערך החדש ולא יישאר הבדל להשוות. לכן `withFavorite` יוצרת ספר חדש, ו־`submitBooks` יוצרת רשימה חדשה.
+
+מיקום 3 אומר רק "השורה השלישית כרגע". הוספת כותרת או מיון משנה אותו; ID מזהה את הספר גם אחריהם. המאזין נוצר מחדש בכל bind ולוכד את `row` של אותו bind, ולא מיקום שנשמר מזמן. stable IDs מאפשרים גם ל־RecyclerView לזהות שורות; הם אינם תחליף לכללי השוויון של DiffUtil.
+
+`clone()` מעתיקה כאן את המערך בלבד, ולא כל `Book` בתוכו. זה מספיק משום שגם Book בלתי משתנה: שדותיו final, הכותרת String, ושינוי favorite מחזיר Book חדשה. favoriteIds שייכת ל־ViewModel ולא ל־ViewHolder, ולכן סיבוב ומיחזור אינם מאבדים אותה. אחרי תהליך חדש ה־Set מתחילה מחדש; המעבדה הבאה תחליף את מקור האמת הזה במסד.
+
+## עצרו ונבאו
+
+View שהראתה ספר מסומן ממוחזרת עבור ספר שאינו מסומן. מה יקרה אם bind תשנה את הכפתור רק כאשר favorite=true? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+הכוכב הישן עלול להישאר. bind חייבת להציב גם את מצב המסומן וגם את מצב הלא־מסומן מתוך הנתון הנוכחי. ה־View היא משטח תצוגה ממוחזר; מקור האמת הוא זהות הספר והמודל.
+
+</details>
+
 ## 1. מוסיפים RecyclerView ומחליפים את תצוגת ההצלחה
 
 ב־**Gradle Scripts > libs.versions.toml** הוסיפו `recyclerview = "1.4.0"` ל־`[versions]` ואת `recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }` ל־`[libraries]`. ב־**Gradle Scripts > build.gradle.kts (Module :app)** הוסיפו `implementation(libs.recyclerview)` ובצעו Sync.
@@ -57,19 +87,32 @@ public final class Book {
     public final String title;
     public final boolean favorite;
 
+    /**
+     * Creates immutable display data for one stable book identity.
+     *
+     * @param id stable positive identity, independent of row position
+     * @param title visible title
+     * @param favorite current favorite state
+     */
     public Book(int id, String title, boolean favorite) {
         this.id = id;
         this.title = title;
         this.favorite = favorite;
     }
 
+    /**
+     * Returns updated display data while preserving this book's identity.
+     *
+     * @param value new favorite state
+     * @return new Book; this instance remains unchanged
+     */
     public Book withFavorite(boolean value) {
         return new Book(id, title, value);
     }
 }
 ```
 
-לספר חדש יש אותו ID גם אם מצבו `favorite` השתנה. `withFavorite` מחזירה **אובייקט חדש**; כך `DiffUtil` יכולה להשוות תמונת מצב ישנה לחדשה. ב־`BooksUiState` החליפו את ארבע ההופעות של `String[]`/`new String[0]` ב־`Book[]`/`new Book[0]` (השדה, constructor,‏ `success` ו־`getBooks`):
+לספר חדש יש אותו ID גם אם מצבו `favorite` השתנה. `withFavorite` מחזירה **אובייקט חדש**; כך `DiffUtil` יכולה להשוות תמונת מצב ישנה לחדשה. ב־`BooksUiState` החליפו את כל ההופעות של `String[]`/`new String[0]` ב־`Book[]`/`new Book[0]` (השדה, constructor,‏ `success` ו־`getBooks`):
 
 {% code_diff %}
  public final class BooksUiState {
@@ -131,6 +174,14 @@ public final class BookRow {
     public final String title;
     public final boolean favorite;
 
+    /**
+     * Creates one immutable adapter row; factories choose its meaningful row type.
+     *
+     * @param type header or book
+     * @param id identity unique across this adapter
+     * @param title visible row text
+     * @param favorite favorite state for a book row
+     */
     private BookRow(int type, long id, String title, boolean favorite) {
         this.type = type;
         this.id = id;
@@ -138,10 +189,22 @@ public final class BookRow {
         this.favorite = favorite;
     }
 
+    /**
+     * Creates a heading whose reserved ID does not collide with positive book IDs.
+     *
+     * @param title heading text
+     * @return a header row with no favorite action
+     */
     public static BookRow header(String title) {
         return new BookRow(HEADER, -1, title, false);
     }
 
+    /**
+     * Projects a book snapshot into adapter data.
+     *
+     * @param book immutable book to display
+     * @return a book row with the same identity and visible state
+     */
     public static BookRow book(Book book) {
         return new BookRow(BOOK, book.id, book.title, book.favorite);
     }
@@ -152,15 +215,29 @@ public final class BookRow {
 
 ## 4. נותנים ל־ListAdapter לעדכן רק מה שהשתנה
 
-צרו `BookAdapter` שיורשת מ־`ListAdapter<BookRow, RecyclerView.ViewHolder>`. בענף התוצאה נמצאת המחלקה המלאה. החלקים שקובעים את התנהגות הרשימה הם:
+צרו `BookAdapter` שיורשת מ־`ListAdapter<BookRow, RecyclerView.ViewHolder>`. המחלקה המלאה מופיעה בקוד המשלים שבהמשך, עם Javadoc לכל callback ולכל ViewHolder. החלקים שקובעים את התנהגות הרשימה הם:
 
 ```java
 private static final DiffUtil.ItemCallback<BookRow> DIFF = new DiffUtil.ItemCallback<>() {
+    /**
+     * Compares logical identity even when displayed content has changed.
+     *
+     * @param oldItem row from the previous list
+     * @param newItem row from the incoming list
+     * @return true for matching row type and stable ID
+     */
     @Override
     public boolean areItemsTheSame(@NonNull BookRow oldItem, @NonNull BookRow newItem) {
         return oldItem.type == newItem.type && oldItem.id == newItem.id;
     }
 
+    /**
+     * Compares every field whose change requires this row to be rebound.
+     *
+     * @param oldItem previous visible data
+     * @param newItem incoming visible data
+     * @return true when title and favorite state match
+     */
     @Override
     public boolean areContentsTheSame(@NonNull BookRow oldItem, @NonNull BookRow newItem) {
         return oldItem.favorite == newItem.favorite && oldItem.title.equals(newItem.title);
@@ -181,6 +258,7 @@ if (holder instanceof HeaderHolder) {
 } else {
     BookHolder bookHolder = (BookHolder) holder;
     bookHolder.binding.bookTitle.setText(row.title);
+    // Both true and false overwrite any state left by this recycled View.
     bookHolder.binding.favorite.setText(row.favorite
             ? R.string.favorite_on : R.string.favorite_off);
     bookHolder.binding.favorite.setOnClickListener(v -> onFavoriteClick.onFavoriteClick((int) row.id));
@@ -195,10 +273,15 @@ if (holder instanceof HeaderHolder) {
 ב־`BooksViewModel` הוסיפו `Set<Integer> favoriteIds = new HashSet<>()` ואת imports של `Set`/`HashSet`. הפעולה הבאה מחליפה ספר אחד בתמונת מצב חדשה:
 
 ```java
-/** Changes the source state, not a ViewHolder that may be rebound to another book. */
+/**
+ * Changes state by stable identity, then publishes a new immutable snapshot.
+ *
+ * @param id book identity received from the row click, never an adapter position
+ */
 public void toggleFavorite(int id) {
     BooksUiState current = state.getValue();
     if (current == null || current.kind != BooksUiState.Kind.SUCCESS) return;
+    // Set.add returns false when the identity is already present: toggle it off.
     if (!favoriteIds.add(id)) favoriteIds.remove(id);
     Book[] books = current.getBooks();
     for (int index = 0; index < books.length; index++) {
@@ -234,6 +317,33 @@ bookAdapter.submitBooks(state.kind == BooksUiState.Kind.SUCCESS
 
 ב־**Gradle Scripts > libs.versions.toml** הוסיפו `testCore = "1.7.0"`, ספריית `androidx.test:core`, וספריית `androidx.test.espresso:espresso-contrib` עם `version.ref = "espressoCore"`. ב־**Gradle Scripts > build.gradle.kts (Module :app)** הוסיפו `androidTestImplementation` לשתיהן. `espresso-contrib` מספקת `RecyclerViewActions`, שמאפשרת לגלול לשורה מסוימת בבדיקת UI.
 
-צרו `BookListUiTest` ב־**app > kotlin+java > com.example.topics (androidTest)**. הבדיקה בענף התוצאה טוענת ספרים, לוחצת על שורה 1 (אחרי הכותרת), מאמתת `Saved ★`, גוללת לשורה 20 וחזרה, טוענת שוב ומסובבת עם `ActivityScenario.recreate()`. בכל תחנה היא מאמתת את אותו טקסט גלוי. הריצו `:app:connectedDebugAndroidTest` על אמולטור.
+צרו `BookListUiTest` ב־**app > kotlin+java > com.example.topics (androidTest)**. הבדיקה המלאה שבקוד המשלים טוענת ספרים, לוחצת על שורה 1 (אחרי הכותרת), מאמתת `Saved ★`, גוללת לשורה 20 וחזרה, טוענת שוב ומסובבת עם `ActivityScenario.recreate()`. בכל תחנה היא מאמתת את אותו טקסט גלוי. הריצו `:app:connectedDebugAndroidTest` על אמולטור.
 
 בדקו גם ידנית: **Load an empty shelf** צריך להציג מצב ריק בלי כותרת מדף; **Fail once, then succeed** צריך להציג שגיאה ו־Retry, ואז רשימה. בענף התוצאה נבדקו שני המסלולים באמולטור. אם מסירים זמנית מ־`onBindViewHolder` את השורה שמציבה את טקסט Favorite, גללו הרחק וחזרו: ViewHolder ממוחזר עלול להראות מצב של ספר אחר. החזירו את השורה אחרי הניסוי.
+
+
+## הקוד המשלים במלואו
+
+הקטעים הגלויים בשיעור ממקדים את הרעיון; הקבצים הבאים משלימים את כל הקוד הדרוש, עם תיעוד והערות. קראו את השינוי יחד עם ההסבר שמעליו. הם חלק מן השיעור ואינם דורשים פתיחת ענף דוגמה או אתר שפורסם.
+
+### BookAdapter.java
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/11/BookAdapter.java.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/11/BookAdapter.java.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור BookAdapter.java</summary>
+
+{% include_relative code/11/BookAdapter.java.md %}
+
+</details>
+
+### BookListUiTest.java
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/11/BookListUiTest.java.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/11/BookListUiTest.java.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור BookListUiTest.java</summary>
+
+{% include_relative code/11/BookListUiTest.java.md %}
+
+</details>

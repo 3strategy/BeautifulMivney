@@ -19,6 +19,38 @@ tags: [Android, Java, accessibility, localization]
 
 התחילו מענף `master` בפרויקט **topics** (`com.example.topics`):‏ Empty Views Activity ב־Java/XML עם View Binding. ענף הדוגמה הוא `codex/accessibility-adaptive`. קובץ חדש מוצג במלואו; בקובץ קיים מופיע שינוי ממוקד. כל כותרות המיקום להלן משתמשות בתצוגת **Android** של Android Studio.
 
+## מסך אחד, שלוש דרכים להשתמש בו
+
+נגישות אינה כפתור שאפשר להפעיל בסוף. אותה פעולה צריכה להיות ניתנת לגילוי במבט, במגע ובהאזנה. נפריד בין **סמל** שמצויר, **אזור מגע** שמקבל לחיצה, ו**שם פעולה** שקורא המסך אומר. הגדלת הסמל לבדה לא בהכרח מגדילה את אזור המגע; הוספת תיאור לבדה לא מונעת מטקסט להיחתך בגופן גדול.
+
+```mermaid
+flowchart LR
+    N["bookCount: numeric state"] --> Q["quantity selects plural category"]
+    L["current locale"] --> R["resource wording and direction"]
+    Q --> R
+    R --> T["formatted TextView"]
+    T --> V["visible count"]
+    T --> A["screen reader announcement"]
+```
+
+לדוגמה, `getQuantityString(R.plurals.book_count, 2, 2)` משתמש ב־2 הראשון לבחירת קטגוריית הרבים ובשני למילוי placeholder, אם יש כזה במחרוזת שנבחרה. המילה "שניים" אינה תכונה של המספר ב־Java; היא החלטת שפה במשאבים. אחרי החלפת שפה נשאר **המספר** 2, אבל הניסוח, כיוון הפריסה ועץ ה־Views עשויים להשתנות. לכן שומרים מספר ומרנדרים מחדש, ולא שומרים את הטקסט `2 books`.
+
+`dp` מתאים לממדי ממשק שאמורים להישאר דומים בצפיפויות שונות; `sp` מתאים לטקסט המכבד את העדפת גודל הגופן. `wrap_content` וגלילה נותנים לטקסט שהוגדל מקום אמיתי. `start` ו־`end` מתארים תחילת וסוף קריאה; `left` ו־`right` הם צדדים פיזיים. כפתור שמוצמד לתחילת שורה עובר צד בעברית, אבל אין להפוך באופן שרירותי תמונה או מספר.
+
+{: .box-note}
+בכל שינוי שאלו: מה יקרה כשלא רואים את הסמל, כשהאצבע לא מדויקת, וכשהטקסט מתארך? מסך נגיש מספק אותה משמעות במסלולים האלה. בדיקה עם TalkBack וגופן גדול יכולה לחשוף שני כשלים שונים באותו כפתור.
+
+## עצרו ונבאו
+
+מספר הספרים הוא 2. האם נכון לבנות תמיד את הטקסט על ידי חיבור המספר למילה קבועה? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+לא. המספר בוחר את קטגוריית plural במשאבי השפה הנוכחית, ו־getQuantityString מעצבת את הטקסט המתאים. בשפות שונות אותו מספר יכול לבחור ניסוח שונה; מצב התוכנית נשאר מספר, והניסוח הוא אחריות משאבים.
+
+</details>
+
 ## 1. מחרוזות ורבים באנגלית
 
 ב־**app > res > values > strings.xml** החליפו את שם ברירת המחדל והוסיפו את המחרוזות. `plurals` מאפשר ל־Android לבחור צורה לפי מספר; הפרמטר השני ב־`getQuantityString` יספק את המספר שמוצג ב־`%1$d`.
@@ -238,15 +270,24 @@ tags: [Android, Java, accessibility, localization]
 בסוף המחלקה, לפני `}`, הוסיפו את שתי המתודות. `getQuantityString` מקבל פעם אחת את המספר לבחירת הצורה ופעם נוספת כערך להצגה. אין לשמור `View` או טקסט מתורגם בשדה; אחרי שינוי שפה מציירים מחדש מתוך `bookCount`.
 
 ```java
+    /**
+     * Saves the numeric count before rotation or a locale change recreates the screen.
+     *
+     * @param outState restoration data; do not store translated text here
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(SAVED_BOOK_COUNT, bookCount);
         super.onSaveInstanceState(outState);
     }
 
-    /** Uses the current locale to choose both wording and the correct plural form. */
+    /**
+     * Formats the same numeric state using the current locale and plural category.
+     * The quantity selects wording; the format argument supplies a displayed number.
+     */
     private void renderCount() {
         binding.bookCount.setText(getResources().getQuantityString(
+                // First count chooses the category; second fills any %1$d placeholder.
                 R.plurals.book_count, bookCount, bookCount));
     }
 ```
@@ -254,6 +295,16 @@ tags: [Android, Java, accessibility, localization]
 בנו והפעילו. אם העברית נשארת באנגלית, בדקו קודם שהתיקייה נקראת `values-iw`, שה־APK החדש הותקן וששפת האפליקציה הוחלפה בפועל.
 
 אם Lint מזהיר ש־`localeConfig` פועל רק מ־Android 13, זו אזהרת תאימות צפויה: הגדרת המערכת משמשת מ־API 33, ו־AppCompat מטפל בבחירת השפה בגרסאות הקודמות. אזהרות על צבעי `black`/`white` שאינם בשימוש שייכות לקובץ התבנית; אין צורך למחוק אותו כדי להשלים את המעבדה.
+
+מעל `@Override` של `onCreate` הקיימת הוסיפו את ה־Javadoc הבא. אין להחליף את גוף המתודה או למחוק את טיפול ה־insets של התבנית:
+
+```java
+    /**
+     * Creates the current Activity View tree and connects the screen's actions.
+     *
+     * @param savedInstanceState prior small UI snapshot, or null for a fresh launch
+     */
+```
 
 ## מסלול בדיקה שאפשר להדגים
 

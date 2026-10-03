@@ -28,6 +28,41 @@ flowchart LR
 
 **Back** הוא פעולת המשתמש לחזור למקום הקודם ב־task/back stack. **Up** הוא פעולת הממשק לחזור להורה ההיררכי באפליקציה. כשנכנסים מקטלוג לפריט הן נראות דומות; אחרי כניסה מקישור חיצוני הן עשויות להיות שונות. ב־[תיעוד Android ל־deep links](https://developer.android.com/guide/navigation/design/deep-link) מוסבר גם תפקיד `FLAG_ACTIVITY_NEW_TASK` במבנה ה־Back stack.
 
+## נתון ניווט, מצב בחירה וחוזה תוצאה
+
+ה־`itemId` עונה על "איזה פריט פתחנו?" ו־`selectedColor` על "מה בחרנו עבור התצוגה הזאת?" מעבר בין מסכים צריך להעביר את מזהה הפריט; מקור האמת מספק את השם. אם נעביר שם בלבד, שינוי השם במקור לא יגיע למסך. אם נעביר אובייקט גדול, נצמיד את שני המסכים למבנה שלו ולמגבלות ה־Bundle. גם deep link מספק ID, ולכן כל נקודות הכניסה משתמשות באותו מסלול טעינה ותיקוף.
+
+```mermaid
+sequenceDiagram
+    participant D as DetailFragment
+    participant C as PickColorContract
+    participant P as PickColorActivity
+    D->>C: launch(null)
+    C->>P: explicit Intent
+    P-->>C: resultCode plus optional Intent
+    C-->>D: color String or null
+    D->>D: update state, then showColor if View exists
+```
+
+`ActivityResultContract<Void, String>` הוא חוזה מטיפוסים: `Void` אומר שאין קלט לבחירה, ו־`String` הוא סוג התוצאה. `createIntent` אורזת את בקשת הפתיחה; `parseResult` מפרקת תשובת מערכת; `registerForActivityResult` מקשרת תוצאה אל callback. אלה לא שלוש דרכים שונות לפתוח מסך, אלא שלושה שלבים של אותו חוזה. Back בבוחר מחזיר ביטול; `null` אינו בקשה למחוק את הצבע הקודם.
+
+רושמים את ה־launcher באופן עקבי לפני שהרכיב מגיע למצב פעיל, כאן כשדה Fragment. כך המערכת יכולה למסור תוצאה גם אחרי יצירה מחדש. ה־callback שומר קודם את `selectedColor`, ו־`showColor` נוגעת ב־Views רק אם יש binding: תוצאת בחירה ומועד יצירת התצוגה אינם בהכרח אותו רגע. בניית View חדש תציג מחדש את הבחירה השמורה.
+
+ה־NavHost מחזיק את היעד וה־back stack; Fragment מציגה תוכן. ביציאה מפריט אפשר להרוס את ה־View שלו בלי שכל נתוני הניווט ייעלמו. לכן מנקים binding במחזור חיי **View**, ומשחזרים נתון זמני ב־`Bundle` כאשר נוצר מופע Fragment חדש. המשיכו לבדוק ID חסר או לא קיים גם אם כל כפתורי הקטלוג כרגע תקינים: קישור חיצוני הוא קלט נוסף ולא מהימן.
+
+## עצרו ונבאו
+
+deep link מביא itemId שלא קיים בקטלוג. האם לפתוח בכל זאת פריט לפי מיקום ברשימה? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+לא. ID הוא קלט שיש לבדוק, לא מיקום בטוח במערך. ה־Repository מחפשת זהות ומחזירה היעדר תוצאה; המסך מציג את מצב הפריט החסר. כך קישור חיצוני שגוי אינו גורם לחריגת אינדקס.
+
+</details>
+
+ב־`MainActivity.java` הוסיפו מעל `@Override` של `onCreate` את ה־Javadoc המשותפת שב[מפת המעבדות]({{ '/android/topics/' | relative_url }}#איך-לומדים-מהקוד-לא-רק-מעתיקים-אותו). שאר callbacks ומתודות מתועדות בקטעי הקוד של השיעור; התיעוד הזה נשאר גם במעבדת המשך.
+
 ## 1. מוסיפים Navigation Component וגרף
 
 ב־**Gradle Scripts > libs.versions.toml** הוסיפו `navigation = "2.10.2"` למקטע `[versions]` ואת `navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigation" }` למקטע `[libraries]`. ב־**Gradle Scripts > build.gradle.kts (Module :app)** הוסיפו `implementation(libs.navigation.fragment)`, ואז בצעו Sync. ה־Navigation Component מחזיק את היעד הנוכחי ואת המחסנית; אין צורך לנהל בעצמנו `FragmentTransaction` לכל לחיצה.
@@ -116,7 +151,23 @@ nav.addOnDestinationChangedListener((controller, destination, arguments) ->
 
 ## 3. בונים קטלוג ופריט עם View Binding
 
-צרו ב־**app > res > layout** את `fragment_catalog.xml`:‏ `LinearLayout` אנכי עם padding של `24dp`, כותרת `@string/catalog_title` בגודל `24sp`, ושני Buttons ברוחב מלא `@+id/open_first` ו־`@+id/open_second`. צרו `fragment_detail.xml`:‏ `LinearLayout` דומה עם `TextView id=item_name`,‏ `Button id=pick_color` ו־`TextView id=color_result`. הוסיפו מחרוזות מתאימות ל־**app > res > values > strings.xml**, למשל `open_first`,‏ `open_second`,‏ `item_name` (`Item %1$d: %2$s`) ו־`missing_item` (`Item %1$d was not found.`). בדיפ של ענף התוצאה נמצאים ה־XML ויתר המחרוזות המדויקות.
+צרו ב־**app > res > layout** את `fragment_catalog.xml`:‏ `LinearLayout` אנכי עם padding של `24dp`, כותרת `@string/catalog_title` בגודל `24sp`, ושני Buttons ברוחב מלא `@+id/open_first` ו־`@+id/open_second`. צרו `fragment_detail.xml`:‏ `LinearLayout` דומה עם `TextView id=item_name`,‏ `Button id=pick_color` ו־`TextView id=color_result`. הוסיפו מחרוזות מתאימות ל־**app > res > values > strings.xml**, למשל `open_first`,‏ `open_second`,‏ `item_name` (`Item %1$d: %2$s`) ו־`missing_item` (`Item %1$d was not found.`). לשני המכלים רוחב `match_parent`, גובה `match_parent`; לילדים רוחב `match_parent` וגובה `wrap_content`. לשני כפתורי הקטלוג טקסט מהמחרוזת בעלת אותו שם; לכפתור `pick_color` טקסט `@string/pick_color`. מחרוזות התוצאה ייקבעו בקוד כדי ששחזור state יוכל לעדכן אותן.
+
+ל־`strings.xml` הוסיפו את כל המחרוזות הבאות, לפני `</resources>`, בלי למחוק `app_name`:
+
+```xml
+    <string name="navigate_up">Up to catalog</string>
+    <string name="catalog_title">Choose an item</string>
+    <string name="open_first">Open item 1</string>
+    <string name="open_second">Open item 2</string>
+    <string name="item_name">Item %1$d: %2$s</string>
+    <string name="missing_item">Item %1$d was not found.</string>
+    <string name="pick_color">Pick a color</string>
+    <string name="color_none">No color selected</string>
+    <string name="color_selected">Selected color: %1$s</string>
+    <string name="color_red">Red</string>
+    <string name="color_blue">Blue</string>
+```
 
 ב־**app > kotlin+java > com.example.topics** צרו מקור נתונים קטן בשם `ItemRepository`:
 
@@ -125,8 +176,17 @@ package com.example.topics;
 
 /** Tiny local source of truth; screens pass IDs and ask this source for data. */
 public final class ItemRepository {
+    /**
+     * Prevents construction of this static, fixed lab data source.
+     */
     private ItemRepository() { }
 
+    /**
+     * Looks up the current item name by stable identity.
+     *
+     * @param id identifier received from navigation
+     * @return item name, or null when this ID is unknown
+     */
     public static String findName(int id) {
         if (id == 1) return "Compass";
         if (id == 2) return "Notebook";
@@ -135,36 +195,234 @@ public final class ItemRepository {
 }
 ```
 
-צרו `CatalogFragment` מסוג `Fragment`. ב־`onCreateView` נפחו `FragmentCatalogBinding` והחזירו `binding.getRoot()`. ב־`onViewCreated` חברו `openFirst` אל `open(1)` ו־`openSecond` אל `open(2)`; ב־`onDestroyView` אפסו `binding = null`. המעבר עצמו:
+צרו את שתי המחלקות החדשות הבאות. לקטלוג יש רק פעולת ניווט עם ID; לפרטים יש גם מצב בחירה שחי בנפרד מן ה־View. בכל מחלקה יוצרים binding עבור התצוגה הנוכחית ומשחררים אותה כשהתצוגה נהרסת. אין לשנות את קבצי ה־Fragment של מעבדות אחרות.
+
+### CatalogFragment.java — קטלוג שמוסר זהות
 
 ```java
-private void open(int id) {
-    Bundle args = new Bundle();
-    args.putInt("itemId", id);
-    NavHostFragment.findNavController(this).navigate(R.id.action_catalog_to_detail, args);
+package com.example.topics;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.example.topics.databinding.FragmentCatalogBinding;
+
+/** Start destination; sends only an item ID to the detail destination. */
+public final class CatalogFragment extends Fragment {
+    private FragmentCatalogBinding binding;
+
+    /**
+     * Creates this Fragment's current View without attaching it twice.
+     *
+     * @param inflater host-aware layout inflater
+     * @param container parent providing layout parameters
+     * @param savedInstanceState optional restoration state
+     * @return the root whose binding is valid until onDestroyView
+     */
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = FragmentCatalogBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    /**
+     * Connects actions and renders this destination after the current View exists.
+     *
+     * @param view newly created root
+     * @param savedInstanceState optional state to restore before displaying results
+     */
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        binding.openFirst.setOnClickListener(v -> open(1));
+        binding.openSecond.setOnClickListener(v -> open(2));
+    }
+
+    /**
+     * Navigates from the catalog with a stable identity, not a copied item object.
+     *
+     * @param id identifier to place in the declared itemId argument
+     */
+    private void open(int id) {
+        Bundle args = new Bundle();
+        args.putInt("itemId", id);
+        NavHostFragment.findNavController(this).navigate(R.id.action_catalog_to_detail, args);
+    }
+
+    /**
+     * Releases the obsolete View binding while navigation state may remain alive.
+     */
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
 }
 ```
 
-צרו `DetailFragment` עם `FragmentDetailBinding` באותו דפוס של `onCreateView`/`onDestroyView`. ב־`onViewCreated` קראו את ה־ID מן ה־arguments, בקשו שם מן ה־Repository והציגו גם מקרה של ID לא קיים:
+### DetailFragment.java — פריט ובחירה משוחזרת
 
 ```java
-int itemId = requireArguments().getInt("itemId");
-String name = ItemRepository.findName(itemId);
-binding.itemName.setText(name == null
-        ? getString(R.string.missing_item, itemId)
-        : getString(R.string.item_name, itemId, name));
-```
+package com.example.topics;
 
-כל עוד ה־Fragment עצמו קיים, `selectedColor` הוא שדה שלו. כדי לשרוד יצירה מחדש של Activity/Fragment, שמרו אותו ב־`onSaveInstanceState` תחת המפתח `selectedColor`, והחזירו אותו ב־`onViewCreated` לפני הצגת הצבע. שמירת צבע הבחירה אינה מחליפה את `itemId` של יעד הניווט: אלה שני סוגי מצב שונים.
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.example.topics.databinding.FragmentDetailBinding;
+
+/** Resolves the destination argument from the source and keeps the result as view state. */
+public final class DetailFragment extends Fragment {
+    private static final String SAVED_COLOR = "selectedColor";
+    private FragmentDetailBinding binding;
+    private String selectedColor;
+    private final ActivityResultLauncher<Void> pickColor =
+            registerForActivityResult(new PickColorContract(), color -> {
+                if (color != null) {
+                    // The result belongs to state even when there is no current View.
+                    selectedColor = color;
+                    showColor();
+                }
+            });
+
+    /**
+     * Creates this Fragment's current View without attaching it twice.
+     *
+     * @param inflater host-aware layout inflater
+     * @param container parent providing layout parameters
+     * @param savedInstanceState optional restoration state
+     * @return the root whose binding is valid until onDestroyView
+     */
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = FragmentDetailBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    /**
+     * Connects actions and renders this destination after the current View exists.
+     *
+     * @param view newly created root
+     * @param savedInstanceState optional state to restore before displaying results
+     */
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        int itemId = requireArguments().getInt("itemId");
+        String name = ItemRepository.findName(itemId);
+        binding.itemName.setText(name == null
+                ? getString(R.string.missing_item, itemId)
+                : getString(R.string.item_name, itemId, name));
+        if (savedInstanceState != null) {
+            selectedColor = savedInstanceState.getString(SAVED_COLOR);
+        }
+        showColor();
+        binding.pickColor.setOnClickListener(v -> pickColor.launch(null));
+    }
+
+    /**
+     * Renders saved selection only when this Fragment currently owns a View.
+     */
+    private void showColor() {
+        if (binding != null) {
+            binding.colorResult.setText(selectedColor == null
+                    ? getString(R.string.color_none)
+                    : getString(R.string.color_selected, selectedColor));
+        }
+    }
+
+    /**
+     * Copies the color selection for a newly restored Fragment instance.
+     *
+     * @param outState destination for the small selection snapshot
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(SAVED_COLOR, selectedColor);
+    }
+
+    /**
+     * Releases the obsolete View binding while navigation state may remain alive.
+     */
+    @Override
+    public void onDestroyView() {
+        binding = null;
+        super.onDestroyView();
+    }
+}
+```
 
 ## 4. מחזירים תוצאה טיפוסית מ־Activity
 
-צרו `activity_pick_color.xml` עם `LinearLayout` אנכי ושני Buttons ברוחב מלא: `choose_red` ו־`choose_blue`. הוסיפו את המחרוזות `color_red`,‏ `color_blue`,‏ `pick_color`,‏ `color_none` ו־`color_selected`. צרו `PickColorActivity` שמנפחת `ActivityPickColorBinding`, מפעילה EdgeToEdge/insets ומחברת כל כפתור אל `finishWithColor(...)`:
+צרו `activity_pick_color.xml` עם `LinearLayout` אנכי בגודל `match_parent` לשני הממדים וב־padding של `24dp`, ושני Buttons ברוחב מלא ובגובה `wrap_content`: `choose_red` עם `@string/color_red` ו־`choose_blue` עם `@string/color_blue`. ה־binding של הקובץ הוא `ActivityPickColorBinding`.
+
+צרו את `PickColorActivity.java` הבאה. זו Activity חדשה ולכן מציגים את הקובץ במלואו. כמו בתבנית, טיפול ה־insets שומר תוכן מחוץ לפסי המערכת; הלחיצה מחזירה Intent קטן עם צבע בלבד.
+
+### PickColorActivity.java — תוצאה מפורשת
 
 ```java
-private void finishWithColor(String color) {
-    setResult(RESULT_OK, new Intent().putExtra(PickColorContract.EXTRA_COLOR, color));
-    finish();
+package com.example.topics;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.example.topics.databinding.ActivityPickColorBinding;
+
+/** Small result-producing Activity; Back returns RESULT_CANCELED automatically. */
+public final class PickColorActivity extends AppCompatActivity {
+    private ActivityPickColorBinding binding;
+
+    /**
+     * Creates the new picker screen and connects explicit color-result actions.
+     *
+     * @param savedInstanceState optional Android restoration snapshot
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        binding = ActivityPickColorBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return insets;
+        });
+        binding.chooseRed.setOnClickListener(v -> finishWithColor(getString(R.string.color_red)));
+        binding.chooseBlue.setOnClickListener(v -> finishWithColor(getString(R.string.color_blue)));
+    }
+
+    /**
+     * Sets a successful result before closing the picker.
+     *
+     * @param color selected name encoded in the contract's result Intent
+     */
+    private void finishWithColor(String color) {
+        setResult(RESULT_OK, new Intent().putExtra(PickColorContract.EXTRA_COLOR, color));
+        finish();
+    }
 }
 ```
 
@@ -185,12 +443,26 @@ import androidx.annotation.Nullable;
 public final class PickColorContract extends ActivityResultContract<Void, String> {
     public static final String EXTRA_COLOR = "com.example.topics.COLOR";
 
+    /**
+     * Encodes a picker request as an explicit Intent to our internal Activity.
+     *
+     * @param context context used to construct the Intent
+     * @param input unused; this contract takes no input
+     * @return Intent for PickColorActivity
+     */
     @NonNull
     @Override
     public Intent createIntent(@NonNull Context context, Void input) {
         return new Intent(context, PickColorActivity.class);
     }
 
+    /**
+     * Decodes only a successful picker response; cancellation leaves state unchanged.
+     *
+     * @param resultCode Activity success or cancellation code
+     * @param intent optional returned payload
+     * @return chosen color, or null for cancellation or missing data
+     */
     @Nullable
     @Override
     public String parseResult(int resultCode, @Nullable Intent intent) {
@@ -206,6 +478,7 @@ public final class PickColorContract extends ActivityResultContract<Void, String
 private final ActivityResultLauncher<Void> pickColor =
         registerForActivityResult(new PickColorContract(), color -> {
             if (color != null) {
+                // Keep the result as state even if this Fragment has no current View.
                 selectedColor = color;
                 showColor();
             }
@@ -224,6 +497,77 @@ binding.pickColor.setOnClickListener(v -> pickColor.launch(null));
 1. קטלוג → פריט 1 → בחירת Blue → חזרה לפריט → `scenario.recreate()` → הצבע נשאר → Up מחזיר לקטלוג.
 2. קטלוג → פריט 2 → Back של המערכת מחזיר לקטלוג.
 3. `Intent.ACTION_VIEW` אל `topics://item/2` פותח ישירות `Item 2: Notebook`; Up מחזיר לקטלוג.
+
+### הקוד המלא של NavigationFlowTest
+
+```java
+package com.example.topics;
+
+import android.content.Intent;
+import android.net.Uri;
+
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+/** Observes a graph destination, a typed result, Back/Up, and a deep link. */
+@RunWith(AndroidJUnit4.class)
+public final class NavigationFlowTest {
+    /**
+     * Checks typed selection, restoration, and Up to the hierarchical catalog destination.
+     */
+    @Test
+    public void itemResultSurvivesRotationAndUpReturnsToCatalog() {
+        try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
+            onView(withId(R.id.open_first)).perform(click());
+            onView(withId(R.id.item_name)).check(matches(withText("Item 1: Compass")));
+            onView(withId(R.id.pick_color)).perform(click());
+            onView(withId(R.id.choose_blue)).perform(click());
+            onView(withId(R.id.color_result)).check(matches(withText("Selected color: Blue")));
+            scenario.recreate();
+            onView(withId(R.id.color_result)).check(matches(withText("Selected color: Blue")));
+            onView(withId(R.id.up_button)).perform(click());
+            onView(withId(R.id.open_second)).check(matches(withText(R.string.open_second)));
+        }
+    }
+
+    /**
+     * Checks the system Back action removes the current detail destination.
+     */
+    @Test
+    public void backPopsOneDestination() {
+        try (ActivityScenario<MainActivity> ignored = ActivityScenario.launch(MainActivity.class)) {
+            onView(withId(R.id.open_second)).perform(click());
+            pressBack();
+            onView(withId(R.id.open_first)).check(matches(withText(R.string.open_first)));
+        }
+    }
+
+    /**
+     * Checks an external entry identifies item 2 without first clicking its catalog button.
+     */
+    @Test
+    public void deepLinkLoadsItemById() {
+        Intent link = new Intent(Intent.ACTION_VIEW, Uri.parse("topics://item/2"));
+        link.setPackage(InstrumentationRegistry.getInstrumentation().getTargetContext().getPackageName());
+        try (ActivityScenario<MainActivity> ignored = ActivityScenario.launch(link)) {
+            onView(withId(R.id.item_name)).check(matches(withText("Item 2: Notebook")));
+            onView(withId(R.id.up_button)).perform(click());
+            onView(withId(R.id.open_first)).check(matches(withText(R.string.open_first)));
+        }
+    }
+}
+```
 
 הריצו `:app:connectedDebugAndroidTest` על אמולטור. לבדיקה ידנית של כניסה מבחוץ אפשר להריץ במחשב שבו מותקן `adb`:
 

@@ -13,7 +13,7 @@ tags: [Android, Java, Room, SQLite, migration, testing]
 {: .box-success}
 בסוף המעבדה סימון Save של ספר נשמר במסד מקומי. הוא מופיע גם לאחר עצירת האפליקציה ופתיחתה מחדש. בהמשך משדרגים את המסד מגרסה 1 לגרסה 2, מוסיפים עמודה, ובודקים שהספר שסומן נשאר. אין צורך בשרת או בחשבון משתמש.
 
-בסיס העבודה הוא ענף **`codex/recyclerview-diffutil`**. בענף התוצאה **`codex/room-persistence`** יש גם commit ביניים, **`fce5c9d`**, עם גרסה 1 עובדת. התחילו בגרסה 1, הפעילו אותה ושמרו ספר, ורק אז עברו לשדרוג גרסה 2. כך אפשר להבחין בין בדיקת מסד חדש לבין בדיקת migration אמיתי.
+בסיס העבודה הוא ענף **`codex/recyclerview-diffutil`**. בענף התוצאה **`codex/room-persistence`** יש גם commit ביניים עם גרסה 1 עובדת. בחלון **Git > Log** מצאו את ה־commit שבו `TopicsDatabase` עדיין מציינת `version = 1`; מזהה ה־commit תלוי בעותק הפרויקט. התחילו בגרסה 1, הפעילו אותה ושמרו ספר, ורק אז עברו לשדרוג גרסה 2. כך אפשר להבחין בין בדיקת מסד חדש לבין בדיקת migration אמיתי.
 
 ## מה שומרים, ואיפה?
 
@@ -28,6 +28,41 @@ tags: [Android, Java, Room, SQLite, migration, testing]
 | `BooksViewModel` | מצב המסך; אינו מריץ SQL |
 
 `Room` היא שכבה מעל SQLite: ה־annotations מגדירים את הטבלה והשאילתות, וה־annotation processor מייצר מימוש בזמן build. [מדריך Room הרשמי](https://developer.android.com/training/data-storage/room) מסביר את שלושת הרכיבים המרכזיים.
+
+## מי רשאי לומר שהספר נשמר?
+
+המסך אינו מקור האמת לשמירה. לחיצה מוסרת ID ל־ViewModel; ה־Repository מוסרת פעולה לתור I/O; ה־DAO משנה את המסד; ורק קריאה מן המסד מחזירה snapshot חדש למסך. אם נצייר כוכב מיד בלחיצה בלי לבדוק את תוצאת הכתיבה, נוכל להבטיח "נשמר" גם כאשר הכתיבה נכשלה. המעבדה מדגימה נתיב הצלחה; במוצר יש להוסיף חוזה שגיאה.
+
+```mermaid
+sequenceDiagram
+    participant UI as Activity and ViewModel
+    participant IO as Repository worker
+    participant DB as Room DAO
+    UI->>IO: toggle(bookId)
+    IO->>DB: transaction: contains then insert/delete
+    DB-->>IO: committed state
+    IO->>DB: loadIds
+    DB-->>IO: stored favorite identities
+    IO-->>UI: post snapshot to main
+    UI->>UI: create new Books and render
+```
+
+מפתח ראשי מונע שתי שורות עם אותו `bookId`; transaction מגדירה יחידה אטומית של קריאה ואז כתיבה. אלה הגנות שונות. executor יחיד שומר על סדר הלחיצות שה־Repository קיבלה, אבל אינו מחליף את העסקה במסד. `@Transaction` פועלת דרך מימוש Room שנוצר; אין ליצור DAO בעצמנו או לסמוך רק על שם המתודה.
+
+ב־migration יש **שני חוזים שצריכים להסכים**: תוצאת ה־SQL על מסד ישן, והסכימה ש־Room מצפה למצוא בגרסה החדשה. `DEFAULT ''` ממלא עמודה עבור השורות שכבר קיימות וגם מגדיר ברירת מחדל SQL. `@NonNull` קובע שהעמודה אינה nullable; הוא אינו מבטיח שהטקסט אינו ריק. כאן מחרוזת ריקה היא הערך המתוכנן. שינוי מספר הגרסה לבדו אינו מלמד את SQLite איך לשנות את הטבלה.
+
+בדיקה על מסד חדש מדלגת על מסלול השדרוג. כדי לבדוק migration ניצור **נתון בגרסה 1**, נסגור, נפתח בגרסה 2 ונוודא שהנתון עדיין שם ושהסכימה תקינה. קובצי schemas מתעדים את שתי נקודות הזמן; מחיקת 1.json מאבדת את בסיס הבדיקה. אין להעביר את העמודה מראש לגרסה 1 כדי להקטין diff: השינוי הזה הוא בדיוק הדבר שהניסוי צריך ללמד.
+
+## עצרו ונבאו
+
+שתי פעולות toggle של אותו ID מתקבלות ברצף. מה צריך להיות המצב השמור בסוף, ומי קובעת אותו? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+אם הספר התחיל לא מסומן, בסוף אינו מסומן. התור הסדרתי שומר על סדר הפעולות, וכל toggle קוראת ומחליפה מצב בטרנזקציה. המסך מקרין את המצב שאושר במסד; הוא אינו מנחש אותו על ידי ציור שני כוכבים.
+
+</details>
 
 ## 1. מכינים Room ומייצאים סכימות
 
@@ -77,6 +112,11 @@ public final class FavoriteEntity {
     @PrimaryKey
     public int bookId;
 
+    /**
+     * Creates a version-1 favorite row; row presence means this ID is saved.
+     *
+     * @param bookId stable book identity used as the primary key
+     */
     public FavoriteEntity(int bookId) {
         this.bookId = bookId;
     }
@@ -98,19 +138,45 @@ import java.util.List;
 /** Queries and one atomic read-then-write action. */
 @Dao
 public abstract class FavoriteDao {
+    /**
+     * Reads stored favorite identities on a worker thread.
+     *
+     * @return identities whose rows exist, with no ordering guarantee
+     */
     @Query("SELECT bookId FROM favorites")
     public abstract List<Integer> loadIds();
 
+    /**
+     * Checks row presence within the transaction that decides a toggle.
+     *
+     * @param id stable book identity
+     * @return whether this identity is currently stored
+     */
     @Query("SELECT EXISTS(SELECT 1 FROM favorites WHERE bookId = :id)")
     protected abstract boolean contains(int id);
 
+    /**
+     * Inserts one favorite row; duplicate primary keys are rejected.
+     *
+     * @param favorite row to persist
+     */
     @Insert
     protected abstract void insert(FavoriteEntity favorite);
 
+    /**
+     * Deletes only the row for the requested identity.
+     *
+     * @param id stable identity to unsave
+     */
     @Query("DELETE FROM favorites WHERE bookId = :id")
     protected abstract void delete(int id);
 
-    /** Returns the new state inside one transaction. */
+    /**
+     * Atomically reads and reverses row presence within one Room transaction.
+     *
+     * @param id stable book identity
+     * @return true when now saved, false when now removed
+     */
     @Transaction
     public boolean toggle(int id) {
         if (contains(id)) {
@@ -134,6 +200,11 @@ import androidx.room.RoomDatabase;
 /** First schema checkpoint. */
 @Database(entities = {FavoriteEntity.class}, version = 1, exportSchema = true)
 public abstract class TopicsDatabase extends RoomDatabase {
+    /**
+     * Provides Room's generated DAO implementation for this database.
+     *
+     * @return DAO that must be called off the UI thread
+     */
     public abstract FavoriteDao favoriteDao();
 }
 ```
@@ -159,6 +230,11 @@ import java.util.concurrent.Executors;
 /** Runs Room work off main and delivers snapshots on main. */
 public final class FavoritesRepository {
     public interface Listener {
+        /**
+         * Receives a database-confirmed snapshot on the main thread.
+         *
+         * @param ids stored favorite identities, independent of previous callbacks
+         */
         void onFavorites(Set<Integer> ids);
     }
 
@@ -167,15 +243,31 @@ public final class FavoritesRepository {
     private final Handler main = new Handler(Looper.getMainLooper());
     private volatile boolean closed;
 
+    /**
+     * Owns a database and serial I/O queue using a context independent of any Activity.
+     *
+     * @param application long-lived application context for opening the private database
+     */
     public FavoritesRepository(Application application) {
         database = Room.databaseBuilder(application, TopicsDatabase.class,
                 "favorites.db").build();
     }
 
+    /**
+     * Queues a read of stored identities without blocking the screen.
+     *
+     * @param listener recipient of the snapshot delivered on main
+     */
     public void load(Listener listener) {
         io.execute(() -> deliver(listener));
     }
 
+    /**
+     * Queues the transaction and then reads the resulting identities on the same worker.
+     *
+     * @param id stable identity to toggle
+     * @param listener recipient of the confirmed snapshot on main
+     */
     public void toggle(int id, Listener listener) {
         io.execute(() -> {
             database.favoriteDao().toggle(id);
@@ -183,6 +275,11 @@ public final class FavoritesRepository {
         });
     }
 
+    /**
+     * Reads current identities on I/O and posts their snapshot to main if still open.
+     *
+     * @param listener receiver of the database-confirmed state
+     */
     private void deliver(Listener listener) {
         Set<Integer> snapshot = new HashSet<>(database.favoriteDao().loadIds());
         main.post(() -> {
@@ -190,8 +287,12 @@ public final class FavoritesRepository {
         });
     }
 
+    /**
+     * Suppresses late callbacks and queues database close after accepted I/O work.
+     */
     public void close() {
         closed = true;
+        // A serial queue closes only after operations already accepted have finished.
         io.execute(database::close);
         io.shutdown();
     }
@@ -216,6 +317,11 @@ Room אינה מאפשרת כאן גישת מסד ב־main thread. ה־Executor 
      private final Set<Integer> favoriteIds = new HashSet<>();
 +    private final FavoritesRepository favorites;
 +
++    /**
++     * Opens persisted favorites without holding an Activity or its Views.
++     *
++     * @param application context supplied by the AndroidViewModel factory
++     */
 +    public BooksViewModel(@NonNull Application application) {
 +        super(application);
 +        favorites = new FavoritesRepository(application);
@@ -226,7 +332,11 @@ Room אינה מאפשרת כאן גישת מסד ב־main thread. ה־Executor 
 החליפו את **כל** `toggleFavorite` הישנה, לרבות הלולאה שמעדכנת ספר אחד, במתודה הקצרה הבאה:
 
 ```java
-/** Changes the database, not a ViewHolder or an in-memory Set alone. */
+/**
+ * Requests a persisted change; the confirmed snapshot determines the displayed star.
+ *
+ * @param id stable identity of the clicked book
+ */
 public void toggleFavorite(int id) {
     BooksUiState current = state.getValue();
     if (current == null || current.kind != BooksUiState.Kind.SUCCESS) return;
@@ -237,6 +347,11 @@ public void toggleFavorite(int id) {
 הוסיפו `showFavorites` חדשה. כל snapshot — גם בקריאה הראשונית וגם אחרי לחיצה — מצייר את אותה אמת:
 
 ```java
+/**
+ * Replaces in-memory projection from a database-confirmed snapshot on main.
+ *
+ * @param ids all currently stored favorite identities
+ */
 private void showFavorites(Set<Integer> ids) {
     favoriteIds.clear();
     favoriteIds.addAll(ids);
@@ -255,7 +370,7 @@ private void showFavorites(Set<Integer> ids) {
 
 ## 4. משדרגים לגרסה 2 בלי למחוק את הסימון
 
-נוסיף ל־Favorite שדה `note` לא ריק, גם אם כרגע הממשק אינו מציג אותו. מטרתו כאן להדגים שינוי סכימה על נתון שכבר שמור. ב־`FavoriteEntity` הוסיפו:
+נוסיף ל־Favorite שדה `note` שאינו `null` (מחרוזת ריקה מותרת), גם אם כרגע הממשק אינו מציג אותו. מטרתו כאן להדגים שינוי סכימה על נתון שכבר שמור. ב־`FavoriteEntity` הוסיפו:
 
 {% code_diff %}
  import androidx.room.Entity;
@@ -275,10 +390,17 @@ private void showFavorites(Set<Integer> ids) {
      }
 {% endcode_diff %}
 
+לחתימת הבנאי החדשה התאימו גם את ה־Javadoc: הוא יוצר שורה בגרסה 2. הפרמטר `bookId` נשאר המפתח הראשי; הוסיפו `@param note` עם ההסבר `non-null note; empty text is allowed`. זו התאמה לחוזה חדש, ולא שינוי ניסוח של מתודה שלא השתנתה.
+
 ב־`FavoriteDao.toggle` החליפו `new FavoriteEntity(id)` ב־`new FavoriteEntity(id, "")`. ב־`TopicsDatabase` העלו את `version` ל־2 והוסיפו את ה־Migration. `DEFAULT ''` נותן ערך לשורות הישנות; `@ColumnInfo(defaultValue = "''")` אומר ל־Room שזה גם חלק מהסכימה החדשה:
 
 ```java
 public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+    /**
+     * Adds a non-null note without deleting existing favorite rows.
+     *
+     * @param db version-1 database to upgrade in Room's migration transaction
+     */
     @Override
     public void migrate(@NonNull SupportSQLiteDatabase db) {
         db.execSQL("ALTER TABLE favorites ADD COLUMN note TEXT NOT NULL DEFAULT ''");
@@ -324,6 +446,11 @@ public final class RoomMigrationTest {
     @Rule public MigrationTestHelper helper = new MigrationTestHelper(
             InstrumentationRegistry.getInstrumentation(), TopicsDatabase.class);
 
+    /**
+     * Upgrades a database containing an old row and validates both schema and values.
+     *
+     * @throws IOException if the test database cannot be created or upgraded
+     */
     @Test
     public void migrationKeepsFavoriteAndAddsDefaultNote() throws IOException {
         SupportSQLiteDatabase old = helper.createDatabase(TEST_DB, 1);
@@ -341,6 +468,9 @@ public final class RoomMigrationTest {
         upgraded.close();
     }
 
+    /**
+     * Exercises the real generated DAO: first toggle inserts, second removes.
+     */
     @Test
     public void toggleTransactionChangesExactlyOneRow() {
         TopicsDatabase database = Room.inMemoryDatabaseBuilder(

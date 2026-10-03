@@ -15,6 +15,37 @@ tags: [Android, Java, privacy, security, Room, HTTPS]
 
 בסיס ההשוואה הוא **`codex/room-persistence`**, שבו Favorite כבר נשמרת במסד. ענף התוצאה הוא **`codex/privacy-data-control`**. השינוי בר־בדיקה: שמרו, מחקו, הרגו את התהליך וטענו מחדש. בחירת מדיניות backup היא החלטת מוצר; במעבדה הזאת בוחרים במפורש **שמירה על המכשיר הזה בלבד**.
 
+## נתון יכול להשאיר יותר מעותק אחד
+
+לסימון Favorite יש עותק במסד, הקרנה ב־Set של ה־ViewModel וציור על כפתור. מחיקת הכוכב בלבד אינה מוחקת את הנתון; מחיקת המסד בלבד בלי פרסום מצב חדש משאירה תצוגה מטעה עד הטעינה הבאה. לכן מתחילים ממקור האמת ומוסרים snapshot ריק בחזרה למסך. זה אותו כיוון זרימה של Save, עם פעולת DAO אחרת.
+
+```mermaid
+flowchart LR
+    A["User confirms erase"] --> R["Repository serial I/O queue"]
+    R --> D["DAO deletes stored rows"]
+    D --> S["Read confirmed empty snapshot"]
+    S --> V["ViewModel projects current Books"]
+    V --> U["Adapter shows unsaved state"]
+    DB["Database files"] -.-> B["Backup / device transfer: excluded by policy"]
+```
+
+דמיינו Save,‏ Save,‏ Erase שנשלחו בסדר הזה. שימוש באותו executor סדרתי גורם למחיקה לבוא אחרי שתי הכתיבות שכבר התקבלו. אם נפתח תור מחיקה נפרד, הוא עלול למחוק קודם ואז כתיבה ממתינה תחזיר סימון. גם בעת תכנון פרטיות צריך להבין תזמון, ולא רק את פקודת SQL.
+
+נפריד בין שלושה גבולות הגנה: `.gitignore` מצמצמת חשיפה דרך קוד המקור; הגדרות backup מצמצמות העתקת קבצים; כללי שרת מגבילים פעולה על מידע מרוחק. אף אחד מהם אינו עושה את העבודה של האחרים. API key שמוזרק לבנייה אינו ב־Git, אבל יכול להיות ב־APK. HTTPS מגינה על המעבר, אבל אינה נותנת למבקש הרשאת בעלים.
+
+**מחיקה לוגית** כאן פירושה ששורות Favorite אינן נגישות עוד דרך DAO ולא חוזרות בהפעלה מחדש. היא אינה הבטחה למחיקה פורנזית של כל בית בדיסק, journal או עותק היסטורי. בהתאם למוצר צריך לבחור גבול הבטחה מדויק ולבדוק כל מקום שבו נשמר מידע. במעבדה אין שרת, ואין צורך להוסיף איסוף נתונים כדי להמחיש פרטיות.
+
+## עצרו ונבאו
+
+שתי פעולות Save ממתינות בתור, ואז המשתמש מאשר Erase. למה לא להפעיל את המחיקה ב־executor אחר כדי שתהיה מהירה? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+כי מחיקה מהירה יכולה להסתיים לפני Save ישנה, והכתיבה המאוחרת תחזיר נתון שהמשתמש ביקש למחוק. אותו תור סדרתי מבצע את המחיקה אחרי הכתיבות שכבר התקבלו, ואז קורא ומציג את המצב המאושר.
+
+</details>
+
 ## 1. ממפים את הנתונים לפני שכותבים קוד
 
 | נתון/הרשאה | קיים במעבדה? | החלטה |
@@ -32,6 +63,10 @@ tags: [Android, Java, privacy, security, Room, HTTPS]
 ב־**app > kotlin+java > com.example.topics > FavoriteDao.java** הוסיפו שאילתה שמוחקת את כל שורות הטבלה. שאר השאילתות וה־transaction של `toggle` נשארות:
 
 ```java
+/**
+ * Deletes every local favorite row on the database worker.
+ * This is logical removal from the table, not a forensic erasure guarantee.
+ */
 @Query("DELETE FROM favorites")
 public abstract void deleteAll();
 ```
@@ -39,8 +74,14 @@ public abstract void deleteAll();
 ב־`FavoritesRepository.java` הוסיפו פעולה שעוברת באותו תור Executor כמו הקריאה וה־toggle, ואחריה מחזירה snapshot עדכני ל־main thread:
 
 ```java
+/**
+ * Queues deletion after prior accepted operations and then reads confirmed state.
+ *
+ * @param listener recipient of the post-deletion snapshot on main
+ */
 public void clear(Listener listener) {
     io.execute(() -> {
+        // Use the same serial queue as toggle, so an earlier save cannot finish later.
         database.favoriteDao().deleteAll();
         deliver(listener);
     });
@@ -50,7 +91,9 @@ public void clear(Listener listener) {
 ב־`BooksViewModel.java` הוסיפו:
 
 ```java
-/** Removes all local favorites and redraws from the confirmed DB snapshot. */
+/**
+ * Requests removal from persistent storage, then reuses the confirmed-state renderer.
+ */
 public void clearFavorites() {
     favorites.clear(this::showFavorites);
 }
@@ -110,6 +153,9 @@ binding.clearSaved.setOnClickListener(v -> new AlertDialog.Builder(this)
 ב־**app > kotlin+java > com.example.topics (androidTest) > RoomMigrationTest.java** הוסיפו בדיקה למסד אמיתי בזיכרון:
 
 ```java
+/**
+ * Checks that deleting stored rows removes both saved identities.
+ */
 @Test
 public void clearDeletesEveryFavorite() {
     TopicsDatabase database = Room.inMemoryDatabaseBuilder(

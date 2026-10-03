@@ -27,6 +27,42 @@ tags: [Android, Java, Service, AlarmManager, BroadcastReceiver]
 
 `Service` אינה thread בפני עצמה: קוד מחזור החיים שלה רץ ב־main thread אם לא העברנו עבודה כבדה ל־executor. שירות bound בלבד גם אינו הבטחה שהאפליקציה תמשיך לעבוד אחרי שהמשתמש יצא. Android מגביל הפעלת foreground service מתוך הרקע, ומ־Android 14 צריך להצהיר על סוג מתאים ב־Manifest; ל־`shortService` יש מגבלת זמן קצרה. קראו את [סקירת השירותים](https://developer.android.com/develop/background-work/services) ואת [סוגי ה־foreground service](https://developer.android.com/develop/background-work/services/fgs/service-types) לפני שמחליפים את הדוגמה לשירות foreground אמיתי.
 
+## רכיב Android, שרשור וגורם מתזמן הם שלוש שאלות שונות
+
+Service היא רכיב שהמערכת מנהלת; היא אינה יוצרת אוטומטית thread רקע. השעון שלנו רק מחזיר הפרש בין שני מספרים ולכן אינו צריך לולאה שמתעוררת בכל שנייה. בזמן לחיצה מחשבים `elapsedRealtime() - startedAt`. השעון הוא של **מופע השירות**, ויכול להתחיל מחדש כשהמערכת יוצרת מופע חדש; הוא אינו מד זמן כולל ומתמשך של משתמש.
+
+```mermaid
+sequenceDiagram
+    participant A as Visible Activity
+    participant S as Bound Service
+    participant OS as AlarmManager
+    participant R as Receiver
+    A->>S: onStart: request bind
+    S-->>A: onServiceConnected: Binder ready
+    A->>OS: schedule PendingIntent
+    A->>S: onStop: unbind
+    Note over S: may end with no bound clients
+    OS->>R: deliver later, timing may be delayed
+    R->>R: save short event timestamp
+```
+
+`bindService` חוזרת לפני callback החיבור. לכן `bindingRequested` ו־`clock != null` אינם אותו מצב: הראשון אומר שיש בקשת חיבור שצריך לשחרר, והשני שיש כבר ממשק שאפשר לקרוא. `onServiceDisconnected` מודיעה על ניתוק בלתי צפוי; אין לסמוך עליה כניקוי של unbind רגיל. ב־`onStop` אנחנו מאפסים את ההפניה בעצמנו.
+
+PendingIntent היא הרשאה מוגדרת למערכת לבצע Intent בשמנו בהמשך. אותה זהות בקשה מאפשרת החלפה וביטול; התוספות ב־Intent אינן לבדן זהות של PendingIntent. `exported=false` מגבילה גישה לרכיב, בעוד `FLAG_IMMUTABLE` מגבילה שינוי של בקשת הפעולה שנמסרה. שתי ההגנות פועלות בגבולות שונים.
+
+הפרש מונוטוני מודד משך; זמן קיר מציין מועד לבני אדם. אין לחסר חותמת `currentTimeMillis` מערך `elapsedRealtime`: נקודות האפס שלהם שונות. בחרנו מונוטוני להזמנת alarm יחסית לעכשיו, וזמן קיר לתיעוד מועד המסירה. alarm יכולה להימסר אחרי סגירת המסך, אבל Force stop, אתחול ותנאי סוללה דורשים טיפול נפרד; היא אינה חוזה להרצת עבודה ממושכת.
+
+## עצרו ונבאו
+
+bindService החזירה, אך onServiceConnected עוד לא התקבלה. האם כבר אפשר לקרוא דרך Binder? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+לא. בקשת bind מתחילה חיבור אסינכרוני. רק callback עם Binder מוכנה מאפשרת קריאה לשירות. לכן המסך מפריד בין בקשת חיבור ובין שירות מחובר, ומנקה את הבעלות כשהלקוח יוצא.
+
+</details>
+
 ## 1. יוצרים Service שנקשרים אליה רק כשהמסך גלוי
 
 ב־**app > kotlin+java > com.example.topics** צרו `SessionClockService.java`:
@@ -44,6 +80,11 @@ import androidx.annotation.Nullable;
 /** A bound service that exists only while a visible client is bound. */
 public final class SessionClockService extends Service {
     public final class ClockBinder extends Binder {
+        /**
+         * Computes elapsed time without a periodic timer or UI dependency.
+         *
+         * @return seconds since this Service instance was created, including device sleep
+         */
         public long elapsedSeconds() {
             return (SystemClock.elapsedRealtime() - startedAt) / 1000;
         }
@@ -52,12 +93,21 @@ public final class SessionClockService extends Service {
     private final ClockBinder binder = new ClockBinder();
     private long startedAt;
 
+    /**
+     * Records the monotonic origin when Android creates this bound Service instance.
+     */
     @Override
     public void onCreate() {
         super.onCreate();
         startedAt = SystemClock.elapsedRealtime();
     }
 
+    /**
+     * Exposes this same-process service API to a successfully bound client.
+     *
+     * @param intent binding request delivered by Android
+     * @return Binder providing the elapsed-time operation
+     */
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -96,6 +146,12 @@ public final class ReminderReceiver extends BroadcastReceiver {
     public static final String PREFS = "alarm_events";
     public static final String LAST_DELIVERY = "last_delivery";
 
+    /**
+     * Records this private reminder event quickly, without starting long work.
+     *
+     * @param context receiver context used for private preferences
+     * @param intent delivered event, checked against the expected action
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         if (!ACTION_REMINDER.equals(intent.getAction())) return;
@@ -133,8 +189,17 @@ import java.util.Objects;
 public final class ReminderAlarms {
     public static final long DELAY_MS = 15_000L;
 
+    /**
+     * Prevents instances of this static alarm helper.
+     */
     private ReminderAlarms() { }
 
+    /**
+     * Describes the same replaceable private broadcast each time it is requested.
+     *
+     * @param context context used to identify our explicit receiver
+     * @return immutable PendingIntent whose identity is shared by schedule and cancel
+     */
     private static PendingIntent pendingIntent(Context context) {
         Intent intent = new Intent(context, ReminderReceiver.class)
                 .setAction(ReminderReceiver.ACTION_REMINDER);
@@ -142,6 +207,11 @@ public final class ReminderAlarms {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
+    /**
+     * Requests one inexact wakeup alarm, replacing a previous matching request.
+     *
+     * @param context context providing AlarmManager; delivery is not an exact deadline
+     */
     public static void schedule(Context context) {
         AlarmManager manager = Objects.requireNonNull(
                 (AlarmManager) context.getSystemService(Context.ALARM_SERVICE));
@@ -149,6 +219,11 @@ public final class ReminderAlarms {
                 SystemClock.elapsedRealtime() + DELAY_MS, pendingIntent(context));
     }
 
+    /**
+     * Cancels the pending alarm with the same PendingIntent identity.
+     *
+     * @param context context providing AlarmManager; already delivered events remain recorded
+     */
     public static void cancel(Context context) {
         AlarmManager manager = Objects.requireNonNull(
                 (AlarmManager) context.getSystemService(Context.ALARM_SERVICE));
@@ -195,11 +270,22 @@ public final class ReminderAlarms {
 private SessionClockService.ClockBinder clock;
 private boolean bindingRequested;
 private final ServiceConnection clockConnection = new ServiceConnection() {
+    /**
+     * Stores the local Binder only after asynchronous binding succeeds.
+     *
+     * @param name connected component
+     * @param service Binder from our nonexported local clock Service
+     */
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         clock = (SessionClockService.ClockBinder) service;
     }
 
+    /**
+     * Drops the Binder after an unexpected service disconnect.
+     *
+     * @param name disconnected component; normal unbind is handled separately
+     */
     @Override
     public void onServiceDisconnected(ComponentName name) {
         clock = null;
@@ -228,6 +314,9 @@ binding.readAlarm.setOnClickListener(view -> showLastAlarm());
 הוסיפו שלוש מתודות ל־Activity:
 
 ```java
+/**
+ * Requests a service binding while this screen is visible.
+ */
 @Override
 protected void onStart() {
     super.onStart();
@@ -235,8 +324,12 @@ protected void onStart() {
             clockConnection, Context.BIND_AUTO_CREATE);
 }
 
+/**
+ * Unbinds any requested connection and releases the local Binder reference.
+ */
 @Override
 protected void onStop() {
+    // Unbind even if the asynchronous Binder callback has not arrived yet.
     if (bindingRequested) {
         unbindService(clockConnection);
         bindingRequested = false;
@@ -245,6 +338,9 @@ protected void onStop() {
     super.onStop();
 }
 
+/**
+ * Formats the persisted delivery timestamp using the current locale.
+ */
 private void showLastAlarm() {
     long deliveredAt = getSharedPreferences(ReminderReceiver.PREFS, MODE_PRIVATE)
             .getLong(ReminderReceiver.LAST_DELIVERY, 0L);

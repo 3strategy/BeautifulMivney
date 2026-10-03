@@ -13,6 +13,17 @@ tags: [Android, Java, lifecycle, Fragment]
 {: .box-success}
 בסוף המעבדה יופיעו שלושה מונים ב־Activity ומונה נוסף ב־Fragment. נעלה את כולם, נסובב את המכשיר, נהרוג את האפליקציה ונחזור אליה. נוכל לנבא **איזה ערך ישרוד כל פעולה**. בלחיצה נפרדת נהרוס רק את ה־View של ה־Fragment, נחזור עם Back ונראה שאותו מופע Fragment נשאר.
 
+## עצרו ונבאו
+
+לחצתם פעם אחת על כל אחד משלושת המונים ואז סובבתם את המסך. אילו ערכים יוצגו, ולמה? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+השדה הרגיל מתחיל ב־0 ב־Activity החדשה. מונה ה־Bundle משוחזר ל־1 עבור יצירה מחדש. מונה ההעדפות נקרא מן האחסון ונשאר 1. סדר השחזור לפני render הוא שמביא את המצב הנכון אל ה־Views החדשים.
+
+</details>
+
 ## נקודת התחלה ושאלת חיזוי
 
 פתחו את פרויקט **topics**, ענף `master`:‏ Empty Views Activity ב־Java עם `ActivityMainBinding` פעיל. החבילה היא `com.example.topics`. ענף הדוגמה המוכן הוא `codex/lifecycle-state`; השוו אותו ל־`master` כדי לראות את כל שינויי המעבדה. ב־Android Studio אפשר למצוא את הקבצים דרך **app > kotlin+java > com.example.topics**,‏ **app > res > layout** ו־**app > res > values**.
@@ -26,6 +37,32 @@ tags: [Android, Java, lifecycle, Fragment]
 | Force stop ופתיחה מחדש | ? | ? | ? |
 
 `Bundle` של `onSaveInstanceState` מיועד לשחזור מצב ממשק כשהמערכת יוצרת מחדש רכיב. הוא **אינו מסד נתונים** ואינו התחייבות לשחזור אחרי Force stop או פתיחה חדשה של האפליקציה. `SharedPreferences` הוא מקור נתונים מקומי שנשמר גם אחרי סגירת התהליך. שדה Java רגיל חי רק כל עוד המופע שלו חי.
+
+## מפת מחשבה: ערך, בעלים וזמן חיים
+
+כשאומרים שהערך "נשמר", צריך להשלים: **איפה הוא נמצא, ומי יוכל להחזיר אותו אחרי שהבעלים שלו ייעלם?** לחיצה מעלה שלושה מספרים זהים, אבל הם חיים בשלושה מקומות שונים. `memoryCount` שייך למופע Java הנוכחי; `savedCount` מועתק למעטפת שחזור ש־Android עשויה למסור למופע הבא; `persistentCount` נקרא מקובץ פרטי. הטקסט שעל המסך הוא תצוגה שלהם, ולא המקום שבו כדאי לשמור אותם.
+
+```mermaid
+sequenceDiagram
+    participant Old as Activity A
+    participant OS as Android
+    participant New as Activity B
+    participant Disk as Preferences file
+    Old->>Disk: apply persistent count
+    Old->>OS: save small UI state in Bundle
+    Note over Old: rotation destroys A
+    OS->>New: onCreate(savedInstanceState)
+    New->>Disk: read persistent count
+    Note over New: ordinary fields start anew
+    New->>New: restore state, then render
+```
+
+עקבו בתרשים אחר מספר אחד, למשל 2. המספר אינו עובר מעצמו בין שדות של שני מופעים: הקוד קורא אותו מן ה־`Bundle` או מן הקובץ. אחרי Force stop ופתיחה חדשה נשאר מסלול הקובץ, אך אין להניח שיימסר Bundle של המשימה הישנה. אלה שני ניסויים שונים, ולא שני שמות לאותה פעולה.
+
+ל־Fragment יש בנוסף **שני זמני חיים**: האובייקט שמחזיק `count`, ועץ ה־Views שמציג אותו. `detach` והחזרה מה־back stack יכולים להרוס וליצור את העץ בלי להחליף את האובייקט. ה־binding הישן מחזיק הפניות לעץ שנהרס, ולכן מנקים אותו. אין מאפסים את `count` ב־`onCreateView`: יצירת תצוגה אינה בקשה למחוק את הנתון. [מחזור חיי Fragment בתיעוד Android](https://developer.android.com/guide/fragments/lifecycle) מגדיר את מחזור חיי התצוגה בנפרד.
+
+{: .box-note}
+בקריאת callback שאלו שתי שאלות: מי קורא לי, ואיזה משאב תקף עכשיו? Android קוראת ל־`onCreateView`; בו מותר ליצור binding. Android קוראת ל־`onDestroyView`; אחריו אסור להשתמש באותו binding. `renderCount` היא מתודה שלנו, ולכן האחריות לקרוא לה רק כשיש View היא שלנו.
 
 ## בונים את הניסוי
 
@@ -113,15 +150,31 @@ public final class LifecycleFragment extends Fragment {
     private FragmentLifecycleBinding binding;
     private int count;
 
+    /**
+     * Creates the current View tree; the Fragment object may already exist.
+     *
+     * @param inflater creates Views using the host theme
+     * @param container parent used for layout parameters; do not attach yet
+     * @param savedInstanceState prior UI state, or null on a fresh creation
+     * @return the root of this new View tree
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "Fragment " + System.identityHashCode(this) + " onCreateView");
+        // The manager attaches the root; attaching here would attach it twice.
         binding = FragmentLifecycleBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
+    /**
+     * Restores the counter and connects actions after the current binding exists.
+     * A detach/back cycle retains the field when no saved Bundle is supplied.
+     *
+     * @param view the newly created root
+     * @param savedInstanceState saved counter when Android restores this Fragment
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -141,21 +194,34 @@ public final class LifecycleFragment extends Fragment {
         renderCount();
     }
 
+    /**
+     * Copies this component's small UI counter into Android's restoration Bundle.
+     * This is a restoration snapshot, not durable storage for a fresh app launch.
+     *
+     * @param outState destination delivered to a later restored instance
+     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(SAVED_COUNT, count);
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Releases references to the old View tree while the Fragment may stay alive.
+     */
     @Override
     public void onDestroyView() {
         Log.d(TAG, "Fragment " + System.identityHashCode(this)
                 + " onDestroyView; clearing binding");
+        // The Fragment can outlive this View; release the obsolete references.
         binding = null;
         super.onDestroyView();
     }
 
-    /** Reads Fragment state while the current View exists. */
+    /**
+     * Displays the Fragment counter without changing it.
+     * Call only between View creation and View destruction.
+     */
     private void renderCount() {
         binding.fragmentValue.setText(getString(R.string.fragment_value, count));
     }
@@ -274,6 +340,7 @@ public final class LifecycleFragment extends Fragment {
             memoryCount++;
             savedCount++;
             persistentCount++;
+            // Persist the model value, never the formatted TextView text.
             preferences.edit().putInt(PERSISTENT_COUNT, persistentCount).apply();
             renderCounts();
         });
@@ -290,13 +357,22 @@ public final class LifecycleFragment extends Fragment {
 `apply()` מעדכן את הערך בזיכרון מיד ומבצע את כתיבת הקובץ בהמשך. לחצו על הכפתור, המתינו שהערכים יוצגו ורק אז בצעו Force stop בניסוי. בסוף המחלקה הוסיפו את השמירה הזמנית ואת ציור הערכים. הקריאה ל־`super.onSaveInstanceState` משאירה גם ל־Android לשמור את מצב ה־Views שלו.
 
 ```java
+    /**
+     * Copies this component's small UI counter into Android's restoration Bundle.
+     * This is a restoration snapshot, not durable storage for a fresh app launch.
+     *
+     * @param outState destination delivered to a later restored instance
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(SAVED_COUNT, savedCount);
         super.onSaveInstanceState(outState);
     }
 
-    /** Draws the three values from their current sources of truth. */
+    /**
+     * Displays the three counters from their owning state.
+     * Rendering does not increment, restore, or write any counter.
+     */
     private void renderCounts() {
         binding.memoryValue.setText(getString(R.string.memory_value, memoryCount));
         binding.savedValue.setText(getString(R.string.saved_value, savedCount));
@@ -305,6 +381,16 @@ public final class LifecycleFragment extends Fragment {
 ```
 
 בנו והפעילו את האפליקציה. אם `binding.increment` או `FragmentLifecycleBinding` אינם מזוהים, ודאו שקובצי ה־XML נשמרו, שהמזהים תואמים וש־Gradle Sync/Build הסתיימו.
+
+מעל `@Override` של `onCreate` הקיימת הוסיפו את ה־Javadoc הבא. אין להחליף את גוף המתודה או למחוק את טיפול ה־insets של התבנית:
+
+```java
+    /**
+     * Creates the current Activity View tree and connects the screen's actions.
+     *
+     * @param savedInstanceState prior small UI snapshot, or null for a fresh launch
+     */
+```
 
 ## בודקים את התחזיות
 

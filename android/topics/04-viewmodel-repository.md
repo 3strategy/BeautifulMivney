@@ -36,6 +36,42 @@ flowchart LR
 
 המסך שולח **פעולה**, ה־ViewModel מחליטה על המעבר, והמסך מצייר **צילום מצב** חדש. [תיעוד Android ל־LiveData](https://developer.android.com/topic/libraries/architecture/livedata) מתאר Observer שרשום עם `LifecycleOwner`; [תיעוד שמירת מצב](https://developer.android.com/topic/libraries/architecture/saving-states) מסביר ש־ViewModel שורדת שינוי תצורה אך לא הריגת תהליך.
 
+## למה להעביר אחריות אם המסך כבר עובד?
+
+בפרק 03 ה־Activity הייתה גם בעלת הנתונים וגם בעלת ה־Views. אחרי סיבוב נדרש לשחזר בקשה ולתזמן אותה מחדש. כאן משנים את **מי שחי מספיק זמן** להחזיק את הבקשה: `ViewModelProvider` משייכת את ה־ViewModel לבעלים מוגדר, ומחזירה אותה גם ל־Activity החדש אחרי שינוי תצורה. כתיבת `new BooksViewModel()` בתוך `onCreate` הייתה יוצרת מופע חדש בכל פעם ומבטלת את היתרון הזה.
+
+```mermaid
+sequenceDiagram
+    participant A as Activity A
+    participant VM as BooksViewModel
+    participant B as Activity B
+    A->>VM: choose scenario
+    VM->>VM: hold one pending load
+    Note over A: rotation destroys A
+    B->>VM: ViewModelProvider gets existing instance
+    B->>VM: observe with new lifecycle owner
+    VM-->>B: latest state, then completed result
+    Note over VM: no new load because of rotation
+```
+
+`LiveData<BooksUiState>` אינה שרשור רקע. היא דרך למסור ערכי מצב לצופה שמחזור חייו ידוע. ה־Activity הפעיל מקבל את הערך האחרון; observer של Activity שנהרס מוסר אוטומטית. `MutableLiveData` פרטית מאפשרת לבעלת המצב לפרסם ערך, ואילו טיפוס ההחזרה הציבורי `LiveData` מגביל את הממשק של הקורא לצפייה. זהו שימוש בהסתרת מידע ב־Java, ולא רק קיצור קוד.
+
+גם `final` לבדו אינו הופך מערך לבלתי משתנה: הוא אוסר להחליף את ההפניה, אבל עדיין מאפשר לשנות תא. לכן הבנאי מעתיק את הקלט, ו־`getBooks` מחזירה עותק. אם המסך ישנה את המערך שקיבל, צילום המצב המקורי יישאר כפי שפורסם. ההעתקה כאן שטחית ומספיקה ל־`String`, שאינו ניתן לשינוי; במודל עם אובייקטים ניתנים לשינוי נצטרך לחשוב גם עליהם.
+
+{: .box-note}
+ה־Repository עונה לשאלה מאיפה הנתון מגיע; ה־ViewModel מחליטה מה תוצאתו אומרת למסך; ה־Activity מחליטה איך להציג את המצב ב־Views. ה־ViewModel אינה מחזיקה binding, מפני שהיא יכולה לשרוד את עץ ה־Views הזה. [תיעוד ViewModel של Android](https://developer.android.com/topic/libraries/architecture/viewmodel) מסביר את היקף החיים והניקוי.
+
+## עצרו ונבאו
+
+המסך הסתובב בזמן טעינה. האם Activity החדשה צריכה לקרוא שוב choose כדי להראות את התוצאה? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+לא. היא מקבלת את ViewModel הקיימת ונרשמת לתצפית עם בעל מחזור החיים החדש. הטעינה נשארת בבעלות ViewModel, וה־Activity רק מציגה את המצב. קריאה חוזרת הייתה מתחילה פעולה עסקית בגלל שינוי תצוגה.
+
+</details>
+
 ## 1. מוסיפים שתי תלויות
 
 ב־**Gradle Scripts > libs.versions.toml** הוסיפו גרסת Lifecycle ושתי ספריות. השאירו את תלויות התבנית ואת `test`/`androidTest` כפי שהן.
@@ -77,20 +113,45 @@ public final class BooksUiState {
     public final Kind kind;
     private final String[] books;
 
+    /**
+     * Creates a snapshot independent of the caller's array.
+     *
+     * @param kind what the screen should display
+     * @param books payload elements copied on entry
+     */
     private BooksUiState(Kind kind, String[] books) {
         this.kind = kind;
+        // Copy on entry: the caller must not rewrite a published snapshot.
         this.books = books.clone();
     }
 
+    /**
+     * Creates a state with no displayed books.
+     *
+     * @param kind IDLE, LOADING, EMPTY, or ERROR in this lab
+     * @return a new snapshot with an empty payload
+     */
     public static BooksUiState of(Kind kind) {
         return new BooksUiState(kind, new String[0]);
     }
 
+    /**
+     * Creates the successful snapshot from returned book data.
+     *
+     * @param books payload elements to copy into the snapshot
+     * @return a SUCCESS state independent of the input array
+     */
     public static BooksUiState success(String[] books) {
         return new BooksUiState(Kind.SUCCESS, books);
     }
 
+    /**
+     * Returns a defensive copy so a caller cannot mutate the published state.
+     *
+     * @return a separate array containing this snapshot's payload elements
+     */
     public String[] getBooks() {
+        // Copy on exit: observers receive data, not permission to mutate our state.
         return books.clone();
     }
 }
@@ -121,11 +182,20 @@ public final class BooksViewModel extends ViewModel {
     private int attempt;
     private Runnable pendingLoad;
 
+    /**
+     * Exposes lifecycle-aware observation while keeping publication private.
+     *
+     * @return read-only API for the latest screen snapshot
+     */
     public LiveData<BooksUiState> getState() {
         return state;
     }
 
-    /** Accepts a UI action; the ViewModel decides whether a request may start. */
+    /**
+     * Accepts a new scenario only outside LOADING and resets its attempt count.
+     *
+     * @param selected scenario retained for a later Retry
+     */
     public void choose(FakeBookRepository.Scenario selected) {
         if (currentKind() == BooksUiState.Kind.LOADING) {
             return;
@@ -135,7 +205,9 @@ public final class BooksViewModel extends ViewModel {
         scheduleLoad();
     }
 
-    /** Repeats the failed scenario without allowing duplicate requests. */
+    /**
+     * Repeats the remembered failed scenario; other states ignore this action.
+     */
     public void retry() {
         if (currentKind() != BooksUiState.Kind.ERROR) {
             return;
@@ -144,11 +216,20 @@ public final class BooksViewModel extends ViewModel {
         scheduleLoad();
     }
 
+    /**
+     * Reads the current snapshot kind, using IDLE if no value exists yet.
+     *
+     * @return the state used to guard incoming actions
+     */
     private BooksUiState.Kind currentKind() {
         BooksUiState current = state.getValue();
         return current == null ? BooksUiState.Kind.IDLE : current.kind;
     }
 
+    /**
+     * Publishes LOADING and queues one nonblocking fake response on the main thread.
+     * The callback belongs to this ViewModel, so rotation does not reschedule it.
+     */
     private void scheduleLoad() {
         state.setValue(BooksUiState.of(BooksUiState.Kind.LOADING));
         pendingLoad = () -> {
@@ -162,9 +243,14 @@ public final class BooksViewModel extends ViewModel {
                 state.setValue(BooksUiState.success(result.books));
             }
         };
+        // This queue is still the UI queue; delaying is not background I/O.
         handler.postDelayed(pendingLoad, 1500);
     }
 
+    /**
+     * Cancels owned queued work when this ViewModel is permanently discarded.
+     * A configuration change alone does not trigger this cleanup.
+     */
     @Override
     protected void onCleared() {
         if (pendingLoad != null) {
@@ -244,6 +330,16 @@ public final class BooksViewModel extends ViewModel {
 {% endcode_diff %}
 
 אין להעתיק ל־ViewModel את `binding` או `TextView`: היא אינה בעלת ה־View. `FakeBookRepository` ו־XML נשארים כפי שהיו.
+
+מעל החתימה החדשה של `render`, החליפו את התיעוד הישן בתיעוד המתאים לפרמטר החדש:
+
+```java
+    /**
+     * Displays one received snapshot without modifying the ViewModel's state.
+     *
+     * @param state latest snapshot delivered to this active Activity
+     */
+```
 
 ## בודקים מה באמת שורד
 

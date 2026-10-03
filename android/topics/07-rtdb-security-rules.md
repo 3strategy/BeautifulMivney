@@ -27,6 +27,38 @@ tags: [Android, Firebase, RTDB, security, testing]
 | Alice | `/notes/alice/bad` | כתיבת הערה חסרת שדה או עם שדה זר | נדחה |
 | Bob | `/notes` | קריאת כל אוספי המשתמשים | נדחה |
 
+## שתי שאלות שרת: מי אתה, ומה אתה מנסה לשמור?
+
+**אימות זהות** נותן לבקשה UID מוכר; **הרשאה** קובעת מה UID זה רשאי לעשות. הנתיב `/notes/alice/first` אינו מוכיח שהמבקש הוא Alice: גם Bob יכול לכתוב את המילה `alice` בכתובת. לכן הכלל משווה את `auth.uid`, שנמסר מתוך זהות הבקשה, אל `$uid`, שנלקח מהנתיב. השוויון נחוץ גם כשה־UI מציע למשתמש רק את הנתיב שלו.
+
+```mermaid
+flowchart TD
+    A["Write /notes/alice/first"] --> B{"Authenticated UID equals path UID?"}
+    B -->|no| R["Reject permission"]
+    B -->|yes| C{"Deletion?"}
+    C -->|yes| D["Allow owner to delete"]
+    C -->|no| E{"Required fields, types, and limits valid?"}
+    E -->|no| R
+    E -->|yes| W["Store new data"]
+```
+
+התרשים מפריד הרשאה מתיקוף. גם Alice אינה יכולה לשמור `isAdmin: true` בהערה, כי זה שדה שלא הוגדר בחוזה. `newData` היא תמונת הנתון לאחר הכתיבה המוצעת, ולא רק השדה היחיד ששלחנו. כך אפשר לבדוק שהערה מעודכנת עדיין מכילה את כל שדות החובה. החריג למחיקה שלמה מכוון: בעת מחיקה אין אובייקט חדש שחייב להכיל `text`.
+
+כללי RTDB **אינם מסנן תוצאות**: אין לקרוא `/notes` ולצפות שהשרת יחזיר רק את חלקה של Alice. שולחים קריאה לנתיב שהכללים מרשים לקרוא. גם כלל מאפשר בהורה אינו מתבטל רק משום שילד מחמיר אותו; לכן מתחילים מגבול צר ובודקים בקשות ישירות לכל גבול שרוצים להגן עליו. [תחביר כללי RTDB](https://firebase.google.com/docs/database/security/core-syntax) מסביר ירושת הרשאה ואת גבולות הנתיב.
+
+בבדיקות `await` מחכה להכרעה של פעולה אסינכרונית. בלי ההמתנה הבדיקה עלולה להסתיים לפני שהתשובה הגיעה. `assertFails` אינה כישלון בדיקה: הבדיקה מצליחה כאשר פעולת לקוח לא מורשה נדחית כצפוי. אחרי שינוי כללים נבדוק שתי קבוצות יחד: פעולות מותרות שלא נשברו ופעולות אסורות שלא נפתחו. שרת Emulator מאפשר לבודד את הכללים בלי לגעת במידע אמיתי.
+
+## עצרו ונבאו
+
+בעלים מוחקת note באמצעות כתיבת null. האם כלל שמחייב title למידע חדש אמור לחסום אותה? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+לא במסלול המחיקה הזה. הרשאת write של הבעלים עדיין נבדקת, אך validation של נתון שנמחק אינה דרישה לקיומו של title חדש. משתמשת אחרת אינה יכולה לעקוף בעלות באמצעות מחיקה; הרשאה ומבנה הנתון הן בדיקות שונות.
+
+</details>
+
 ## 1. מגדירים נתיב וכללי ברירת מחדל סגורה
 
 בשורש הפרויקט צרו `database.rules.json`. קובצי שורש לא תמיד מופיעים בתצוגת **Android** של Android Studio; פתחו אותם בעזרת **Search Everywhere** או בחלון הקבצים של מערכת ההפעלה.
@@ -100,6 +132,9 @@ tags: [Android, Firebase, RTDB, security, testing]
 
 הוסיפו ל־`.gitignore` את `node_modules/`,‏ `database-debug.log`,‏ `firebase-debug.log` ו־`ui-debug.log`. את `package-lock.json` כן שומרים: הוא נוצר על ידי `npm install` ומאפשר התקנה שחוזרת על אותן גרסאות. נדרשים Node.js,‏ Java ו־Firebase CLI במחשב; להרצה מקומית של אמולטור ה־Database אין צורך בהתחברות לחשבון Firebase.
 
+{: .box-note}
+בדיקות Rules ירוקות מוכיחות את תרחישי ההרשאה שבדקנו; הן אינן בדיקת בריאות של ספריות Node. הריצו גם `npm audit` וקראו איזה package מושפע ובאיזה מסלול הוא משמש. התלויות כאן הן `devDependencies` של כלי הבדיקה, ולא ספריות שנכנסות ל־APK. עדכון major או `npm audit fix --force` יכול לשנות API ולשבור את הניסוי; שינוי גרסאות צריך להסתיים בהרצה חוזרת של בדיקות הכללים, לא רק בהיעלמות אזהרה.
+
 ## 3. בודקים בקשות אמיתיות עם זהויות מדומות
 
 צרו בשורש הפרויקט את `tests/rtdb-rules.test.js`:
@@ -142,12 +177,14 @@ test('owner can create, read, update, and delete a valid note', async () => {
 });
 
 test('another user and a guest cannot read or write Alice’s path', async () => {
+  // The identity is Bob even when the requested path contains Alice's UID.
   const bob = env.authenticatedContext('bob').database();
   const guest = env.unauthenticatedContext().database();
   await assertFails(get(ref(bob, 'notes/alice/first')));
   await assertFails(set(ref(bob, 'notes/alice/stolen'), { text: 'No', updatedAt: 1 }));
   await assertFails(get(ref(guest, 'notes/alice/first')));
   await assertFails(set(ref(guest, 'notes/alice/new'), { text: 'No', updatedAt: 1 }));
+  // Rules authorize a path; they do not filter a parent read to visible children.
   await assertFails(get(ref(bob, 'notes')));
 });
 

@@ -26,9 +26,47 @@ tags: [Android, Kotlin, Jetpack Compose, navigation, testing]
 | Interop | Java Activity → Compose Activity;‏ `AndroidView` | מעבר מדורג בין Views ל־Compose |
 | Testing | `ComposeCatalogTest` | מסלול משתמש ושחזור אחרי recreate |
 
+## חושבים בתיאור מסך מתוך מצב
+
+ב־Views, קוד כמו `setText` משנה רכיב שכבר קיים. ב־Compose הפונקציה מתארת מה צריך להופיע עבור המצב הנוכחי; שינוי state מאפשר לחשב תיאור חדש. recomposition אינה בקשה להפעיל מחדש כל פעולה עסקית. אין לשלוח HTTP או לשמור נתון רק משום שגוף Composable רץ שוב; פעולות כאלה צריכות בעלות ותזמון מפורשים.
+
+```mermaid
+flowchart LR
+    Q["query state"] --> F["Filter book data"]
+    F --> L["LazyColumn with stable book keys"]
+    L --> E["User edits query"]
+    E --> Q
+    D["Detail state"] --> C["Compose Text"]
+    D --> U["AndroidView update"]
+    X["AndroidView factory"] --> U
+```
+
+`mutableStateOf` מאפשרת ל־Compose לעקוב אחר קריאות ושינויים; `remember` משמרת ערך בין recompositions של אותה נוכחות בממשק; `rememberSaveable` מוסיפה שחזור עבור טיפוסים שניתנים לשמירה. אף אחד מהם אינו מסד נתונים. גם key של ספר אינה שמירה לדיסק: היא עוזרת לשייך שורה לזהות שלה כאשר הסדר משתנה.
+
+favorite המקומית בשורה מלמדת תגובת UI. כאשר שורה יוצאת מן ההרכב בגלל סינון, אין להסיק מן הדוגמה שהבחירה תישמר בכל תרחיש. אם צריך לשתף Favorite בין הרשימה למסך פרטים, נעלה את הבעלות אל בעל מצב משותף ונעביר ערך ו־callback למטה. כך שורה אינה מחזיקה אמת נפרדת מן הפרטים.
+
+`AndroidView.factory` יוצרת View כשהיא נדרשת; `update` מסנכרנת אותה עם הנתון העדכני. קריאה אחת ל־setText רק ב־factory הייתה משאירה טקסט ישן בשינוי state. עץ הסמנטיקה של Compose ועץ Views אינם אותו עץ בדיקה; צריך לבחור כלי לפי הרכיב שמאמתים. בקובצי Kotlin נשתמש ב־KDoc (`/** ... */`) לפני פונקציות, המקביל לתפקיד Javadoc בקוד Java.
+
+## עצרו ונבאו
+
+המשתמש הקליד Android ואז הפעיל scenario.recreate. מדוע החיפוש יכול לחזור בלי לשמור את הרשימה המסוננת? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+query היא ערך קטן ב־rememberSaveable. אחרי שחזור מחשבים מחדש את הרשימה מתוך books ו־query. שומרים קלט יציב ומפיקים ממנו תצוגה; אין צורך לשמור עותק נוסף של אותה תוצאה נגזרת.
+
+</details>
+
 ## 1. בונים בשני מחסומים תקינים
 
-ב־**Gradle Scripts > libs.versions.toml**, הוסיפו גרסת Kotlin `2.3.21`,‏ Compose BOM `2026.09.00`, ו־Navigation Compose `2.10.2` (הגרסאות בענף התוצאה). הוסיפו aliases ל־Compose compiler plugin, BOM,‏ Material3, foundation, UI, Activity Compose, Navigation Compose ולספריות בדיקה. ב־`build.gradle.kts` של השורש הכריזו על `compose-compiler` עם `apply false`. ב־`app/build.gradle.kts` הפעילו את plugin זה ואת `buildFeatures.compose = true`, ואז הוסיפו רק את ספריות Compose הנצרכות; הכניסו את BOM גם ל־`androidTestImplementation`.
+ב־**Gradle Scripts > libs.versions.toml**, הוסיפו גרסת Kotlin `2.3.21`,‏ Compose BOM `2026.09.00`, ו־Navigation Compose `2.10.2` (הגרסאות בענף התוצאה). הוסיפו aliases ל־Compose compiler plugin, BOM,‏ Material3, foundation, UI, Activity Compose, Navigation Compose ולספריות בדיקה. ב־**Gradle Scripts > build.gradle.kts (Project)**, בתוך `plugins`, הוסיפו:
+
+```kotlin
+alias(libs.plugins.compose.compiler) apply false
+```
+
+הקוד המשלים בהמשך מראה את השינויים המדויקים בטבלת הגרסאות ובקובץ Gradle של המודול. ב־`app/build.gradle.kts` הפעילו את plugin זה ואת `buildFeatures.compose = true`, ואז הוסיפו רק את ספריות Compose הנצרכות; הכניסו את BOM גם ל־`androidTestImplementation`.
 
 הריצו **`./gradlew :app:assembleDebug` כעת**, לפני יצירת קובץ Kotlin. זהו checkpoint שמפריד שגיאת Gradle/גרסה משגיאת קוד UI. בסיס הפרויקט משתמש ב־AGP 9.4 עם תמיכת Kotlin מובנית; אין להוסיף כאן `org.jetbrains.kotlin.android` ישן רק כי מדריך משנים קודמות השתמש בו. [מדריך Android ל־built-in Kotlin](https://developer.android.com/build/migrate-to-built-in-kotlin) ו־[תוסף Compose Compiler](https://developer.android.com/develop/ui/compose/setup-compose-dependencies-and-compiler) מסבירים את החלוקה. [Compose BOM](https://developer.android.com/develop/ui/compose/bom) מתאמת את גרסאות ספריות Compose, אך לא את Navigation או Activity.
 
@@ -48,6 +86,7 @@ binding.openCompose.setOnClickListener(
 צרו `ComposeActivity.kt` ב־**app > kotlin+java > com.example.topics**. המחלקה יורשת `ComponentActivity` וקוראת `setContent { CatalogApp() }`. בתוך מסלול `books`, חיפוש נראה כך:
 
 ```kotlin
+// Save the small query value for recreation, not the entire filtered list.
 var query by rememberSaveable { mutableStateOf("") }
 OutlinedTextField(
     value = query,
@@ -63,9 +102,9 @@ LazyColumn {
 }
 ```
 
-`onValueChange` משנה את `query`; Compose מריצה מחדש את החלקים שקוראים את הערך והרשימה המסוננת מתעדכנת. אין צורך לפנות ידנית ל־TextView. `rememberSaveable` שומרת טקסט פשוט דרך state של ה־Activity ולכן החיפוש נשאר אחרי סיבוב/יצירה מחדש. `key = { it.id }` נותן זהות יציבה לשורה גם כשהרשימה מסוננת. לכל שורה בענף התוצאה `favorite` מקומי באמצעות `rememberSaveable(book.id)` ולחצן `☆/★`. זהו state **של הדגמת UI**; הוא אינו מסד או מקור אמת בין מכשירים. [מדריך state](https://developer.android.com/develop/ui/compose/state) מסביר state hoisting כשכמה מסכים צריכים לחלוק נתון.
+`onValueChange` משנה את `query`; Compose מריצה מחדש את החלקים שקוראים את הערך והרשימה המסוננת מתעדכנת. אין צורך לפנות ידנית ל־TextView. `rememberSaveable` שומרת טקסט פשוט דרך state של ה־Activity ולכן החיפוש נשאר אחרי סיבוב/יצירה מחדש. `key = { it.id }` נותן זהות יציבה לשורה גם כשהרשימה מסוננת. לכל שורה בקוד המשלים `favorite` מקומי באמצעות `rememberSaveable(book.id)` ולחצן `☆/★`. זהו state **של הדגמת UI**; הוא אינו מסד או מקור אמת בין מכשירים. [מדריך state](https://developer.android.com/develop/ui/compose/state) מסביר state hoisting כשכמה מסכים צריכים לחלוק נתון.
 
-`Column` מסדר רכיבים מלמעלה למטה, `Row` את הכותרת והכפתור זה לצד זה, ו־`Modifier.padding`/`fillMaxWidth` מתארים גודל ומרווח. `LazyColumn` מרכיבה שורות לפי הצורך, בדומה למטרת RecyclerView, אבל API העדכון שונה. השוו את [מדריך הרשימות ב־Compose](https://developer.android.com/develop/ui/compose/lists) למעבדת [RecyclerView]({{ '/android/topics/11-recyclerview-diffutil/' | relative_url }}).
+`safeDrawingPadding()` מרחיקה את תוכן המסך מ־system bars ו־display cutout. זו אחריות ה־insets של מסך Compose. `Column` מסדר רכיבים מלמעלה למטה, `Row` את הכותרת והכפתור זה לצד זה, ו־`Modifier.padding`/`fillMaxWidth` מתארים גודל ומרווח. `LazyColumn` מרכיבה שורות לפי הצורך, בדומה למטרת RecyclerView, אבל API העדכון שונה. השוו את [מדריך הרשימות ב־Compose](https://developer.android.com/develop/ui/compose/lists) למעבדת [RecyclerView]({{ '/android/topics/11-recyclerview-diffutil/' | relative_url }}).
 
 ## 4. ניווט עם מזהה, לא עם אובייקט שלם
 
@@ -75,6 +114,7 @@ LazyColumn {
 
 ```kotlin
 AndroidView(
+    // Create once for this View instance; synchronize changing data in update.
     factory = { context -> TextView(context) },
     update = { view -> view.text = "Classic TextView for ID: ${book?.id ?: "?"}" },
     modifier = Modifier.padding(vertical = 16.dp)
@@ -88,6 +128,89 @@ AndroidView(
 ב־**app > kotlin+java > com.example.topics** תחת source set `androidTest`, צרו `ComposeCatalogTest.kt`. `createAndroidComposeRule<ComposeActivity>()` מפעילה את Activity שכבר קוראת `setContent`. הבדיקה מכניסה `Android` לשדה `testTag("search")`, פותחת `book-b2`, מאשרת את כותרת הפריט, חוזרת, מוודאת ש־`book-b1` אינו ברשימה, ומבצעת `scenario.recreate()` כדי לבדוק שהחיפוש נשמר. ב־[מדריך בדיקות Compose](https://developer.android.com/develop/ui/compose/testing) יש פעולות סמנטיות כמו `onNodeWithTag`,‏ `performTextInput` ו־`assertIsDisplayed`.
 
 `./gradlew :app:connectedDebugAndroidTest` עבר באמולטור. בדיקת ה־UI הראשונה נכשלה כשניסתה למצוא את תוכן ה־`TextView` הישן כצומת סמנטי של Compose; תוקנה לבדוק את כותרת Compose במסך הפרטים, ואת ה־View הישן בודקים ידנית. בדיקה לא צריכה להניח שכל View מוטמע מופיע כמו `Text` בעץ הסמנטי של Compose.
+
+
+
+## הקוד המשלים במלואו
+
+הקטעים הגלויים בשיעור ממקדים את הרעיון; הקבצים הבאים משלימים את כל הקוד הדרוש, עם תיעוד והערות. קראו את השינוי יחד עם ההסבר שמעליו. הם חלק מן השיעור ואינם דורשים פתיחת ענף דוגמה או אתר שפורסם.
+
+### libs.versions.toml
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/24/libs.versions.toml.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/24/libs.versions.toml.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור libs.versions.toml</summary>
+
+{% include_relative code/24/libs.versions.toml.md %}
+
+</details>
+
+### build.gradle.kts
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/24/build.gradle.kts.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/24/build.gradle.kts.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור build.gradle.kts</summary>
+
+{% include_relative code/24/build.gradle.kts.md %}
+
+</details>
+
+### MainActivity.java
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/24/MainActivity.java.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/24/MainActivity.java.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור MainActivity.java</summary>
+
+{% include_relative code/24/MainActivity.java.md %}
+
+</details>
+
+### ComposeActivity.kt
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/24/ComposeActivity.kt.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/24/ComposeActivity.kt.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור ComposeActivity.kt</summary>
+
+{% include_relative code/24/ComposeActivity.kt.md %}
+
+</details>
+
+### ComposeCatalogTest.kt
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/24/ComposeCatalogTest.kt.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/24/ComposeCatalogTest.kt.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור ComposeCatalogTest.kt</summary>
+
+{% include_relative code/24/ComposeCatalogTest.kt.md %}
+
+</details>
+
+### activity_main.xml
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/24/activity_main.xml.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/24/activity_main.xml.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור activity_main.xml</summary>
+
+{% include_relative code/24/activity_main.xml.md %}
+
+</details>
+
+### strings.xml
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/24/strings.xml.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/24/strings.xml.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור strings.xml</summary>
+
+{% include_relative code/24/strings.xml.md %}
+
+</details>
 
 ## משימת העברה
 

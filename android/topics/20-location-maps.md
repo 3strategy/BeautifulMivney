@@ -24,6 +24,37 @@ tags: [Android, Java, location, maps, permissions]
 
 לפי [מדריך הרשאות המיקום](https://developer.android.com/develop/sensors-and-location/location/permissions/runtime), Android 12+ מאפשר למשתמש להעניק **Approximate** גם כשמבקשים דיוק מלא. לכן, בעת שדרוג, מבקשים `FINE` ו־`COARSE` באותה בקשה וממשיכים לעבוד גם אם ניתנה רק `COARSE`. אל תפרשו `getAccuracy()` כהבטחה: זה אומדן רדיוס, ותנאי שטח/רשת/מכשיר משפיעים עליו. שינוי בהגדרת הדיוק עלול להפעיל מחדש את תהליך האפליקציה.
 
+## בקשת דיוק אינה הבטחת דיוק
+
+האפליקציה יכולה לבקש fine, המשתמש יכול לבחור coarse, והספק יכול להחזיר נקודה שרדיוס אי־הוודאות שלה גדול. אלה שלושה שלבים שונים. `preciseRequested` זוכר את כוונת הפעולה; `has(FINE)` אומר מה המערכת התירה; `getAccuracy()` מתאר אומדן של **המדידה שהתקבלה**. אין להסיק מאישור הרשאה שהנקודה נמצאת בדיוק בכניסה לבניין.
+
+```mermaid
+flowchart LR
+    U["User chooses required precision"] --> P["Request foreground permission"]
+    P --> A["Check actually granted coarse/fine"]
+    A --> F["Ask provider for one fix"]
+    F --> R["Relevant result plus uncertainty radius"]
+    R --> S["Display; enable map action"]
+    S -->|"separate user tap"| M["Share coordinates with map app"]
+```
+
+`getCurrentLocation` מקבלת CancellationSignal וביצוע callback ב־executor שבחרנו; `getMainExecutor` מאפשר לעדכן Views שם. null היא תוצאת "אין נקודה", לא קואורדינטות 0,0. לפני בקשה חדשה מנקים את הנקודה הישנה ומשביתים Open Map, כדי שכפתור פעיל לא ישלח בטעות מיקום קודם.
+
+ביטול ב־`onStop` חוסך עבודה כשהמסך אינו גלוי, והגדלת דור פוסלת callback שכבר עבר לתור. הגנה על רלוונטיות והגנה על הרשאה נפרדות: גם callback שייך לדור נכון אינו מצדיק שימוש בהרשאה שכבר השתנתה. לכן בודקים לפני שימוש ומטפלים גם ב־SecurityException.
+
+המפה היא אפליקציה אחרת. יצירת `geo:` URI ו־ACTION_VIEW מעבירה לה מידע בלחיצה נפרדת; אין כאן SDK מפה בתוך המסך. `Locale.US` ב־URI מבטיחה נקודה עשרונית, בעוד טקסט התצוגה יכול להשתמש בשפת המשתמש. שימו לב גם לסדר: `adb emu geo fix` מקבל longitude ואז latitude, בעוד הרבה APIs ותיאורי מיקום מציגים latitude תחילה.
+
+## עצרו ונבאו
+
+preciseRequested=true, אבל המשתמש העניק רק coarse. כיצד תוצג התוצאה? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+כמקורבת, אם התקבלה נקודה. preciseRequested שומרת כוונת פעולה; has(FINE) קובעת האם הותר דיוק גבוה. רדיוס accuracy שייך למדידה בפועל, ואינו נובע ישירות מן הבקשה או מן ההרשאה.
+
+</details>
+
 ## 1. מכריזים רק על foreground
 
 ב־**app > manifests > AndroidManifest.xml**, לפני `<application>`, הוסיפו:
@@ -40,6 +71,8 @@ tags: [Android, Java, location, maps, permissions]
 ב־**app > res > layout > activity_main.xml** החליפו את `Hello World!` ב־`LinearLayout` אנכי constrained ל־`top/start/end` של ההורה, `padding=24dp`. ילדיו: `TextView` הסבר `@string/location_intro` בגודל `20sp`; כפתורי `approximate`,‏ `precise`,‏ `open_map`; ו־`TextView id=status` עם `accessibilityLiveRegion="polite"`. כפתור המפה מתחיל עם `enabled="false"` כי אין נקודה להציג. כל הילדים ברוחב `match_parent` ובגובה `wrap_content`. השאירו את טיפול ה־window insets שכבר קיים.
 
 ב־**app > res > values > strings.xml** הוסיפו טקסט למצבי idle, denied, provider off, locating, no fix, no map app ותוצאת מיקום. בענף התוצאה ה־`location_result` משתמש ב־`%2$.5f`/`%3$.5f` לקואורדינטות וב־`%4$.0f` לרדיוס במטרים. הצגת הרדיוס עוזרת להסביר מדוע נקודה מקורבת אינה מקום מדויק.
+
+סיבוב מסך מסיים את הבקשה שבבעלות ה־Activity הישנה. במעבדה שומרים רק את בחירת רמת הדיוק; לא משחזרים נקודה ישנה ולא מתחילים בקשה חדשה אוטומטית. אחרי שחזור המשתמש לוחץ שוב לקבלת fix. אם מוצר צריך להמשיך טעינה בזמן סיבוב, יש להעביר את בעלות הבקשה לבעל מצב מתאים ולחבר מחדש את התצוגה, כפי שנלמד במעבדת ViewModel.
 
 ## 3. מבקשים הרשאה ברגע הפעולה
 
@@ -108,8 +141,14 @@ manager.getCurrentLocation(provider, pending, getMainExecutor(), location -> {
 זהו קטע ממוקד; בענף התוצאה נמצאים השיטה המלאה וה־`try/catch`. השתמשנו בספק GPS כדי להזריק נקודה באמולטור באופן שחוזר על עצמו. הרשאת coarse עדיין מחזירה נקודה **מגושמת**: בבדיקה נמדד רדיוס `2000m` מול `5m` בהרשאת fine. GPS עשוי להיות איטי או לא לתת fix בתוך מבנה. במוצר רב־מכשירי, שקלו ספק fused עם התאמת דיוק/הספק, fallback ו־timeout; [תיעוד LocationManager](https://developer.android.com/reference/android/location/LocationManager) מתאר גם את מגבלות `getCurrentLocation`. בקשה **חד־פעמית** וחסימת בקשה כשהמסך נסגר חוסכות עבודה ביחס להאזנה רציפה.
 
 ```java
+/**
+ * Invalidates late fixes and cancels this screen's current location request.
+ * No new location is published while the screen is stopped.
+ */
 @Override
 protected void onStop() {
+    // Cancellation may race with delivery; invalidate a result already queued on main.
+    requestGeneration++;
     if (pending != null) {
         pending.cancel();
         pending = null;
@@ -121,6 +160,45 @@ protected void onStop() {
 ## 5. מעבירים נקודה למפה רק אחרי לחיצה
 
 `openMap()` בונה URI מסוג `geo:latitude,longitude?z=14` עם `Locale.US`, פותחת `Intent.ACTION_VIEW`, ומציגה הודעה אם אין אפליקציה תומכת (`ActivityNotFoundException`). שימוש ב־`Locale.US` משאיר נקודה עשרונית ב־URI גם בטלפון ששפתו משתמשת בסימן אחר. [תיעוד ה־geo intent](https://developer.android.com/guide/components/intents-common#Maps) מפרט את הפורמט. מסירת הנקודה לאפליקציית מפה היא חשיפת מידע לאפליקציה נוספת, לכן היא פעולה נפרדת שמובנת למשתמש.
+
+
+
+## הקוד המשלים במלואו
+
+הקטעים הגלויים בשיעור ממקדים את הרעיון; הקבצים הבאים משלימים את כל הקוד הדרוש, עם תיעוד והערות. קראו את השינוי יחד עם ההסבר שמעליו. הם חלק מן השיעור ואינם דורשים פתיחת ענף דוגמה או אתר שפורסם.
+
+### MainActivity.java
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/20/MainActivity.java.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/20/MainActivity.java.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור MainActivity.java</summary>
+
+{% include_relative code/20/MainActivity.java.md %}
+
+</details>
+
+### activity_main.xml
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/20/activity_main.xml.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/20/activity_main.xml.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור activity_main.xml</summary>
+
+{% include_relative code/20/activity_main.xml.md %}
+
+</details>
+
+### strings.xml
+
+[פתיחת המקור ישירות]({{ '/android/topics/code/20/strings.xml.md' | relative_url }}) — בקובץ Markdown המקורי, הקוד נמצא ב־`code/20/strings.xml.md` ביחס לשיעור.
+
+<details markdown="1">
+<summary>הקוד המלא והשינויים עבור strings.xml</summary>
+
+{% include_relative code/20/strings.xml.md %}
+
+</details>
 
 ## בדיקות ותכנון מחדש
 

@@ -15,6 +15,39 @@ tags: [Android, Java, OOP, collections, testing]
 
 בסיס ההשוואה הוא `master` של פרויקט **topics**:‏ Empty Views Activity עם View Binding. ענף התוצאה הוא **`codex/java-oop-contracts`**. כל הקוד החדש ב־Java; ממשק המסך נשאר XML. הסדר כאן חשוב: בונים ובודקים קודם את המחלקות שאינן תלויות ב־Android, ורק אז מחברים אותן למסך.
 
+## פולימורפיזם הוא הבטחה להתנהגות, לא רק קשר בין מחלקות
+
+כאשר המשתנה הוא `Catalog<Book>`, הקומפיילר יודע שיש `add`,‏ `contains` ו־`size`, ושמותר למסור להן Book. בזמן ריצה המופע קובע אם חיפוש יעבור בלולאה או ב־HashSet. המסך לא צריך לדעת את פרטי האחסון כדי לבקש "האם הספר קיים?". זאת המשמעות המעשית של החלפת מימוש בלי החלפת קוד המשתמש בחוזה.
+
+```mermaid
+flowchart TD
+    C["Catalog&lt;Book&gt;: public contract"] --> A["AbstractCatalog: final add policy"]
+    A --> L["ListCatalog: sequential equality checks"]
+    A --> S["SetCatalog: hash-based membership"]
+    B["Book: normalized identity"] --> L
+    B --> S
+    A --> P["reject null and duplicate before insert"]
+```
+
+`interface` מתאר יכולת; `abstract` מאפשר גם לממש חלק ממנה; `final add` מקבע את סדר הכללים; `protected insert` היא נקודת ההרחבה שהיורשת מספקת. בקריאה `add(book)`, מחלקת הבסיס קוראת ל־`contains` של המימוש בפועל, ורק אם אין כפילות קוראת ל־`insert`. כך שתי צורות אחסון חולקות מדיניות אבל אינן חייבות לשתף מבנה נתונים.
+
+`equals` מבטאת זהות בתחום שלנו: קוד מנורמל, לא כותרת ולא כתובת האובייקט בזיכרון. `hashCode` מסייעת למצוא אזור חיפוש; היא אינה מזהה ייחודי. שוויון מחייב hash שווה, אבל hash שווה אינו מחייב שוויון. שינוי שדה שמשתתף בזהות אחרי הכנסה ל־HashSet עלול להשאיר את הפריט במקום שמתאים ל־hash הישן. כאן String ושדות final מונעים את השינוי הזה.
+
+`Locale.ROOT` הופכת נרמול קוד להחלטה שאינה תלויה בשפת הטלפון. לעומת זאת, טקסט לתלמיד נשאר במשאבי השפה. גם סיבוכיות היא חוזה עם הנחות: O(1) ממוצעת לחיפוש HashSet מניחה פיזור hash מתאים; `lastChecks` סופרת רק השוואות מפורשות בלולאת List. היא אינה שעון ביצועים ואינה מודדת את הפעולות של Set.
+
+חריגה היא דרך לדווח שהפעולה לא עמדה בתנאי החוזה. הבנאי דוחה קוד ריק לפני שנוצר ספר; `add` דוחה כפילות לפני שהאוסף משתנה. המסך תופס כשל צפוי ומתרגם אותו להודעה. מחלקות Java אינן צריכות להכיר Toast או Activity כדי להיות ניתנות לבדיקה. שני הקטלוגים במסך זה נשארים מסונכרנים תחת אותו קלט וכללי זהות; הם אינם עסקה אטומית בין שני מאגרי מוצר.
+
+## עצרו ונבאו
+
+שני Book שונים נושאים אותו code וכותרת שונה. האם הם אותו פריט לפי החוזה, ומה על hashCode לעשות? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+כן, הזהות במעבדה נקבעת על פי code המנורמל. כותרת היא תוכן ולא חלק מן הזהות. מכיוון ש־equals מחזירה true, hashCode חייבת להיות שווה גם היא; שילוב הכותרת ב־hash ישבור את החוזה של HashSet.
+
+</details>
+
 ## 1. מחליטים מה הופך שני ספרים ל"אותו ספר"
 
 לספר יש קוד וכותרת. הכותרת עשויה להשתנות, אבל הקוד מזהה אותו. ב־**app > kotlin+java > com.example.topics** צרו `Book.java`:
@@ -30,14 +63,29 @@ public final class Book {
     public final String code;
     public final String title;
 
+    /**
+     * Creates immutable identity from a trimmed, locale-independent uppercase code.
+     *
+     * @param code nonblank identifier to normalize
+     * @param title non-null display title, which is not part of identity
+     * @throws IllegalArgumentException if code is null or blank
+     * @throws NullPointerException if title is null
+     */
     public Book(String code, String title) {
         if (code == null || code.trim().isEmpty()) {
             throw new IllegalArgumentException("Book code is required");
         }
+        // Machine identity must not change with the phone's display language.
         this.code = code.trim().toUpperCase(Locale.ROOT);
         this.title = Objects.requireNonNull(title, "title");
     }
 
+    /**
+     * Compares normalized book identity, ignoring display title.
+     *
+     * @param other object to compare, possibly null or another type
+     * @return true for the same normalized code
+     */
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
@@ -45,6 +93,11 @@ public final class Book {
         return code.equals(((Book) other).code);
     }
 
+    /**
+     * Hashes exactly the identity fields used by equals.
+     *
+     * @return equal hash values for equal books; collisions can still occur
+     */
     @Override
     public int hashCode() {
         return code.hashCode();
@@ -65,8 +118,26 @@ package com.example.topics;
 
 /** Operations shared by catalogs with different storage structures. */
 public interface Catalog<T> {
+    /**
+     * Adds one non-null unique item.
+     *
+     * @param item item to store
+     * @throws DuplicateItemException if an equal item is already present
+     * @throws NullPointerException if item is null
+     */
     void add(T item);
+    /**
+     * Tests membership using the equality contract of the item type.
+     *
+     * @param item lookup identity
+     * @return whether an equal item is present
+     */
     boolean contains(T item);
+    /**
+     * Counts unique stored items.
+     *
+     * @return current catalog size
+     */
     int size();
 }
 ```
@@ -78,6 +149,9 @@ package com.example.topics;
 
 /** A duplicate is a recoverable user action, not a crash. */
 public final class DuplicateItemException extends IllegalArgumentException {
+    /**
+     * Describes a rejected duplicate insertion that leaves the catalog unchanged.
+     */
     public DuplicateItemException() {
         super("This book code already exists");
     }
@@ -93,15 +167,28 @@ import java.util.Objects;
 
 /** Shares the add contract while leaving storage to subclasses. */
 public abstract class AbstractCatalog<T> implements Catalog<T> {
+    /**
+     * Enforces the shared insertion policy before delegating storage to a subclass.
+     *
+     * @param item non-null item to insert
+     * @throws NullPointerException if item is null
+     * @throws DuplicateItemException if an equal item is already stored
+     */
     @Override
     public final void add(T item) {
         Objects.requireNonNull(item, "item");
         if (contains(item)) {
             throw new DuplicateItemException();
         }
+        // Dispatch to the subclass only after the shared contract is satisfied.
         insert(item);
     }
 
+    /**
+     * Stores an item after the base add method has validated its insertion.
+     *
+     * @param item validated item to store; this method does not repeat the policy
+     */
     protected abstract void insert(T item);
 }
 ```
@@ -124,6 +211,12 @@ public final class ListCatalog<T> extends AbstractCatalog<T> {
     private final List<T> items = new ArrayList<>();
     private int lastChecks;
 
+    /**
+     * Tests membership according to item equality in this storage implementation.
+     *
+     * @param item identity to search for
+     * @return whether an equal item is stored
+     */
     @Override
     public boolean contains(T item) {
         lastChecks = 0;
@@ -134,16 +227,31 @@ public final class ListCatalog<T> extends AbstractCatalog<T> {
         return false;
     }
 
+    /**
+     * Stores an item after the base add method has validated its insertion.
+     *
+     * @param item validated item to store; this method does not repeat the policy
+     */
     @Override
     protected void insert(T item) {
         items.add(item);
     }
 
+    /**
+     * Counts stored unique items.
+     *
+     * @return current number of stored items
+     */
     @Override
     public int size() {
         return items.size();
     }
 
+    /**
+     * Reports comparisons made by the most recent List membership check.
+     *
+     * @return comparison count, not elapsed time or HashSet work
+     */
     public int getLastChecks() {
         return lastChecks;
     }
@@ -162,16 +270,32 @@ import java.util.Set;
 public final class SetCatalog<T> extends AbstractCatalog<T> {
     private final Set<T> items = new HashSet<>();
 
+    /**
+     * Tests membership according to item equality in this storage implementation.
+     *
+     * @param item identity to search for
+     * @return whether an equal item is stored
+     */
     @Override
     public boolean contains(T item) {
         return items.contains(item);
     }
 
+    /**
+     * Stores an item after the base add method has validated its insertion.
+     *
+     * @param item validated item to store; this method does not repeat the policy
+     */
     @Override
     protected void insert(T item) {
         items.add(item);
     }
 
+    /**
+     * Counts stored unique items.
+     *
+     * @return current number of stored items
+     */
     @Override
     public int size() {
         return items.size();
@@ -199,6 +323,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public final class CatalogTest {
+    /**
+     * Checks that normalized identity defines equality and the matching hash contract.
+     */
     @Test
     public void normalizedCodeDefinesEqualityAndHash() {
         Book first = new Book(" b-40 ", "First title");
@@ -207,6 +334,9 @@ public final class CatalogTest {
         assertEquals(first.hashCode(), sameCode.hashCode());
     }
 
+    /**
+     * Checks shared membership behavior while exposing List's linear comparisons.
+     */
     @Test
     public void listAndSetAgreeButListScansToLastItem() {
         ListCatalog<Book> list = new ListCatalog<>();
@@ -223,6 +353,9 @@ public final class CatalogTest {
         assertFalse(set.contains(new Book("B-99", "Missing")));
     }
 
+    /**
+     * Checks rejected operations leave the catalog size unchanged.
+     */
     @Test
     public void duplicateAndBlankCodeAreRejectedWithoutChangingSize() {
         Catalog<Book> catalog = new SetCatalog<>();
@@ -296,6 +429,9 @@ binding.findBook.setOnClickListener(view -> findBook());
 הוסיפו ל־Activity שתי מתודות. המסך מטפל בקלט ובתוצאה; הוא אינו מכיל את לולאת החיפוש או את כללי הזהות:
 
 ```java
+/**
+ * Converts entered code into a Book and reports expected validation failures in the UI.
+ */
 private void addBook() {
     try {
         Book book = new Book(binding.bookCode.getText().toString(), "Student book");
@@ -309,6 +445,9 @@ private void addBook() {
     }
 }
 
+/**
+ * Runs the same membership query through both catalogs and displays List work.
+ */
 private void findBook() {
     try {
         Book query = new Book(binding.bookCode.getText().toString(), "Lookup");

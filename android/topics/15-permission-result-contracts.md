@@ -26,6 +26,41 @@ tags: [Android, Java, permissions, ActivityResultContracts, privacy]
 
 ה־[Photo Picker הרשמי](https://developer.android.com/training/data-storage/shared/photo-picker) נותן בחירה נקודתית בלי הרשאת גישה לכל התמונות. `TakePicturePreview` מחזיר תמונה קטנה בזיכרון; צילום מלא לקובץ ו־`FileProvider` ילמדו במעבדת המצלמה. אל תבקשו `CAMERA` רק משום שהאפליקציה מפעילה אפליקציית מצלמה אחרת דרך contract.
 
+## הרשאה רחבה מול בחירה נקודתית
+
+הרשאת runtime מאפשרת סוג פעולה, למשל שליחת התראות רגילות. בורר תמונה נותן לאפליקציה גישה לפריט שהמשתמש בחר. אין צורך לתת לאפליקציה גישה לכל הגלריה כדי לבחור תמונה אחת. `content://` URI מזהה משאב אצל ספק; פותחים אותו באמצעות `ContentResolver`, ולא על ידי הפיכתו שרירותית לנתיב של `File`.
+
+```mermaid
+flowchart TD
+    A["User taps notification"] --> B{"Permission already granted or API below 33?"}
+    B -->|yes| N["Recheck and notify"]
+    B -->|no| R{"System recommends rationale?"}
+    R -->|yes| E["Explain with Continue / Not now"]
+    E -->|Continue| Q["Launch system permission contract"]
+    R -->|no| F{"App requested before?"}
+    F -->|no| Q
+    F -->|yes| S["Offer settings, allow continuing without notification"]
+    Q -->|denied| D["Other features remain usable"]
+    Q -->|granted| N
+```
+
+התרשים מתאר החלטה של האפליקציה על **הפעולה הבאה**, לא ניסיון לנחש מדוע המשתמש או המערכת סירבו. false של rationale יכולה להופיע לפני בקשה ראשונה וגם במצבים שבהם לא יוצג שוב חלון. `asked_notification` מתעד מה האפליקציה עשתה; הוא אינו מוכיח מה המשתמש ראה. לכן ההודעה מציעה אפשרות ולא מאשימה אותו.
+
+שדות launcher נרשמים באופן עקבי לפני ההפעלה. הקריאה `launch` מתחילה בקשת מערכת; lambda מקבלת תשובה מאוחר יותר. על כל חוזה נוכל לכתוב שלישייה: טיפוס קלט, טיפוס תוצאה, ומשמעות ביטול. התראה מחזירה Boolean; בחירה מחזירה URI; preview מחזירה Bitmap בזיכרון. אין להחליף בין התוצאות רק משום שכולן מגיעות מ־Activity אחרת.
+
+`takePersistableUriPermission` מבקשת לשמור **גישת קריאה**, ולא מעתיקה את המסמך לתוך האפליקציה. כדי להשתמש בו בעתיד צריך גם לשמור את ה־URI ולדעת להתמודד עם הסרה או שינוי של הספק. במעבדה הזאת רק מדווחים על סוג הגישה; אין להבטיח שהמסמך עצמו נשמר. גם `notify` היא בקשת פרסום: הגדרות ערוץ או התראות של המשתמש עדיין עשויות להשפיע על מה שיוצג בפועל.
+
+## עצרו ונבאו
+
+shouldShowRequestPermissionRationale מחזירה false. האם זה מוכיח שהמשתמש סירב לצמיתות? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+לא. false יכולה להתקבל גם לפני הבקשה הראשונה. היסטוריית asked_notification היא מידע על פעולה שלנו, ולא ראיה למה שהמשתמש ראה. ההחלטה הבאה מציעה בקשה ראשונה או הגדרות בלי לקבוע סיבת סירוב בוודאות.
+
+</details>
+
 ## 1. מכינים כפתורים ומשאבים
 
 ב־**app > manifests > AndroidManifest.xml**, ישירות בתוך `<manifest>` ולפני `<application>`, הוסיפו:
@@ -84,6 +119,7 @@ private final ActivityResultLauncher<String[]> openDocument = registerForActivit
                 return;
             }
             try {
+                // Persist the read grant, not a copy of the document or its URI string.
                 getContentResolver().takePersistableUriPermission(uri,
                         Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 binding.result.setText(getString(R.string.document_selected,
@@ -106,6 +142,10 @@ private final ActivityResultLauncher<Void> cameraPreview = registerForActivityRe
 הזרימה מתחילה בלחיצה: אם ההרשאה כבר ניתנה, שולחים הודעה. אם המערכת ממליצה על הסבר, מציגים הסבר עם אפשרות ביטול. אם כבר ביקשנו בעבר ואין המלצת rationale, מציעים הגדרות במקום לפתוח שוב ושוב חלון מערכת:
 
 ```java
+/**
+ * Chooses a context-sensitive permission action only after the notification button.
+ * Denial leaves unrelated photo and document features available.
+ */
 private void askToNotify() {
     if (Build.VERSION.SDK_INT < 33 || ContextCompat.checkSelfPermission(this,
             Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
@@ -134,6 +174,9 @@ private void askToNotify() {
     }
 }
 
+/**
+ * Records our request history and launches the Android 13+ permission contract.
+ */
 @RequiresApi(33)
 private void launchPermission() {
     getPreferences(MODE_PRIVATE).edit().putBoolean("asked_notification", true).apply();
@@ -162,6 +205,10 @@ binding.cameraPreview.setOnClickListener(view -> cameraPreview.launch(null));
 הוסיפו את שתי המתודות שמבצעות את התוצאה. `postNotification` בודקת שוב את ההרשאה מיד לפני השליחה, כי משתמש יכול לשנות הרשאות בהגדרות בזמן שהאפליקציה פתוחה:
 
 ```java
+/**
+ * Rechecks permission immediately before requesting notification publication.
+ * Channel and user settings may still affect whether the notification is visible.
+ */
 private void postNotification() {
     if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(this,
             Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -177,6 +224,11 @@ private void postNotification() {
     binding.result.setText(R.string.notification_sent);
 }
 
+/**
+ * Reports a temporary camera Bitmap without claiming a file was saved.
+ *
+ * @param bitmap small preview image, or null for cancellation/no result
+ */
 private void showPreview(Bitmap bitmap) {
     binding.result.setText(bitmap == null ? getString(R.string.selection_cancelled)
             : getString(R.string.preview_size, bitmap.getWidth(), bitmap.getHeight()));

@@ -26,6 +26,39 @@ tags: [Android, Java, debugging, Logcat]
 
 הסדר חשוב: תארו **מה קרה**, כתבו השערה שניתן להפריך, אספו ראיה אחת, ורק אז שנו שורת קוד. הודעת שגיאה מאוחרת היא לעיתים תוצאה של הסיבה המוקדמת.
 
+## איך ראיה הופכת תיקון מניחוש להסבר?
+
+באג לוגי וקריסה יכולים להתחיל מאותה שורת קוד, אך הם דורשים ראיות אחרות. ב־`showWrongPrice` המחיר 50 וההנחה 5 נכונים; רק פעולת החיבור נותנת 55 במקום 45. לכן breakpoint לפני חישוב `total` מפריד בין השערה על גובה ההנחה להשערה על הסימן. החלפת סימן בלי לראות את ערכי הביניים עשויה לתקן את הדוגמה בלי ללמד איך לאתר את הבאג הבא.
+
+```mermaid
+flowchart LR
+    S["Symptom: displayed total is 55"] --> H["Hypothesis: wrong arithmetic operation"]
+    H --> P["Prediction: price 50, discount 5"]
+    P --> E["Breakpoint: inspect before assignment"]
+    E --> C["Change only plus to minus"]
+    C --> V["Repeat: total 45, inputs unchanged"]
+```
+
+בקריסה המכוונת, `IllegalStateException` מסבירה את ההקשר העסקי ו־`NumberFormatException` היא הסיבה המקורית: ניסיון לקרוא `draft-7` כמספר. ה־`cause` שומרת את השרשרת. אם היינו תופסים חריגה ומתעלמים ממנה, לא היינו מבטלים את התקלה; היינו מאבדים את הראיה שלה. חפשו את השורה הראשונה הרלוונטית **בקוד שלנו** בתוך שרשרת החריגות, ולא בהכרח את השורה הראשונה של Android.
+
+ב־UI שקפא אין בהכרח חריגה: ה־main thread עסוק ולכן אינו יכול לטפל במגע או בציור. ב־View שקוף אין בהכרח ציור נראה: `clickable` קובע קליטת מגע גם כאשר alpha של הרקע הוא אפס. אלה שתי דוגמאות לכך ש"לא רואים שינוי" אינו אבחון. בחרו כלי לפי מה שצריך למדוד: זמן ושרשור, או שטח ומיקום בעץ Views.
+
+{: .box-note}
+כתבו לפני כל ניסוי איזו תוצאה תפריך את ההשערה. אם ההנחה אינה 5, חקרו את החישוב שלה לפני שינוי הסימן. אם הכפתור עצמו מקבל click, חקרו את המאזין לפני מחיקת overlay. שמרו בקוד רק logs שמספקים הקשר מועיל, בלי מידע אישי או סודות.
+
+## עצרו ונבאו
+
+המסך מציג 55 במקום 45. מה תהיה תחזית מדויקת להשערה שיש חיבור במקום חיסור? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+ב־breakpoint שלפני החישוב נראה price=50 ו־discount=5, אך התוצאה תהיה price+discount. אם אחד הקלטים אינו כזה, ההשערה אינה מסבירה את הממצא. אחרי תיקון האופרטור נבדוק אותם קלטים ונצפה ל־45.
+
+</details>
+
+ב־`MainActivity.java` הוסיפו מעל `@Override` של `onCreate` את ה־Javadoc המשותפת שב[מפת המעבדות]({{ '/android/topics/' | relative_url }}#איך-לומדים-מהקוד-לא-רק-מעתיקים-אותו). שאר callbacks ומתודות מתועדות בקטעי הקוד של השיעור; התיעוד הזה נשאר גם במעבדת המשך.
+
 ## 1. בונים את מעבדת האבחון
 
 ב־**app > manifests > AndroidManifest.xml** הוסיפו הרשאת רשת לפני `<application>`:
@@ -155,6 +188,10 @@ binding.layoutBug.setOnClickListener(v -> binding.status.setText(R.string.layout
 הוסיפו את שלוש המתודות ואת `onDestroy` כפי שמופיעים בענף. שורות המפתח בכל תרחיש הן:
 
 ```java
+/**
+ * Demonstrates an intentional arithmetic bug for a breakpoint investigation.
+ * The known input isolates the incorrect sign; this is not production pricing code.
+ */
 private void showWrongPrice() {
     int price = 50;
     int discount = price * 10 / 100;
@@ -163,6 +200,11 @@ private void showWrongPrice() {
     Log.d(TAG, "price=" + price + ", discount=" + discount + ", total=" + total);
 }
 
+/**
+ * Demonstrates exception chaining when a draft identifier cannot be parsed.
+ *
+ * @throws IllegalStateException intentionally, preserving NumberFormatException as its cause
+ */
 private void openInvalidDraft() {
     try {
         Integer.parseInt("draft-7");
@@ -175,11 +217,16 @@ private void openInvalidDraft() {
 `requestExample()` מבצעת GET אל `https://example.com/` באמצעות `HttpsURLConnection` בתוך `networkExecutor`, עם timeout של 3 שניות לחיבור ולקריאה. היא קוראת `getResponseCode()`, כותבת ל־Logcat את סטטוס ה־HTTP, מעדכנת `binding.status` ב־`runOnUiThread`, וסוגרת את החיבור ב־`finally`. אין לכתוב לרכיבי UI ישירות מתוך thread הרשת. הוסיפו גם אותה ואת שחרור ה־executor:
 
 ```java
+/**
+ * Runs a diagnostic HTTPS request on a worker and reports on the UI thread.
+ * Connection cleanup happens even on failure; this is a diagnostic response, not app data.
+ */
 private void requestExample() {
     networkExecutor.execute(() -> {
         HttpsURLConnection connection = null;
         try {
             connection = (HttpsURLConnection) new URL("https://example.com/").openConnection();
+            // Connection and response waits need separate upper bounds.
             connection.setConnectTimeout(3000);
             connection.setReadTimeout(3000);
             int status = connection.getResponseCode();
@@ -198,12 +245,16 @@ private void requestExample() {
             });
         } finally {
             if (connection != null) {
+                // Release the connection on both success and IOException.
                 connection.disconnect();
             }
         }
     });
 }
 
+/**
+ * Requests shutdown of this Activity's worker; callbacks also guard the old screen.
+ */
 @Override
 protected void onDestroy() {
     networkExecutor.shutdownNow();

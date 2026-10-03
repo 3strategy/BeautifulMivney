@@ -27,6 +27,44 @@ tags: [Android, Java, HTTP, Retrofit, JSON]
 
 `GET` מבקש נתון ואינו משנה אותו. תשובת `404` היא **תשובת HTTP** מן השרת, לא כשל ברשת. תשובת `200` עם גוף שאינו מתאים למודל היא בעיית נתונים. `timeout` או חוסר חיבור הם כשל העברה. המסך צריך להציג את ההבדלים כדי שאפשר יהיה לאבחן ולבחור אם להציע ניסיון חוזר.
 
+## מפרקים את המסע מן הכפתור עד הספרה שעל המסך
+
+לחיצה על GET אינה מחזירה `Todo` מיד. היא יוצרת `Call<Todo>`, מפעילה אותה, והקוד של המסך ממשיך לעבוד עד ש־callback מגיע. JSON הוא רצף טקסט; Gson ממפה את השמות בו לשדות במחלקה; ה־Repository בודקת האם האובייקט שהתקבל מספיק לשימוש. אלה שלושה שלבים שונים: העברה, פענוח וחוזה נתונים.
+
+```mermaid
+flowchart TD
+    A["enqueue GET /todos/1"] --> B{"HTTP response received?"}
+    B -->|no| N["Transport or decoding failure callback"]
+    B -->|yes| C{"2xx status?"}
+    C -->|no| H["HTTP_ERROR, e.g. 404"]
+    C -->|yes| D{"Body has valid id and title?"}
+    D -->|no| I["INVALID_BODY"]
+    D -->|yes| S["SUCCESS with typed Todo"]
+    N --> U["UI chooses feedback and possible retry"]
+    H --> U
+    I --> U
+    S --> U
+```
+
+`onResponse` אינה מבטיחה הצלחה עסקית: 404 מגיעה אליה משום שהשרת **ענה**. `onFailure` אינה תמיד "אין אינטרנט": גם converter שלא הצליח לפענח גוף עשוי להגיע אליה. כאן ההבחנה נעשית לפי חריגות מוכרות, ולכן היא חוזה מצומצם של המעבדה ולא מסווג אוניברסלי לכל תקלה. HTTP 200 עם `{}` יכול להפוך לאובייקט עם ערכי ברירת מחדל; הבדיקה על `id` ועל `title` תופסת אותו אחרי ההמרה.
+
+ביטול וזהות בקשה משלימים זה את זה. `cancel()` מבקשת להפסיק עבודה; `generation` קובעת אם תשובה עדיין **רלוונטית**. לדוגמה, בקשה בדור 4 יכולה להספיק להציב callback בתור רגע לפני Cancel שמעלה את הדור ל־5. ההשוואה בזמן עדכון ה־UI מונעת מהתשובה להחזיר למסך נתון שביטלנו. כל Retry בונה Call חדשה לאותו ID; אין לבצע שוב את אותה Call שכבר הופעלה.
+
+`MockWebServer` אינו mock של מתודת Java: הוא שרת HTTP מקומי שאליו הלקוח האמיתי שולח בקשה. לכן אפשר לבדוק יחד כתובת, קוד HTTP והמרה, ועדיין לשלוט בתשובה. `CountDownLatch` מאפשר לבדיקה ב־JVM להמתין לאות מן ה־callback עם גבול זמן; אין להמתין כך על ה־UI thread. במכשיר Android תוצאות Retrofit נמסרות בדרך כלל דרך מנגנון callback של הפלטפורמה, ואילו בדיקת JVM אינה תלויה בו; מעבר מפורש ל־UI שומר את עדכון ה־Views במקום המתאים.
+
+## עצרו ונבאו
+
+השרת ענה HTTP 204 ללא גוף. האם isSuccessful מספיקה כדי להציג Todo? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+לא. 204 היא תשובת HTTP מוצלחת, אך במעבדה נדרש גוף שמכיל Todo עם id ו־title תקינים. לכן התוצאה היא INVALID_BODY. הצלחת התקשורת אינה הצלחת החוזה העסקי שלנו.
+
+</details>
+
+ב־`MainActivity.java` הוסיפו מעל `@Override` של `onCreate` את ה־Javadoc המשותפת שב[מפת המעבדות]({{ '/android/topics/' | relative_url }}#איך-לומדים-מהקוד-לא-רק-מעתיקים-אותו). שאר callbacks ומתודות מתועדות בקטעי הקוד של השיעור; התיעוד הזה נשאר גם במעבדת המשך.
+
 ## 1. מוסיפים הרשאה וספריות
 
 ב־**app > manifests > AndroidManifest.xml** הוסיפו לפני `<application>`:
@@ -85,6 +123,12 @@ import retrofit2.http.Path;
 
 /** Maps one HTTP GET route to a typed response. */
 public interface TodoApi {
+    /**
+     * Describes one GET; network work starts only when the returned Call is executed.
+     *
+     * @param id identifier substituted into the URL path
+     * @return a new single-use, cancellable request
+     */
     @GET("todos/{id}")
     Call<Todo> getTodo(@Path("id") int id);
 }
@@ -123,6 +167,15 @@ public final class TodoRepository {
         public final String contentType;
         public final String detail;
 
+        /**
+         * Stores one classified response for the screen to interpret.
+         *
+         * @param kind result category
+         * @param todo decoded payload on success, otherwise null
+         * @param status HTTP code when available, otherwise zero
+         * @param contentType response header when available
+         * @param detail diagnostic failure category without sensitive request data
+         */
         private Result(Kind kind, Todo todo, int status, String contentType, String detail) {
             this.kind = kind;
             this.todo = todo;
@@ -133,16 +186,28 @@ public final class TodoRepository {
     }
 
     public interface Listener {
+        /**
+         * Receives one classified, noncanceled outcome; UI work must use the UI thread.
+         *
+         * @param result source outcome, with payload only on success
+         */
         void onResult(Result result);
     }
 
     private final TodoApi api;
 
+    /**
+     * Creates the production-facing lab client with a public dummy-data endpoint.
+     */
     public TodoRepository() {
         this("https://jsonplaceholder.typicode.com/");
     }
 
-    /** Package-visible endpoint override lets a local HTTP server exercise the same code. */
+    /**
+     * Builds the same HTTP pipeline for a configurable endpoint.
+     *
+     * @param baseUrl endpoint with a trailing slash; tests supply their local server URL
+     */
     TodoRepository(String baseUrl) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(5, TimeUnit.SECONDS)
@@ -157,10 +222,22 @@ public final class TodoRepository {
                 .create(TodoApi.class);
     }
 
-    /** Enqueues a GET and returns its cancellable call to the screen owner. */
+    /**
+     * Enqueues a fresh GET and returns its cancellation handle without blocking.
+     *
+     * @param id requested resource identifier
+     * @param listener recipient of a classified result; canceled calls do not report errors
+     * @return the single-use Call owned by the screen
+     */
     public Call<Todo> load(int id, Listener listener) {
         Call<Todo> call = api.getTodo(id);
         call.enqueue(new Callback<>() {
+            /**
+             * Classifies an HTTP response independently from transport success.
+             *
+             * @param ignored completed call
+             * @param response decoded response, whose code and required fields still need checking
+             */
             @Override
             public void onResponse(Call<Todo> ignored, Response<Todo> response) {
                 String type = response.headers().get("Content-Type");
@@ -174,6 +251,12 @@ public final class TodoRepository {
                 }
             }
 
+            /**
+             * Reports known decoding or transport failures unless the caller canceled.
+             *
+             * @param failedCall failed call, used to distinguish user cancellation
+             * @param error transport or converter exception
+             */
             @Override
             public void onFailure(Call<Todo> failedCall, Throwable error) {
                 if (!failedCall.isCanceled()) {
@@ -214,7 +297,7 @@ public final class TodoRepository {
 <string name="todo_detail">Todo #%1$d (user %2$d)\n%3$s\nCompleted: %4$b</string>
 ```
 
-ב־**app > res > layout > activity_main.xml** השאירו את `ConstraintLayout` החיצוני ואת המזהה `main`. החליפו את `Hello World` ב־`ScrollView` הנמתח לארבע צלעות ההורה, ובתוכו `LinearLayout` אנכי עם: כותרת והסבר; ארבעת הכפתורים לפי סדרם; `ProgressBar` עם `id=loading`;‏ `TextView` עם `id=status` ו־`accessibilityLiveRegion="polite"`; ו־`TextView` עם `id=todo_detail`. הכפתורים Cancel/Retry וה־ProgressBar מתחילים עם `visibility="gone"`. ראו את ה־XML המלא בענף התוצאה; שאר מבנה התבנית נשאר.
+ב־**app > res > layout > activity_main.xml** השאירו את `ConstraintLayout` החיצוני ואת המזהה `main`. החליפו את `Hello World` ב־`ScrollView` הנמתח לארבע צלעות ההורה, ובתוכו `LinearLayout` אנכי עם: כותרת והסבר; ארבעת הכפתורים לפי סדרם; `ProgressBar` עם `id=loading`;‏ `TextView` עם `id=status` ו־`accessibilityLiveRegion="polite"`; ו־`TextView` עם `id=todo_detail`. הכפתורים Cancel/Retry וה־ProgressBar מתחילים עם `visibility="gone"`. מזהי הכפתורים הם `load_todo`, `load_missing`, `cancel_request`, `retry_request`, והטקסט של כל אחד הוא המחרוזת בעלת אותו שם. למכל ולכל ילדיו רוחב `match_parent` וגובה `wrap_content`; למכל `padding="24dp"`. ל־ScrollView רוחב וגובה `0dp` וכל ארבעת אילוצי ההורה, כפי שלמדנו במעבדת מצבי UI. שאר מבנה התבנית נשאר.
 
 ב־`MainActivity` שמרו את שלד View Binding וה־insets הקיים, והוסיפו את השדות והמאזינים הבאים:
 
@@ -234,6 +317,12 @@ binding.retryRequest.setOnClickListener(v -> load(lastRequestedId));
 הוסיפו את המתודות הבאות ל־`MainActivity` (ואת imports של `View` ושל `retrofit2.Call`). `load(id)` שומר את המזהה, מגדיל `generation`, מבטל Call קודם אם נותר, מציג טעינה ומשבית לחיצה כפולה. ה־callback חוזר ל־UI ב־`runOnUiThread`; לפני שינוי המסך הוא בודק שהדור עדיין נכון ושה־Activity לא נהרסה.
 
 ```java
+/**
+ * Starts a fresh screen request, remembering its ID for Retry.
+ * Only the captured generation may update this Activity when the result arrives.
+ *
+ * @param id resource identifier to request
+ */
 private void load(int id) {
     lastRequestedId = id;
     generation++;
@@ -250,6 +339,7 @@ private void load(int id) {
     binding.todoDetail.setText("");
 
     activeCall = repository.load(id, result -> runOnUiThread(() -> {
+        // Cancellation cannot retract every queued callback; reject obsolete generations.
         if (expectedGeneration != generation || isDestroyed()) {
             return;
         }
@@ -284,6 +374,9 @@ private void load(int id) {
     }));
 }
 
+/**
+ * Invalidates queued results, requests cancellation, and restores nonloading UI.
+ */
 private void cancel() {
     generation++;
     if (activeCall != null) {
@@ -297,6 +390,9 @@ private void cancel() {
     binding.status.setText(R.string.http_cancelled);
 }
 
+/**
+ * Invalidates late results and cancels the request owned by this screen.
+ */
 @Override
 protected void onDestroy() {
     generation++;
@@ -311,7 +407,7 @@ protected void onDestroy() {
 
 ## 5. בודקים בלי תלות בשרת הציבורי
 
-ב־**app > kotlin+java > com.example.topics (test)** צרו `TodoRepositoryTest`. הקובץ בענף התוצאה מפעיל `MockWebServer` לפני כל בדיקה ומכבה אותו אחריה. הוא מעביר את `server.url("/")` ל־constructor של ה־Repository, מכניס תשובת `MockResponse`, ממתין ל־callback עם `CountDownLatch`, ובודק את סוג התוצאה:
+ב־**app > kotlin+java > com.example.topics (test)** צרו `TodoRepositoryTest`. הקובץ הבא מפעיל `MockWebServer` לפני כל בדיקה ומכבה אותו אחריה. הוא מעביר את `server.url("/")` ל־constructor של ה־Repository, מכניס תשובת `MockResponse`, ממתין ל־callback עם `CountDownLatch`, ובודק את סוג התוצאה:
 
 | תשובת השרת המקומי | תוצאה צפויה |
 |---:|---:|
@@ -319,6 +415,131 @@ protected void onDestroy() {
 | `404` עם `{}` | `HTTP_ERROR`, קוד 404 |
 | `200` עם `{}` | `INVALID_BODY` |
 | `200` עם JSON שבור | `DECODE_ERROR` |
+
+הנה הקובץ החדש במלואו. `load` היא עזר לבדיקה: היא מחכה בשרשור הבדיקה לאות מה־callback, ולא חוסמת Activity. יש גבול זמן כדי שבדיקה שלא קיבלה תשובה תיכשל עם הסבר במקום להמתין לעד.
+### הקוד המלא של TodoRepositoryTest
+
+```java
+package com.example.topics;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
+/** Exercises real HTTP response handling without depending on a public endpoint. */
+public final class TodoRepositoryTest {
+    private MockWebServer server;
+    private TodoRepository repository;
+
+    /**
+     * Starts a fresh local HTTP server and points the real client at its endpoint.
+     *
+     * @throws IOException if the local test server cannot start
+     */
+    @Before
+    public void setUp() throws IOException {
+        server = new MockWebServer();
+        server.start();
+        repository = new TodoRepository(server.url("/").toString());
+    }
+
+    /**
+     * Closes the local server after each test, including tests with failed assertions.
+     *
+     * @throws IOException if server shutdown fails
+     */
+    @After
+    public void tearDown() throws IOException {
+        server.shutdown();
+    }
+
+    /**
+     * Checks JSON conversion, required fields, status, and the actual outgoing URL path.
+     *
+     * @throws InterruptedException if the test thread is interrupted while awaiting HTTP
+     */
+    @Test
+    public void validJsonBecomesTypedTodo() throws InterruptedException {
+        server.enqueue(new MockResponse().setResponseCode(200)
+                .addHeader("Content-Type", "application/json")
+                .setBody("{\"userId\":2,\"id\":7,\"title\":\"Study\",\"completed\":true}"));
+        TodoRepository.Result result = load(7);
+        assertEquals(TodoRepository.Kind.SUCCESS, result.kind);
+        assertEquals(200, result.status);
+        assertNotNull(result.todo);
+        assertEquals(7, result.todo.id);
+        assertEquals("Study", result.todo.title);
+        assertTrue(result.todo.completed);
+        assertEquals("/todos/7", server.takeRequest(3, TimeUnit.SECONDS).getPath());
+    }
+
+    /**
+     * Checks that an HTTP 404 is a server response, not a transport failure.
+     *
+     * @throws InterruptedException if awaiting the callback is interrupted
+     */
+    @Test
+    public void missingResourceIsHttpError() throws InterruptedException {
+        server.enqueue(new MockResponse().setResponseCode(404).setBody("{}"));
+        TodoRepository.Result result = load(999999);
+        assertEquals(TodoRepository.Kind.HTTP_ERROR, result.kind);
+        assertEquals(404, result.status);
+    }
+
+    /**
+     * Checks that 200 does not bypass the application's required-field validation.
+     *
+     * @throws InterruptedException if awaiting the callback is interrupted
+     */
+    @Test
+    public void successfulStatusWithMissingFieldsIsInvalidBody() throws InterruptedException {
+        server.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
+        assertEquals(TodoRepository.Kind.INVALID_BODY, load(1).kind);
+    }
+
+    /**
+     * Checks that malformed JSON is classified as a decoding failure.
+     *
+     * @throws InterruptedException if awaiting the callback is interrupted
+     */
+    @Test
+    public void malformedJsonIsNotReportedAsSuccess() throws InterruptedException {
+        server.enqueue(new MockResponse().setResponseCode(200).setBody("{not json"));
+        assertEquals(TodoRepository.Kind.DECODE_ERROR, load(1).kind);
+    }
+
+    /**
+     * Waits on the JVM test thread for one asynchronous repository outcome.
+     *
+     * @param id requested resource identity
+     * @return classified callback result
+     * @throws InterruptedException if the test wait is interrupted
+     */
+    private TodoRepository.Result load(int id) throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<TodoRepository.Result> result = new AtomicReference<>();
+        repository.load(id, value -> {
+            result.set(value);
+            // Store before signaling so the waiting test reads a completed result.
+            latch.countDown();
+        });
+        assertTrue("HTTP callback did not arrive", latch.await(3, TimeUnit.SECONDS));
+        return result.get();
+    }
+}
+```
 
 הריצו `:app:testDebugUnitTest`. בבדיקה הראשונה בודקים גם שהנתיב שנשלח הוא `/todos/7`; זו בדיקה אמיתית של הרכבת כתובת ה־API, לא רק של המרת ה־JSON. אחרי הבדיקות הריצו את האפליקציה: **GET todo 1** צריך להציג HTTP 200 ו־Todo; **GET missing todo** צריך להציג HTTP 404. כבו זמנית רשת במכשיר כדי לראות כשל העברה, ואז החזירו אותה ונסו Retry. לחצו Cancel לפני תשובה איטית וודאו שתשובה מאוחרת אינה משנה את המסך.
 

@@ -24,6 +24,36 @@ tags: [Android, Java, testing, Espresso]
 
 קובצי התבנית `ExampleUnitTest` ו־`ExampleInstrumentedTest` נשארים בפרויקט. בדיקת `2 + 2` אינה מאמתת שחזור מסך; לכן נוסיף בדיקה חדשה ב־`androidTest` במקום להציג את בדיקת התבנית כראיה לנושא. [תיעוד Android לבדיקות מקומיות ועל מכשיר](https://developer.android.com/training/testing/fundamentals) מבחין בין סביבת JVM לבין מכשיר Android.
 
+## בדיקה היא טענה שניתן להפריך
+
+נכתוב כל בדיקה בשלושה חלקים: **הכנה** של מצב ידוע, **פעולה** אחת שמפעילה את הסיכון, ו**טענה** על תוצאה גלויה. בבדיקת הסיבוב, הכנה היא איפוס והגדלה ל־1; הפעולה היא `recreate`; הטענה היא שלישיית ערכים `0, 1, 1`. אם רק נבדוק שהמסך נפתח, גם אפליקציה שאיבדה את הנתון תעבור את הבדיקה.
+
+```mermaid
+flowchart LR
+    A["Arrange: reset and increment"] --> B["Act: recreate Activity"]
+    B --> C["Assert: visible values 0, 1, 1"]
+    C --> D["Temporarily save zero instead"]
+    D --> E["Expected test becomes red"]
+    E --> F["Restore correct save; green again"]
+```
+
+`onView(withId(...))` מחפשת View; `perform(click())` מפעילה פעולה; `check(matches(withText(...)))` בודקת את התוצאה. אלה שלושה תפקידים שונים. בניית הטקסט עם `targetContext().getString` משתמשת במשאבי **האפליקציה הנבדקת**, כך שהבדיקה אינה מקבעת ניסוח באנגלית. הבדיקה עדיין יכולה לזהות מספר שגוי גם אם התרגום משתנה.
+
+`try (ActivityScenario<...> scenario = ...)` הוא try-with-resources של Java: בסיום הבלוק קוראים ל־`close`, גם כאשר assertion זורקת חריגה. ניקוי אינו חלק קוסמטי; Activity שנשארה פתוחה יכולה להשפיע על הבדיקה הבאה. כל בדיקה צריכה להכין את המצב שלה ולא לסמוך על סדר הרצה בין מתודות `@Test`.
+
+`recreate()` מפעילה הריסה ויצירה מחדש של Activity ומסלול שחזור מצב; היא מאפשרת בדיקה חוזרת של הסיכון שבסיבוב, אבל אינה מסובבת פיזית את מידות המסך ואינה הורגת את תהליך האפליקציה. בדיקה על תהליך חדש ובדיקה על פריסה ב־landscape דורשות תרחישים נוספים. Espresso מתאמת פעולות עם עבודת UI מוכרת; עבור עבודה אסינכרונית שהיא אינה מכירה נדרש אות סיום מתאים, כגון IdlingResource, ולא ניחוש זמן המתנה. [מדריך Espresso](https://developer.android.com/training/testing/espresso) מסביר את הסנכרון.
+
+## עצרו ונבאו
+
+בדיקת סיבוב ירוקה, אבל בדיקת Fragment אדומה. האם אפשר להסיק שהשמירה המקומית שבורה? כתבו תחזית לפני פתיחת ההסבר, ואז הצביעו על המשתנה או התנאי בקוד שמצדיקים אותה.
+
+<details markdown="1">
+<summary>בדיקת ההבנה</summary>
+
+לא. כל בדיקה צריכה להעיד על חוזה מסוים. בדיקת Fragment עוסקת ב־View חדשה וב־binding שמתנקה; בדיקת המונים עוסקת בגבולות אחסון אחרים. קראו את ה־assertion שנכשל לפני שמחליפים השערה.
+
+</details>
+
 ## 1. מוסיפים ActivityScenario בלי למחוק תשתית בדיקות
 
 ב־**Gradle Scripts > libs.versions.toml** הוסיפו את `androidx.test:core`. ספריות Espresso ו־JUnit של `androidTest`, וגם JUnit של `test`, כבר קיימות בתבנית — אל תמחקו אותן.
@@ -75,6 +105,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 /** UI regressions that a JVM-only test cannot exercise. */
 @RunWith(AndroidJUnit4.class)
 public final class LifecycleUiTest {
+    /**
+     * Verifies the recreation contract: fields reset, saved and persistent counts survive.
+     * Sets its own initial counts so test order cannot determine the result.
+     */
     @Test
     public void rotationRestoresBundleButNotActivityField() {
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
@@ -82,11 +116,15 @@ public final class LifecycleUiTest {
             onView(withId(R.id.increment)).perform(click());
             assertCounters(1, 1, 1);
 
+            // Recreate the Activity; this does not kill its process or rotate its display.
             scenario.recreate();
             assertCounters(0, 1, 1);
         }
     }
 
+    /**
+     * Verifies that detach/back replaces the View without resetting the Fragment counter.
+     */
     @Test
     public void fragmentViewCanBeRecreatedWithoutLosingFragmentCount() {
         try (ActivityScenario<MainActivity> ignored = ActivityScenario.launch(MainActivity.class)) {
@@ -101,6 +139,10 @@ public final class LifecycleUiTest {
         }
     }
 
+    /**
+     * Verifies a fresh Activity launch after closing the previous one.
+     * This does not simulate process death or Force stop.
+     */
     @Test
     public void newLaunchKeepsOnlyPersistentCount() {
         try (ActivityScenario<MainActivity> ignored = ActivityScenario.launch(MainActivity.class)) {
@@ -112,7 +154,13 @@ public final class LifecycleUiTest {
         }
     }
 
-    /** Checks visible values, not implementation fields. */
+    /**
+     * Asserts user-visible values using the target app's current string resources.
+     *
+     * @param memory expected ordinary field value
+     * @param saved expected restored UI value
+     * @param persistent expected stored preference value
+     */
     private static void assertCounters(int memory, int saved, int persistent) {
         Context context = targetContext();
         onView(withId(R.id.memory_value)).check(matches(withText(
@@ -123,6 +171,11 @@ public final class LifecycleUiTest {
                 context.getString(R.string.persistent_value, persistent))));
     }
 
+    /**
+     * Obtains the application-under-test context rather than the test APK context.
+     *
+     * @return context whose resources define the displayed labels
+     */
     private static Context targetContext() {
         return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
