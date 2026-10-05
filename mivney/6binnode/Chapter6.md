@@ -11,6 +11,9 @@ lang: he
 עץ בינארי הוא מבנה נתונים היררכי שבו לכל צומת יש לכל היותר שני ילדים: ילד שמאלי וילד ימני. בפרק זה נכיר את המחלקה `<BinNode<T`, נבין כיצד מייצגים עץ בינארי ונלמד פעולות בסיסיות כמו טרוורסות, הוספה וחיפוש.
 
 
+[הקובץ Unit4.dll זמין להורדה כאן](/assets/Unit4.dll)
+
+
 <!-- Source: Boston University – Binary Tree notes -->
 <!-- https://www.cs.bu.edu/courses/cs112/old/22spring/labs/lab11.html -->
 

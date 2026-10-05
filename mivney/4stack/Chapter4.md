@@ -12,6 +12,9 @@ lang: he
 
 <!-- Source: University of Wisconsin – Notes on Stacks -->
 
+[הקובץ Unit4.dll זמין להורדה כאן](/assets/Unit4.dll)
+
+
 ## מהי מחסנית?
 
 [אנימציה](/mivney/4stack/StackAnimation.html)
