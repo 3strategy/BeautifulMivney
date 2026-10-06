@@ -34,7 +34,7 @@ View Binding יוצר מחלקה עם הפניות ישירות ל־Views שבק
 
 ### שלב 1 — הפעלת View Binding ב־Gradle
 
-פתחו את `build.gradle.kts` של המודול `app` דרך **Gradle Scripts**. בתוך הבלוק `android` הוסיפו את `buildFeatures`:
+פתחו את `build.gradle.kts (Module :app)` והוסיפו את `buildFeatures`:
 
 ```diff
  android {
@@ -54,11 +54,11 @@ View Binding יוצר מחלקה עם הפניות ישירות ל־Views שבק
 ```
 
 {: .box-success}
-אחרי עריכת Gradle בחרו `Sync Now` או `Sync Project with Gradle Files`. הסנכרון יוצר את מחלקות ה־Binding מתוך קובצי ה־XML, ובהן `ActivityMainBinding` עבור `activity_main.xml`.
+לאחר העריכה סנכרנו את ה-Gradle ![alt]({{ '/assets/img/gradle_sync_elephant_gray.svg' | relative_url }}).
 
 ### שלב 2 — המרת `MainActivity` לשימוש ב־Binding
 
-פתחו את `MainActivity` ב־**Android view**, תחת `app > kotlin+java > com.example.hex`. ננפח את המסך דרך Binding ונחליף את חיפוש ה־View הראשי בהפניה `binding.main`. שאר המתודה נשארת במקומה.
+עִרְכוּ את `MainActivity.java`:
 
 {% code_diff %}
  @Override
@@ -77,11 +77,12 @@ View Binding יוצר מחלקה עם הפניות ישירות ל־Views שבק
  }
 {% endcode_diff %}
 
-`binding.getRoot()` הוא ה־View הראשי של הפריסה. ב־`binding.main` ניגשים ל־View עם `android:id="@+id/main"`; לכן אין עוד צורך ב־`findViewById`. קוד ה־insets והריווח נשאר ללא שינוי.
-
 השדה `binding` מופיע באדום. בצעו right-click > ShowContextActions ובחרו Create Field:
-![alt text](image.png)
+![תפריט הפעולות של Android Studio עם האפשרות Create field 'binding' in 'MainActivity']({{ '/assets/img/hex5/make-binding-a-field-context-menu.png' | relative_url }})
 זה יוסיף את השדה וגם יוסיף את ה-import שחסר לנו.
+
+**הסבר קצר:** `binding.getRoot()` הוא ה־View הראשי של הפריסה. ב־`binding.main` ניגשים ל־View עם `android:id="@+id/main"`; לכן אין עוד צורך ב־`findViewById`. קוד ה־insets והריווח נשאר ללא שינוי.
+
 
 </details>
 
