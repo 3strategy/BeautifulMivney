@@ -87,7 +87,7 @@ full-width: true
 | ציור משושים, גודל לוח ממודל וגאומטריית מגע | שיעור מעשי עם בדיקות תור ואבחון חיבור המסך למשחק | [01 — לוח](/android/hex5/01-board/)<br>[02 — מהלכים](/android/hex5/02-moves-and-turns/)<br>[בדיקת מהלכים ואבחון תקלות](/android/hex5/02-moves-and-turns/#verify-moves) |
 | מודל מצב וחיפוש גרפי לזיהוי ניצחון | שיעור מעשי | [02 — תורות](/android/hex5/02-moves-and-turns/)<br>[03 — ניצחון](/android/hex5/03-win-detection/) |
 | העתקי מצב, מהלכים חוקיים וקידוד למודל ערך | שיעור מעשי ודוגמת קידוד משתי נקודות מבט | [05 — הכנת המחשב](/android/hex5/05-model-preparation/#value-contract) |
-| Executor, פסילת תשובה ישנה ומודל ערך מסופק | שיעור מעשי באינטגרציה | [06 — מחשב ברקע](/android/hex5/06-background-ai/)<br>[07 — בחירת מודל](/android/hex5/07-supplied-rl-models/)<br>[08 — רמז למהלך](/android/hex5/08-hint/) |
+| Executor, פסילת תשובה ישנה ומודל ערך מסופק | שיעור מעשי עם עריכות ממוקמות לפי מתודה ובדיקות משחק | [06 — חיבור המחשב ב־MainActivity](/android/hex5/06-background-ai/#main-activity)<br>[06 — בדיקות המשחק](/android/hex5/06-background-ai/#verify-background-ai)<br>[07 — בחירת מודל](/android/hex5/07-supplied-rl-models/)<br>[08 — רמז למהלך](/android/hex5/08-hint/) |
 | ערכות נושא ליום וללילה, משאבי צבע ו־Material 3 | שיעור מעשי | [09 — ערכות נושא ב־Hex](/android/hex5/09-day-night-themes/) |
 
 ---

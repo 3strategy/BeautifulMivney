@@ -274,6 +274,9 @@ flowchart TB
 
 בתוך הלולאה הפנימית של `onDraw`, החליפו את הצביעה הקבועה בצבע של התא. הקטע הבא מציג את המתודה כולה כדי שתוכלו לזהות את גבולותיה, אבל השינוי הוא רק בשורות המסומנות. שלוש השורות `setStyle` ו־`drawPath` נשארות **בתוך הלולאה הפנימית**, מיד אחרי בחירת הצבע; הן מציירות כל משושה. `setGame` ו־`setOnCellClickListener` נשארות מחוץ ל־`onDraw`:
 
+{: .box-note}
+**בניית צורה אינה ציור שלה:** `makeHexagon` בונה את המסלול `hexPath`, ו־`setColor` בוחרת צבע בלבד. רק `canvas.drawPath(...)` מציירת את המסלול על המסך: הקריאה עם `fillPaint` ממלאת את המשושה, והקריאה עם `strokePaint` מציירת את המסגרת. אם נכנסים ללולאה אבל המשושים אינם מופיעים, ודאו ששתי קריאות הציור עדיין נמצאות בתוכה. `setClickable` ו־`setFocusable` נשארות בבנאי בלבד.
+
 ```diff
      @Override
      protected void onDraw(@NonNull Canvas canvas) {
@@ -440,6 +443,7 @@ flowchart TB
 | הסטטוס אינו מופיע עם פתיחת המסך | בדקו ש־`render()` נקראת בסוף `onCreate`, אחרי יצירת המשחק וה־binding. |
 | בנגיעה יש קריסה בשורה `listener.onCellClick(...)` | בדקו שב־`onCreate` בוצעה הקריאה `setOnCellClickListener(this::onCellClicked)` לפני ההרצה. |
 | הלוח אינו מגיב לנגיעה | ודאו שהוספתם את `onTouchEvent`, את `containsPoint` ואת `performClick` מסעיף 5, ואת ארבע שורות החיבור בסוף `onCreate`. הממשק `OnCellClickListener` לבדו אינו מטפל במגע. |
+| נכנסים ללולאת הציור ורואים שפות יעד, אבל אין משושים | אחרי בחירת הצבע, בתוך לולאת העמודות, חייבות להישאר `fillPaint.setStyle(Paint.Style.FILL)` ושתי קריאות `canvas.drawPath` מסעיף 4. יצירת `hexPath` לבדה אינה מציירת אותו. |
 | הסטטוס מתחלף אבל התאים נשארים ריקים | בדקו ש־`render()` קוראת ל־`setGame(game)`, וש־`onDraw` קוראת `game.getCell(row, column)` במקום לצבוע תמיד ב־`emptyColor`. |
 | מופיעה שגיאה ליד `public void setGame` או `public void setOnCellClickListener` בתוך לולאת הציור | שתי המתודות צריכות להופיע פעם אחת בלבד, מחוץ ל־`onDraw`. השאירו בתוך לולאת הציור את קריאות `setColor`,‏ `setStyle` ושתי קריאות `drawPath`, כפי שמוצג בסעיף 4. |
 | מתודה חדשה מסומנת כשגיאת תחביר | בדקו את הסוגר של המתודה הקודמת: מתודות חדשות נכתבות בתוך המחלקה, אך מחוץ לבנאי ולמתודות האחרות. |
