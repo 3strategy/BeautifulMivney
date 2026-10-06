@@ -26,9 +26,64 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 
 ## נקודת ההתחלה
 
-התחילו בפרויקט Empty Views Activity ב־Java, חבילה `com.example.hex`, ‏API 31,‏ XML ו־View Binding פעיל. `MainActivity` כבר מנפחת `ActivityMainBinding`. אין ליצור Activity חדש.
+התחילו בפרויקט **Empty Views Activity** ב־Java, חבילה `com.example.hex` ו־API 31. השתמשו בפריסת XML וב־`MainActivity` שנוצרה בתבנית; אין ליצור Activity חדש. תחילה הפעילו View Binding והמירו את `MainActivity` לפי הסעיף הבא. לאחר מכן המשיכו לבנות את המשחק.
 
-[להסבת פרוייקט חדש ל-View Bindings ראו חלק 1 כאן](/android/projectSteps/019bBindingsForMainActivity)
+<details open markdown="1"><summary>הסבת הפרויקט ל־View Binding</summary>
+
+View Binding יוצר מחלקה עם הפניות ישירות ל־Views שבקובץ ה־XML, כך שלא צריך לחפש כל רכיב שוב באמצעות `findViewById`. כך הקוד קצר יותר, ושגיאות של מזהה או המרה בין טיפוסים מתגלות מוקדם יותר.
+
+### שלב 1 — הפעלת View Binding ב־Gradle
+
+פתחו את `build.gradle.kts` של המודול `app` דרך **Gradle Scripts**. בתוך הבלוק `android` הוסיפו את `buildFeatures`:
+
+```diff
+ android {
+     namespace = "com.example.hex"
+     compileSdk {
+         version = release(36)
+     }
+
++    buildFeatures {
++        viewBinding = true
++    }
++
+     defaultConfig {
+         ...
+     }
+ }
+```
+
+{: .box-success}
+אחרי עריכת Gradle בחרו `Sync Now` או `Sync Project with Gradle Files`. הסנכרון יוצר את מחלקות ה־Binding מתוך קובצי ה־XML, ובהן `ActivityMainBinding` עבור `activity_main.xml`.
+
+### שלב 2 — המרת `MainActivity` לשימוש ב־Binding
+
+פתחו את `MainActivity` ב־**Android view**, תחת `app > kotlin+java > com.example.hex`. ננפח את המסך דרך Binding ונחליף את חיפוש ה־View הראשי בהפניה `binding.main`. שאר המתודה נשארת במקומה.
+
+{% code_diff %}
+ @Override
+ protected void onCreate(Bundle savedInstanceState) {
+     super.onCreate(savedInstanceState);
+     EdgeToEdge.enable(this);
+-    setContentView(R.layout.activity_main);
+-    ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
++    binding = ActivityMainBinding.inflate(getLayoutInflater());
++    setContentView(binding.getRoot());
++    ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
+         Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+         v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+         return insets;
+     });
+ }
+{% endcode_diff %}
+
+`binding.getRoot()` הוא ה־View הראשי של הפריסה. ב־`binding.main` ניגשים ל־View עם `android:id="@+id/main"`; לכן אין עוד צורך ב־`findViewById`. קוד ה־insets והריווח נשאר ללא שינוי.
+
+השדה `binding` מופיע באדום. בצעו right-click > ShowContextActions ובחרו Create Field:
+![alt text](image.png)
+זה יוסיף את השדה וגם יוסיף את ה-import שחסר לנו.
+
+</details>
 
 ## עורכים את הקבצים
 
