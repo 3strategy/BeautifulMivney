@@ -150,66 +150,100 @@ public final class ModelCatalog {
 }
 ~~~
 
-## מוסיפים את שתי הרשימות למסך
+## מוסיפים את שתי הרשימות למסך {#screen-pickers}
 
-ב־`activity_main.xml`, הוסיפו ב־`LinearLayout` שמעל הלוח תווית ו־Spinner לגודל:
+### activity_main.xml — בין בחירת מצב המשחק לכרטיס הסטטוס
 
-~~~xml
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/board_size_label"
-    android:textColor="@color/muted"
-    android:textSize="11sp" />
-
-<Spinner
-    android:id="@+id/boardSizeSpinner"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:layout_marginBottom="12dp"
-    android:contentDescription="@string/board_size_label"
-    android:spinnerMode="dropdown" />
-~~~
-
-מתחתיו הוסיפו את בחירת המודל. המעטפת נעלמת במצב של שני שחקנים:
-
-~~~xml
-<LinearLayout
-    android:id="@+id/computerLevelContainer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/computer_level_label"
-        android:textColor="@color/muted"
-        android:textSize="11sp" />
-
-    <Spinner
-        android:id="@+id/computerLevelSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:contentDescription="@string/computer_level_label"
-        android:spinnerMode="dropdown" />
-</LinearLayout>
-~~~
-
-ב־`strings.xml` הוסיפו את האפשרויות והתוויות, ועדכנו את תיאור הלוח:
+**מיקום:** app > res > layout > activity_main.xml, בתצוגת **Code**. נקודת ההתחלה היא הפריסה מסוף פרק 6. מצאו את `RadioGroup` ששמו `modeGroup`, ובתוכו את כפתור `modeHuman` שמציג **Two players**. הוסיפו את כל שורות `+` הבאות **אחרי `</RadioGroup>` ולפני פתיחת `MaterialCardView`**. שורות ההקשר בתחילת ה־diff ובסופו כבר קיימות בקובץ:
 
 ~~~diff
-+<string name="board_size_label">BOARD SIZE</string>
-+<string-array name="board_sizes">
-+    <item>7×7</item>
-+    <item>11×11</item>
-+</string-array>
-+<string name="computer_level_label">COMPUTER LEVEL</string>
-+<string name="model_loading">Loading %1$s…</string>
--<string name="board_description">Seven by seven Hex board</string>
-+<string name="board_description">%1$d by %2$d Hex board</string>
+             <com.google.android.material.radiobutton.MaterialRadioButton
+                 android:id="@+id/modeHuman"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="1"
+                 android:text="@string/human_vs_human" />
+         </RadioGroup>
+
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="@string/board_size_label"
++            android:textColor="@color/muted"
++            android:textSize="11sp" />
++
++        <Spinner
++            android:id="@+id/boardSizeSpinner"
++            android:layout_width="match_parent"
++            android:layout_height="48dp"
++            android:layout_marginBottom="12dp"
++            android:contentDescription="@string/board_size_label"
++            android:spinnerMode="dropdown" />
++
++        <LinearLayout
++            android:id="@+id/computerLevelContainer"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginBottom="12dp"
++            android:orientation="vertical">
++
++            <TextView
++                android:layout_width="wrap_content"
++                android:layout_height="wrap_content"
++                android:text="@string/computer_level_label"
++                android:textColor="@color/muted"
++                android:textSize="11sp" />
++
++            <Spinner
++                android:id="@+id/computerLevelSpinner"
++                android:layout_width="match_parent"
++                android:layout_height="48dp"
++                android:contentDescription="@string/computer_level_label"
++                android:spinnerMode="dropdown" />
++        </LinearLayout>
++
+         <com.google.android.material.card.MaterialCardView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             app:cardBackgroundColor="@color/surface"
 ~~~
+
+{: .box-note}
+**בדיקת המיקום:** התווית לגודל, `boardSizeSpinner` ו־`computerLevelContainer` הם ילדים של ה־`LinearLayout` החיצוני שבתוך `ScrollView`. רק התווית למודל ו־`computerLevelSpinner` נמצאים בתוך `computerLevelContainer`; הסוגר `</LinearLayout>` המסומן ב־`+` סוגר את המעטפת החדשה הזו. סדר הרכיבים במסך הוא: בחירת מצב משחק, בחירת גודל, בחירת מודל, כרטיס הסטטוס, ואז הלוח. אין להקליד את סימני `+`.
+
+### strings.xml — תוויות חדשות ועדכון מחרוזות קיימות
+
+**מיקום:** app > res > values > strings.xml. בתוך `<resources>`, אחרי המחרוזת `human_vs_human` מפרק 6, הוסיפו את תוויות הרשימות ואת אפשרויות הגודל:
+
+~~~diff
+     <string name="human_vs_human">Two players</string>
++    <string name="board_size_label">BOARD SIZE</string>
++    <string-array name="board_sizes">
++        <item>7×7</item>
++        <item>11×11</item>
++    </string-array>
++    <string name="computer_level_label">COMPUTER LEVEL</string>
+     <string name="ai_unavailable">Computer model unavailable</string>
+~~~
+
+באותו קובץ, עדכנו את `board_description` הקיימת כך שתקבל את מספר השורות והעמודות:
+
+{% code_diff %}
+     <string name="red_goal">RED · TOP ↕ BOTTOM</string>
+     <string name="blue_goal">BLUE · LEFT ↔ RIGHT</string>
+-    <string name="board_description">Seven by seven Hex board</string>
++    <string name="board_description">%1$d by %2$d Hex board</string>
+     <string name="model_local">Local two-player game</string>
+{% endcode_diff %}
+
+עדכנו גם את `model_loading` שנוספה בפרק 6, כדי שהודעת הטעינה תקבל את שם המודל שנבחר. **מחליפים את הערך של המחרוזת הקיימת; אין להוסיף מחרוזת שנייה באותו שם:**
+
+{% code_diff %}
+     <string name="model_unavailable_help">Choose Two players to keep playing</string>
+-    <string name="model_loading">Loading model…</string>
++    <string name="model_loading">Loading %1$s…</string>
+     <string name="model_ready">Value model v1 · fully offline</string>
+{% endcode_diff %}
 
 ## מסננים ובוחרים
 
