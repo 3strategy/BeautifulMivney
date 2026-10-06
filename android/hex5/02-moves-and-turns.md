@@ -50,6 +50,9 @@ flowchart TB
 
 עבדו לפי סדר התלות: משאבים לפני קוד שמפנה אליהם; מחלקת החוקים לפני ה־Activity.
 
+{: .box-note}
+**נקודת ההתחלה היא סוף פרק 1:** יש לוח ריק, `HexGame` עם שני בנאים ו־`getSize()`, ו־`MainActivity` עם View Binding. קטעי ה־diff בהמשך הם עריכות בתוך הקבצים הקיימים: מוסיפים את שורות `+`, מסירים את שורות `-`, ומשאירים את שורות ההקשר ואת הקוד שאינו מוצג. אין להעתיק את סימני `+` ו־`-` לקוד. אם שמות החבילה אצלכם שונים מ־`com.example.hex`, שמרו את השמות שלכם גם בייבוא של `ActivityMainBinding`.
+
 ### strings.xml
 
 **מיקום:** app > res > values. המשאב מרכז צבעים, מחרוזות או theme שהמסך משתמש בהם. שנו רק את השורות המוצגות.
@@ -174,23 +177,19 @@ flowchart TB
 
 **מיקום:** app > kotlin+java > com.example.hex. מחלקת הציור מקבלת כעת משחק, callback ובדיקת מגע. בצעו את השינויים לפי הסדר. שאר הקוד נשאר כפי שנכתב בפרק 1.
 
+#### 1. ייבוא אירוע המגע והממשק לדיווח על תא
+
+הוסיפו את הייבוא בראש הקובץ:
+
 ```diff
- import android.graphics.Canvas;
- import android.graphics.Paint;
- import android.graphics.Path;
  import android.util.AttributeSet;
 +import android.view.MotionEvent;
  import android.view.View;
- 
- import androidx.annotation.NonNull;
- import androidx.annotation.Nullable;
- import androidx.core.content.ContextCompat;
- 
- /**
-  * Draws a Hex board on a {@link Canvas}.
-  *
-  * <p>The view's intended role also includes cell input; game rules stay in a separate class.
-  */
+```
+
+הוסיפו את הממשק בתוך `HexBoardView`, מיד אחרי שורת פתיחת המחלקה ולפני `SQRT_THREE`:
+
+```diff
  public final class HexBoardView extends View {
 +    /** Receives taps that land inside a board cell. */
 +    public interface OnCellClickListener {
@@ -204,29 +203,49 @@ flowchart TB
 +    }
 +
      private static final float SQRT_THREE = (float) Math.sqrt(3.0);
- 
-     private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-     private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-     private final Paint sidePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-     private final Path hexPath = new Path();
- 
+```
+
+#### 2. חיבור לאותו משחק שמנהלת ה־Activity
+
+בפרק 1 השדה `game` נמצא **אחרי `SQRT_THREE` ולפני שדות ה־`Paint`**. מצאו את השורה הקיימת והסירו ממנה רק את `final`; אל תוסיפו שדה `game` נוסף ואל תעבירו את שדות הציור. נוסיף גם שדה לשמירת המאזין:
+
+{% code_diff %}
+     private static final float SQRT_THREE = (float) Math.sqrt(3.0);
+
 -    private final HexGame game = new HexGame();
 +    private HexGame game = new HexGame();
 +    private OnCellClickListener listener;
-     private float radius;
-     private float startX;
-     private float startY;
- 
-```
+
+     private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+{% endcode_diff %}
+
+כאן `final` מנע החלפה של **ההפניה** למשחק. בהמשך `setGame` יקבל את המשחק שה־Activity יצרה, כדי שהציור וחוקי המהלך יקראו את אותו מצב. שדות ה־`Paint` נשארים `final`.
+
+#### 3. סוף הבנאי ושתי פעולות החיבור
+
+הוסיפו רק את שתי השורות הבאות בסוף הבנאי `HexBoardView(...)`, לפני הסוגר שלו:
 
 ```diff
+     public HexBoardView(Context context, @Nullable AttributeSet attributes) {
+         super(context, attributes);
+         emptyColor = ContextCompat.getColor(context, R.color.hex_empty);
+         redColor = ContextCompat.getColor(context, R.color.hex_red);
+         blueColor = ContextCompat.getColor(context, R.color.hex_blue);
+         lineColor = ContextCompat.getColor(context, R.color.hex_line);
          strokePaint.setStyle(Paint.Style.STROKE);
          strokePaint.setStrokeJoin(Paint.Join.ROUND);
          sidePaint.setStyle(Paint.Style.STROKE);
          sidePaint.setStrokeCap(Paint.Cap.ROUND);
 +        setClickable(true);
 +        setFocusable(true);
-+    }
+     }
+```
+
+כעת מצאו את הסוגר שסוגר את הבנאי, והוסיפו **אחריו** את שתי המתודות. הן מופיעות פעם אחת בלבד בקובץ, ברמת המחלקה ולפני `onDraw`. אין להוסיף אותן שוב כשעורכים את לולאת הציור בסעיף הבא:
+
+```diff
+         setFocusable(true);
+     }
 +
 +    /**
 +     * Sets the game position to render and schedules a redraw.
@@ -245,13 +264,21 @@ flowchart TB
 +     */
 +    public void setOnCellClickListener(OnCellClickListener listener) {
 +        this.listener = listener;
-     }
++    }
  
      @Override
      protected void onDraw(@NonNull Canvas canvas) {
 ```
 
+#### 4. צביעת התאים בתוך `onDraw`
+
+בתוך הלולאה הפנימית של `onDraw`, החליפו את הצביעה הקבועה בצבע של התא. הקטע הבא מציג את המתודה כולה כדי שתוכלו לזהות את גבולותיה, אבל השינוי הוא רק בשורות המסומנות. שלוש השורות `setStyle` ו־`drawPath` נשארות **בתוך הלולאה הפנימית**, מיד אחרי בחירת הצבע; הן מציירות כל משושה. `setGame` ו־`setOnCellClickListener` נשארות מחוץ ל־`onDraw`:
+
 ```diff
+     @Override
+     protected void onDraw(@NonNull Canvas canvas) {
+         super.onDraw(canvas);
+         calculateGeometry();
          drawGoalSides(canvas);
  
          strokePaint.setColor(lineColor);
@@ -269,7 +296,13 @@ flowchart TB
                  canvas.drawPath(hexPath, fillPaint);
                  canvas.drawPath(hexPath, strokePaint);
              }
+         }
+     }
 ```
+
+#### 5. הוספת מתודות המגע אחרי `makeHexagon`
+
+גללו לסוף המתודה הקיימת `makeHexagon`, עד `hexPath.close()` והסוגר שאחריו. הוסיפו את שלוש המתודות הבאות **אחרי הסוגר הזה ולפני `centerX`**, ברמת המחלקה. אין להכניס אותן לתוך `makeHexagon` או `onDraw`, ואין למחוק את `centerX`, את `centerY` או את `dp`:
 
 ```diff
          }
@@ -326,16 +359,15 @@ flowchart TB
 
 ### MainActivity.java
 
-**מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק והמסך. הוסיפו את חיבור הלוח ואת המתודות החדשות במקומות המוצגים.
+**מיקום:** app > kotlin+java > com.example.hex. ה־Activity מחברת בין View Binding, המשחק והמסך. הוסיפו את השדה `game` ליד השדה `binding`, מחוץ לכל מתודה. אם `binding` מופיע אצלכם במיקום אחר במחלקה, אין צורך להזיז אותו כדי להתאים לתמונה של הקוד.
 
 ```diff
  import androidx.core.view.WindowInsetsCompat;
  
  import com.example.hex.databinding.ActivityMainBinding;
  
--public class MainActivity extends AppCompatActivity {
 +/** Connects board taps to the independent game state. */
-+public final class MainActivity extends AppCompatActivity {
+ public class MainActivity extends AppCompatActivity {
      private ActivityMainBinding binding;
 +    private HexGame game;
 +
@@ -346,9 +378,9 @@ flowchart TB
          EdgeToEdge.enable(this);
 ```
 
+ארבע שורות החיבור הבאות נוספות **בתוך `onCreate`, אחרי `});` שסוגר את מאזין ה־insets ולפני הסוגר שסוגר את `onCreate`**. השאירו את יצירת ה־`binding`, את `setContentView(binding.getRoot())` ואת מאזין ה־insets מהפרק הקודם. בתבניות חדשות המשתנה עשוי להיקרא `bars` במקום `systemBars`, והקוד עשוי לכלול גם `displayCutout()`; זהו אותו מקום לעריכה, ואין צורך לשנות את קוד התבנית הזה:
+
 ```diff
-             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
              return insets;
          });
 +
@@ -356,7 +388,15 @@ flowchart TB
 +        binding.boardView.setGame(game);
 +        binding.boardView.setOnCellClickListener(this::onCellClicked);
 +        render();
-+    }
+     }
+ }
+```
+
+לאחר מכן, **מחוץ ל־`onCreate` ולפני הסוגר האחרון של המחלקה**, הוסיפו את `onCellClicked` ואת `render`. הסוגר שסגר את `onCreate` נשאר במקומו:
+
+```diff
+         render();
+     }
 +
 +    /**
 +     * Plays a legal move from a board tap and updates the screen.
@@ -375,15 +415,34 @@ flowchart TB
 +        binding.boardView.setGame(game);
 +        binding.statusText.setText(game.getCurrentPlayer() == HexGame.RED
 +                ? R.string.status_red_turn : R.string.status_blue_turn);
-     }
++    }
  }
 ```
 
 **בדיקה של לוח 11×11:** בפרק הזה עוד אין בורר גודל. כדי לראות שהלוח מתאים את עצמו, פתחו את `MainActivity.java` ובתוך `onCreate()` החליפו זמנית את השורה `game = new HexGame();` בשורה `game = new HexGame(11);`. הפעילו את האפליקציה, ואז החזירו את השורה המקורית לפני שממשיכים. בורר הגודל יתווסף בפרק 7.
 
-## מריצים ומוודאים
+## מריצים ומוודאים {#verify-moves}
 
-בצעו Sync אם שיניתם Gradle,  ואז הפעילו את האפליקציה. הניחו שתי אבנים, געו שוב בתא תפוס וברווח שמחוץ ללוח. מספר האבנים והתור לא משתנים במגע לא חוקי.
+השלימו את חיבור ה־View וה־Activity לפני ההרצה: `setGame` מוסרת ללוח את המשחק הפעיל, `setOnCellClickListener` מחברת את הדיווח על נגיעה, ו־`render` מעדכנת את הסטטוס ואת הציור. בפרק הזה אין שינוי ב־Gradle או בפריסת XML.
+
+1. הפעילו את האפליקציה מחדש. הלוח ריק והסטטוס הוא `Red to move`.
+2. געו בתא ריק. התא נצבע אדום והסטטוס משתנה ל־`Blue to move`.
+3. געו בתא ריק אחר. התא נצבע כחול והסטטוס חוזר ל־`Red to move`.
+4. געו שוב בתא תפוס, ואז בשטח הריק שמחוץ למשושים. בשני המקרים נשארות שתי אבנים, והתור נשאר אדום.
+
+### אם הקוד או התוצאה נראים שונים
+
+| מה רואים? | מה בודקים? |
+|---:|---:|
+| השדה `game` אינו ליד שדות ה־`Paint` כמו שציפיתם | עורכים את השדה שכבר קיים אחרי `SQRT_THREE`; אין ליצור עותק נוסף. סדר השדות לבדו אינו משנה את מראה הלוח. |
+| `this.game = game` מסומן כשגיאה בגלל `final` | הסירו `final` רק מהשדה `game` ב־`HexBoardView`, כמודגם בסעיף 2. |
+| `binding.boardView` או `binding.statusText` אינם מוכרים | ודאו שב־`activity_main.xml` נשמרו המזהים `boardView` ו־`statusText` מפרק 1, וש־View Binding פעיל. |
+| הסטטוס אינו מופיע עם פתיחת המסך | בדקו ש־`render()` נקראת בסוף `onCreate`, אחרי יצירת המשחק וה־binding. |
+| בנגיעה יש קריסה בשורה `listener.onCellClick(...)` | בדקו שב־`onCreate` בוצעה הקריאה `setOnCellClickListener(this::onCellClicked)` לפני ההרצה. |
+| הלוח אינו מגיב לנגיעה | ודאו שהוספתם את `onTouchEvent`, את `containsPoint` ואת `performClick` מסעיף 5, ואת ארבע שורות החיבור בסוף `onCreate`. הממשק `OnCellClickListener` לבדו אינו מטפל במגע. |
+| הסטטוס מתחלף אבל התאים נשארים ריקים | בדקו ש־`render()` קוראת ל־`setGame(game)`, וש־`onDraw` קוראת `game.getCell(row, column)` במקום לצבוע תמיד ב־`emptyColor`. |
+| מופיעה שגיאה ליד `public void setGame` או `public void setOnCellClickListener` בתוך לולאת הציור | שתי המתודות צריכות להופיע פעם אחת בלבד, מחוץ ל־`onDraw`. השאירו בתוך לולאת הציור את קריאות `setColor`,‏ `setStyle` ושתי קריאות `drawPath`, כפי שמוצג בסעיף 4. |
+| מתודה חדשה מסומנת כשגיאת תחביר | בדקו את הסוגר של המתודה הקודמת: מתודות חדשות נכתבות בתוך המחלקה, אך מחוץ לבנאי ולמתודות האחרות. |
 
 **שאלת הבנה:** למה נגיעה בתא תפוס אינה מעבירה תור?
 

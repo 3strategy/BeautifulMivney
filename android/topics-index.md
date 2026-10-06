@@ -84,7 +84,7 @@ full-width: true
 | נושא | עומק | שיעור |
 |---:|---:|---:|
 | הפרדת אחריות וזרימת מהלך: מסך, חוקים, בוחר מהלך ומודל ערך | העמקה עם תרשימים ושאלות הבנה | [מפת אחריות](/android/hex5/#architecture)<br>[02 — מנגיעה למהלך](/android/hex5/02-moves-and-turns/#move-flow)<br>[06 — בחירת מהלך לפי ערך](/android/hex5/06-background-ai/#move-selection) |
-| ציור משושים, גודל לוח ממודל וגאומטריית מגע | שיעור מעשי | [01 — לוח](/android/hex5/01-board/)<br>[02 — מהלכים](/android/hex5/02-moves-and-turns/) |
+| ציור משושים, גודל לוח ממודל וגאומטריית מגע | שיעור מעשי עם בדיקות תור ואבחון חיבור המסך למשחק | [01 — לוח](/android/hex5/01-board/)<br>[02 — מהלכים](/android/hex5/02-moves-and-turns/)<br>[בדיקת מהלכים ואבחון תקלות](/android/hex5/02-moves-and-turns/#verify-moves) |
 | מודל מצב וחיפוש גרפי לזיהוי ניצחון | שיעור מעשי | [02 — תורות](/android/hex5/02-moves-and-turns/)<br>[03 — ניצחון](/android/hex5/03-win-detection/) |
 | העתקי מצב, מהלכים חוקיים וקידוד למודל ערך | שיעור מעשי ודוגמת קידוד משתי נקודות מבט | [05 — הכנת המחשב](/android/hex5/05-model-preparation/#value-contract) |
 | Executor, פסילת תשובה ישנה ומודל ערך מסופק | שיעור מעשי באינטגרציה | [06 — מחשב ברקע](/android/hex5/06-background-ai/)<br>[07 — בחירת מודל](/android/hex5/07-supplied-rl-models/)<br>[08 — רמז למהלך](/android/hex5/08-hint/) |
