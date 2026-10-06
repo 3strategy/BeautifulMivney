@@ -18,6 +18,8 @@ Set `namespace` to the consuming project's Gradle namespace. For example:
 The include contains the complete `<details open markdown="1">` section.
 Jekyll renders it within the page; no iframe or separate asset fetch is needed.
 Its image URLs use `relative_url`, so they work in local previews and on the live site.
+An optional `compile_sdk` value sets the SDK version shown in the Gradle context;
+it defaults to `36`.
 
 Use it for a Java Empty Views Activity with `build.gradle.kts`, `MainActivity`,
 `activity_main.xml`, and a root view whose ID is `main`. The excerpt assumes the

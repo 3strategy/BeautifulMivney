@@ -23,7 +23,7 @@ full-width: true
 
 **מי שמיישם או מתקן את המסלול חייב לקודד את המעבר ב־Connect4T, לבנות ולהפעיל אותו, ורק אחר כך לכתוב את ההוראות מן ה־diff.** אין לדרוס את פרויקט השלבים בעותק של היישום הסופי. בשיפור עתידי יש לחזור ל־checkpoint המתאים בעותק עבודה מוסכם, ולא להעמיד פנים שהמצב הסופי הוא נקודת ההתחלה של תלמיד בפרק מוקדם.
 
-בעת תחילת העבודה Connect4T היה נקי וב־commit `4102fc70172c49158823a7d2a4a1c60de3548955`. לא נוצרו commits חדשים ולא שונה ה־index. View Binding היה פעיל ב־Gradle; מצב 00 משלים את השימוש בו ב־Activity, כהכנת המורה לפני פרק 1. [שינוי baseline המדויק]({{ '/android/Connect4/downloads/00-binding-baseline.patch' | relative_url }}).
+נקודת המוצא ב־Connect4T היא commit `4102fc70172c49158823a7d2a4a1c60de3548955`, לפני הגדרת View Binding. סעיף ה־include בתחילת פרק 01 מלמד את המעבר הזה; הוא מפיק את מצב 00 שמשמש כבסיס להמשך הפרק. ה־patch של מצב 00 נשמר כראיית השוואה למורה: [שינוי ה־baseline המדויק]({{ '/android/Connect4/downloads/00-binding-baseline.patch' | relative_url }}).
 
 ## רצף ושיטת כתיבה
 

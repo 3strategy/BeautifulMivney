@@ -10,7 +10,7 @@ View Binding יוצר מחלקה עם הפניות ישירות ל־Views שבק
  android {
      namespace = "{{ include.namespace }}"
      compileSdk {
-         version = release(36)
+         version = release({{ include.compile_sdk | default: 36 }})
      }
 
 +    buildFeatures {

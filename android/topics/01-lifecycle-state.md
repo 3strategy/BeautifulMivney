@@ -26,7 +26,9 @@ tags: [Android, Java, lifecycle, Fragment]
 
 ## נקודת התחלה ושאלת חיזוי
 
-פתחו את פרויקט **topics**, ענף `master`:‏ Empty Views Activity ב־Java עם `ActivityMainBinding` פעיל. החבילה היא `com.example.topics`. ענף הדוגמה המוכן הוא `codex/lifecycle-state`; השוו אותו ל־`master` כדי לראות את כל שינויי המעבדה. ב־Android Studio אפשר למצוא את הקבצים דרך **app > kotlin+java > com.example.topics**,‏ **app > res > layout** ו־**app > res > values**.
+התחילו מפרויקט **Empty Views Activity** ב־Java וב־XML, עם החבילה `com.example.topics`. תחילה הפעילו והכירו את View Binding בסעיף הבא; יתר המעבדה נשענת על התבנית לאחר ההסבה. ענף הדוגמה המוכן הוא `codex/lifecycle-state`; השוו אותו לבסיס התבנית כדי לראות את שינויי המעבדה. ב־Android Studio אפשר למצוא את הקבצים דרך **app > kotlin+java > com.example.topics**,‏ **app > res > layout** ו־**app > res > values**.
+
+{% include android/view-binding.md namespace="com.example.topics" %}
 
 לפני כתיבת הקוד, רשמו ניחוש לכל שורה:
 

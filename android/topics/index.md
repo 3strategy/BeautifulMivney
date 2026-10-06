@@ -9,7 +9,7 @@ tags: [Android, Java, topics]
 ---
 
 {: .box-note}
-אלה שיעורי העמקה לפרויקט `com.example.topics`. נקודת ההתחלה היא ענף `master` בפרויקט **topics**:‏ Empty Views Activity עם Java,‏ XML ו־View Binding. רוב המעבדות מתחילות ממנו; כשהנושא הוא refactoring של מעבדה קודמת, בסיס ההשוואה מופיע בטבלה. קראו את בסיס ההשוואה לפני שמעתיקים שינויי קוד.
+אלה שיעורי העמקה לפרויקט `com.example.topics`. ענפי המעבדות מבוססים על Empty Views Activity עם Java,‏ XML ו־View Binding. מי שמתחילים מתבנית חדשה ילמדו להפעיל View Binding בתחילת [מעבדת הפתיחה על שמירת מצב]({{ '/android/topics/01-lifecycle-state/' | relative_url }}). רוב המעבדות מתחילות מבסיס `master`; כשהנושא הוא refactoring של מעבדה קודמת, בסיס ההשוואה מופיע בטבלה. קראו את בסיס ההשוואה לפני שמעתיקים שינויי קוד.
 
 ## איך לומדים מהקוד, לא רק מעתיקים אותו?
 
