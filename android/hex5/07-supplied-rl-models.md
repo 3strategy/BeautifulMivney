@@ -34,11 +34,11 @@ flowchart TB
 
 לוח 7×7 מציג שלושה שחקנים: איטרציות 100, 2,620 ו־5,000. לוח 11×11 מציג שניים: איטרציות 100 ו־7,350.
 
-[הורידו את חבילת שחקני המורה]({{ '/android/hex5/downloads/06-players.zip' | relative_url }}), פרשו אותה והעתיקו את תיקיות השחקנים אל `app/src/main/assets/players`. שמרו על שמות התיקיות והקבצים. מודל 7×7 מאיטרציה 100 כבר נמצא בפרויקט מחבילת פרק 5.
+[הורידו את חבילת שחקני המורה]({{ '/android/hex5/downloads/06-players.zip' | relative_url }}), פרשו אותה והעתיקו את תיקיות השחקנים אל **app > assets > players** (התיקייה הפיזית היא `app/src/main/assets/players`). אם `assets` אינה קיימת, לחצו על app ובחרו **New > Folder > Assets Folder**, ובתוכה צרו את `players`. שמרו על שמות התיקיות והקבצים. מודל 7×7 מאיטרציה 100 כבר נמצא בפרויקט מחבילת פרק 5.
 
 ## מוסיפים את Gson
 
-ב־`gradle/libs.versions.toml` הוסיפו את הגרסה ואת הספרייה:
+פתחו **Gradle Scripts > libs.versions.toml**. בתוך הסעיפים הקיימים `[versions]` ו־`[libraries]`, הוסיפו את שתי הרשומות הבאות; אין ליצור סעיפים נוספים באותם שמות:
 
 ~~~toml
 [versions]
@@ -48,15 +48,17 @@ gson = "2.14.0"
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 ~~~
 
-ב־`app/build.gradle.kts`, תחת `dependencies`, הוסיפו:
+פתחו **Gradle Scripts > build.gradle.kts (Module :app)**. בתוך בלוק `dependencies` הקיים, לצד שאר קריאות `implementation`, הוסיפו:
 
 ~~~kotlin
 implementation(libs.gson)
 ~~~
 
+לחצו **Sync Now** לפני יצירת המחלקה שמשתמשת ב־Gson. השאירו את יתר התלויות ללא שינוי.
+
 ## יוצרים את קטלוג המודלים
 
-ב־`app/src/main/assets/model_catalog.json` כתבו רשימת אובייקטים. שמות השדות תואמים לשדות של מחלקת Java שניצור מיד:
+ב־**app > assets**, צרו קובץ חדש בשם `model_catalog.json` וכתבו בו את הרשימה המלאה הבאה. שמות השדות תואמים לשדות של מחלקת Java שניצור מיד:
 
 ~~~json
 [
@@ -100,7 +102,7 @@ implementation(libs.gson)
 
 ## ממירים את הרשימה לאובייקטים
 
-צרו את `ModelCatalog.java` ב־`app/src/main/java/com/example/hex`. Gson קורא את המערך ישירות ל־`Level[]`:
+ב־**app > kotlin+java > com.example.hex**, בחרו **New > Java Class**, בשם `ModelCatalog`. זהו קובץ חדש; כתבו בו את הקוד המלא הבא. Gson קורא את המערך ישירות ל־`Level[]`:
 
 ~~~java
 package com.example.hex;
@@ -247,35 +249,63 @@ public final class ModelCatalog {
 
 ## מסננים ובוחרים
 
-ב־`MainActivity.java`, הוסיפו imports לרכיבי הרשימה ול־`ModelCatalog`:
+**מיקום לכל הסעיפים הבאים:** app > kotlin+java > com.example.hex > MainActivity.java. נשארים בקובץ הזה עד הסעיף על `TfliteValueModel`.
 
-~~~java
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+### ייבוא ושדות — בראש הקובץ
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+מעל הצהרת המחלקה, הוסיפו את ייבוא רכיבי הרשימה אחרי `android.view.View`, ואת ייבוא האוספים לפני ייבוא ה־executor הקיים. `ModelCatalog` נמצאת באותה חבילה, ולכן אינה צריכה import:
+
+~~~diff
+ import android.view.View;
++import android.widget.AdapterView;
++import android.widget.ArrayAdapter;
 ~~~
 
-המשחק מתחיל בלוח 7×7, לכן שדה הגודל צריך להתאים לאפשרות הראשונה בתפריט. בהמשך, `setupBoardSizes` תבחר גם את האפשרות הראשונה ב־Spinner בלי להפעיל את המאזין בזמן האתחול. הוסיפו את מצב הקטלוג לצד ברירת המחדל הזו:
+~~~diff
+ import com.example.hex.databinding.ActivityMainBinding;
 
-~~~java
-private List<ModelCatalog.Level> computerLevels = Collections.emptyList();
-private ModelCatalog.Level selectedLevel;
-private int boardSize = 7; // Matches the first (7×7) board-size option.
-private int modelRequest;
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.List;
+ import java.util.concurrent.ExecutorService;
+ import java.util.concurrent.Executors;
 ~~~
 
-ב־`onCreate`, במקום טעינת מודל יחיד, אתחלו את שתי הרשימות:
+בתוך `MainActivity`, **מיד אחרי `positionRevision` ולפני ה־Javadoc וה־`@Override` של `onCreate`**, הוסיפו את ארבעת השדות. אלה שדות של המחלקה, ולא משתנים בתוך `onCreate`:
 
-~~~java
-setupBoardSizes();
-setupComputerLevels();
-render();
+~~~diff
+     // A result belongs only to the board position that requested it.
+     private volatile int positionRevision;
++    private List<ModelCatalog.Level> computerLevels = Collections.emptyList();
++    private ModelCatalog.Level selectedLevel;
++    private int boardSize = 7; // Matches the first (7×7) board-size option.
++    private int modelRequest;
 ~~~
 
-`setupBoardSizes` מחברת את תפריט הלוח למספרי הגודל:
+`computerLevels` שומרת את כל הרשומות מהקטלוג; `selectedLevel` שומרת את המודל שנבחר. `boardSize` מתחיל ב־7, בהתאם לאפשרות הראשונה ב־Spinner. `modelRequest` מזהה בקשת טעינה: אם המשתמש מחליף מודל לפני שהטעינה הקודמת הסתיימה, התוצאה הישנה לא תחליף את הבחירה החדשה. הוא נפרד מ־`positionRevision`, כי Restart משנה את המשחק אך אינו צריך לבטל טעינה של המודל הנבחר.
+
+### `onCreate` — מחליפים את קריאת הטעינה
+
+בסוף `onCreate`, **אחרי סגירת המאזין של `modeGroup` ולפני `render()`**, החליפו רק את הקריאה `loadModel()` בשתי קריאות האתחול:
+
+~~~diff
+                 restartGame();
+             }
+         });
+-        loadModel();
++        setupBoardSizes();
++        setupComputerLevels();
+         render();
+     }
+~~~
+
+השאירו את יצירת `aiExecutor`, את `game = new HexGame()` ואת חיבורי הפקדים שכבר קיימים. לוח ברירת המחדל הוא 7×7; בחירת מודל תקרא ל־`restartGame()` עם הגודל הנבחר.
+
+### ארבע מתודות חדשות — במקום `loadModel`
+
+מצאו את **כל המתודה `loadModel()` מפרק 6**, בין סוף `onCreate` לתיעוד של `onCellClicked`. הסירו את ה־Javadoc שלה ואת המתודה עד הסוגר שסוגר אותה, כולל גוף ה־`aiExecutor.execute`. במקומה הוסיפו, לפי הסדר, את ארבע המתודות המלאות הבאות: `setupBoardSizes`,‏ `setupComputerLevels`,‏ `refreshComputerLevels`,‏ `switchComputerLevel`. כולן באותה רמת הזחה כמו `onCreate`; אין להכניס אותן לתוכה. התיעוד והמתודה `onCellClicked` שאחרי אזור זה נשארים במקומם.
+
+ראשונה, `setupBoardSizes` מחברת את תפריט הלוח למספרי הגודל:
 
 ~~~java
 /** Builds a board with the size selected in the first dropdown. */
@@ -305,7 +335,7 @@ private void setupBoardSizes() {
 }
 ~~~
 
-טענו את הרשומות פעם אחת:
+מיד אחרי הסוגר של `setupBoardSizes`, הוסיפו את `setupComputerLevels`, שטוענת את הרשומות פעם אחת:
 
 ~~~java
 /** Reads the Java-shaped entries from the asset catalog. */
@@ -319,7 +349,7 @@ private void setupComputerLevels() {
 }
 ~~~
 
-`refreshComputerLevels` בונה רשימה זמנית עם מודלים שמתאימים לגודל שנבחר, ומחברת אותה ל־Spinner. אם מודל 2,620 האיטרציות נמצא ברשימה, הוא נבחר כברירת מחדל; בגודל אחר נבחר המודל הראשון המתאים:
+מיד אחרי `setupComputerLevels`, הוסיפו את `refreshComputerLevels`. היא בונה רשימה זמנית עם מודלים שמתאימים לגודל שנבחר, ומחברת אותה ל־Spinner. אם מודל 2,620 האיטרציות נמצא ברשימה, הוא נבחר כברירת מחדל; בגודל אחר נבחר המודל הראשון המתאים:
 
 ~~~java
 /** Shows only computer models whose input shape matches the selected board. */
@@ -364,7 +394,7 @@ private void refreshComputerLevels() {
 }
 ~~~
 
-ב־`switchComputerLevel`, שמרו את הבחירה, התחילו משחק חדש וטענו את קובץ המודל ברקע:
+מיד אחרי `refreshComputerLevels` ולפני התיעוד הקיים של `onCellClicked`, הוסיפו את `switchComputerLevel`. היא שומרת את הבחירה, מתחילה משחק חדש וטוענת את קובץ המודל ברקע:
 
 ~~~java
 /** Loads the selected model and starts a new game for its board size. */
@@ -402,49 +432,70 @@ private void switchComputerLevel(ModelCatalog.Level level) {
 }
 ~~~
 
-עדכנו גם את `restartGame` כך שישתמש בגודל שנבחר:
+### `restartGame` — משתמשים בגודל הנבחר
+
+בהמשך אותו קובץ, מצאו את `restartGame` הקיימת, אחרי `positionChanged`. החליפו רק את יצירת המשחק; הקריאות שאחריה נשארות:
+
+{% code_diff %}
+     private void restartGame() {
+-        game = new HexGame();
++        game = new HexGame(boardSize);
+         positionChanged();
+         render();
+     }
+{% endcode_diff %}
+
+### `render` — תיאור הלוח ופרטי המודל
+
+בצעו את שתי העריכות הבאות **בתוך `render` הקיימת**, אחרי `restartGame`.
+
+**א. מיד אחרי `binding.boardView.setGame(game)` ולפני חישוב `canTap`:** הוסיפו תיאור נגיש שמתאים לגודל הנוכחי:
 
 ~~~diff
- private void restartGame() {
--    game = new HexGame();
-+    game = new HexGame(boardSize);
-     positionChanged();
-     render();
- }
+     private void render() {
+         binding.boardView.setGame(game);
++        binding.boardView.setContentDescription(getString(R.string.board_description,
++                game.getSize(), game.getSize()));
+         boolean canTap = !aiThinking && !game.isOver()
 ~~~
 
-ב־`render`, עדכנו את התיאור הנגיש של הלוח ואת טקסט פרטי המודל:
-
-לאחר הגדרת הלוח, הציגו את הגודל שנבחר לקוראי מסך:
-
-~~~java
-binding.boardView.setContentDescription(getString(R.string.board_description,
-        game.getSize(), game.getSize()));
-~~~
-
-בקטע הצגת פרטי המודל, הוסיפו את שם השחקן בזמן טעינה ואת התיאור שלו אחרי הטעינה:
-
-~~~java
-if (!vsAi) {
-    binding.modelText.setText(R.string.model_local);
-} else if (selectedLevel == null || valueModel == null && !modelLoading) {
-    binding.modelText.setText(R.string.model_unavailable_help);
-} else if (modelLoading) {
-    binding.modelText.setText(getString(R.string.model_loading, selectedLevel.label));
-} else {
-    binding.modelText.setText(selectedLevel.description);
-}
-~~~
-
-ב־`TfliteValueModel.java`, קבלו את נתיב הנכס שנבחר מהקטלוג:
+**ב. אחרי `binding.boardView.setEnabled(canTap)` ולפני תנאי הניצחון:** החליפו את שרשרת התנאים שמעדכנת את `modelText` בשרשרת הבאה. כך הודעת הטעינה כוללת את שם המודל, ואחרי הטעינה מוצג תיאור הרשומה. תנאי `statusText` שבאים אחריה נשארים ללא שינוי:
 
 ~~~diff
--public TfliteValueModel(Context context) throws LiteRtException {
-+public TfliteValueModel(Context context, String modelAsset) throws LiteRtException {
-     compiledModel = CompiledModel.create(context.getAssets(),
--            "hex_value_v1.tflite", CompiledModel.Options.getCPU());
-+            modelAsset, CompiledModel.Options.getCPU());
+         binding.boardView.setEnabled(canTap);
+         if (!vsAi) {
+             binding.modelText.setText(R.string.model_local);
++        } else if (selectedLevel == null || valueModel == null && !modelLoading) {
++            binding.modelText.setText(R.string.model_unavailable_help);
+         } else if (modelLoading) {
+-            binding.modelText.setText(R.string.model_loading);
+-        } else if (valueModel == null) {
+-            binding.modelText.setText(R.string.model_unavailable_help);
++            binding.modelText.setText(getString(R.string.model_loading, selectedLevel.label));
+         } else {
+-            binding.modelText.setText(R.string.model_ready);
++            binding.modelText.setText(selectedLevel.description);
+         }
+         if (game.getWinner() == HexGame.RED) {
 ~~~
+
+## `TfliteValueModel.java` — נתיב המודל בבנאי
+
+**מיקום:** app > kotlin+java > com.example.hex > TfliteValueModel.java. מצאו את הבנאי `public TfliteValueModel`, מיד אחרי שדות ה־buffers. הוסיפו לו פרמטר `String modelAsset` והשתמשו בו במקום שם הקובץ הקבוע. שורות יצירת ה־buffers וכל שאר המתודות נשארות:
+
+{% code_diff %}
+     /** Load the model and create buffers for its first signature. */
+-    public TfliteValueModel(Context context) throws LiteRtException {
++    public TfliteValueModel(Context context, String modelAsset) throws LiteRtException {
+         compiledModel = CompiledModel.create(context.getAssets(),
+-                "hex_value_v1.tflite", CompiledModel.Options.getCPU());
++                modelAsset, CompiledModel.Options.getCPU());
+         inputBuffers = compiledModel.createInputBuffers(0);
+         outputBuffers = compiledModel.createOutputBuffers(0);
+     }
+{% endcode_diff %}
+
+הקריאה היחידה לבנאי נמצאת כעת ב־`switchComputerLevel` ומעבירה את `level.modelAsset`. ודאו שלא נשארה המתודה הישנה `loadModel` עם קריאה לבנאי בעל פרמטר אחד. בנו את הפרויקט אחרי השלמת שני קובצי Java; במהלך העריכה ייתכנו שגיאות זמניות עד שחתימת הבנאי והקריאה אליו תואמות.
 
 ## מריצים ומשחקים
 
