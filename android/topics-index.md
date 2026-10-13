@@ -136,22 +136,20 @@ full-width: true
 | מעבר בין Activities בעזרת `Intent` מפורש | שיעור מעשי | [013 — Activities בתפריט Overflow](/android/projectSteps/013addingActivityToMenu)<br>[017 — שכפול Activity וניתוב מן המגירה](/android/projectSteps/017DuplicateAndAddActivityToMenu) |
 | תפריט Overflow וקובץ menu XML | שיעור מעשי | [013 — הוספת Activities לתפריט](/android/projectSteps/013addingActivityToMenu) |
 | Navigation Drawer,‏ `DrawerLayout` ו־`NavigationView` | שיעור מעשי | [014a — יצירת תפריט מגירה](/android/projectSteps/014a.creatingFragmentsMenu)<br>[014b — הוספת יעדים למגירה](/android/projectSteps/014b.AddingFragmentsToMenu) |
-| Fragments וניווט בתוך Activity יחיד | שיעור מעשי | [014b — Fragments בתוך תפריט מגירה](/android/projectSteps/014b.AddingFragmentsToMenu)<br>[15b — שלושה Fragments ו־Bottom Navigation](/android/alon/15b.FragmentsTutorial) |
-| `onCreateView` לעומת `onViewCreated` | העמקה | [15b — מדריך Fragments](/android/alon/15b.FragmentsTutorial) |
+| Fragments וניווט בתוך Activity יחיד | שיעור מעשי | [014b — Fragments בתוך תפריט מגירה](/android/projectSteps/014b.AddingFragmentsToMenu)<br>[15b — שלושה Fragments ו־Bottom Navigation](/android/alon/15b.FragmentsTutorial)<br>[01 — הרחבה: יצירה מ־XML לעומת החלפה בקוד ו־Back](/android/topics/01-lifecycle-state/#fragment-control) |
+| `onCreateView` לעומת `onViewCreated` | העמקה | [15b — מדריך Fragments](/android/alon/15b.FragmentsTutorial)<br>[01 — הרחבה: יצירת binding לעומת פריסה בבנאי Fragment](/android/topics/01-lifecycle-state/#fragment-control) |
 | קבלת תוצאה מפעולה חיצונית עם `ActivityResultLauncher` | שיעור מעשי | [15 — הרשאה, Photo Picker, מסמך ותמונת מצלמה](/android/topics/15-permission-result-contracts/)<br>**משלים:** [מפגשי אנדרואיד](/android/zeev/meetings#id-meeting-13-activity-result-launcher-course) |
 | מעבר מושהה עם `Handler` ו־`Looper` | שיעור מעשי | [018a — LoginActivity לפני חיבור Authentication](/android/projectSteps/018a.LoginActivityFromGui) |
 
 ## מחזור חיים, מצב ושמירה קלה
 
-{: .table-he}
-
 | נושא | עומק | איפה לומדים |
-|---|---|---|
+|---:|---:|---:|
 | מחזור החיים של `Activity` | שיעור מעשי | [01 — מעבדת שחזור: סיבוב, Bundle ושמירה מתמשכת](/android/topics/01-lifecycle-state/)<br>[03 — עצירת עדכוני זמן ב־`onStop`](/android/CollectCircles/03.collect-circles-finish)<br>[13 — חישוב התקדמות ב־`onStart` וב־`onStop`](/android/CollectCircles/13.collect-circles-offline-progress)<br>**משלים:** [מצגת מחזור החיים](/android/zeev/meetings#id-meeting-6-activity-lifecycle) |
 | `SharedPreferences` לקריאה וכתיבה | שיעור מעשי | [03 — שמירת שיא](/android/CollectCircles/03.collect-circles-finish)<br>[08 — מצב משחק מתמשך](/android/CollectCircles/08.collect-circles-persistent-economy)<br>[018a — שמירת בחירת "הישאר מחובר"](/android/projectSteps/018a.LoginActivityFromGui) |
 | מצב בזיכרון לעומת מצב שנשמר במכשיר | העמקה | [08 — כלכלה מתמשכת ב־CollectCircles](/android/CollectCircles/08.collect-circles-persistent-economy) |
 | שמירת מצב מסך ב־`Bundle` | שיעור מעשי | [01 — שלושה מונים: שדה, Bundle ו־SharedPreferences](/android/topics/01-lifecycle-state/)<br>**משלים:** [מצגת מחזור החיים](/android/zeev/meetings#id-meeting-6-activity-lifecycle) |
-| מחזור חיי View של `Fragment` וניקוי binding | שיעור מעשי | [01 — ניתוק ה־View וחזרה לאותו Fragment](/android/topics/01-lifecycle-state/) |
+| מחזור חיי View של `Fragment` וניקוי binding | שיעור מעשי | [01 — ניתוק ה־View וחזרה לאותו Fragment](/android/topics/01-lifecycle-state/)<br>[הרחבה — כיצד Back הופך detach ומתי המונה שורד](/android/topics/01-lifecycle-state/#fragment-control) |
 | זמן מונוטוני לעומת שעון קיר | העמקה | [03 — SystemClock למדידת משחק](/android/CollectCircles/03.collect-circles-finish)<br>[13 — בחירת שעון להתקדמות אופליין](/android/CollectCircles/13.collect-circles-offline-progress) |
 | Callback פשוט באמצעות `Runnable` | שיעור מעשי | [03 — הודעה מן ה־View ל־Activity על סיום משחק](/android/CollectCircles/03.collect-circles-finish)<br>[08 — אירוע איסוף עיגול](/android/CollectCircles/08.collect-circles-persistent-economy) |
 

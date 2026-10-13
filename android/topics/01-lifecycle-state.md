@@ -10,6 +10,8 @@ tags: [Android, Java, lifecycle, Fragment]
 
 [מפת המעבדות]({{ '/android/topics/' | relative_url }})
 
+[קוד המקור של המעבדה ב־GitHub — Android-Lifecycle](https://github.com/3strategy/Android-Lifecycle). אפשר לפתוח את הפרויקט ב־Android Studio, להריץ את הניסויים ולהשוות את הקוד להסברים כאן.
+
 {: .box-success}
 בסוף המעבדה יופיעו שלושה מונים ב־Activity ומונה נוסף ב־Fragment. נעלה את כולם, נסובב את המכשיר, נהרוג את האפליקציה ונחזור אליה. נוכל לנבא **איזה ערך ישרוד כל פעולה**. בלחיצה נפרדת נהרוס רק את ה־View של ה־Fragment, נחזור עם Back ונראה שאותו מופע Fragment נשאר.
 
@@ -26,7 +28,7 @@ tags: [Android, Java, lifecycle, Fragment]
 
 ## נקודת התחלה ושאלת חיזוי
 
-התחילו מפרויקט **Empty Views Activity** ב־Java וב־XML, עם החבילה `com.example.topics`. תחילה הפעילו והכירו את View Binding בסעיף הבא; יתר המעבדה נשענת על התבנית לאחר ההסבה. ענף הדוגמה המוכן הוא `codex/lifecycle-state`; השוו אותו לבסיס התבנית כדי לראות את שינויי המעבדה. ב־Android Studio אפשר למצוא את הקבצים דרך **app > kotlin+java > com.example.topics**,‏ **app > res > layout** ו־**app > res > values**.
+התחילו מפרויקט **Empty Views Activity** ב־Java וב־XML, עם החבילה `com.example.topics`. תחילה הפעילו והכירו את View Binding בסעיף הבא; יתר המעבדה נשענת על התבנית לאחר ההסבה. במאגר [Android-Lifecycle](https://github.com/3strategy/Android-Lifecycle) נמצא הפרויקט המוכן בענף `main`; ב־Git Log אפשר להשוות את השינוי שמממש את המעבדה לבסיס התבנית עם View Binding. ב־Android Studio אפשר למצוא את הקבצים דרך **app > kotlin+java > com.example.topics**,‏ **app > res > layout** ו־**app > res > values**.
 
 {% include android/view-binding.md namespace="com.example.topics" %}
 
@@ -415,3 +417,139 @@ public final class LifecycleFragment extends Fragment {
 1. מה יקרה למונה ה־Fragment אם נמחק את `outState.putInt` ונסובב את המסך? מדוע Back אחרי `detach` עדיין יכול לשמור אותו?
 2. למה `binding = null` שייך ל־`onDestroyView` ולא ל־`onDestroy`?
 3. אם היינו שומרים רק את ערך `savedCount` ב־`SharedPreferences`, איזה סוג מצב היינו הופכים למתמשך? האם זה מתאים תמיד לטיוטת מסך זמנית?
+
+## דוגמה משלימה: מימוש טיפוסי של Fragments
+
+המאגר [3strategy/fragments ב־GitHub](https://github.com/3strategy/fragments) מציג מימוש טיפוסי ופשוט של Fragments ב־Java וב־XML:‏ Activity אחד, מיכל תצוגה ושלושה מסכים — Home, Dashboard ו־Notifications — שנבחרים באמצעות סרגל ניווט תחתון. כדאי להשוות אותו למעבדת ה־Lifecycle: כאן מתנסים בהרס וביצירה מחדש של View, ובדוגמה המשלימה מחליפים את ה־Fragment המוצג.
+
+## הרחבה על שליטה ב־Fragment
+
+<details markdown="1" id="fragment-control">
+<summary>הרחבה על שליטה ב־Fragment: יצירה, החלפה, Back ומחזור חיי התצוגה</summary>
+
+השאלות והתשובות שלהלן מעובדות מתוך [מסמך השאלות והתשובות של פרויקט Lifecycle](https://github.com/3strategy/Android-Lifecycle/blob/main/QuestionsAndAnswers.md). שתי השאלות הראשונות מתייחסות למעבדה שבנינו; שתי האחרונות מתייחסות לפרויקט **Fragments** שבקישור למעלה. הקטעים כאן מסבירים את הקוד הקיים, ואינם צעדים נוספים שצריך להעתיק לפרויקט המעבדה.
+
+### 1. איך Back מחבר מחדש את ה־Fragment אם אין בקוד קריאה ל־`attach()`?
+
+**Back מבטל את העסקה שנרשמה ב־FragmentManager.** ב־`onViewCreated` של [LifecycleFragment.java](https://github.com/3strategy/Android-Lifecycle/blob/main/app/src/main/java/com/example/topics/LifecycleFragment.java) מופיע המאזין:
+
+```java
+binding.detachView.setOnClickListener(v -> getParentFragmentManager()
+        .beginTransaction()
+        .detach(this)
+        .addToBackStack("detached_view")
+        .commit());
+```
+
+`getParentFragmentManager()` מחזיר את המנהל שאחראי ל־Fragment הזה. `beginTransaction()` מתחיל עסקה — קבוצת פעולות על Fragments. `detach(this)` מבקש לנתק את התצוגה, ו־`addToBackStack(...)` רושם את העסקה במחסנית החזרה. `commit()` מתזמן את ביצועה; הוא אינו מבטיח שהיא כבר בוצעה בשורה הבאה. המחרוזת `"detached_view"` היא שם לרשומה במחסנית, ולא שם של מתודה או callback.
+
+בלחיצה על Back של המכשיר, מנגנון החזרה של AndroidX מוציא את העסקה העליונה מהמחסנית ומבצע את הפעולות ההפוכות שלה. הפעולה ההפוכה ל־`detach` היא חיבור מחדש באמצעות `attach`. המנהל עושה זאת פנימית, ולכן בדוגמה הזאת אין צורך במאזין Back משלנו או בקריאת `attach()` מפורשת. ראו [ניהול מחסנית החזרה](https://developer.android.com/guide/fragments/fragmentmanager#use_the_fragmentmanager) ו[עסקאות Fragment](https://developer.android.com/guide/fragments/transactions).
+
+עקבו אחר הרצף בניסוי:
+
+1. ה־Fragment וה־View שלו מוצגים על המסך.
+2. לחיצה על **Destroy Fragment View** מבצעת את עסקת הניתוק. ה־View נהרס, אבל אובייקט ה־Fragment נשאר בניהול `FragmentManager`.
+3. `onDestroyView()` מנקה את ה־binding ומשחרר את ההפניות של ה־Fragment לעץ התצוגה הישן.
+4. Back מוציא את העסקה מהמחסנית והופך את הניתוק.
+5. `onCreateView()` יוצר עץ תצוגה ו־binding חדשים. `onViewCreated()` מחבר מחדש את המאזינים וקורא ל־`renderCount()`.
+
+הניקוי ב־`onDestroyView()` הוא:
+
+```java
+binding = null;
+super.onDestroyView();
+```
+
+ויצירת התצוגה החדשה ב־`onCreateView()` היא:
+
+```java
+binding = FragmentLifecycleBinding.inflate(inflater, container, false);
+return binding.getRoot();
+```
+
+במחזור פשוט של ניתוק ו־Back, בלי יצירה מחדש של ה־Activity או הריגת התהליך, אותו אובייקט Fragment נשאר בחיים. לכן גם השדה `count` נשאר. `binding = null` אינו מאפס אותו; `renderCount()` מציג אותו דרך ה־binding החדש. השוו את מספרי המופע ב־Logcat לפני הניתוק ואחרי החזרה כדי לבדוק זאת. אם Android יוצר מחדש את הרכיב, ההסבר כבר אינו הישרדות האובייקט הישן: הפרויקט שומר את `count` ב־`onSaveInstanceState()` ומשחזר אותו ב־`onViewCreated()` כשנמסר Bundle שמור.
+
+{: .box-note}
+בלי `addToBackStack(...)`,‏ Back לא יבטל אוטומטית את הניתוק; לחיבור מפורש תידרש עסקה אחרת עם `attach(fragment)`. הפעולה `detach()` גם אינה ה־callback בשם `onDetach()`: הרס ה־View אינו הרס אובייקט ה־Fragment או ניתוק שלו מה־Activity. ראו [חיבור וניתוק Fragments](https://developer.android.com/guide/fragments/transactions#attaching-and-detaching-fragments).
+
+### 2. האם ההצהרה ב־XML מספיקה להצגת ה־Fragment, או שגם MainActivity מוסיף אותו?
+
+**ה־XML קובע איזה Fragment ליצור; ה־Activity טוען ומציג את הפריסה.** ב־[MainActivity.java של Lifecycle](https://github.com/3strategy/Android-Lifecycle/blob/main/app/src/main/java/com/example/topics/MainActivity.java) אין עסקת `add()` מפורשת. הבחירה במחלקה נמצאת ב־[activity_main.xml](https://github.com/3strategy/Android-Lifecycle/blob/main/app/src/main/res/layout/activity_main.xml):
+
+```xml
+<androidx.fragment.app.FragmentContainerView
+    android:id="@+id/lifecycle_fragment"
+    android:name="com.example.topics.LifecycleFragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp" />
+```
+
+`android:name` מציין איזו מחלקת Fragment ליצור אוטומטית. `FragmentContainerView` בלי המאפיין הזה מספק מיכל, אבל אינו בוחר Fragment שייכנס אליו. `android:id` מזהה את המיכל. בזמן טעינת הפריסה AndroidX מוסיף את ה־Fragment המוצהר, או משתמש ב־Fragment ששוחזר על ידי המנהל, לפי המצב. ראו [הוספת Fragment באמצעות XML](https://developer.android.com/guide/fragments/create#add-xml).
+
+עדיין דרוש Activity שתומך ב־Fragments וטוען את הפריסה. כאן `MainActivity` יורש מ־`AppCompatActivity`, שתומך ב־AndroidX Fragments, וב־`onCreate()` מתבצעות הקריאות:
+
+```java
+super.onCreate(savedInstanceState);
+EdgeToEdge.enable(this);
+binding = ActivityMainBinding.inflate(getLayoutInflater());
+setContentView(binding.getRoot());
+```
+
+`ActivityMainBinding` נוצר מתוך `activity_main.xml` בזכות הפעלת View Binding ב־[app/build.gradle.kts](https://github.com/3strategy/Android-Lifecycle/blob/main/app/build.gradle.kts). `inflate(...)` בונה את הפריסה, כולל המיכל; `setContentView(...)` מציב את השורש שלה כמסך ה־Activity. מחלקת האב מספקת את תשתית ה־Fragments ואת הטיפול בשחזור.
+
+ל־Fragment עצמו יש פריסה נפרדת: `LifecycleFragment.onCreateView()` טוען את [fragment_lifecycle.xml](https://github.com/3strategy/Android-Lifecycle/blob/main/app/src/main/res/layout/fragment_lifecycle.xml) באמצעות `FragmentLifecycleBinding` ומחזיר את השורש. הארגומנט `false` משאיר את חיבור השורש למיכל ל־`FragmentManager`.
+
+לכן, במסגרת ה־Activity הקיים, הצהרת ה־XML מספיקה לבחירת ה־Fragment ולהוספתו האוטומטית. קוד ה־Java נחוץ לאירוח ולטעינת המסך, אבל אין להוסיף כאן עסקת `add()` או `attach()` נוספת. מאזיני המונים, `EdgeToEdge` וטיפול ה־insets אינם בוחרים או מוסיפים Fragment.
+
+אם מסירים את `android:name`, צריך לבחור ולהוסיף את ה־Fragment בקוד. בדרך כלל עושים זאת רק ביצירה ראשונה (`savedInstanceState == null`), כדי לאפשר למנהל לשחזר אותו ביצירה מחדש. זו חלופה להצהרת ה־XML, ולא שלב נוסף במימוש הנוכחי.
+
+### 3. איך פרויקט Fragments מציג מסכים ומחליף ביניהם?
+
+**MainActivity מציב אחד משלושה Fragments במיכל ריק.** ב־[activity_main.xml של Fragments](https://github.com/3strategy/fragments/blob/main/app/src/main/res/layout/activity_main.xml) נמצאים `FragmentContainerView` עם המזהה `fragment_container` וסרגל ניווט תחתון. למיכל אין `android:name`; לכן [MainActivity.java](https://github.com/3strategy/fragments/blob/main/app/src/main/java/com/example/topic/MainActivity.java) בוחר את ה־Fragment בקוד.
+
+אחרי טעינת פריסת ה־Activity,‏ `onCreate()` מחבר את מאזין הניווט ובוחר ב־Home ביצירה הראשונה:
+
+```java
+binding.navView.setOnItemSelectedListener(item -> showFragment(item.getItemId()));
+if (savedInstanceState == null) {
+    showFragment(R.id.navigation_home);
+}
+```
+
+`showFragment(...)` מתרגם את מזהי פריטי Home, Dashboard ו־Notifications ל־`new HomeFragment()`,‏ `new DashboardFragment()` ו־`new NotificationsFragment()`. לאחר מכן הוא בודק איזו מחלקת Fragment כבר מוצגת במיכל, ומחליף את המסך רק אם המיכל ריק או שמדובר במחלקה אחרת:
+
+```java
+Fragment current = getSupportFragmentManager()
+        .findFragmentById(R.id.fragment_container);
+if (current == null || current.getClass() != fragment.getClass()) {
+    getSupportFragmentManager().beginTransaction()
+            .setReorderingAllowed(true)
+            .replace(R.id.fragment_container, fragment)
+            .commit();
+}
+```
+
+`getSupportFragmentManager()` הוא אופן הגישה למנהל מתוך ה־Activity. `setReorderingAllowed(true)` מאפשר למנהל לתאם את שינויי המצב ומחזור החיים של העסקה. `replace(...)` מסיר את ה־Fragment הנוכחי מהמיכל ומוסיף את הנבחר, ו־`commit()` מתזמן את הביצוע. בחירה במסך שכבר מוצג אינה מחליפה אותו. מעבר למסך אחר ואז חזרה יוצר Fragment חדש; המימוש הזה אינו שומר מופע נפרד לכל לשונית.
+
+התנאי `savedInstanceState == null` מונע בחירה מחודשת ב־Home בזמן יצירה מחדש של ה־Activity, ומאפשר ל־`FragmentManager` לשחזר את ה־Fragment שהוצג.
+
+### 4. למה במחלקות הדוגמה אין `onCreateView()`, והאם Back מבטל החלפת לשונית?
+
+**כל Fragment מוסר את הפריסה למחלקת האב; החלפות הלשוניות אינן נרשמות במחסנית החזרה.** בכל אחת משלוש המחלקות יש רק בנאי ציבורי ללא פרמטרים שמעביר ל־`Fragment` את משאב הפריסה. לדוגמה, [HomeFragment.java](https://github.com/3strategy/fragments/blob/main/app/src/main/java/com/example/topic/HomeFragment.java):
+
+```java
+public class HomeFragment extends Fragment {
+    public HomeFragment() {
+        super(R.layout.fragment_home);
+    }
+}
+```
+
+המימוש של `onCreateView()` שמתקבל בירושה טוען את הפריסה הזאת. Dashboard ו־Notifications משתמשים באותו דפוס עם `fragment_dashboard` ו־`fragment_notifications`. הפריסות מציגות תוויות מסך פשוטות, ולכן אין כאן צורך ב־View Binding או במאזיני כפתורים בתוך המחלקות. לעומת זאת, `LifecycleFragment` מממש בעצמו את `onCreateView()` כדי ליצור binding לתצוגה האינטראקטיבית, ומנקה אותו ב־`onDestroyView()`.
+
+עסקאות ההחלפה בפרויקט Fragments אינן קוראות ל־`addToBackStack(...)`, ולכן Back אינו מחזיר ללשונית הקודמת. אלה שלושה מסכים מקבילים שהמשתמש בוחר מסרגל הניווט. במעבדת Lifecycle רשמנו בכוונה את `detach(this)` במחסנית, ולכן Back מבטל את הניתוק ויוצר מחדש את ה־View של אותו Fragment מנוהל.
+
+**בדקו את ההבחנה:** במעבדת Lifecycle העלו את המונה, נתקו את התצוגה וחזרו עם Back. בפרויקט Fragments עברו מ־Home ל־Dashboard ולחצו Back. לפני ההפעלה נבאו באיזה ניסוי Back יהפוך את העסקה, והצביעו על הקריאה בקוד שקובעת זאת.
+
+</details>
