@@ -8,6 +8,8 @@ full-width: true
 tags: [Android, Java, lifecycle, Fragment]
 ---
 
+[English version]({{ '/android/topics/01-lifecycle-state/en/' | relative_url }})
+
 [מפת המעבדות]({{ '/android/topics/' | relative_url }})
 
 [קוד המקור של המעבדה ב־GitHub — Android-Lifecycle](https://github.com/3strategy/Android-Lifecycle). אפשר לפתוח את הפרויקט ב־Android Studio, להריץ את הניסויים ולהשוות את הקוד להסברים כאן.
@@ -427,7 +429,7 @@ public final class LifecycleFragment extends Fragment {
 <details markdown="1" id="fragment-control">
 <summary>הרחבה על שליטה ב־Fragment: יצירה, החלפה, Back ומחזור חיי התצוגה</summary>
 
-השאלות והתשובות שלהלן מעובדות מתוך [מסמך השאלות והתשובות של פרויקט Lifecycle](https://github.com/3strategy/Android-Lifecycle/blob/main/QuestionsAndAnswers.md). שתי השאלות הראשונות מתייחסות למעבדה שבנינו; שתי האחרונות מתייחסות לפרויקט **Fragments** שבקישור למעלה. הקטעים כאן מסבירים את הקוד הקיים, ואינם צעדים נוספים שצריך להעתיק לפרויקט המעבדה.
+השאלות והתשובות שלהלן מעובדות מתוך [מסמך השאלות והתשובות של פרויקט Lifecycle](https://github.com/3strategy/Android-Lifecycle/blob/main/QuestionsAndAnswers.md). שלוש השאלות הראשונות מתייחסות למעבדה שבנינו; שתי האחרונות מתייחסות לפרויקט **Fragments** שבקישור למעלה. הקטעים כאן מסבירים את הקוד הקיים, ואינם צעדים נוספים שצריך להעתיק לפרויקט המעבדה.
 
 ### 1. איך Back מחבר מחדש את ה־Fragment אם אין בקוד קריאה ל־`attach()`?
 
@@ -504,7 +506,94 @@ setContentView(binding.getRoot());
 
 אם מסירים את `android:name`, צריך לבחור ולהוסיף את ה־Fragment בקוד. בדרך כלל עושים זאת רק ביצירה ראשונה (`savedInstanceState == null`), כדי לאפשר למנהל לשחזר אותו ביצירה מחדש. זו חלופה להצהרת ה־XML, ולא שלב נוסף במימוש הנוכחי.
 
-### 3. איך פרויקט Fragments מציג מסכים ומחליף ביניהם?
+### 3. מי קורא ל־`onSaveInstanceState()`, ואיך ה־Bundle מגיע למופע החדש?
+{: #saved-state-flow}
+
+**Android מבקש תמונת מצב, הקוד שלנו ממלא אותה, והמערכת מוסרת את המצב השמור בזמן שחזור.** מאזיני הכפתורים אינם קוראים ל־`onSaveInstanceState()`. Android קורא ל־callback של ה־Activity כחלק ממחזור החיים ומספק את `outState`; אנחנו מוסיפים אליו את הערכים שנרצה לשחזר.
+
+ב־`MainActivity` של המעבדה כבר כתבנו:
+
+```java
+@Override
+protected void onSaveInstanceState(Bundle outState) {
+    outState.putInt(SAVED_COUNT, savedCount);
+    super.onSaveInstanceState(outState);
+}
+```
+
+`SAVED_COUNT` הוא המפתח `"saved_count"`. אם בזמן הקריאה `savedCount` שווה 2,‏ `putInt(...)` מכניס 2 ל־Bundle תחת המפתח הזה. הוא אינו שומר את אובייקט ה־Activity, את ה־binding או את כל השדות אוטומטית. הקריאה ל־`super.onSaveInstanceState(outState)` מאפשרת למימוש שבירושה להוסיף מצב של Android/AndroidX, כולל מצב תצוגות נתמכות ומצב מנהל ה־Fragments; היא אינה קוראת שוב ל־override שלנו.
+
+#### מתי נשמרת תמונת המצב בסיבוב?
+
+בפרויקט המעבדה `minSdk` הוא 31 ו־`targetSdk` הוא 37. בסיבוב רגיל שיוצר Activity מחדש, סדר קריאות ה־Activity הוא:
+
+```text
+Old MainActivity:
+    onPause()
+    onStop()
+    onSaveInstanceState(outState)   <-- copy savedCount into the snapshot
+    onDestroy()
+
+New MainActivity:
+    onCreate(savedInstanceState)   <-- read savedCount from the snapshot
+    onStart()
+    onRestoreInstanceState(...)    <-- inherited restoration; no override here
+    onResume()
+```
+
+באפליקציות המכוונות ל־API 28 ומעלה, כאשר `onSaveInstanceState()` נקראת, היא מתבצעת אחרי `onStop()`; כללי הסדר הישנים שונים. התרשים מתאר סיבוב, ולא מבטיח שכל עצירה או הריסה תפעיל שמירה. ראו [תיעוד callback השמירה של Activity](https://developer.android.com/reference/android/app/Activity#onSaveInstanceState(android.os.Bundle)).
+
+ב־`onCreate()` של ה־Activity החדש קוראים את הערך:
+
+```java
+if (savedInstanceState != null) {
+    savedCount = savedInstanceState.getInt(SAVED_COUNT);
+}
+```
+
+`outState` הוא שם הפרמטר של תמונת המצב היוצאת שממלאים; `savedInstanceState` הוא שם הפרמטר של המצב הנכנס שקוראים. אלה אינם שני שירותי אחסון. הערכים נשמרים לצורך שחזור, בלי לדרוש שאותו אובייקט Java מסוג `Bundle` יישאר בחיים.
+
+לכן, אחרי שתי לחיצות וסיבוב, `memoryCount` מתחיל ב־0 במופע החדש כי לא שמרנו אותו, `savedCount` מקבל 2 מה־Bundle, ו־`persistentCount` מקבל 2 מקריאת `SharedPreferences`. רק אחר כך `renderCounts()` מציג אותם. בפרויקט אין override של `onRestoreInstanceState()`; השחזור של המונה שלנו כבר נעשה ב־`onCreate()`, וה־callback שבירושה מטפל בשחזור של המערכת.
+
+#### מי שומר ומשחזר את ה־Fragment?
+
+AndroidX `FragmentManager` מתאם את שמירת ה־Fragment כחלק משמירת ה־Activity המארח: הוא קורא ל־`onSaveInstanceState()` של ה־Fragment וכולל את מצבו במצב המנהל. ל־Activity ול־Fragment יש Bundles משלהם, ולא אוסף שטוח משותף של מפתחות. ראו [שמירת מצב של Fragments](https://developer.android.com/guide/fragments/saving-state#savedstate).
+
+ב־`LifecycleFragment` כבר כתבנו:
+
+```java
+@Override
+public void onSaveInstanceState(@NonNull Bundle outState) {
+    outState.putInt(SAVED_COUNT, count);
+    super.onSaveInstanceState(outState);
+}
+```
+
+במחלקה הזאת `SAVED_COUNT` הוא המפתח `"fragment_count"`. בשחזור, המנהל מספק את המצב השמור ל־callbacks של יצירת ה־Fragment והתצוגה שלו. במעבדה קוראים את המונה ב־`onViewCreated()`:
+
+```java
+if (savedInstanceState != null) {
+    count = savedInstanceState.getInt(SAVED_COUNT);
+}
+```
+
+ה־Activity אינו קורא ידנית למתודת השמירה של ה־Fragment ואינו מעביר אליו את ה־Bundle של עצמו. בניסוי `detach` וחזרה עם Back,‏ `count` יכול להישאר בשדה של אותו מופע Fragment; עצם הריסת ה־View אינה מחייבת קריאת שמירה חדשה כדי שהמונה ישרוד.
+
+#### האם ה־Bundle נכתב לקובץ?
+
+ה־Bundle הוא תמונת מצב קטנה לשחזור, ולא קובץ שהקוד שלנו כותב או אחסון מתמשך. Android מחזיק מצב שמור מחוץ לתהליך האפליקציה כדי שיוכל לשחזר משימה קיימת אחרי הריגת תהליך בידי המערכת. **תמונת המצב צריכה להיאסף לפני ההריגה**: הריגת תהליך אינה נותנת לאפליקציה הזדמנות אחרונה להפעיל את ה־callback. סיום Activity,‏ Force stop או הסרת המשימה אינם תחליף לאחסון מתמשך. ראו [מצב שמור לעומת אחסון מתמשך](https://developer.android.com/topic/libraries/architecture/saving-states).
+
+לעומת זאת, במעבדה מונה ההעדפות נכתב בנפרד בכל לחיצה שמעלה אותו:
+
+```java
+preferences.edit().putInt(PERSISTENT_COUNT, persistentCount).apply();
+```
+
+יש כאן שני טריגרים: **לחיצה** משנה את השדות ומבקשת מיד כתיבה להעדפות; **בקשת שמירה של Android** מעתיקה בהמשך את `savedCount` ואת `count` של ה־Fragment לתמונות המצב שלהם.
+
+**בדקו את ההבנה:** לאחר שתי לחיצות המונים מציגים 2, אבל עדיין לא התרחשה בקשת שמירה נוספת. איזו שורה תכניס את 2 ל־Bundle כשיגיע ה־callback? האם הריגת התהליך עכשיו מבטיחה שהערך האחרון יופיע בשחזור? הסבירו לפי זמן איסוף תמונת המצב.
+
+### 4. איך פרויקט Fragments מציג מסכים ומחליף ביניהם?
 
 **MainActivity מציב אחד משלושה Fragments במיכל ריק.** ב־[activity_main.xml של Fragments](https://github.com/3strategy/fragments/blob/main/app/src/main/res/layout/activity_main.xml) נמצאים `FragmentContainerView` עם המזהה `fragment_container` וסרגל ניווט תחתון. למיכל אין `android:name`; לכן [MainActivity.java](https://github.com/3strategy/fragments/blob/main/app/src/main/java/com/example/topic/MainActivity.java) בוחר את ה־Fragment בקוד.
 
@@ -534,7 +623,7 @@ if (current == null || current.getClass() != fragment.getClass()) {
 
 התנאי `savedInstanceState == null` מונע בחירה מחודשת ב־Home בזמן יצירה מחדש של ה־Activity, ומאפשר ל־`FragmentManager` לשחזר את ה־Fragment שהוצג.
 
-### 4. למה במחלקות הדוגמה אין `onCreateView()`, והאם Back מבטל החלפת לשונית?
+### 5. למה במחלקות הדוגמה אין `onCreateView()`, והאם Back מבטל החלפת לשונית?
 
 **כל Fragment מוסר את הפריסה למחלקת האב; החלפות הלשוניות אינן נרשמות במחסנית החזרה.** בכל אחת משלוש המחלקות יש רק בנאי ציבורי ללא פרמטרים שמעביר ל־`Fragment` את משאב הפריסה. לדוגמה, [HomeFragment.java](https://github.com/3strategy/fragments/blob/main/app/src/main/java/com/example/topic/HomeFragment.java):
 

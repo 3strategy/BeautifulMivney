@@ -67,7 +67,7 @@ adb -s emulator-5562 shell am instrument -w com.example.topics.test/androidx.tes
 
 | נושא | בסיס להשוואה | ענף תוצאה | מה בודקים |
 |---:|:---|:---|---:|
-| [01 — מה נשמר אחרי סיבוב, הריגת תהליך והחלפת View?]({{ '/android/topics/01-lifecycle-state/' | relative_url }}) | `master` | `codex/lifecycle-state` | שדה, `Bundle`,‏ `SharedPreferences` ומחזור חיי View של Fragment |
+| [01 — מה נשמר אחרי סיבוב, הריגת תהליך והחלפת View?]({{ '/android/topics/01-lifecycle-state/' | relative_url }})<br>[English version]({{ '/android/topics/01-lifecycle-state/en/' | relative_url }}) | `master` | `codex/lifecycle-state` | שדה, `Bundle`,‏ `SharedPreferences` ומחזור חיי View של Fragment |
 | [02 — מסך שאפשר לקרוא, לגעת ולתרגם]({{ '/android/topics/02-accessibility-adaptive-localization/' | relative_url }}) | `master` | `codex/accessibility-adaptive` | קורא מסך, יעד מגע, גופן/מסך, רבים ועברית RTL |
 | [03 — כל מצבי המסך ורגע ה־Retry]({{ '/android/topics/03-ui-states-retry/' | relative_url }}) | `master` | `codex/ui-states-retry` | טעינה, ריק, שגיאה, הצלחה, לחיצה כפולה ושחזור |
 | [04 — מי מחזיק את מצב המסך?]({{ '/android/topics/04-viewmodel-repository/' | relative_url }}) | `codex/ui-states-retry` | `codex/viewmodel-repository` | ViewModel,‏ Repository,‏ LiveData וסיבוב בזמן טעינה |
