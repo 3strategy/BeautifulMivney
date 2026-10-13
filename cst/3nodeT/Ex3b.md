@@ -1,4 +1,3 @@
-
 ---
 layout: page
 title: "ex3b1 שרשרת חוליות"

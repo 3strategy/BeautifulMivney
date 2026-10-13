@@ -19,6 +19,6 @@ lang: he
 
 [⬅ עברו לתרגול Ex3a4 - שרשרת חוליות \<Node\<T](/cst/3nodeT/Ex3a4node)
 
-[⬅ עברו לתרגול Ex3b - שרשרת חוליות Node\<T\>](/cst/3nodeT/Ex3b)
+[⬅ עברו לתרגול Ex3b - שרשרת חוליות Node\<T\>](/cst/3nodeT/Ex3b/)
 
 

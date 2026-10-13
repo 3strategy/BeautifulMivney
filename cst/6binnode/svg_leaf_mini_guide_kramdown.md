@@ -149,7 +149,7 @@ We then draw **cubic curves** around the outline:
 
 Finally, `Z` **closes** the shape.
 
-<img src="simple_leaf_svg.svg" class="leaf-bullet" alt="">Tip: The left side and right side are roughly **mirror images** across x=20. That's why the leaf looks balanced.
+<img src="/cst/6binnode/simple_leaf_svg.svg" class="leaf-bullet" alt="">Tip: The left side and right side are roughly **mirror images** across x=20. That's why the leaf looks balanced.
 
 ---
 
@@ -183,7 +183,7 @@ Finally, `Z` **closes** the shape.
 </svg>
 ```
 
-<img src="simple_leaf_svg.svg" class="leaf-bullet" alt="">`gradientUnits="userSpaceOnUse"` lets you specify gradient points **in the same 0–40 coords** as the drawing.
+<img src="/cst/6binnode/simple_leaf_svg.svg" class="leaf-bullet" alt="">`gradientUnits="userSpaceOnUse"` lets you specify gradient points **in the same 0–40 coords** as the drawing.
 
 ---
 
@@ -194,7 +194,7 @@ Finally, `Z` **closes** the shape.
 3. **Shorten the stem:** change `V1.8` to `V1.0`.
 4. **Change color:** replace `fill="#8fd08a"` with your favorite hex.
 
-<img src="simple_leaf_half.svg" class="leaf-bullet" alt="">Extra: Add little side veins by drawing short `C` curves starting from the midrib (`M20 10 ...`, `M20 16 ...`).
+<img src="/cst/6binnode/simple_leaf_half.svg" class="leaf-bullet" alt="">Extra: Add little side veins by drawing short `C` curves starting from the midrib (`M20 10 ...`, `M20 16 ...`).
 
 ---
 
@@ -204,4 +204,4 @@ Finally, `Z` **closes** the shape.
 - **M** = Move, **L** = Line, **H/V** = Horizontal/Vertical line, **C** = Cubic curve, **Z** = Close path
 - Axes: **x→ right**, **y→ down**
 - Keep numbers small: our whole world is **0..40**
-- Happy drawing! <img src="simple_leaf_half.svg" class="leaf-bullet" alt="">
+- Happy drawing! <img src="/cst/6binnode/simple_leaf_half.svg" class="leaf-bullet" alt="">
