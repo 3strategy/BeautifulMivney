@@ -125,6 +125,7 @@ full-width: true
 | פירמוט קוד וקיצור מקשים ב־IDE | משלים | [012 — הגדרת Ctrl+K,D לפירמוט](/android/projectSteps/012androidCodeFormatting) |
 | שינוי שם פרויקט, package,‏ namespace ו־application ID | שיעור מעשי | [191 — שינוי שם לפרויקט קיים](/android/projectSteps/191renameProject) |
 | Git, ענפים, Pull Request וסקירת קוד | שיעור מעשי | [202 — Pull Requests ב־Android Studio ובכלים נוספים](/android/projectSteps/202GitPullRequests) |
+| שם פרויקט מדויק, הפעלת Git,‏ Commit ראשון ושמירה ב־GitHub לפני שינוי הקוד | שיעור מעשי ממוקד | [CollectCircles 01 — Git ממצב ההתחלה](/android/CollectCircles/01.collect-circles-drawing#git-start)<br>[Hex 01 — לפני View Binding](/android/hex5/01-board/#git-start)<br>[TicTacMenu 011 — לפני הוספת Activities](/android/projectSteps/011addingActivities#git-start) |
 | תכנון ותיעוד פרויקט לקראת הצגה | משלים | [שאלות שבוחן עשוי לשאול](/android/exam-prep/questions_tester_may_ask)<br>[האקתון פיתוח מונחה־AI](/android/unsorted/habagrut) |
 
 ## Activities,‏ Intents וניווט

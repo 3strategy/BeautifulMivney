@@ -26,7 +26,9 @@ Hex הוא משחק חיבור: אדום רוצה מסלול משושים מהש
 
 ## נקודת ההתחלה
 
-התחילו בפרויקט **Empty Views Activity** ב־Java, חבילה `com.example.hex` ו־API 31. השתמשו בפריסת XML וב־`MainActivity` שנוצרה בתבנית; אין ליצור Activity חדש. תחילה הפעילו View Binding והמירו את `MainActivity` לפי הסעיף הבא. לאחר מכן המשיכו לבנות את המשחק.
+התחילו בפרויקט בשם **`hex`** (באותיות קטנות), בתבנית **Empty Views Activity** ב־Java, חבילה `com.example.hex` ו־API 31. השתמשו בפריסת XML וב־`MainActivity` שנוצרה בתבנית; אין ליצור Activity חדש. תחילה שמרו את מצב הפתיחה ב־Git לפי השלבים הבאים, ורק אחר כך הפעילו View Binding והמירו את `MainActivity`. לאחר מכן המשיכו לבנות את המשחק.
+
+{% include android/project-start.md project_name="hex" namespace="com.example.hex" next_change="המעבר ל־View Binding" next_commit="Enable View Binding" %}
 
 {% include android/view-binding.md namespace="com.example.hex" %}
 

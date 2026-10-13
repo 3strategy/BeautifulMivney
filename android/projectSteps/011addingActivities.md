@@ -7,8 +7,12 @@ lang: en
 ---
 
 
-ההנחיות כאן מתאימות גם לפרוייקט חדש
 {: .box-note}
+במסלול זה עובדים בפרויקט **`TicTacMenu`**. ההנחיות כאן מתאימות גם לפרויקט חדש:
+אם טרם יצרתם אותו, בחרו **Empty Views Activity** בשפת **Java**, בשם `TicTacMenu`
+ובחבילה `com.example.tictacmenu`. לפני שמוסיפים Activities, שמרו את מצב הפתיחה לפי השלבים הבאים.
+
+{% include android/project-start.md project_name="TicTacMenu" namespace="com.example.tictacmenu" next_change="הוספת Activities" %}
 
 <details markdown="1"><summary>לפני שמתחילים: מהו Activity?</summary>
 
