@@ -52,7 +52,7 @@ full-width: true
 
 ### CollectCircles — ציור, משחק, שמירה ועבודה ברקע
 
-[מפת מסלול CollectCircles]({{ '/android/CollectCircles/' | relative_url }}) מציגה את התחנות ואת מפות ההמשך.
+[מפת מסלול CollectCircles]({{ '/android/CollectCircles/' | relative_url }}) מציגה את התחנות ואת מפות ההמשך. המסלול זמין גם ב־[English edition]({{ '/android/CollectCircles/en/' | relative_url }}), עם אותם פרקים וקוד.
 
 ארבעת הפרקים הראשונים בונים משחק קצר ובוחנים את התכנון שלו:
 

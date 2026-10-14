@@ -8,6 +8,8 @@ full-width: true
 tags: [Android, Java, CollectCircles, roadmap]
 ---
 
+[English version]({{ '/android/CollectCircles/en/' | relative_url }})
+
 בונים משחק עיגולים ב־Java וב־XML. מתחילים מ־Empty Views Activity עם View Binding, ומתקדמים בכל פרק מהיישום שעבד בסוף הפרק הקודם. [01 — פרק הפתיחה]({{ '/android/CollectCircles/01.collect-circles-drawing' | relative_url }}) מפרט את הגדרות הפרויקט החשובות לפני שמתחילים.
 
 | שיעור או מפת המשך | מה לומדים |

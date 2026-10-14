@@ -232,6 +232,7 @@ navbar-links:
   מסלולי פרויקט:
     - TicTacMenu — מסכים עד משחק רשת: "/android/projectSteps/"
     - CollectCircles — ציור ועבודה ברקע: "/android/CollectCircles/"
+    - CollectCircles — English: "/android/CollectCircles/en/"
     - Requery — מסד נתונים מקומי: "/android/sqlite/"
     - Hex — משחק אופליין מול מחשב: "/android/hex5/"
     - Connect4 — ממשחק מקומי לרשת: "/android/Connect4/"

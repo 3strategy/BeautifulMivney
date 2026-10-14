@@ -92,6 +92,16 @@ class CodeDiffTest
   def test_invalid_input_is_reported
     assert_raises(ArgumentError) { TutorialCodeDiff.parse("@@ -1,2 +1,2 @@") }
   end
+
+  def test_english_page_labels_and_accessible_names
+    template = Liquid::Template.parse("{% code_diff %}\n-old();\n+new();\n{% endcode_diff %}")
+    output = template.render!("page" => { "lang" => "en" })
+    assert_includes output, '<h4 dir="ltr">Before</h4>'
+    assert_includes output, 'aria-label="After code"'
+    refute_includes output, "לפני"
+    assert_operator output.index("Before"), :<, output.index("After")
+    assert_includes output, '<div class="code-diff" dir="rtl">'
+  end
 end
 
 checks = CodeDiffTest.new

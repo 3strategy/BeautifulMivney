@@ -6,6 +6,8 @@ tags: [Codex, Plan, Goal]
 lang: en
 ---
 
+[English version]({{ '/android/CollectCircles/en/10-18ThePlanBehind' | relative_url }})
+
 <style>
 main {
   direction: ltr !important;
