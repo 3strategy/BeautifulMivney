@@ -1,0 +1,29 @@
+/* Navigation keeps the site's Hebrew direction; translated reading stays LTR. */
+html[lang="en"] main,
+html[lang="ru"] main {
+  direction: ltr !important;
+  text-align: left !important;
+}
+
+.lesson-language-preference:not([hidden]) {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .4rem .7rem;
+  font-size: .85rem;
+}
+
+.lesson-language-preference label { margin: 0; white-space: nowrap; }
+.lesson-language-preference select {
+  color: var(--navbar-text-col);
+  background: var(--navbar-col);
+  border: 1px solid var(--navbar-border-col);
+  border-radius: .25rem;
+  padding: .2em;
+  max-width: 8rem;
+}
+
+.lesson-language-versions { margin-block-end: 1.2rem; font-size: .9rem; }
+.lesson-language-versions nav { display: flex; flex-wrap: wrap; gap: 1rem; }
+.lesson-language-versions [aria-current="page"] { font-weight: bold; }
+.lesson-language-versions p { margin-block: .5em; }

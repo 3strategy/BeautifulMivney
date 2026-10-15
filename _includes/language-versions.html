@@ -1,0 +1,10 @@
+{% if page.translation_versions %}
+<div class="lesson-language-versions" dir="auto">
+  <nav aria-label="{% case page.lang %}{% when 'ru' %}Переводы урока{% when 'en' %}Lesson translations{% else %}תרגומי השיעור{% endcase %}">
+    {% for version in page.translation_versions %}
+    <a href="{{ version[1] | relative_url }}?lang={{ version[0] | escape }}" lang="{{ version[0] | escape }}" hreflang="{{ version[0] | escape }}"{% if page.url == version[1] %} aria-current="page"{% endif %}>{% case version[0] %}{% when 'he' %}עברית{% when 'en' %}English{% when 'ru' %}Русский{% else %}{{ version[0] }}{% endcase %}</a>
+    {% endfor %}
+  </nav>
+  <p id="lesson-language-fallback" role="status" hidden></p>
+</div>
+{% endif %}

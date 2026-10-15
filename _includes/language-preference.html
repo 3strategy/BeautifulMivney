@@ -1,0 +1,8 @@
+<li class="nav-item lesson-language-preference" hidden>
+  <label for="lesson-language-preference" dir="auto">🌐 {% case page.lang %}{% when 'ru' %}Язык{% when 'en' %}Language{% else %}שפה{% endcase %}</label>
+  <select id="lesson-language-preference" dir="ltr" aria-label="{% case page.lang %}{% when 'ru' %}Предпочитаемый язык{% when 'en' %}Preferred language{% else %}שפה מועדפת{% endcase %}">
+    <option value="he" lang="he">עברית</option>
+    <option value="en" lang="en">English</option>
+    <option value="ru" lang="ru">Русский</option>
+  </select>
+</li>
