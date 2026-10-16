@@ -5,7 +5,7 @@
   </button>
 
   {%- if page.title -%}
-    <span class="navbar-page-title" dir="auto" aria-hidden="true">{{ page.title | strip_html | escape }}</span>
+    <span class="navbar-page-title" dir="auto" title="{{ page.title | strip_html | escape }}" aria-hidden="true">{{ page.title | strip_html | escape }}</span>
   {%- endif -%}
 
   {%- if site.title-img -%}
@@ -34,8 +34,15 @@
           {%- endfor -%}
         {%- endcapture -%}
         {%- if top_item.first -%}
-          <li class="nav-item dropdown"{% if top_menu_sets != empty %} data-menu-sets="{{ top_menu_sets | strip }}"{% endif %}>
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-{{ forloop.index }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ top_text }}</a>
+          <li class="nav-item dropdown{% if top_text == 'חיצוני' or top_text == 'הגדרות' %} nav-secondary{% endif %}"{% if top_menu_sets != empty %} data-menu-sets="{{ top_menu_sets | strip }}"{% endif %}>
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-{{ forloop.index }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% if top_text == 'חיצוני' or top_text == 'הגדרות' %} aria-label="{{ top_text }}" title="{{ top_text }}"{% endif %}>
+              {%- if top_text == 'חיצוני' or top_text == 'הגדרות' -%}
+                <span class="nav-secondary-label">{{ top_text }}</span>
+                <span class="nav-secondary-icon" aria-hidden="true"><span class="fa {% if top_text == 'הגדרות' %}fa-cog{% else %}fa-external-link-alt{% endif %}"></span></span>
+              {%- else -%}
+                {{ top_text }}
+              {%- endif -%}
+            </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown-{{ forloop.index }}">
               {%- for childlink in top_item -%}
                 {%- for linkparts in childlink -%}

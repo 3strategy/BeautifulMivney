@@ -275,25 +275,68 @@ body {
 }
 
 /* ================= RTL navbar dropdowns ================ */
-/* Keep the lesson title in the mobile navbar after the reader scrolls down. */
-.navbar-custom .navbar-page-title {
+/* Keep the lesson context visible alongside navigation after scrolling. */
+.navbar-custom .navbar-page-title,
+.navbar-custom .nav-secondary-icon {
     display: none;
 }
 
-@media (max-width: 1199px) {
+.navbar-custom.top-nav-short .navbar-page-title {
+    display: block;
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: 0.5rem;
+    overflow: hidden;
+    color: var(--navbar-text-col);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (min-width: 1200px) {
     .navbar-custom.top-nav-short .navbar-page-title {
-        display: block;
-        flex: 1 1 0;
+        flex: 1 1 16rem;
+    }
+
+    .navbar-custom.top-nav-short .navbar-collapse {
+        flex: 0 1 auto;
         min-width: 0;
-        padding-inline: 0.5rem;
-        overflow: hidden;
-        color: var(--navbar-text-col);
-        font-size: 0.875rem;
-        font-weight: 600;
-        line-height: 1.3;
-        text-align: start;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    }
+
+    .navbar-custom.top-nav-short .navbar-nav {
+        align-items: center;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .navbar-custom.top-nav-short .navbar-nav > .nav-item {
+        min-width: 0;
+    }
+
+    .navbar-custom.top-nav-short .navbar-nav .nav-link {
+        padding-inline: 0.6rem;
+    }
+
+    /* These shared controls sit at the left edge; open panels into the viewport. */
+    .navbar-custom .nav-secondary > .dropdown-menu {
+        left: 0;
+        right: auto;
+    }
+
+    .navbar-custom .nav-secondary .dropdown-submenu > .dropdown-menu {
+        left: 100%;
+        right: auto;
+    }
+
+    .navbar-custom.top-nav-short .nav-secondary-label {
+        display: none;
+    }
+
+    .navbar-custom.top-nav-short .nav-secondary-icon {
+        display: inline;
     }
 }
 
