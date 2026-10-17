@@ -1,4 +1,5 @@
 ---
+menu_set: modelim
 layout: page
 title: "01 — מילים ושפות"
 subtitle: "מקריאת הגדרה מתמטית לבדיקת דוגמאות"

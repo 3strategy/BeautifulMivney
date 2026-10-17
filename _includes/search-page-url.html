@@ -1,0 +1,7 @@
+{%- assign search_url = include.item.url | relative_url -%}
+{%- assign page_menu_set = include.item.menu_set -%}
+{%- if page_menu_set and site.navbar-menu-sets[page_menu_set] -%}
+  {%- assign encoded_menu_set = page_menu_set | url_encode -%}
+  {%- assign search_url = search_url | append: '?menu=' | append: encoded_menu_set -%}
+{%- endif -%}
+{{- search_url | jsonify -}}

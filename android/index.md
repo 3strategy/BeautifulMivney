@@ -1,4 +1,5 @@
 ---
+menu_set: android
 layout: page
 title: "לומדים Android"
 subtitle: "בחרו מסלול פרויקט או מעבדה ממוקדת"

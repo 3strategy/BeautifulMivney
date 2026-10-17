@@ -1,4 +1,5 @@
 ---
+menu_set: data-structures
 layout: page 
 title: "פרק 1 – רקורסיה"
 subtitle: "היכרות עם חשיבה רקורסיבית ומקרים בסיסיים"

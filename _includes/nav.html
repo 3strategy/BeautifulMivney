@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}" data-default-menu-set="{{ site.navbar-default-menu-set | default: 'data-structures' }}">
+<nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}" data-page-menu-set="{{ page.menu_set | escape }}" data-default-menu-set="{{ site.navbar-default-menu-set | default: 'data-structures' }}">
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>

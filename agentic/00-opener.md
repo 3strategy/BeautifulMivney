@@ -1,4 +1,5 @@
 ---
+menu_set: agentic
 layout: page
 title: "Agentic Engineering - פתיחה"
 subtitle: "חשיפה 27.6 לקראת סדנה"

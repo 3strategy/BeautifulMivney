@@ -42,3 +42,13 @@ test.describe('search corpus menu links', () => {
     }));
   });
 });
+
+test('the Android topic map search result selects the Android menu', () => {
+  const corpus = loadSearchCorpus();
+  const results = corpus.filter(item => item.title === 'מפת נושאים באנדרואיד');
+  expect(results).toHaveLength(1);
+  expect(results[0].url).toBe('/android/topics-index/?menu=android');
+  expect(corpus).toContainEqual(expect.objectContaining({
+    url: '/agentic/02-git-github/',
+  }));
+});

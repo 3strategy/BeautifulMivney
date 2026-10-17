@@ -142,3 +142,76 @@ test('configured empty menus remain selectable on sites that support them', asyn
   }, alternateMenu);
   await expectMenu(page, alternateMenu);
 });
+
+test('opening the Android topic map search result switches an existing menu', async ({ page, context }) => {
+  const corpus = JSON.parse(fs.readFileSync(path.join(site, 'assets/data/searchcorpus.json'), 'utf8'));
+  const result = corpus.find(item => item.title === 'מפת נושאים באנדרואיד');
+  await saveMenu(context, 'agentic');
+  // Follow the exact generated result URL, as the search widget does.
+  await page.goto(base + result.url);
+  await expectMenu(page, 'android');
+  await expect(page.locator('h1').first()).toContainText('מפת נושאים באנדרואיד');
+});
+
+function taggedPage() {
+  return defaultMenu === 'data-structures'
+    ? { path: '/android/topics-index/', menu: 'android' }
+    : { path: '/taba/00-student-roadmap/', menu: 'taba' };
+}
+
+test('a bare direct URL selects the page tag over a saved menu', async ({ page, context }) => {
+  const tagged = taggedPage();
+  await saveMenu(context, defaultMenu);
+  await page.goto(`${base}${tagged.path}?exercise=3#question`);
+  await expectMenu(page, tagged.menu);
+  expect((await context.cookies()).find(cookie => cookie.name === 'menu-set').value).toBe(tagged.menu);
+  const url = new URL(page.url());
+  expect(url.searchParams.get('exercise')).toBe('3');
+  expect(url.hash).toBe('#question');
+});
+
+test('an unchanged navbar link selects the destination page menu', async ({ page }) => {
+  const tagged = taggedPage();
+  await page.goto(base);
+  await expectMenu(page, defaultMenu);
+  const link = page.locator(`.navbar a[href^="${tagged.path.replace(/\/$/, '')}"]`).first();
+  const href = await link.getAttribute('href');
+  expect(href).not.toContain('?');
+  await Promise.all([
+    page.waitForURL(url => url.pathname.replace(/\/$/, '') === tagged.path.replace(/\/$/, '')),
+    link.evaluate(element => element.click())
+  ]);
+  await page.waitForLoadState('load');
+  await expectMenu(page, tagged.menu);
+});
+
+test('a page tag overrides a conflicting URL but permits a manual change until reload', async ({ page }) => {
+  const tagged = taggedPage();
+  await page.goto(`${base}${tagged.path}?menu=${defaultMenu}`);
+  await expectMenu(page, tagged.menu);
+  await page.locator(`a[href="javascript:setMenuSet('${defaultMenu}');"]`)
+    .evaluate(element => element.click());
+  await expectMenu(page, defaultMenu);
+  await page.reload();
+  await expectMenu(page, tagged.menu);
+});
+
+test('search results include the page tag in their URLs', async ({ page }) => {
+  const tagged = taggedPage();
+  const corpus = JSON.parse(fs.readFileSync(path.join(site, 'assets/data/searchcorpus.json'), 'utf8'));
+  const result = corpus.find(item => item.url === `${tagged.path}?menu=${tagged.menu}`);
+  expect(result).toBeTruthy();
+  await page.goto(base + result.url);
+  await expectMenu(page, tagged.menu);
+});
+
+test('an invalid page tag falls back to a valid incoming URL', async ({ page }) => {
+  const tagged = taggedPage();
+  await page.route(`${base}${tagged.path}?menu=${defaultMenu}`, async route => {
+    const response = await route.fetch();
+    const body = (await response.text()).replace(/data-page-menu-set="[^"]*"/, 'data-page-menu-set="unknown"');
+    await route.fulfill({ response, body });
+  });
+  await page.goto(`${base}${tagged.path}?menu=${defaultMenu}`);
+  await expectMenu(page, defaultMenu);
+});

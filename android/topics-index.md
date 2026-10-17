@@ -5,6 +5,7 @@ subtitle: "איפה לומדים כל נושא ובאיזה עומק"
 tags: [Android, Java, index, roadmap]
 lang: he
 full-width: true
+menu_set: android
 ---
 
 {: .box-note}

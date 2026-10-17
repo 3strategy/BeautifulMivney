@@ -88,9 +88,10 @@ function setMenuSet(menuSet) {
 function restoreMenuSet() {
   if (!navbar) return;
   const requestedMenuSet = new URL(window.location.href).searchParams.get(MENU_SET_PARAM);
-  // Invalid or empty URL values must not erase a saved choice.
-  const menuSet = getAvailableMenuSets().includes(requestedMenuSet)
-    ? requestedMenuSet : getCookie(MENU_SET_COOKIE) || DEFAULT_MENU_SET;
+  const availableMenuSets = getAvailableMenuSets();
+  // A tagged page selects its own menu on every arrival, regardless of entry URL.
+  const menuSet = [navbar.dataset.pageMenuSet, requestedMenuSet, getCookie(MENU_SET_COOKIE)]
+    .find(candidate => availableMenuSets.includes(candidate)) || DEFAULT_MENU_SET;
   setMenuSet(menuSet);
 }
 

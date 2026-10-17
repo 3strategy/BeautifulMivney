@@ -1,4 +1,5 @@
 ---
+menu_set: oop
 layout: page
 title: "הורשה - שיעור פתיחה"
 subtitle: "היכרות ראשונית עם הורשה ומבני מחלקות"

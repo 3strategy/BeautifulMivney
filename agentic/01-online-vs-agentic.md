@@ -1,4 +1,5 @@
 ---
+menu_set: agentic
 layout: page
 title: "מצ'אט לעבודה על קוד אמיתי"
 subtitle: "מה ההבדל בין לשאול AI לבין לעבוד עם Codex או Claude Code בתוך codebase"

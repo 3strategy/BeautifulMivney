@@ -1,4 +1,5 @@
 ---
+menu_set: android
 layout: page
 title: "נושאי Android — מעבדות קצרות לפי פערי הלימוד"
 subtitle: "מעבדות קצרות עם בסיס קוד ודיפ ברור לכל נושא"

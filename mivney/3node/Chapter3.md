@@ -1,4 +1,5 @@
 ---
+menu_set: data-structures
 layout: page
 title: "פרק 3 – מחלקת Node⟨T⟩ – רשימות מקושרות"
 subtitle: "משרשרת חרוזים לחוליות כלליות וג'נריקס"
