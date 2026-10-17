@@ -109,9 +109,11 @@ module TutorialCodeDiff
 
   def render(source, language = "he")
     aligned = rows(*parse(source))
-    english = language.to_s.start_with?("en")
-    labels = english ? ["Before", "After"] : ["לפני", "אחרי"]
-    label_direction = english ? "ltr" : "rtl"
+    labels, code_labels, direction = case language.to_s.split("-").first
+                                    when "en" then [["Before", "After"], ["Before code", "After code"], "ltr"]
+                                    when "ru" then [["До", "После"], ["Код до изменения", "Код после изменения"], "ltr"]
+                                    else [["לפני", "אחרי"], ["קוד לפני", "קוד אחרי"], "rtl"]
+                                    end
     panels = labels.each_with_index.map do |label, side|
       line_number = 0
       lines = aligned.map do |row|
@@ -124,8 +126,7 @@ module TutorialCodeDiff
         changed = same.include?(false) ? " code-diff-changed" : ""
         %(<span class="code-diff-line#{changed}" data-line="#{line_number}">#{inline(parts, same, side.zero? ? "del" : "ins")}</span>)
       end.join("\n")
-      code_label = english ? "#{label} code" : "קוד #{label}"
-      %(<section class="column code-diff-panel" aria-label="#{label}"><h4 dir="#{label_direction}">#{label}</h4><pre tabindex="0" aria-label="#{code_label}" dir="ltr"><code>#{lines}</code></pre></section>)
+      %(<section class="column code-diff-panel" aria-label="#{label}"><h4 dir="#{direction}">#{label}</h4><pre tabindex="0" aria-label="#{code_labels[side]}" dir="ltr"><code>#{lines}</code></pre></section>)
     end.join
     %(<div class="code-diff" dir="rtl"><div class="two-columns before-after">#{panels}</div></div>)
   end
@@ -133,7 +134,7 @@ module TutorialCodeDiff
   class Block < Liquid::Block
     def render(context)
       page = context["page"] || {}
-      TutorialCodeDiff.render(super, page["language"] || page["lang"] || "he")
+      TutorialCodeDiff.render(super, page["lang"] || page["language"] || "he")
     end
   end
 end

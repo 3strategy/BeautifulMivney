@@ -44,12 +44,17 @@ function toggleSize() {
 }
 
 const MENU_SET_COOKIE = "menu-set";
+const MENU_SET_PARAM = "menu";
 const navbar = document.querySelector(".navbar");
 const DEFAULT_MENU_SET = navbar ? navbar.dataset.defaultMenuSet : "data-structures";
 
-function applyMenuSet(menuSet) {
-  const availableMenuSets = Array.from(document.querySelectorAll("[data-menu-sets]"))
+function getAvailableMenuSets() {
+  return Array.from(document.querySelectorAll("[data-menu-sets]"))
     .flatMap((item) => item.dataset.menuSets.split(/\s+/));
+}
+
+function applyMenuSet(menuSet) {
+  const availableMenuSets = getAvailableMenuSets();
   const selectedMenuSet = availableMenuSets.includes(menuSet) ? menuSet : DEFAULT_MENU_SET;
 
   document.querySelectorAll("[data-menu-sets]").forEach((item) => {
@@ -69,11 +74,32 @@ function applyMenuSet(menuSet) {
 function setMenuSet(menuSet) {
   const selectedMenuSet = applyMenuSet(menuSet);
   setCookie(MENU_SET_COOKIE, selectedMenuSet, 365);
+
+  // Keep the address shareable without reloading or adding a history entry.
+  const url = new URL(window.location.href);
+  url.searchParams.set(MENU_SET_PARAM, selectedMenuSet);
+  if (url.href !== window.location.href) {
+    try {
+      window.history.replaceState(window.history.state, "", url.href);
+    } catch (_) { /* Menu selection still works in restricted embeds. */ }
+  }
 }
+
+function restoreMenuSet() {
+  if (!navbar) return;
+  const requestedMenuSet = new URL(window.location.href).searchParams.get(MENU_SET_PARAM);
+  // Invalid or empty URL values must not erase a saved choice.
+  const menuSet = getAvailableMenuSets().includes(requestedMenuSet)
+    ? requestedMenuSet : getCookie(MENU_SET_COOKIE) || DEFAULT_MENU_SET;
+  setMenuSet(menuSet);
+}
+
+// Back/forward navigation can restore a URL carrying a different menu.
+window.addEventListener('popstate', restoreMenuSet);
 
 // Convert fenced ```mermaid code blocks to <div class="mermaid"> before Mermaid runs
 document.addEventListener('DOMContentLoaded', function () {
-  applyMenuSet(getCookie(MENU_SET_COOKIE) || DEFAULT_MENU_SET);
+  restoreMenuSet();
 
   try {
     const codeBlocks = document.querySelectorAll('pre > code[class*="language-mermaid"]');

@@ -93,6 +93,20 @@ class CodeDiffTest
     assert_raises(ArgumentError) { TutorialCodeDiff.parse("@@ -1,2 +1,2 @@") }
   end
 
+  def test_labels_follow_page_language_without_changing_code
+    source = "-read(oldValue);\n+read(newValue);"
+    template = "{% code_diff %}\n#{source}\n{% endcode_diff %}"
+    %w[en ru].each do |language|
+      output = Liquid::Template.parse(template).render!("page" => { "lang" => language })
+      before, after = language == "en" ? %w[Before After] : %w[До После]
+      assert_includes output, %(<h4 dir="ltr">#{before}</h4>)
+      assert_includes output, %(<h4 dir="ltr">#{after}</h4>)
+      assert_operator output.index(before), :<, output.index(after)
+      assert_equal TutorialCodeDiff.render(source).scan(/<code>(.*?)<\/code>/m),
+                   output.scan(/<code>(.*?)<\/code>/m)
+    end
+  end
+
   def test_english_page_labels_and_accessible_names
     template = Liquid::Template.parse("{% code_diff %}\n-old();\n+new();\n{% endcode_diff %}")
     output = template.render!("page" => { "lang" => "en" })
@@ -101,6 +115,8 @@ class CodeDiffTest
     refute_includes output, "לפני"
     assert_operator output.index("Before"), :<, output.index("After")
     assert_includes output, '<div class="code-diff" dir="rtl">'
+    assert_includes TutorialCodeDiff.render("-old();\n+new();", "en-US"), 'aria-label="After code"'
+    assert_includes TutorialCodeDiff.render("-old();\n+new();", "ru-RU"), 'aria-label="Код после изменения"'
   end
 end
 
