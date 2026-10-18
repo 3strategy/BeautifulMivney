@@ -3,7 +3,7 @@ layout: page
 title: "הוספת Activities לתפריט"
 subtitle: "הוספת Activities לתפריט ה- ⋮"
 tags: [אנדרואיד, Menu, dots Menu, Updating Menu, Activity, Activities]
-lang: en
+lang: he
 ---
 
 {: .box-note}

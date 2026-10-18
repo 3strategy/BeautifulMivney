@@ -3,7 +3,7 @@ layout: page
 title: "הוספת Activities"
 subtitle: "הוספת מסכים (Activities) לפרוייקט"
 tags: [אנדרואיד, Activity, Adding Activities]
-lang: en
+lang: he
 ---
 
 
@@ -30,7 +30,8 @@ lang: en
 
 
 
-## הוסף את ה-Activities שתכננת כ- Empty Views Activities.
+## הוסף את ה-Activities שתכננת כ- Empty Views Activities
+
 1. משתמשים בתפריט הבא:
     ![adding Empty Views Activity](/assets/img/011/image.png)
     -  **אם הנכם בוחרים מהגלריה, זה נראה כך:**

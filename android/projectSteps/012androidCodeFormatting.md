@@ -3,7 +3,7 @@ layout: page
 title: "Ctrl K D formatting"
 subtitle: "קינפוג ה-IDE לפירמוט קוד"
 tags: [אנדרואיד, Formatting, Ctrl K D]
-lang: en
+lang: he
 ---
 
 [חזרה ל־011: הוספת Activities](/android/projectSteps/011addingActivities)
