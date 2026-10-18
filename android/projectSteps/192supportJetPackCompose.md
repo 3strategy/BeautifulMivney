@@ -3,7 +3,7 @@ layout: page
 title: "תמיכה ב‑Jetpack Compose"
 subtitle: "תמיכה ב‑Jetpack Compose בפרויקט"
 tags: [אנדרואיד, Kotlin, Jetpack Compose]
-lang: en
+lang: he
 ---
 
 

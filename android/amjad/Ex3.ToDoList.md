@@ -3,7 +3,7 @@ layout: page
 title: "עבודה עם SQLite"
 subtitle: "הוספת בסיס נתונים לפרוייקט"
 tags: [אנדרואיד, דאטאבייס, בסיס נתונים, SQLite, Database]
-lang: en
+lang: he
 ---
 
 {: .box-note}

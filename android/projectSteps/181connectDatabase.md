@@ -3,7 +3,7 @@ layout: page
 title: "התחברות לדאטאבייס"
 subtitle: "התחברות ל-Google Firebase מודגמת על פרוייטק שהיה מחובר בעבר ועובד לבסיס נתונים חדש"
 tags: [אנדרואיד, Firebase, RealTime Database, החלפת דאטאבייס, Authentication, סרטון]
-lang: en
+lang: he
 ---
 
 

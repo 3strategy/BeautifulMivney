@@ -3,7 +3,7 @@ layout: page
 title: "אינדקס לחומרי AppSchool"
 subtitle: "לא ניתן לשמור קישורים ישירים למקומות באתר"
 tags: [אסף]
-lang: en
+lang: he
 ---
 
 {: .box-note}

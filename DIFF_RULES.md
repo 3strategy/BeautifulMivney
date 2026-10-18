@@ -3,7 +3,7 @@ layout: page
 title: "Diff Document Rules (Kramdown)"
 subtitle: "General prompt for commit-based tutorials"
 tags: [Diff, Git, Kramdown, Tutorial, Markdown]
-lang: he
+lang: en
 ---
 
 ## Quick usage

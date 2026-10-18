@@ -4,6 +4,7 @@ title: Flake it till you make it
 subtitle: Excerpt from Soulshaping by Jeff Brown
 tags: [books, test]
 author: Sharon Smith and Barry Simpson
+lang: en
 ---
 
 <style>

@@ -4,6 +4,7 @@ title: "Teaching Students to Learn with AI Without Becoming Dependent on It"
 subtitle: "What Aviation's Autopilot Problem Can Teach Us About AI, Skill Atrophy, and Human Learning"
 tags: [AI, Education, Learning, Teaching, Automation, Human-Factors, Codex, Cursor, Claude-Code, Skill-Development]
 author: https://habr.com/ru/users/python_leader/
+lang: en
 ---
 
 <style>
