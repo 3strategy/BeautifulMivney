@@ -147,11 +147,11 @@ menu_set: android
 
 | נושא | עומק | איפה לומדים |
 |---:|---:|---:|
-| מחזור החיים של `Activity` | שיעור מעשי | [01 — מעבדת שחזור: סיבוב, Bundle ושמירה מתמשכת](/android/topics/01-lifecycle-state/)<br>[03 — עצירת עדכוני זמן ב־`onStop`](/android/CollectCircles/03.collect-circles-finish)<br>[13 — חישוב התקדמות ב־`onStart` וב־`onStop`](/android/CollectCircles/13.collect-circles-offline-progress)<br>**משלים:** [מצגת מחזור החיים](/android/zeev/meetings#id-meeting-6-activity-lifecycle) |
+| מחזור החיים של `Activity` | שיעור מעשי | [01 — מעבדת שחזור: סיבוב, Bundle ושמירה מתמשכת](/android/topics/01-lifecycle-state/)<br>[הרחבה — הטריגר והתפקיד של כל callback ורצפי חזרה](/android/topics/01-lifecycle-state/#lifecycle-callbacks)<br>[03 — עצירת עדכוני זמן ב־`onStop`](/android/CollectCircles/03.collect-circles-finish)<br>[13 — חישוב התקדמות ב־`onStart` וב־`onStop`](/android/CollectCircles/13.collect-circles-offline-progress)<br>**משלים:** [מצגת מחזור החיים](/android/zeev/meetings#id-meeting-6-activity-lifecycle) |
 | `SharedPreferences` לקריאה וכתיבה | שיעור מעשי | [03 — שמירת שיא](/android/CollectCircles/03.collect-circles-finish)<br>[08 — מצב משחק מתמשך](/android/CollectCircles/08.collect-circles-persistent-economy)<br>[018a — שמירת בחירת "הישאר מחובר"](/android/projectSteps/018a.LoginActivityFromGui) |
 | מצב בזיכרון לעומת מצב שנשמר במכשיר | העמקה | [08 — כלכלה מתמשכת ב־CollectCircles](/android/CollectCircles/08.collect-circles-persistent-economy) |
 | שמירת מצב מסך ב־`Bundle` | שיעור מעשי | [01 — שלושה מונים: שדה, Bundle ו־SharedPreferences](/android/topics/01-lifecycle-state/)<br>[Full English tutorial](/android/topics/01-lifecycle-state/en/)<br>[הרחבה — מי קורא לשמירה ואיך ה־Bundle מגיע ל־Activity ול־Fragment](/android/topics/01-lifecycle-state/#saved-state-flow)<br>**משלים:** [מצגת מחזור החיים](/android/zeev/meetings#id-meeting-6-activity-lifecycle) |
-| מחזור חיי View של `Fragment` וניקוי binding | שיעור מעשי | [01 — ניתוק ה־View וחזרה לאותו Fragment](/android/topics/01-lifecycle-state/)<br>[הרחבה — כיצד Back הופך detach ומתי המונה שורד](/android/topics/01-lifecycle-state/#fragment-control) |
+| מחזור חיי View של `Fragment` וניקוי binding | שיעור מעשי | [01 — ניתוק ה־View וחזרה לאותו Fragment](/android/topics/01-lifecycle-state/)<br>[הרחבה — כיצד Back הופך detach ומתי המונה שורד](/android/topics/01-lifecycle-state/#fragment-control)<br>[הרחבה — onAttach עד onDetach ושני מחזורי החיים](/android/topics/01-lifecycle-state/#lifecycle-callbacks) |
 | זמן מונוטוני לעומת שעון קיר | העמקה | [03 — SystemClock למדידת משחק](/android/CollectCircles/03.collect-circles-finish)<br>[13 — בחירת שעון להתקדמות אופליין](/android/CollectCircles/13.collect-circles-offline-progress) |
 | Callback פשוט באמצעות `Runnable` | שיעור מעשי | [03 — הודעה מן ה־View ל־Activity על סיום משחק](/android/CollectCircles/03.collect-circles-finish)<br>[08 — אירוע איסוף עיגול](/android/CollectCircles/08.collect-circles-persistent-economy) |
 
@@ -281,6 +281,7 @@ menu_set: android
 | בדיקת UI על אמולטור ורגרסיה למחזור חיים | שיעור מעשי | [05 — בדיקה שמגלה נסיגה ב־Bundle וב־Fragment](/android/topics/05-android-ui-tests/) |
 | אבחון שיטתי ב־Logcat,‏ debugger ו־Inspectors | שיעור מעשי עם תקלות מכוונות | [06 — מעבדת אבחון Build, קריסה, קיפאון, Layout ורשת](/android/topics/06-systematic-debugging/) |
 | כללי הרשאה בצד השרת ובדיקת משתמש מורשה מול תוקף | שיעור מעשי עם Firebase Emulator | [07 — כללי RTDB לפי בעלות ובדיקות שלושה משתמשים](/android/topics/07-rtdb-security-rules/) |
+| מבוא ל־HTTP ו־JSON: טקסט, מערך אובייקטים וטבלה | שיעור מעשי באנגלית עם Swagger ותרגול Notepad++ | [Petstore — GET, deserialization, שימוש באובייקטים ו־POST](/android/topics/petstore-json/)<br>[תרגיל רשות: JSON ב־preferences](/android/topics/petstore-json/05-preferences/) |
 | HTTP, לקוח API ו־JSON למודל טיפוסי | שיעור מעשי ובדיקות שרת מקומי | [08 — מבקשת GET ל־Todo עם Retrofit](/android/topics/08-http-client/) |
 | עבודה אסינכרונית, תוצאה ישנה וביטול | שיעור מעשי עם בדיקות UI | [09 — תחרות בין שתי בקשות ב־ViewModel](/android/topics/09-async-races/) |
 | bound Service,‏ AlarmManager ו־BroadcastReceiver | שיעור מעשי עם בדיקה במערכת | [14 — שעון שירות ואירוע alarm שנמסר ל־Receiver](/android/topics/14-services-alarms-receivers/) |

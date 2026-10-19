@@ -424,6 +424,8 @@ public final class LifecycleFragment extends Fragment {
 
 המאגר [3strategy/fragments ב־GitHub](https://github.com/3strategy/fragments) מציג מימוש טיפוסי ופשוט של Fragments ב־Java וב־XML:‏ Activity אחד, מיכל תצוגה ושלושה מסכים — Home, Dashboard ו־Notifications — שנבחרים באמצעות סרגל ניווט תחתון. כדאי להשוות אותו למעבדת ה־Lifecycle: כאן מתנסים בהרס וביצירה מחדש של View, ובדוגמה המשלימה מחליפים את ה־Fragment המוצג.
 
+[מפת callbacks מפורטת: מי קורא לכל מתודה ומתי?](#lifecycle-callbacks)
+
 ## הרחבה על שליטה ב־Fragment
 
 <details markdown="1" id="fragment-control">
@@ -640,5 +642,167 @@ public class HomeFragment extends Fragment {
 עסקאות ההחלפה בפרויקט Fragments אינן קוראות ל־`addToBackStack(...)`, ולכן Back אינו מחזיר ללשונית הקודמת. אלה שלושה מסכים מקבילים שהמשתמש בוחר מסרגל הניווט. במעבדת Lifecycle רשמנו בכוונה את `detach(this)` במחסנית, ולכן Back מבטל את הניתוק ויוצר מחדש את ה־View של אותו Fragment מנוהל.
 
 **בדקו את ההבחנה:** במעבדת Lifecycle העלו את המונה, נתקו את התצוגה וחזרו עם Back. בפרויקט Fragments עברו מ־Home ל־Dashboard ולחצו Back. לפני ההפעלה נבאו באיזה ניסוי Back יהפוך את העסקה, והצביעו על הקריאה בקוד שקובעת זאת.
+
+</details>
+
+## הרחבה: מי מפעיל כל callback של מחזור החיים, ומתי?
+
+<details markdown="1" id="lifecycle-callbacks">
+<summary>מפת ה־callbacks: מ־onCreate ו־onAttach ועד onDestroyView ו־onDetach</summary>
+
+### קודם מבדילים בין פעולה, callback ומצב
+
+**callback הוא מתודה שהמערכת קוראת לה כשהרכיב מגיע לנקודה מסוימת במחזור חייו.** אנחנו עושים לה override כדי להגיב. איננו קוראים ל־`onCreate()` כדי לפתוח מסך או ל־`onDestroyView()` כדי להסיר תצוגה: מבקשים פעולה באמצעות ה־API המתאים, ו־Android או `FragmentManager` מנהלים את המעבר וקוראים ל־callbacks.
+
+למשל, בכפתור הניתוק במעבדה יש שרשרת סיבתית:
+
+1. המשתמש לוחץ; מאזין הלחיצה שלנו מופעל.
+2. המאזין מבקש עסקת `detach(this)` ומגיש אותה באמצעות `commit()`.
+3. כשהמנהל מבצע את העסקה, הוא מוריד את מצב ה־Fragment ומסיר את תצוגתו.
+4. במהלך המעבר נקראות `onPause()`,‏ `onStop()` ולבסוף `onDestroyView()`. הקוד שלנו מנקה את ה־binding ב־callback האחרון.
+
+הפעולה היא הבקשה; ה־callback מודיע על שלב בביצועה. `new LifecycleFragment()` לבדו יוצר אובייקט Java, אבל אינו מציג אותו ואינו מפעיל את כל מחזור החיים. גם בנאי אינו `onCreate()`.
+
+**מצב** מתאר היכן הרכיב נמצא עכשיו; **אירוע** מתאר מעבר. ב־AndroidX המצבים המרכזיים הם `INITIALIZED`,‏ `CREATED`,‏ `STARTED`,‏ `RESUMED` ו־`DESTROYED`. אחרי `onPause()` חוזרים ל־`STARTED`; אחרי `onStop()` חוזרים ל־`CREATED`. אין ב־`Lifecycle.State` מצבים בשם `PAUSED` או `STOPPED`. לאירועים יש שמות כמו `ON_PAUSE`; אלה אינם מתודות שקוראים להן בקוד המעבדה. ראו [מצבי Lifecycle](https://developer.android.com/reference/androidx/lifecycle/Lifecycle.State) ו[אירועי Lifecycle](https://developer.android.com/reference/androidx/lifecycle/Lifecycle.Event).
+
+### ה־callbacks של Activity: המסך המארח
+
+הטבלה מתייחסת ל־Activity רגילה עם Views, כמו `MainActivity` במעבדה. אותם שמות מופיעים גם ב־Fragment, אבל כל קריאה שייכת לאובייקט שבו היא מתבצעת. ה־Activity אינו צריך לקרוא ידנית ל־`fragment.onStart()`.
+
+| callback | מה גורם לקריאה ומתי היא מגיעה? | מה עושים בו, ומה לא להסיק ממנו? |
+|:---|---:|---:|
+| `onCreate(savedInstanceState)` | Android מאתחל מופע Activity חדש: בפתיחה ראשונה או ביצירה מחדש, למשל בסיבוב רגיל. | טוענים פריסה ו־binding, מחברים מאזינים ומשחזרים מצב קטן מה־Bundle אם קיים. נקרא פעם לכל מופע, **לא פעם לכל התקנת האפליקציה**. במופע החדש השדות הרגילים מתחילים מחדש. |
+| `onStart()` | ה־Activity נעשה גלוי: אחרי יצירה או בחזרה ממצב עצור. | מתחילים עדכונים שנחוצים כל עוד המסך גלוי. הוא יכול להיות גלוי בלי להיות המסך הפעיל לאינטראקציה. |
+| `onResume()` | ה־Activity נכנס למצב הפעיל לאינטראקציה; גם בחזרה לאחר הפרעה שלא הרסה אותו. | מחדשים פעולה שהוגבלה לזמן הפעיל ונעצרה ב־`onPause()`. לא יוצרים בכל חזרה מאזיני כפתורים נוספים או מאפסים מונים. |
+| `onPause()` | ה־Activity יוצא מ־`RESUMED`, למשל כשמסך אחר מקבל קדימות. | משהים פעולה שצריכה את המצב הפעיל. עדיין ייתכן שהמסך גלוי; זו אינה הוכחה ליציאה מהאפליקציה. שומרים את ה־callback קצר, בלי פעולת קובץ או רשת כבדה. |
+| `onStop()` | ה־Activity כבר אינו גלוי, למשל אחרי מעבר לאפליקציה אחרת שמכסה אותו. | מפסיקים עדכונים שנחוצים רק למסך גלוי ומשחררים משאבים שנפתחו ב־`onStart()`. האובייקט עשוי להישאר בזיכרון; אין כאן איפוס אוטומטי של השדות. |
+| `onRestart()` | Activity שנעצר חוזר לפעילות **באותו מופע**, לפני `onStart()`. | מאפשר תגובה לחזרה ממצב עצור. לא ייקרא במסלול של מופע חדש אחרי סיבוב או הריגת תהליך; שם מתחילים שוב ב־`onCreate()`. |
+| `onDestroy()` | סיום מסודר של מופע, למשל אחרי `finish()` או במהלך יצירה מחדש עקב שינוי תצורה. | משלימים ניקוי משאבים השייכים למופע. הקריאה אינה הוכחה שהמשתמש סיים: בסיבוב ייתכן שמסך חדש עומד להיווצר. בהריגת תהליך אין הבטחה שהמתודה תיקרא. |
+
+זוגות העבודה עוזרים לבחור מקום: משאב שצריך רק בזמן שהמסך גלוי מתאים בדרך כלל ל־`onStart()` / `onStop()`; משאב שצריך רק בזמן הפעיל מתאים ל־`onResume()` / `onPause()`. הבחירה תלויה במשאב ובחוויה הרצויה. אין צורך לממש כל callback רק מפני שהוא קיים. ראו [מחזור חיי Activity](https://developer.android.com/guide/components/activities/activity-lifecycle) ו[תיעוד Activity](https://developer.android.com/reference/android/app/Activity).
+
+#### ומה לגבי שמירה ושחזור?
+
+`onSaveInstanceState(outState)` היא בקשה לתמונת מצב לשחזור; היא אינה שם נוסף ל־`onPause()`, אינה מופעלת בכל לחיצה ואינה הבטחה לכתיבה לפני סגירה. במעבדה מכוונים ל־API 28 ומעלה, ולכן כשמתבצעת שמירת Activity היא באה אחרי `onStop()`. אין להוסיף אותה כרכיב חובה לכל רצף יציאה: בסיום יזום אין לצפות לשמירה לצורך שחזור אותו מסך.
+
+`onRestoreInstanceState(savedInstanceState)` נקראת כאשר יש מצב Activity שמור לשחזר, אחרי `onStart()` ולפני `onResume()`. לעומתה, `onCreate()` נקראת גם כשאין מצב שמור, ולכן שם בודקים `savedInstanceState != null`. במעבדה כבר משחזרים את המונה ב־`onCreate()`; אין צורך לשחזר אותו שוב בשתי המתודות. הקריאות ל־`super` מאפשרות לתשתית לבצע גם את השמירה והשחזור שלה.
+
+הסבר מעבר הערכים בין המופעים נמצא ב[מסלול ה־Bundle](#saved-state-flow). בפרט, **הריגת תהליך אינה מפעילה סבב callbacks אחרון**. שמירת מידע חשוב אינה יכולה להמתין ל־`onDestroy()`.
+
+### ה־callbacks של Fragment: האובייקט והתצוגה אינם אותו הדבר
+
+`FragmentManager` מתאם את מחזור חיי ה־Fragment לפי מצב המארח, עסקאות הניווט ומגבלות נוספות. Fragment אינו יכול להיות במצב גבוה מזה שהמארח מאפשר. לכן גם מעבר של ה־Activity לרקע משפיע על ה־Fragments שלו, אף שלא לחצנו על כפתור בתוך ה־Fragment.
+
+#### 1. חיבור למארח ואתחול האובייקט
+
+**`onAttach(Context context)` — עכשיו יש מארח.** נקראת כשה־Fragment מתחבר למארח שלו, לפני `onCreate()`. זו הזדמנות לקבל תלות שהמארח מספק, למשל ממשק תקשורת ל־Activity. בשלב הזה עדיין אין עץ Views של ה־Fragment; חיבור ל־Activity אינו יצירת התצוגה. בבנאי לא מניחים ש־`requireContext()` כבר זמין.
+
+**`onCreate(savedInstanceState)` — אתחול ה־Fragment עצמו.** נקראת לאחר החיבור, כשהמנהל מביא את המופע למצב `CREATED`. כאן מתאים לאתחל מידע שאינו תלוי ב־Views ולקרוא מצב שמור של ה־Fragment. היא אינה טוענת אוטומטית את ה־binding שלנו. בסיבוב רגיל נוצר Fragment חדש ונקראת שוב המתודה במופע החדש; בניתוק התצוגה וב־Back במעבדה אותו מופע נשאר, ולכן אין `onCreate()` נוספת.
+
+#### 2. יצירת מחזור תצוגה חדש
+
+**`onCreateView(inflater, container, savedInstanceState)` — צריך לבנות עץ Views.** נקראת כשהמנהל צריך את תצוגת ה־Fragment, גם בפעם הראשונה וגם אחרי שתצוגה קודמת נהרסה. במעבדה יוצרים כאן `FragmentLifecycleBinding` ומחזירים את השורש. אובייקט Fragment אחד יכול לעבור כאן כמה פעמים, עם binding חדש בכל פעם. Fragment שמחזיר `null` אינו מקבל מחזור חיי View; המעבדה שלנו מחזירה View.
+
+**`onViewCreated(view, savedInstanceState)` — העץ קיים ואפשר לחבר אליו התנהגות.** נקראת לאחר ש־`onCreateView()` סיפקה View תקף. כאן מחברים מאזיני כפתורים, מתאמים ותצפיות שמעדכנות את התצוגה. במעבדה קוראים כאן גם למצב המונה ול־`renderCount()`. קיום ה־View אינו אומר שכבר הוצג פריים או שמידותיו הסופיות חושבו; חישוב שדורש רוחב וגובה בפועל צריך להמתין לשלב הפריסה.
+
+תצפית `LiveData` שמעדכנת Views קושרים בדרך כלל ל־`getViewLifecycleOwner()`, כדי שתוסר כשהתצוגה הזאת נהרסת. תצפית הקשורה רק ל־Fragment עלולה לחיות מעבר לתצוגה ולהגיע אל binding שכבר נוקה. זהו ההבדל המעשי בין שני בעלי מחזור החיים.
+
+**`onViewStateRestored(savedInstanceState)` — שחזור עץ התצוגה הושלם.** נקראת אחרי `onViewCreated()` ואחרי שהמערכת שחזרה את מצב ה־Views הקודם, אם היה כזה, ולפני `onStart()`. השחזור האוטומטי עשוי לכלול למשל טקסט של `EditText` מזוהה. כשצריך להשלים התאמה שתלויה במצב הזה, זה המקום. המתודה נקראת גם ביצירה בלי מצב קודם, עם `null`; אין פירוש שמה שתמיד היה מה לשחזר.
+
+#### 3. הופעה, פעילות ונסיגה
+
+| callback ב־Fragment | מה גורם לקריאה? | המשמעות במעבדה |
+|---:|---:|---:|
+| `onStart()` | המנהל מעלה את ה־Fragment ל־`STARTED`, בהתאם למארח ולעסקה. | התצוגה קיימת, אם ה־Fragment יצר תצוגה. אפשר לחדש עבודה המיועדת לזמן הצגת המסך. המצב עשוי להיות מוגבל ל־`STARTED`, למשל בעמוד סמוך ב־ViewPager2. |
+| `onResume()` | המנהל מעלה אותו ל־`RESUMED`, כשהוא מוכן לאינטראקציה ולאחר השלמת אפקטי המעבר הרלוונטיים. | אין צורך לבנות binding שוב: הוא נוצר קודם. גם חזרה בלי הרס תצוגה יכולה להביא לקריאה הזאת. |
+| `onPause()` | ה־Fragment יוצא מ־`RESUMED`: בגלל המארח, ניווט או עסקה שמורידה את מצבו. | משהים עבודה המיועדת לזמן הפעיל בלבד. זו עדיין אינה הודעה שה־View נהרס. |
+| `onStop()` | מצבו יורד מ־`STARTED` ל־`CREATED`, למשל כשהמארח נעצר או כשה־Fragment יוצא מהמסך. | עוצרים עבודה המיועדת לזמן הגלוי. עדיין לא מנקים את ה־binding רק בגלל העצירה; הרס התצוגה הוא שלב נפרד. |
+
+ל־Fragment **אין `onRestart()`**. אם הוא חוזר ממצב עצור באותו מחזור תצוגה, המסלול הוא `onStart()` ואז `onResume()`. אם התצוגה נהרסה, תחילה נדרש מחזור יצירת View חדש. ראו [מפת מחזור חיי Fragment](https://developer.android.com/guide/fragments/lifecycle).
+
+#### 4. פירוק: שלוש מתודות שונות
+
+**`onDestroyView()` — הסתיים מחזור התצוגה הנוכחי.** מגיעה כשהמנהל מפרק את עץ התצוגה, לאחר השלמת אפקטי היציאה הרלוונטיים. במעבדה זה קורה בעקבות `detach()`; זה קורה גם בהסרה או בהרס המארח. כאן מנקים binding והפניות אחרות ל־Views של העץ הישן, ומבטלים עבודה שאינה מנוהלת אוטומטית ושעלולה לעדכן אותם. ה־Fragment עצמו עשוי להישאר עם `count` שלו וליצור תצוגה חדשה בהמשך.
+
+**`onDestroy()` — הסתיים מחזור חיי מופע ה־Fragment.** מגיעה בפירוק מסודר של המופע, למשל בהסרה סופית או בהרס המנהל. אין להשאיר ניקוי View עד כאן, כי ייתכן ש־`onDestroyView()` התרחשה הרבה קודם. גם כאן אין הבטחה לקריאה במקרה שהתהליך נהרג; השם אינו הבטחה שה־garbage collector כבר פינה את אובייקט Java.
+
+**`onDetach()` — נותק הקשר למארח.** מגיעה בסוף הניתוק מן המארח, אחרי שלבי מחזור החיים שקדמו לה. כאן משחררים הפניה לממשק של ה־Activity אם שמרנו כזאת ב־`onAttach()`. אין להסתמך עוד על קבלת Activity או Context מן ה־Fragment אחרי הניתוק.
+
+{: .box-warning}
+**`FragmentTransaction.detach(fragment)` ו־`Fragment.onDetach()` אינם זוג של בקשה והודעה.** עסקת `detach` במעבדה משאירה את ה־Fragment מנוהל במצב `CREATED` והורסת את תצוגתו; היא אינה מנתקת אותו מהמארח ואינה קוראת ל־`onDetach()`. היפוכה יוצר View חדש, בלי `onAttach()` או `onCreate()` נוספות באותו מופע. ראו [משמעות attach ו־detach בעסקאות](https://developer.android.com/guide/fragments/transactions#attaching-and-detaching-fragments).
+
+#### 5. שמירה ושמות שאפשר לפגוש בקוד אחר
+
+גם ל־Fragment יש `onSaveInstanceState(outState)`, שהמנהל מפעיל כשנדרש לשמור את מצבו. אין ל־Fragment callback בשם `onRestoreInstanceState()`; המצב מגיע כפרמטר ל־`onCreate()`,‏ `onCreateView()`,‏ `onViewCreated()` ו־`onViewStateRestored()`, לפי השלב. בוחרים את מקום הקריאה לפי סוג המידע, ולא מאפסים אותו בכל שלב. [שמירת מצב Fragment](https://developer.android.com/guide/fragments/saving-state) מפרידה בין שדות, מצב Views ומצב שמור.
+
+בקוד ישן אפשר לפגוש `onActivityCreated()`; הוא מיושן. לא מוסיפים אותו למעבדה: אתחול ה־Fragment שייך ל־`onCreate()`, ואתחול התצוגה ל־`onViewCreated()`. גם `onHiddenChanged()` עשוי להופיע: זו הודעה על שינוי דגל ההסתרה בעקבות `hide()` / `show()`, ולא שלב נוסף במחזור החיים. הפעולות האלה לבדן אינן משנות את מצב מחזור החיים, ולכן Fragment מוסתר אינו בהכרח עצור. ראו [תיעוד callbacks של Fragment](https://developer.android.com/reference/androidx/fragment/app/Fragment).
+
+### מחברים את השמות לפעולות אמיתיות
+
+הרצפים הבאים מתארים את הרכיב המצוין בלבד. אין לערבב אותם לרשימה אחת של Activity ו־Fragment: הקריאות מתואמות ביניהם, ואנימציות עשויות להשפיע על תזמון הפירוק. שלבי שמירה מוצגים בנפרד מפני שאינם חובה בכל מסלול.
+
+#### פתיחת Activity חדשה והפרעה זמנית
+
+```text
+New Activity:
+onCreate -> onStart -> onResume
+
+Temporary interruption, without stopping:
+onPause -> onResume
+
+Home, then return (same Activity instance, not destroyed):
+onPause -> onStop
+onRestart -> onStart -> onResume
+```
+
+**Home אינו בקשה להרוס את המסך.** בחזרה באותו מופע השדות נשארים ואין `onCreate()` חדשה. אם המערכת הרגה בינתיים את התהליך, או שהאפשרות `Don't keep activities` הרסה את ה־Activity, התנאי "אותו מופע" כבר אינו מתקיים; החזרה דורשת יצירה מחדש. **`Don't keep activities` הורסת Activities, אך אינה בהכרח הורגת את תהליך האפליקציה**, ולכן אינה תחליף לניסוי בהריגת תהליך בידי המערכת. חלון שמכסה חלק מהמסך עשוי לגרום רק ל־pause; פתיחת `Dialog` רגיל בתוך ה־Activity אינה מחייבת pause של ה־Activity.
+
+#### יצירת Fragment והניסוי של הרס ה־View
+
+```text
+First Fragment display:
+onAttach -> onCreate
+onCreateView -> onViewCreated -> onViewStateRestored
+onStart -> onResume
+
+Destroy Fragment View (detach transaction):
+onPause -> onStop -> onDestroyView
+
+Back reverses that transaction (same Fragment instance):
+onCreateView -> onViewCreated -> onViewStateRestored
+onStart -> onResume
+
+Final removal of a resumed Fragment with a View:
+onPause -> onStop -> onDestroyView -> onDestroy -> onDetach
+```
+
+במסלול האחרון הכוונה להסרה סופית, ללא שימור ה־Fragment במחסנית החזרה. בהחלפה עם `addToBackStack()`, ה־Fragment הקודם יכול להישאר מנוהל בלי View; Back עשוי להחזיר את תצוגתו. **עצם המילה Back אינה קובעת אם תהיה הריסה או יצירה**: צריך לבדוק איזו פעולה במחסנית היא מבטלת. במעבדה היא מבטלת ניתוק, ובדוגמת הלשוניות אין בכלל עסקאות החלפה במחסנית.
+
+#### סיבוב רגיל לעומת הריגת תהליך
+
+בסיבוב שיוצר מחדש את ה־Activity, הישן עובר pause, עצירה, שמירת מצב והריסה, והחדש מתחיל ב־`onCreate(savedInstanceState)`. גם ה־Fragment הרגיל משוחזר כמופע חדש ומקבל מחזור תצוגה חדש. לכן אין להסיק מהישרדות `count` בניסוי detach שהוא ישרוד בשדה גם בסיבוב: אלה מנגנונים שונים.
+
+בהריגת תהליך בידי המערכת ייתכן שלא נראה `onDestroyView()`,‏ `onDestroy()` או `onDetach()` כלל. בשחזור משימה קיימת נעזרים בתמונה שנשמרה קודם; אין callback שמודיע לשדה הישן "העבר את עצמך עכשיו". Force stop ופתיחה חדשה אינם אותו ניסוי.
+
+### בדקו הבנה לפני שמסתכלים ב־Logcat
+
+לכל תחזית כתבו שלושה דברים: **מה הפעולה, איזה אובייקט נשאר, ואילו Views עדיין תקפים**.
+
+1. העלינו את מונה ה־Fragment ל־3, ניתקנו את תצוגתו וחזרנו עם Back. האם תופיע `onCreate()` נוספת? מה מציג את 3 בעץ החדש?
+2. עברנו עם Home וחזרנו בלי הרס Activity. האם צריך לחבר שוב את מאזיני הכפתורים? איזה callback של Activity מופיע בחזרה ואינו קיים ב־Fragment?
+3. סובבנו את המסך. האם `onDestroy()` מוכיחה שהמשתמש סיים? האם אותו שדה Java עבר למופע החדש?
+4. קוד רשת שהתחיל קודם מנסה לכתוב ל־binding אחרי `onDestroyView()`. האם העובדה שה־Fragment עוד קיים הופכת את הכתיבה לתקינה?
+
+<details markdown="1">
+<summary>תשובות והכוונה לבדיקה</summary>
+
+1. באותו מופע אין `onCreate()` נוספת. נוצרים binding ו־View חדשים, ו־`renderCount()` מציג את המונה דרך ה־binding החדש.
+2. המאזינים נשארים מחוברים לתצוגה הקיימת. ה־Activity עובר `onRestart()` לפני `onStart()`; ה־Fragment אינו מקבל `onRestart()`.
+3. לא ולא. המופע הישן נהרס בגלל שינוי התצורה; הערך חוזר רק אם קראנו אותו ממקור מתאים, כמו Bundle או העדפות.
+4. לא. התוצאה צריכה לעדכן מצב שאפשר להציג בתצוגה תקפה, או שהעבודה/העדכון צריכים להתבטל עם מחזור התצוגה. עצם בדיקת קיום ה־Fragment אינה מספיקה.
+
+במעבדה הקיימת לא עשינו override לכל ה־callbacks: Logcat מציג רק את אלה שבהם הוספנו רישום. **היעדר שורת log אינו הוכחה שה־callback לא נקרא.** לבדיקה ממוקדת אפשר להציב breakpoint במימוש שבירושה ב־Android Studio, או להוסיף זמנית רישום ל־callback אחד, תוך שמירה על חתימתו ועל קריאת `super` הנדרשת. השוו תמיד גם את שם הרכיב ואת מספר המופע; שתי שורות `onCreate` של מופעים שונים אינן שתי קריאות באותו מופע.
+
+</details>
 
 </details>

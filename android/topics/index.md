@@ -12,6 +12,10 @@ tags: [Android, Java, topics]
 {: .box-note}
 אלה שיעורי העמקה לפרויקט `com.example.topics`. ענפי המעבדות מבוססים על Empty Views Activity עם Java,‏ XML ו־View Binding. מי שמתחילים מתבנית חדשה ילמדו להפעיל View Binding בתחילת [מעבדת הפתיחה על שמירת מצב]({{ '/android/topics/01-lifecycle-state/' | relative_url }}). רוב המעבדות מתחילות מבסיס `master`; כשהנושא הוא refactoring של מעבדה קודמת, בסיס ההשוואה מופיע בטבלה. קראו את בסיס ההשוואה לפני שמעתיקים שינויי קוד.
 
+## מבוא קצר ל־HTTP ול־JSON — English first
+
+[Petstore: JSON text → Java objects → animal table]({{ '/android/topics/petstore-json/' | relative_url }}) מתחיל ב־Swagger ומציג את טקסט ה־JSON לצד טבלה שנבנית מאובייקטי Java. זהו מסלול פתיחה עצמאי מ־Empty Views Activity בפרויקט Topic3 (`com.example.topic`), ולא ענף של פרויקט המעבדות. כולל GET,‏ POST, תרגול ב־Notepad++ ושמירה ל־preferences כתרגיל רשות. הגרסה הראשונה באנגלית; תרגום לעברית יתווסף לאחר הסקירה.
+
 ## איך לומדים מהקוד, לא רק מעתיקים אותו?
 
 בכל מעבדה עברו על אותו רצף: נבאו תוצאה, קראו את זרימת הנתונים, כתבו את השינוי, ובדקו את התחזית. `/** ... */` לפני מתודה היא Javadoc: היא מתארת את החוזה למי שקורא למתודה. `@param` אומר מה מותר למסור, `@return` מה נקבל, ו־`@throws` איזה כשל צפוי. הערת `//` בתוך גוף מתארת החלטת מימוש חשובה, למשל למה תוצאה ישנה נפסלת. אל תכתבו הערה שרק מתרגמת `count++` למילים.

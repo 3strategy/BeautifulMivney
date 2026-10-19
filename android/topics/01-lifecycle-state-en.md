@@ -431,12 +431,14 @@ Rotation creates a new Activity, so ordinary fields start anew. `savedInstanceSt
 
 The [3strategy/fragments repository](https://github.com/3strategy/fragments) demonstrates a simple Java/XML implementation: one Activity, a display container, and three screens — Home, Dashboard, and Notifications — selected through bottom navigation. Compare it with the lifecycle lab: here we destroy and recreate a View, while the companion example replaces the displayed Fragment.
 
+[Detailed callback map: who calls each method, and when?](#lifecycle-callbacks)
+
 ## More about controlling Fragments
 
 <details markdown="1" id="fragment-control">
 <summary>Fragment control: creation, replacement, Back, saved state, and the View lifecycle</summary>
 
-The first three questions below come from the local English `QuestionsAndAnswers.md` for Android-Lifecycle, including its latest saved-state explanation. The [upstream Q&A document](https://github.com/3strategy/Android-Lifecycle/blob/main/QuestionsAndAnswers.md) is also available. The first three questions concern this lab; the last two concern the companion **Fragments** project. These excerpts explain existing code and are not additional implementation steps.
+The questions below are adapted from the [Android-Lifecycle Q&A document](https://github.com/3strategy/Android-Lifecycle/blob/main/QuestionsAndAnswers.md). The first three concern this lab; the last two concern the companion **Fragments** project. These excerpts explain existing code and are not additional implementation steps.
 
 ### 1. How does Back reattach the Fragment without an explicit attach() call?
 
@@ -452,7 +454,7 @@ binding.detachView.setOnClickListener(v -> getParentFragmentManager()
         .commit());
 ```
 
-This listener asks the fragment's owning `FragmentManager` to detach this fragment and record the transaction on its back stack. `commit()` schedules the transaction to run. The string `"detached_view"` names the back-stack entry; it is not a method name or a callback.
+`getParentFragmentManager()` returns this Fragment's owning manager. `beginTransaction()` starts a transaction: a group of operations on Fragments. `detach(this)` requests detachment of the View, and `addToBackStack(...)` records the transaction on the back stack. `commit()` schedules execution; it does not guarantee the transaction has already run by the next line. The string `"detached_view"` names the back-stack entry; it is not a method name or a callback.
 
 When the user presses device Back, AndroidX's built-in Back handling pops the top fragment transaction. Popping reverses its operations: the reverse of `detach(this)` is to attach that fragment again. The manager performs that operation internally, so this project does not need its own Back listener or an explicit `attach()` call. See the Android documentation on [fragment back-stack handling](https://developer.android.com/guide/fragments/fragmentmanager) and [fragment transactions](https://developer.android.com/guide/fragments/transactions).
 
@@ -539,7 +541,9 @@ protected void onSaveInstanceState(Bundle outState) {
 
 `super.onSaveInstanceState(outState)` lets the inherited Android/AndroidX implementation contribute framework state, including supported view state and fragment-manager state. It is part of completing the save operation, rather than calling your override again.
 
-For this project's Android versions (minimum API 31), a normal rotation that recreates the activity follows this activity callback sequence:
+#### When is the snapshot collected during rotation?
+
+The lab uses `minSdk` 31 and `targetSdk` 37. A normal rotation that recreates the Activity follows this Activity callback sequence:
 
 ```text
 Old MainActivity:
@@ -569,6 +573,10 @@ if (savedInstanceState != null) {
 
 That explains this project's rotation result after two increments: `memoryCount` starts at 0 in the new activity because the code never saves it, `savedCount` becomes 2 from the bundle, and `persistentCount` becomes 2 by reading `SharedPreferences`. `renderCounts()` then displays those fields.
 
+This project does not override `onRestoreInstanceState()`: our counter is already restored in `onCreate()`, while the inherited callback handles framework restoration.
+
+#### Who saves and restores the Fragment?
+
 The fragment's snapshot is coordinated by AndroidX `FragmentManager` as part of saving the host activity. It calls the fragment's `onSaveInstanceState()` and includes that fragment's saved state within the manager's state. The activity and fragment receive their own state bundles; they do not share one flat collection of custom keys. See [saving state with fragments](https://developer.android.com/guide/fragments/saving-state#savedstate).
 
 In [`LifecycleFragment.java`](https://github.com/3strategy/Android-Lifecycle/blob/main/app/src/main/java/com/example/topics/LifecycleFragment.java), the fragment contributes its own counter:
@@ -591,7 +599,9 @@ if (savedInstanceState != null) {
 
 The activity does not manually call the fragment's save method or forward its own bundle to the fragment. Also, the earlier detach/Back experiment can retain `count` in the surviving fragment object without needing a fresh saved-state callback just because its view was destroyed.
 
-The bundle is a small restoration snapshot, not a file your code writes or permanent app storage. Android keeps saved state outside the app process so it can restore a retained task after system-initiated process death. The snapshot must already have been collected; killing a process does not give the app a final opportunity to run this callback. Finishing the activity, force stopping, or dismissing the task is not a durable-storage use case. Use persistent storage for values that must survive those actions. See [saved state and persistence](https://developer.android.com/topic/libraries/architecture/saving-states).
+#### Is the Bundle written to a file?
+
+The Bundle is a small restoration snapshot, not a file your code writes or permanent app storage. Android keeps saved state outside the app process so it can restore an existing task after system-initiated process death. **The snapshot must already have been collected**; killing a process does not give the app a final opportunity to run this callback. Finishing the Activity, force stopping, or dismissing the task does not replace persistent storage. Use persistent storage for values that must survive those actions. See [saved state and persistence](https://developer.android.com/topic/libraries/architecture/saving-states).
 
 In this demo, the persistent counter is written separately on every increment:
 
@@ -650,5 +660,167 @@ The inherited `onCreateView()` implementation inflates that layout. Dashboard an
 The replacement transactions in the Fragments project do not call `addToBackStack(...)`, so Back does not return to the previous tab. These are three peer screens selected through the navigation bar. In the lifecycle lab, we deliberately record `detach(this)` on the stack, so Back reverses the detach and recreates the View of the same managed Fragment.
 
 **Test the distinction:** in the lifecycle lab, increment the counter, detach the View, and return with Back. In the Fragments project, switch from Home to Dashboard and press Back. Before running, predict which experiment will reverse its transaction, and identify the code call responsible.
+
+</details>
+
+## More detail: who triggers each lifecycle callback, and when?
+
+<details markdown="1" id="lifecycle-callbacks">
+<summary>The callback map: from onCreate and onAttach to onDestroyView and onDetach</summary>
+
+### First distinguish an operation, a callback, and a state
+
+**A callback is a method the framework calls when a component reaches a particular point in its lifecycle.** We override it to respond. We do not call `onCreate()` to open a screen or `onDestroyView()` to remove a View: we request an operation through the appropriate API, and Android or `FragmentManager` manages the transition and invokes the callbacks.
+
+For example, the lab's detach button produces this chain of causes:
+
+1. The user taps the button; our click listener runs.
+2. The listener requests a `detach(this)` transaction and submits it with `commit()`.
+3. When the manager executes the transaction, it lowers the Fragment's state and removes its View.
+4. During that transition, `onPause()`, `onStop()`, and finally `onDestroyView()` run. Our code clears the binding in the last callback.
+
+The operation is the request; the callback reports a stage in carrying it out. `new LifecycleFragment()` alone creates a Java object, but does not display it or run its entire lifecycle. A constructor is not `onCreate()` either.
+
+A **state** describes where the component is now; an **event** describes a transition. AndroidX's main states are `INITIALIZED`, `CREATED`, `STARTED`, `RESUMED`, and `DESTROYED`. After `onPause()`, the component returns to `STARTED`; after `onStop()`, it returns to `CREATED`. `Lifecycle.State` has no states named `PAUSED` or `STOPPED`. Events have names such as `ON_PAUSE`; these are not methods we call in the lab. See [Lifecycle states](https://developer.android.com/reference/androidx/lifecycle/Lifecycle.State) and [Lifecycle events](https://developer.android.com/reference/androidx/lifecycle/Lifecycle.Event).
+
+### Activity callbacks: the host screen
+
+This table concerns an ordinary Activity using Views, such as the lab's `MainActivity`. Some method names also appear in Fragment, but each call belongs to the object receiving it. The Activity does not need to call `fragment.onStart()` manually.
+
+| Callback | What triggers it, and when? | What belongs here, and what should you not infer? |
+|:---|:---|:---|
+| `onCreate(savedInstanceState)` | Android initializes a new Activity instance: on first launch or during recreation, such as normal rotation. | Inflate the layout and binding, connect listeners, and restore small pieces of state if a Bundle exists. It runs once per instance, **not once per app installation**. Ordinary fields start afresh in the new instance. |
+| `onStart()` | The Activity becomes visible, after creation or when returning from a stopped state. | Start updates needed while the screen is visible. Visibility does not necessarily mean it is the active screen for interaction. |
+| `onResume()` | The Activity enters the active state for interaction, including when returning from an interruption that did not destroy it. | Resume work restricted to the active state that was paused in `onPause()`. Do not add another set of button listeners or reset counters on every return. |
+| `onPause()` | The Activity leaves `RESUMED`, for example when another screen takes precedence. | Pause work that requires the active state. The screen may still be visible; this does not prove the user has left the app. Keep the callback short, without heavy file or network work. |
+| `onStop()` | The Activity is no longer visible, for example after switching to another app that covers it. | Stop updates needed only for a visible screen and release resources acquired in `onStart()`. The object may remain in memory; its fields are not automatically reset. |
+| `onRestart()` | A stopped Activity is returning **as the same instance**, before `onStart()`. | Respond to returning from a stopped state. This is not part of creating a new instance after rotation or process death; that path starts with `onCreate()` again. |
+| `onDestroy()` | Orderly teardown of an instance, for example after `finish()` or during recreation for a configuration change. | Complete cleanup of resources belonging to the instance. This does not prove the user has finished: rotation may be about to create another screen instance. It is not guaranteed to run when the process is killed. |
+
+Pairs help you choose the right place: a resource needed only while visible generally fits `onStart()` / `onStop()`; one needed only while active fits `onResume()` / `onPause()`. The choice depends on the resource and intended experience. You do not need to override every callback simply because it exists. See [the Activity lifecycle](https://developer.android.com/guide/components/activities/activity-lifecycle) and the [Activity reference](https://developer.android.com/reference/android/app/Activity).
+
+#### What about saving and restoration?
+
+`onSaveInstanceState(outState)` requests a restoration snapshot. It is not another name for `onPause()`, does not run on every click, and does not promise a write before shutdown. The lab targets API 28 or later, so when Activity state is saved, saving occurs after `onStop()`. Do not insert it as a mandatory step in every exit sequence: an intentional finish does not require saving for restoration of that screen.
+
+`onRestoreInstanceState(savedInstanceState)` runs when there is saved Activity state to restore, after `onStart()` and before `onResume()`. In contrast, `onCreate()` runs even without saved state, so code there checks `savedInstanceState != null`. The lab already restores its counter in `onCreate()`; it does not need to restore that counter again in both methods. Calls to `super` allow the framework to perform its own saving and restoration too.
+
+The [Bundle flow explanation](#saved-state-flow) follows the values between instances. In particular, **process death does not trigger a final round of callbacks**. Saving important data cannot wait for `onDestroy()`.
+
+### Fragment callbacks: the object and its View are different
+
+`FragmentManager` coordinates the Fragment's lifecycle according to the host's state, navigation transactions, and other limits. A Fragment cannot reach a higher state than its host permits. Moving the Activity to the background therefore affects its Fragments even without a button click inside them.
+
+#### 1. Connecting to the host and initializing the object
+
+**`onAttach(Context context)` — a host is now available.** This runs when the Fragment connects to its host, before `onCreate()`. It is an opportunity to obtain a dependency supplied by the host, such as an interface for communicating with the Activity. The Fragment's View tree does not exist yet; connection to an Activity is not View creation. Do not assume `requireContext()` is available in the constructor.
+
+**`onCreate(savedInstanceState)` — initialize the Fragment itself.** This runs after attachment, as the manager brings the instance to `CREATED`. Initialize information independent of Views and read the Fragment's saved state here. This does not automatically inflate our binding. Normal rotation creates a new Fragment and invokes this method on that new instance; the lab's detach/Back cycle retains the same instance, so it does not invoke `onCreate()` again.
+
+#### 2. Creating a new View lifecycle
+
+**`onCreateView(inflater, container, savedInstanceState)` — build a View tree.** This runs when the manager needs the Fragment's View, both initially and after a previous View was destroyed. The lab creates `FragmentLifecycleBinding` here and returns its root. One Fragment object can pass through this callback multiple times, with a new binding each time. A Fragment returning `null` has no View lifecycle; our lab returns a View.
+
+**`onViewCreated(view, savedInstanceState)` — the tree exists and behavior can be connected.** This runs after `onCreateView()` supplies a valid View. Connect button listeners, adapters, and observations that update the View here. The lab also reads the counter state and calls `renderCount()` here. An existing View does not mean a frame has been displayed or its final dimensions calculated; calculations requiring actual width and height must wait for layout.
+
+A `LiveData` observation that updates Views is generally bound to `getViewLifecycleOwner()`, so it is removed when that View is destroyed. An observation bound only to the Fragment may outlive the View and reach a binding that has already been cleared. This is the practical difference between the two lifecycle owners.
+
+**`onViewStateRestored(savedInstanceState)` — View state restoration is complete.** This runs after `onViewCreated()` and after the framework restores any previous View state, before `onStart()`. Automatic restoration may include text in an `EditText` with an ID. Complete adjustments that depend on that restored state here. The method also runs on creation without previous state, with `null`; its name does not mean there was always something to restore.
+
+#### 3. Appearance, activity, and stepping back
+
+| Fragment callback | What triggers it? | Meaning in this lab |
+|:---|:---|:---|
+| `onStart()` | The manager raises the Fragment to `STARTED`, according to its host and transaction. | Its View exists if it supplies one. Resume work intended for screen display. The state may be capped at `STARTED`, for example for an adjacent page in ViewPager2. |
+| `onResume()` | The manager raises it to `RESUMED`, ready for interaction and after the relevant transition effects finish. | No need to rebuild the binding: it was created earlier. Returning without View destruction can also invoke this callback. |
+| `onPause()` | The Fragment leaves `RESUMED` because of its host, navigation, or a transaction lowering its state. | Pause work intended only for the active state. This does not yet report View destruction. |
+| `onStop()` | Its state drops from `STARTED` to `CREATED`, for example when the host stops or the Fragment leaves the screen. | Stop work intended for visible time. Do not clear the binding merely because of stopping; View destruction is a separate step. |
+
+A Fragment **has no `onRestart()`**. If it returns from a stopped state within the same View lifecycle, the path is `onStart()` followed by `onResume()`. If its View was destroyed, a new View creation cycle must come first. See [the Fragment lifecycle map](https://developer.android.com/guide/fragments/lifecycle).
+
+#### 4. Teardown: three different methods
+
+**`onDestroyView()` — the current View lifecycle has ended.** This runs when the manager tears down the View tree, after the relevant exit effects finish. In the lab, `detach()` causes this; removal or destruction of the host can also cause it. Clear the binding and other references to the old Views here, and cancel work that is not automatically managed and might update them. The Fragment itself may retain `count` and create another View later.
+
+**`onDestroy()` — the Fragment instance's lifecycle has ended.** This runs during orderly teardown, for example on final removal or destruction of its manager. Do not postpone View cleanup until here: `onDestroyView()` may have run much earlier. Again, process death does not guarantee this call; the name does not promise that garbage collection has already reclaimed the Java object.
+
+**`onDetach()` — the connection to the host has ended.** This runs at the end of detachment from the host, after the preceding lifecycle steps. Release a reference to an Activity interface here if you stored one in `onAttach()`. After detachment, do not rely on obtaining an Activity or Context from the Fragment.
+
+{: .box-warning}
+**`FragmentTransaction.detach(fragment)` and `Fragment.onDetach()` are not a request/notification pair.** The lab's `detach` transaction keeps the Fragment managed in `CREATED` and destroys its View; it does not disconnect the Fragment from its host or call `onDetach()`. Reversing it creates a new View, without another `onAttach()` or `onCreate()` on that same instance. See [what attach and detach transactions mean](https://developer.android.com/guide/fragments/transactions#attaching-and-detaching-fragments).
+
+#### 5. Saving and names you may encounter elsewhere
+
+A Fragment also has `onSaveInstanceState(outState)`, which its manager invokes when its state needs saving. There is no Fragment callback named `onRestoreInstanceState()`; saved state is supplied to `onCreate()`, `onCreateView()`, `onViewCreated()`, and `onViewStateRestored()` at their respective stages. Choose where to read it according to the kind of information, without resetting it at every stage. [Saving Fragment state](https://developer.android.com/guide/fragments/saving-state) distinguishes fields, View state, and saved state.
+
+Older code may use `onActivityCreated()`; it is deprecated. Do not add it to the lab: Fragment initialization belongs in `onCreate()` and View initialization in `onViewCreated()`. You may also see `onHiddenChanged()`: it reports a change to the hidden flag following `hide()` / `show()`, rather than another lifecycle stage. Those operations alone do not change the lifecycle state, so a hidden Fragment is not necessarily stopped. See the [Fragment callback reference](https://developer.android.com/reference/androidx/fragment/app/Fragment).
+
+### Connect the names to actual actions
+
+Each sequence below describes only the named component. Do not merge them into one list of Activity and Fragment calls: calls are coordinated between components, and animations can affect teardown timing. Saving is discussed separately because it is not mandatory on every path.
+
+#### Opening a new Activity and a temporary interruption
+
+```text
+New Activity:
+onCreate -> onStart -> onResume
+
+Temporary interruption, without stopping:
+onPause -> onResume
+
+Home, then return (same Activity instance, not destroyed):
+onPause -> onStop
+onRestart -> onStart -> onResume
+```
+
+**Home is not a request to destroy the screen.** Returning to the same instance retains its fields and does not call `onCreate()` again. If Android killed the process meanwhile, or `Don't keep activities` destroyed the Activity, the "same instance" condition no longer holds; returning requires recreation. **`Don't keep activities` destroys Activities, but does not necessarily kill the app process**, so it is not a substitute for testing system-initiated process death. A window covering part of the screen may cause only a pause; opening an ordinary `Dialog` inside the Activity does not require the Activity to pause.
+
+#### Creating a Fragment and destroying its View
+
+```text
+First Fragment display:
+onAttach -> onCreate
+onCreateView -> onViewCreated -> onViewStateRestored
+onStart -> onResume
+
+Destroy Fragment View (detach transaction):
+onPause -> onStop -> onDestroyView
+
+Back reverses that transaction (same Fragment instance):
+onCreateView -> onViewCreated -> onViewStateRestored
+onStart -> onResume
+
+Final removal of a resumed Fragment with a View:
+onPause -> onStop -> onDestroyView -> onDestroy -> onDetach
+```
+
+The last path means final removal, without retaining the Fragment on the back stack. With a replacement using `addToBackStack()`, the previous Fragment can remain managed without a View; Back can restore its View. **The word Back alone does not determine destruction or creation**: inspect which operation it reverses. In this lab it reverses detachment; the tab example has no replacement transactions on its back stack.
+
+#### Normal rotation versus process death
+
+During rotation that recreates the Activity, the old instance pauses, stops, saves state, and is destroyed; the new one starts at `onCreate(savedInstanceState)`. An ordinary Fragment is also restored as a new instance with a new View lifecycle. The fact that `count` survives in a field during detach therefore does not mean the field survives rotation: these are different recovery mechanisms.
+
+During system-initiated process death, you may see no `onDestroyView()`, `onDestroy()`, or `onDetach()` at all. Restoring an existing task uses a previously collected snapshot; no callback tells an old field to "transfer yourself now." Force stopping and relaunching is a different experiment.
+
+### Predict before looking in Logcat
+
+For each prediction, identify **the action, the object that survives, and which Views remain valid**.
+
+1. We increment the Fragment counter to 3, destroy its View, and return with Back. Will `onCreate()` run again? What displays 3 in the new tree?
+2. We press Home and return without Activity destruction. Must button listeners be connected again? Which Activity callback runs on return but does not exist in Fragment?
+3. We rotate the screen. Does `onDestroy()` prove the user is finished? Did the same Java field move into the new instance?
+4. Network code started earlier tries to write through the binding after `onDestroyView()`. Does the surviving Fragment make that write valid?
+
+<details markdown="1">
+<summary>Answers and guidance for checking</summary>
+
+1. The same instance does not receive another `onCreate()`. A new binding and View are created, and `renderCount()` displays the counter through the new binding.
+2. Listeners remain connected to the existing View. The Activity receives `onRestart()` before `onStart()`; the Fragment has no `onRestart()`.
+3. No to both. The old instance is destroyed for a configuration change; the value returns only if we read it from a suitable source, such as a Bundle or preferences.
+4. No. The result should update state that can be rendered in a valid View, or the work/update should be canceled with the View lifecycle. Merely checking that the Fragment exists is insufficient.
+
+The lab does not override every callback: Logcat shows only those where logging was added. **A missing log line does not prove a callback never ran.** For a focused check, set a breakpoint in the inherited implementation in Android Studio, or temporarily add logging to one callback, preserving its signature and required `super` call. Always compare the component name and instance number too; two `onCreate` lines from different instances are not two calls on the same instance.
+
+</details>
 
 </details>
