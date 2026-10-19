@@ -12,9 +12,9 @@ tags: [Android, Java, topics]
 {: .box-note}
 אלה שיעורי העמקה לפרויקט `com.example.topics`. ענפי המעבדות מבוססים על Empty Views Activity עם Java,‏ XML ו־View Binding. מי שמתחילים מתבנית חדשה ילמדו להפעיל View Binding בתחילת [מעבדת הפתיחה על שמירת מצב]({{ '/android/topics/01-lifecycle-state/' | relative_url }}). רוב המעבדות מתחילות מבסיס `master`; כשהנושא הוא refactoring של מעבדה קודמת, בסיס ההשוואה מופיע בטבלה. קראו את בסיס ההשוואה לפני שמעתיקים שינויי קוד.
 
-## מבוא קצר ל־HTTP ול־JSON — English first
+## מבוא קצר ל־HTTP ול־JSON — בעברית ובאנגלית
 
-[Petstore: JSON text → Java objects → animal table]({{ '/android/topics/petstore-json/' | relative_url }}) מתחיל ב־Swagger ומציג את טקסט ה־JSON לצד טבלה שנבנית מאובייקטי Java. זהו מסלול פתיחה עצמאי מ־Empty Views Activity בפרויקט Topic3 (`com.example.topic`), ולא ענף של פרויקט המעבדות. כולל GET,‏ POST, תרגול ב־Notepad++ ושמירה ל־preferences כתרגיל רשות. הגרסה הראשונה באנגלית; תרגום לעברית יתווסף לאחר הסקירה.
+[Petstore: מטקסט JSON לאובייקטי Java ולטבלת בעלי חיים]({{ '/android/topics/petstore-json/he/' | relative_url }}) מתחיל ב־Swagger ומציג את טקסט ה־JSON לצד טבלה שנבנית מאובייקטי Java. זהו מסלול פתיחה עצמאי מ־Empty Views Activity בפרויקט Topic3 (`com.example.topic`), ולא ענף של פרויקט המעבדות. כולל GET,‏ POST, תרגול ב־Notepad++ ושמירה ל־preferences כתרגיל רשות. זמין בעברית וב־[English]({{ '/android/topics/petstore-json/' | relative_url }}?lang=en), עם אותם קטעי קוד וקובצי תרגול.
 
 ## איך לומדים מהקוד, לא רק מעתיקים אותו?
 

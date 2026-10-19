@@ -16,7 +16,7 @@ main {
 }
 </style>
 
-[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/)
+[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/) · [עברית]({{ '/android/topics/petstore-json/he/02-objects/' | relative_url }}?lang=he)
 
 Start from checkpoint 1. Our next result is an editable JSON array and a table populated from the reconstructed objects. The original HTTP response remains visible and unchanged.
 

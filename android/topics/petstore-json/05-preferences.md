@@ -16,7 +16,7 @@ main {
 }
 </style>
 
-[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/)
+[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/) · [עברית]({{ '/android/topics/petstore-json/he/05-preferences/' | relative_url }}?lang=he)
 
 This optional exercise starts from checkpoint 4. The network lesson is complete. Now use preferences as another place to put JSON text, while keeping exactly the same `Pet` model and parser.
 

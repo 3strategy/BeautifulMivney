@@ -16,7 +16,7 @@ main {
 }
 </style>
 
-[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/)
+[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/) · [עברית]({{ '/android/topics/petstore-json/he/' | relative_url }}?lang=he)
 
 The central idea is independent of Android: **a server sends text; your program reconstructs objects from that text; ordinary code can then use those objects.** Android supplies our small runnable screen. No API key, LLM account, or real animal data is needed for this lab.
 

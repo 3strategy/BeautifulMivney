@@ -16,7 +16,7 @@ main {
 }
 </style>
 
-[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/)
+[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/) · [עברית]({{ '/android/topics/petstore-json/he/01-get/' | relative_url }}?lang=he)
 
 ## Predict, then explore in Swagger
 

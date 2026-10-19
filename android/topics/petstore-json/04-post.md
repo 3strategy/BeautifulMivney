@@ -16,7 +16,7 @@ main {
 }
 </style>
 
-[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/)
+[Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/) · [עברית]({{ '/android/topics/petstore-json/he/04-post/' | relative_url }}?lang=he)
 
 Start from checkpoint 3. GET requested animals. POST now sends a new animal object to Petstore. Keep the distinction between the Java object, its serialized JSON string, and the server's response.
 

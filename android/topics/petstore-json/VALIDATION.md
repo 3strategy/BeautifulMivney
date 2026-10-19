@@ -14,3 +14,11 @@ published: false
 - Jekyll builds successfully. Local lesson/download links resolve. Browser checks at the normal desktop viewport and 390px width confirmed English LTR content, rendered diagrams, aligned Before/After panels, horizontal code scrolling and no whole-page horizontal overflow.
 - Visually inspected the emulator screen, including unchanged response text, editable JSON and a table whose first object's name was changed to Pixel.
 - This was implementation/build/device validation and exact edit replay, not an independent fresh-student reproducibility audit. No physical device was used, and no code was pushed.
+
+## Hebrew edition — 19 October 2026
+
+- Added six Hebrew pages under `/android/topics/petstore-json/he/`, linked to their English counterparts through `translation_of` and explicit language links.
+- All 33 executable/example code blocks and word-diff blocks match the English edition exactly. Downloads and the Android implementation are shared and unchanged; Mermaid labels are translated.
+- Jekyll build passed. All six generated language pairs and 305 local lesson/download links were checked.
+- Browser checks passed on every Hebrew page at 390px width: RTL prose, LTR code, and no whole-page horizontal overflow. Desktop inspection confirmed LTR Android Studio file paths, right-aligned Hebrew table columns, aligned Before/After panels and rendered Hebrew diagrams.
+- Updated the topic landing page, coverage matrix and curriculum gap entry to include Hebrew availability. No Android rebuild or device rerun was needed for this prose-only edition.
