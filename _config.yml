@@ -250,7 +250,9 @@ navbar-links:
         - ניווט וחזרה בין מסכים: "/android/topics/10-navigation-flow/"
     - ארכיטקטורה ונתונים:
         - ViewModel ו־Repository: "/android/topics/04-viewmodel-repository/"
-        - HTTP ו־JSON: "/android/topics/08-http-client/"
+        - HTTP ו־JSON עם Swagger — מבוא: "/android/topics/petstore-json/he/"
+        - HTTP and JSON with Swagger — English: "/android/topics/petstore-json/?lang=en"
+        - HTTP עם Retrofit — העמקה: "/android/topics/08-http-client/"
         - Room ושדרוג מסד: "/android/topics/12-room-persistence/"
         - Paging ונתונים בלי רשת: "/android/topics/25-paging-offline-cache/"
     - יכולות מכשיר ופרטיות:

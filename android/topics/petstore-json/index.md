@@ -18,6 +18,11 @@ main {
 
 [Lesson map]({{ '/android/topics/petstore-json/' | relative_url }}) · [Swagger Petstore](https://petstore3.swagger.io/) · [עברית]({{ '/android/topics/petstore-json/he/' | relative_url }}?lang=he)
 
+{: .box-note}
+For a more advanced alternative, see [Topic 08 — HTTP with Retrofit (in Hebrew)]({{ '/android/topics/08-http-client/' | relative_url }}).
+It covers typed JSON conversion, HTTP/network/data errors, timeouts, cancellation, retry, and controlled tests with MockWebServer.
+Start here for visible JSON-to-object experiments; choose topic 08 once those foundations are familiar.
+
 The central idea is independent of Android: **a server sends text; your program reconstructs objects from that text; ordinary code can then use those objects.** Android supplies our small runnable screen. No API key, LLM account, or real animal data is needed for this lab.
 
 You will keep three representations visible: the unchanged HTTP response body, editable JSON text, and a table populated from Java objects. Serialization and deserialization will be explicit lines of code, not hidden inside a networking converter.

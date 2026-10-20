@@ -10,6 +10,11 @@ tags: [Android, Java, HTTP, Retrofit, JSON]
 
 [מפת המעבדות]({{ '/android/topics/' | relative_url }}) · [מעבדת מצבי UI]({{ '/android/topics/03-ui-states-retry/' | relative_url }})
 
+{: .box-note}
+למסלול פתיחה מדורג, ראו [HTTP ו־JSON עם Swagger ו־Petstore]({{ '/android/topics/petstore-json/he/' | relative_url }}).
+שם מנסים GET ו־POST ב־Swagger, עורכים טקסט JSON וממירים אותו במפורש לאובייקטי Java ובחזרה, עם סינון ושינוי אובייקטים בטבלה.
+מומלץ להתחיל שם במפגש ראשון עם הנושא; המעבדה הנוכחית מעמיקה בטיפול בכשלים, ביטול, Retry ובדיקות עם שרת מקומי.
+
 {: .box-success}
 בסוף המעבדה מסך Java/XML קטן שולח `GET`, מציג `Todo` שהומר מ־JSON למחלקת Java, מבדיל בין `200`,‏ `404`, כשל רשת ותשובה פגומה, ומאפשר לבטל בקשה. בדיקות JVM משתמשות בשרת מקומי מדומה כדי לא להיות תלויות בשרת הציבורי.
 
