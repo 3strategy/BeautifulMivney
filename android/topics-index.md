@@ -281,7 +281,7 @@ menu_set: android
 | בדיקת UI על אמולטור ורגרסיה למחזור חיים | שיעור מעשי | [05 — בדיקה שמגלה נסיגה ב־Bundle וב־Fragment](/android/topics/05-android-ui-tests/) |
 | אבחון שיטתי ב־Logcat,‏ debugger ו־Inspectors | שיעור מעשי עם תקלות מכוונות | [06 — מעבדת אבחון Build, קריסה, קיפאון, Layout ורשת](/android/topics/06-systematic-debugging/) |
 | כללי הרשאה בצד השרת ובדיקת משתמש מורשה מול תוקף | שיעור מעשי עם Firebase Emulator | [07 — כללי RTDB לפי בעלות ובדיקות שלושה משתמשים](/android/topics/07-rtdb-security-rules/) |
-| מבוא ל־HTTP ו־JSON: טקסט, מערך אובייקטים וטבלה | שיעור מעשי בעברית ובאנגלית עם Swagger ותרגול Notepad++ | [Petstore — GET, המרה לאובייקטים ו־POST](/android/topics/petstore-json/he/)<br>[תרגיל רשות: JSON ב־preferences](/android/topics/petstore-json/he/05-preferences/)<br>[English](/android/topics/petstore-json/?lang=en) |
+| מבוא ל־HTTP ו־JSON: טקסט, מערך אובייקטים וטבלה | שיעור מעשי בעברית ובאנגלית עם Swagger ותרגול Notepad++ | [Petstore — GET, callbacks, המרה לאובייקטים ו־POST](/android/topics/petstore-json/he/)<br>[תרגיל רשות: JSON ב־preferences](/android/topics/petstore-json/he/05-preferences/)<br>[English](/android/topics/petstore-json/?lang=en) |
 | HTTP, לקוח API ו־JSON למודל טיפוסי | שיעור מעשי ובדיקות שרת מקומי | [08 — מבקשת GET ל־Todo עם Retrofit](/android/topics/08-http-client/) |
 | עבודה אסינכרונית, תוצאה ישנה וביטול | שיעור מעשי עם בדיקות UI | [09 — תחרות בין שתי בקשות ב־ViewModel](/android/topics/09-async-races/) |
 | bound Service,‏ AlarmManager ו־BroadcastReceiver | שיעור מעשי עם בדיקה במערכת | [14 — שעון שירות ואירוע alarm שנמסר ל־Receiver](/android/topics/14-services-alarms-receivers/) |

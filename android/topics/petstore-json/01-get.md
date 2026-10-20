@@ -242,6 +242,8 @@ First change these two existing references. The field and initialization needed 
  }
 ```
 
+{% include android/petstore-callbacks-en.md %}
+
 ## Trace the Java code
 
 `StringRequest` asks Volley to decode the response bytes into text. It does not deserialize animals. `queue.add(request)` starts asynchronous work; the method returns while the network runs. The success callback receives `text` later, on the main thread, so it can update the Views. `this::showError` is Java shorthand for `error -> showError(error)`; it passes failures to our existing error-display method. The code never blocks the UI waiting for the server.
