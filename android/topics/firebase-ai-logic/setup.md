@@ -36,11 +36,11 @@ In the [Google Cloud console](https://console.cloud.google.com/apis/dashboard), 
 
 ![Google Cloud details for Firebase AI Logic API before activation; service name visible]({{ "/android/topics/firebase-ai-logic/images/cloud-api-details.jpg" | relative_url }})
 
-The Gemini provider key created by the Firebase workflow stays on the backend: **never put a Gemini API key or service-account JSON in your app**. The Firebase API key in `google-services.json` is a project/app identifier, not proof that a request is authorized. In **APIs & Services > Credentials**, restrict the Firebase key used by this app to **Android apps** (its package name and SHA-1 signing fingerprint) and allow only the Firebase APIs the app needs, including Firebase AI Logic API. Obtain debug SHA-1 with the Gradle `signingReport` task; use the correct release/Play signing certificate for distributed builds. Avoid changing a shared key used by other apps. [Key restrictions and App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
+The Gemini provider key created by the Firebase workflow stays on the backend: **never put a Gemini API key or service-account JSON in your app**. The Firebase API key in `google-services.json` is a project/app identifier, not proof that a request is authorized. In **APIs & Services > Credentials**, restrict the Firebase key used by this app to **Android apps** (its package name and SHA-1 signing fingerprint) and allow only the Firebase APIs the app needs, including Firebase AI Logic API. Obtain the SHA-1 for the classroom installation with the Gradle `signingReport` task. If students build on different computers, add each computer's debug-signing SHA-1 to the allowed Android applications. Avoid changing a shared key used by other apps. [Key restrictions and App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
 
 ## 3. Protect the request with App Check
 
-Open **Security > App Check > Get started**. Register the Android app. Use a private debug token for local emulator development and Play Integrity for the distributed app. App Check verifies app/device legitimacy; it does not sign a user in. Current guided AI Logic setup automatically enforces App Check; older projects must check **App Check > APIs > Firebase AI Logic** and enforce it explicitly. Do not bypass a failed test by disabling enforcement. [Official App Check steps](https://firebase.google.com/docs/ai-logic/app-check).
+Open **Security > App Check > Get started**. Select your registered Android app. This tutorial uses **one classroom setup**, with the **App Check debug provider** on the emulator or test device. Each installation registers a private token; Firebase accepts that token instead of asking for device attestation. It does not sign a user in. Current guided AI Logic setup automatically enforces App Check; older projects must check **App Check > APIs > Firebase AI Logic** and enforce it explicitly. Do not bypass a failed test by disabling enforcement. [Official App Check steps](https://firebase.google.com/docs/ai-logic/app-check).
 
 ![Firebase App Check starting screen, before registration]({{ "/android/topics/firebase-ai-logic/images/app-check-start.jpg" | relative_url }})
 
@@ -73,8 +73,7 @@ plugins {
 +    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
 +    implementation("com.google.firebase:firebase-ai")
 +    implementation("com.google.guava:guava:31.0.1-android")
-+    debugImplementation("com.google.firebase:firebase-appcheck-debug")
-+    releaseImplementation("com.google.firebase:firebase-appcheck-playintegrity")
++    implementation("com.google.firebase:firebase-appcheck-debug")
      implementation(libs.activity.ktx)
      implementation(libs.appcompat)
      implementation(libs.constraintlayout)
@@ -86,53 +85,16 @@ In **app > manifests > AndroidManifest.xml**, add this above `<application>`:
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-### Separate debug and release providers
+### Register the classroom installation
 
-Create **AppCheckSetup.java twice**, in different build-variant source sets, using the same package as MainActivity. The physical locations below identify the source sets precisely; in Android view they appear under **app > kotlin+java > com.example.topic**, marked **debug** or **release**. Create missing folders using Android Studio's Terminal or your file manager, then open the files in Android Studio. Do not put either version in the main source set.
+The app tutorial installs the debug provider directly in `MainActivity`, before creating the AI model. There are no extra helper classes, build-variant folders, or Play Console steps.
 
-**Debug source set:** `app/src/debug/java/com/example/topic/AppCheckSetup.java`
+1. Continue with the [app tutorial](../), run the app and press **Ask LLM** once.
+2. In Logcat, filter for **DebugAppCheckProvider** and copy the generated debug token privately.
+3. In **Firebase > Security > App Check > Apps**, open your app's overflow menu, choose **Manage debug tokens**, and register that token.
+4. Press **Ask LLM** again. The first request may fail until the token is registered.
 
-```java
-package com.example.topic;
-
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
-
-/** Installs the App Check provider for the debug build only. */
-public class AppCheckSetup {
-    /** Call after Firebase initialization, before creating the AI client. */
-    public static void install() {
-        FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
-                DebugAppCheckProviderFactory.getInstance());
-    }
-}
-```
-
-**Release source set:** `app/src/release/java/com/example/topic/AppCheckSetup.java`
-
-```java
-package com.example.topic;
-
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
-
-/** Installs the App Check provider for the release build only. */
-public class AppCheckSetup {
-    /** Call after Firebase initialization, before creating the AI client. */
-    public static void install() {
-        FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
-                PlayIntegrityAppCheckProviderFactory.getInstance());
-    }
-}
-```
-
-Gradle compiles only the matching helper and its provider dependency. The app tutorial calls `AppCheckSetup.install()` before creating the model. The release build therefore does not contain the debug provider library. [Android debug-provider guide](https://firebase.google.com/docs/app-check/android/debug-provider).
-
-Run the debug app and press Ask LLM once. In Logcat, filter for **DebugAppCheckProvider**. Copy **your generated debug secret privately** into **App Check > Apps > your app > overflow menu > Manage debug tokens**. The first request may fail until that token is registered; retry afterwards. Never publish the token in code, screenshots, repositories or class chat. Revoke it when no longer needed. For release, complete these extra steps:
-
-1. In **Google Play Console > your app > Release > App integrity > Play Integrity API**, choose **Link Cloud project** and select the same Firebase project.
-2. In **Firebase > Security > App Check > Apps**, register the app with **Play Integrity** and its signing certificate's **SHA-256** fingerprint. This differs from the **SHA-1** used for the Android API-key restriction above.
-3. Match the integrity-verdict settings to your intended distribution (Google Play, outside Play, or both), then test attestation before sharing the release build. [Play Integrity setup](https://firebase.google.com/docs/app-check/android/play-integrity-provider).
+Each student's installation gets its own token. Keep the token and the installed tutorial app private; revoke the token after the exercise. Anyone holding an allowed token can use it from an unverified device. This setup is for classroom testing. [Android debug-provider guide](https://firebase.google.com/docs/app-check/android/debug-provider).
 
 ## 4. Set limits and check readiness
 

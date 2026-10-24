@@ -30,11 +30,11 @@ tags: [Android, Java, Firebase, AI, security]
 
 ![פרטי Firebase AI Logic API במסוף Cloud לפני הפעלה, עם שם השירות הטכני]({{ "/android/topics/firebase-ai-logic/images/cloud-api-details.jpg" | relative_url }})
 
-מפתח ספק Gemini שנוצר בתהליך Firebase נשאר בצד השרת: **אין לשים באפליקציה מפתח Gemini API או קובץ service-account JSON**. מפתח Firebase שב־`google-services.json` הוא מזהה פרויקט ואפליקציה, ולא הוכחה שהבקשה מורשית. ב־**APIs & Services > Credentials** הגבילו את מפתח Firebase שבו משתמשת האפליקציה ל־**Android apps**, עם שם החבילה וטביעת SHA-1 של תעודת החתימה, ובחרו רק את ה־APIs הדרושים לאפליקציה, ובהם Firebase AI Logic API. את SHA-1 של debug מקבלים במשימת Gradle בשם `signingReport`; להפצה משתמשים בתעודת החתימה הנכונה של release או Play. אל תשנו מפתח משותף שמשמש אפליקציות אחרות. [הנחיות הגבלת מפתחות ו־App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
+מפתח ספק Gemini שנוצר בתהליך Firebase נשאר בצד השרת: **אין לשים באפליקציה מפתח Gemini API או קובץ service-account JSON**. מפתח Firebase שב־`google-services.json` הוא מזהה פרויקט ואפליקציה, ולא הוכחה שהבקשה מורשית. ב־**APIs & Services > Credentials** הגבילו את מפתח Firebase שבו משתמשת האפליקציה ל־**Android apps**, עם שם החבילה וטביעת SHA-1 של תעודת החתימה, ובחרו רק את ה־APIs הדרושים לאפליקציה, ובהם Firebase AI Logic API. את SHA-1 של ההתקנה הכיתתית מקבלים במשימת Gradle בשם `signingReport`. אם התלמידים בונים במחשבים שונים, הוסיפו לרשימת אפליקציות Android המותרות את SHA-1 של תעודת ה־debug מכל מחשב. אל תשנו מפתח משותף שמשמש אפליקציות אחרות. [הנחיות הגבלת מפתחות ו־App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
 
 ## 3. מגינים על הבקשה באמצעות App Check
 
-פתחו **Security > App Check > Get started** ורשמו את אפליקציית Android. לפיתוח מקומי באמולטור נשתמש בטוקן debug פרטי; לאפליקציה המופצת נשתמש ב־Play Integrity. App Check מאמת את האפליקציה והמכשיר; הוא אינו מבצע התחברות של משתמש. בתהליך ההגדרה העדכני של AI Logic, האכיפה מופעלת אוטומטית. בפרויקט ישן צריך לבדוק את **App Check > APIs > Firebase AI Logic** ולהפעיל אכיפה במפורש. אין לעקוף בדיקה שנכשלה באמצעות כיבוי האכיפה. [שלבי App Check הרשמיים](https://firebase.google.com/docs/ai-logic/app-check).
+פתחו **Security > App Check > Get started** ובחרו את אפליקציית Android שרשמתם. במדריך הזה יש **הגדרה כיתתית אחת**, עם **ספק App Check debug** באמולטור או במכשיר התרגול. כל התקנה רושמת טוקן פרטי; Firebase מקבל אותו במקום לדרוש אימות של המכשיר. זה אינו תהליך התחברות של משתמש. בתהליך ההגדרה העדכני של AI Logic, האכיפה מופעלת אוטומטית. בפרויקט ישן צריך לבדוק את **App Check > APIs > Firebase AI Logic** ולהפעיל אכיפה במפורש. אין לעקוף בדיקה שנכשלה באמצעות כיבוי האכיפה. [שלבי App Check הרשמיים](https://firebase.google.com/docs/ai-logic/app-check).
 
 ![מסך הפתיחה של Firebase App Check, לפני רישום]({{ "/android/topics/firebase-ai-logic/images/app-check-start.jpg" | relative_url }})
 
@@ -67,8 +67,7 @@ plugins {
 +    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
 +    implementation("com.google.firebase:firebase-ai")
 +    implementation("com.google.guava:guava:31.0.1-android")
-+    debugImplementation("com.google.firebase:firebase-appcheck-debug")
-+    releaseImplementation("com.google.firebase:firebase-appcheck-playintegrity")
++    implementation("com.google.firebase:firebase-appcheck-debug")
      implementation(libs.activity.ktx)
      implementation(libs.appcompat)
      implementation(libs.constraintlayout)
@@ -80,65 +79,16 @@ plugins {
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
-### מפרידים בין ספק debug לספק release
+### רושמים את ההתקנה הכיתתית
 
-צרו **שני קבצים בשם AppCheckSetup.java**, בקבוצות מקורות שונות לפי גרסת הבנייה, עם אותה חבילה כמו MainActivity. המיקומים הפיזיים שלמטה מזהים במדויק את קבוצת המקורות. בתצוגת Android הם מופיעים תחת **app > kotlin+java > com.example.topic**, עם סימון **debug** או **release**. אם התיקיות חסרות, צרו אותן דרך ה־Terminal של Android Studio או מנהל הקבצים, ואז פתחו את הקבצים ב־Android Studio. אין להוסיף אף אחת משתי הגרסאות לקבוצת main.
+מדריך האפליקציה מפעיל את ספק ה־debug ישירות ב־`MainActivity`, לפני יצירת מודל ה־AI. אין מחלקות עזר נוספות, תיקיות לפי גרסאות בנייה או שלבים ב־Play Console.
 
-**קבוצת debug:**
+1. המשיכו ל[מדריך האפליקציה](../), הריצו את האפליקציה ולחצו פעם אחת **Ask LLM**.
+2. ב־Logcat סננו לפי **DebugAppCheckProvider**, והעתיקו באופן פרטי את טוקן ה־debug שנוצר.
+3. ב־**Firebase > Security > App Check > Apps**, פתחו את תפריט שלוש הנקודות של האפליקציה, בחרו **Manage debug tokens** ורשמו את הטוקן.
+4. לחצו שוב **Ask LLM**. הבקשה הראשונה עשויה להיכשל עד לרישום הטוקן.
 
-<div markdown="1" class="english">
-
-`app/src/debug/java/com/example/topic/AppCheckSetup.java`
-
-</div>
-
-```java
-package com.example.topic;
-
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
-
-/** Installs the App Check provider for the debug build only. */
-public class AppCheckSetup {
-    /** Call after Firebase initialization, before creating the AI client. */
-    public static void install() {
-        FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
-                DebugAppCheckProviderFactory.getInstance());
-    }
-}
-```
-
-**קבוצת release:**
-
-<div markdown="1" class="english">
-
-`app/src/release/java/com/example/topic/AppCheckSetup.java`
-
-</div>
-
-```java
-package com.example.topic;
-
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
-
-/** Installs the App Check provider for the release build only. */
-public class AppCheckSetup {
-    /** Call after Firebase initialization, before creating the AI client. */
-    public static void install() {
-        FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
-                PlayIntegrityAppCheckProviderFactory.getInstance());
-    }
-}
-```
-
-Gradle בונה רק את קובץ העזר ואת ספריית הספק המתאימים. מדריך האפליקציה קורא ל־`AppCheckSetup.install()` לפני יצירת המודל. כך ספריית ספק ה־debug אינה נכללת בגרסת release. [מדריך ספק debug באנדרואיד](https://firebase.google.com/docs/app-check/android/debug-provider).
-
-הריצו את גרסת debug ולחצו פעם אחת Ask LLM. ב־Logcat סננו לפי **DebugAppCheckProvider**. העתיקו **באופן פרטי את הסוד שנוצר אצלכם** אל **App Check > Apps**, בחרו את האפליקציה, פתחו את תפריט שלוש הנקודות ואז **Manage debug tokens**. הבקשה הראשונה עשויה להיכשל עד לרישום הטוקן; נסו שוב אחרי הרישום. אין לפרסם את הטוקן בקוד, בצילומי מסך, במאגרי קוד או בקבוצת הכיתה. בטלו אותו כשאין בו צורך. לגרסת release יש להשלים גם את הצעדים הבאים:
-
-1. ב־**Google Play Console > your app > Release > App integrity > Play Integrity API**, בחרו **Link Cloud project** וקשרו לאותו פרויקט Firebase.
-2. ב־**Firebase > Security > App Check > Apps**, רשמו את האפליקציה עם **Play Integrity** ועם טביעת **SHA-256** של תעודת החתימה שלה. זו טביעה שונה מ־**SHA-1** ששימשה להגבלת מפתח ה־API לאנדרואיד למעלה.
-3. התאימו את דרישות האימות לדרך ההפצה המתוכננת (Google Play, מחוץ לחנות, או שתיהן), ובדקו שהאימות עובד לפני הפצת גרסת release. [הגדרת Play Integrity](https://firebase.google.com/docs/app-check/android/play-integrity-provider).
+כל התקנה של תלמיד מקבלת טוקן משלה. שמרו את הטוקן ואת אפליקציית התרגול המותקנת באופן פרטי, ובטלו את הטוקן בסיום התרגיל. מי שמחזיק בטוקן מורשה יכול להשתמש בו ממכשיר שלא עבר אימות. ההגדרה הזאת מיועדת לתרגול כיתתי. [מדריך ספק debug באנדרואיד](https://firebase.google.com/docs/app-check/android/debug-provider).
 
 ## 4. מגבילים שימוש ובודקים מוכנות
 

@@ -18,7 +18,7 @@ tags: [Android, Java, topics]
 
 ## בקשת LLM קטנה עם Firebase AI Logic
 
-[כפתור אחד ותשובה אחת]({{ '/android/topics/firebase-ai-logic/he/' | relative_url }}) מדגים Java,‏ View Binding,‏ future ו־callbacks, בלי טבלת נתונים או מאגר אפליקציה חדש. [עמוד הכנה נפרד]({{ '/android/topics/firebase-ai-logic/he/setup/' | relative_url }}) מסביר רישום אפליקציה, בחירת ספק, App Check לפיתוח ולהפצה, הגבלת מפתחות ומכסות, עם צילומי מסך שנחתכו להסרת פרטים מזהים. זמין גם ב־[English]({{ '/android/topics/firebase-ai-logic/' | relative_url }}?lang=en).
+[כפתור אחד ותשובה אחת]({{ '/android/topics/firebase-ai-logic/he/' | relative_url }}) מדגים Java,‏ View Binding,‏ future ו־callbacks, בלי טבלת נתונים או מאגר אפליקציה חדש. [עמוד הכנה נפרד]({{ '/android/topics/firebase-ai-logic/he/setup/' | relative_url }}) מסביר רישום אפליקציה, בחירת ספק, App Check עם טוקן פרטי לתרגול, הגבלת מפתחות ומכסות, עם צילומי מסך שנחתכו להסרת פרטים מזהים. זמין גם ב־[English]({{ '/android/topics/firebase-ai-logic/' | relative_url }}?lang=en).
 
 ## איך לומדים מהקוד, לא רק מעתיקים אותו?
 

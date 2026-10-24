@@ -77,6 +77,8 @@ View Binding ממירה את מזהי XML בשם `ask_llm` ו־`answer_label` ל
 import androidx.core.content.ContextCompat;
 import com.example.topic.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 import com.google.firebase.ai.FirebaseAI;
 import com.google.firebase.ai.GenerativeModel;
 import com.google.firebase.ai.java.GenerativeModelFutures;
@@ -104,11 +106,13 @@ import com.google.common.util.concurrent.ListenableFuture;
              Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 {% endcode_diff %}
 
-אחרי ה־`});` שסוגר את מאזין ה־insets, אתחלו את Firebase, את עזר ה־App Check מעמוד ההכנה ואת מעטפת המודל ל־Java:
+אחרי ה־`});` שסוגר את מאזין ה־insets, אתחלו את Firebase, הפעילו את ספק App Check של התרגול וצרו את מעטפת המודל ל־Java:
 
 ```java
 FirebaseApp.initializeApp(this);
-AppCheckSetup.install(); // Choose the provider for this build variant first.
+// Use the classroom token registered on the setup page.
+FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
+        DebugAppCheckProviderFactory.getInstance());
 GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
         .generativeModel("gemini-3.8-flash");
 GenerativeModelFutures model = GenerativeModelFutures.from(ai);

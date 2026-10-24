@@ -83,6 +83,8 @@ In **app > kotlin+java > com.example.topic > MainActivity**, add these imports b
 import androidx.core.content.ContextCompat;
 import com.example.topic.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
 import com.google.firebase.ai.FirebaseAI;
 import com.google.firebase.ai.GenerativeModel;
 import com.google.firebase.ai.java.GenerativeModelFutures;
@@ -110,11 +112,13 @@ Inside `onCreate`, change the existing layout references as shown; keep the inse
              Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 {% endcode_diff %}
 
-After the insets listener's closing `});`, initialize Firebase, the App Check helper from the setup page, and the Java model wrapper:
+After the insets listener's closing `});`, initialize Firebase, install the classroom App Check provider, and create the Java model wrapper:
 
 ```java
 FirebaseApp.initializeApp(this);
-AppCheckSetup.install(); // Choose the provider for this build variant first.
+// Use the classroom token registered on the setup page.
+FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
+        DebugAppCheckProviderFactory.getInstance());
 GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
         .generativeModel("gemini-3.8-flash");
 GenerativeModelFutures model = GenerativeModelFutures.from(ai);
