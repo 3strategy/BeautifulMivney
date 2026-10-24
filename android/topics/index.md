@@ -16,6 +16,10 @@ tags: [Android, Java, topics]
 
 [Petstore: מטקסט JSON לאובייקטי Java ולטבלת בעלי חיים]({{ '/android/topics/petstore-json/he/' | relative_url }}) מתחיל ב־Swagger ומציג את טקסט ה־JSON לצד טבלה שנבנית מאובייקטי Java. זהו מסלול פתיחה עצמאי מ־Empty Views Activity בפרויקט Topic3 (`com.example.topic`), ולא ענף של פרויקט המעבדות. כולל GET,‏ POST, תרגול ב־Notepad++ ושמירה ל־preferences כתרגיל רשות. זמין בעברית וב־[English]({{ '/android/topics/petstore-json/' | relative_url }}?lang=en), עם אותם קטעי קוד וקובצי תרגול.
 
+## בקשת LLM קטנה עם Firebase AI Logic
+
+[כפתור אחד ותשובה אחת]({{ '/android/topics/firebase-ai-logic/he/' | relative_url }}) מדגים Java,‏ View Binding,‏ future ו־callbacks, בלי טבלת נתונים או מאגר אפליקציה חדש. [עמוד הכנה נפרד]({{ '/android/topics/firebase-ai-logic/he/setup/' | relative_url }}) מסביר רישום אפליקציה, בחירת ספק, App Check לפיתוח ולהפצה, הגבלת מפתחות ומכסות, עם צילומי מסך שנחתכו להסרת פרטים מזהים. זמין גם ב־[English]({{ '/android/topics/firebase-ai-logic/' | relative_url }}?lang=en).
+
 ## איך לומדים מהקוד, לא רק מעתיקים אותו?
 
 בכל מעבדה עברו על אותו רצף: נבאו תוצאה, קראו את זרימת הנתונים, כתבו את השינוי, ובדקו את התחזית. `/** ... */` לפני מתודה היא Javadoc: היא מתארת את החוזה למי שקורא למתודה. `@param` אומר מה מותר למסור, `@return` מה נקבל, ו־`@throws` איזה כשל צפוי. הערת `//` בתוך גוף מתארת החלטת מימוש חשובה, למשל למה תוצאה ישנה נפסלת. אל תכתבו הערה שרק מתרגמת `count++` למילים.
