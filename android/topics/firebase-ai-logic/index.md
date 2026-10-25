@@ -18,7 +18,9 @@ main {
 
 [Secure Google-side setup](setup/) · [עברית]({{ '/android/topics/firebase-ai-logic/he/' | relative_url }}?lang=he)
 
-Press **Ask LLM**, see **Thinking...**, then see the generated answer in one label. No new Git repository, data table, model class, or JSON parser is needed. Start with a Java **Empty Views Activity**, package `com.example.topic`, and complete the separate [setup page](setup/) first. Keep all unrelated template code and dependencies. Use Android API 24 or higher; keep a higher template minimum if already set. Use a separate emulator if another TopicProjects exercise has the same application ID.
+Press **Ask LLM**, see **Thinking...**, then see the generated answer in one label. Connect to **your own Firebase project for your yearly Android app**, on **Spark with no linked billing account**, as described on the [setup page](setup/).
+
+The code below starts from a Java **Empty Views Activity**. `com.example.topic` is the example package: use your own package in Android Studio navigation and in the binding import, and register your app's actual `applicationId` with Firebase. Keep that identity as your yearly app grows. If your yearly app already has its own screen, follow this small UI example in an Empty Views exercise before integrating the button there. No new Git repository, data table, model class, or JSON parser is needed. Keep unrelated template code and dependencies. Use Android API 24 or higher; keep a higher template minimum if already set.
 
 ## 1. One button and a scrollable label
 
@@ -124,7 +126,7 @@ GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
 GenerativeModelFutures model = GenerativeModelFutures.from(ai);
 ```
 
-The model name is a dated example from the [supported-model list](https://firebase.google.com/docs/ai-logic/models), checked on 24 October 2026. If it is retired later, use a currently supported text model. No Gemini API key is passed to this constructor.
+The model name is a dated example from the [supported-model list](https://firebase.google.com/docs/ai-logic/models), checked on 25 October 2026. It supports the no-billing Developer API path on that date. If it is retired later, choose a supported text model that still offers free-tier access; do not enable billing to follow the lesson. No Gemini API key is passed to this constructor.
 
 ## 3. Add the click action
 

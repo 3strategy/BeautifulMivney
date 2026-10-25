@@ -241,7 +241,7 @@ menu_set: android
 |---:|:---:|---:|
 | לקוח SignalR, חיבור לשרת ושליחת אירועים | שיעור מעשי | [016 — Tic-Tac-Toe מרובה משתתפים](/android/projectSteps/016.TicTacToeSignalR) |
 | זרימת הודעה בין UI,‏ Service, שרת ולקוח אחר | העמקה | [016 — תרשים הרצף של SignalR](/android/projectSteps/016.TicTacToeSignalR) |
-| בקשת LLM עם SDK,‏ future ו־callbacks | שיעור מעשי קצר בעברית ובאנגלית | [Firebase AI Logic — כפתור ותשובה](/android/topics/firebase-ai-logic/he/)<br>[הכנה מאובטחת: App Check, מפתחות ומכסות](/android/topics/firebase-ai-logic/he/setup/) |
+| בקשת LLM עם SDK,‏ future ו־callbacks | שיעור מעשי קצר בעברית ובאנגלית | [Firebase AI Logic — כפתור ותשובה](/android/topics/firebase-ai-logic/he/)<br>[הכנה אישית לפרויקט השנתי: Spark,‏ App Check ומכסות](/android/topics/firebase-ai-logic/he/setup/) |
 | קריאת API ושליחת JSON מ־Android | שיעור מעשי | [Interactions API ו־LLM ב־Java](/android/unsorted/LLM-using-google-interactions-api) |
 | Firebase Cloud Functions ופריסה | שיעור מעשי מתקדם | [07 — תשתית ענן ל־FCM](/android/CollectCircles/07.collect-circles-cloud-infrastructure) |
 | הפרדת סודות וערכי סביבה מן הקוד | שיעור מעשי | [06 — הגדרות מקומיות ל־FCM](/android/CollectCircles/06.collect-circles-fcm-invitations) |
