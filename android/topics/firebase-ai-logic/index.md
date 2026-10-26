@@ -22,18 +22,17 @@ Press **Ask LLM**, see **Thinking...**, then see the generated answer in one lab
 
 The code below starts from a Java **Empty Views Activity**. `com.example.topic` is the example package: use your own package in Android Studio navigation and in the binding import, and register your app's actual `applicationId` with Firebase. Keep that identity as your yearly app grows. If your yearly app already has its own screen, follow this small UI example in an Empty Views exercise before integrating the button there. No new Git repository, data table, model class, or JSON parser is needed. Keep unrelated template code and dependencies. Use Android API 24 or higher; keep a higher template minimum if already set.
 
+## Starting point: View Binding is ready
+
+[Download the View Binding baseline ZIP]({{ '/android/topics/firebase-ai-logic/downloads/baseline.zip' | relative_url }}). Extract it into a new folder, open its **Topic3** folder in Android Studio, and let Gradle sync. This is the Empty Views template with View Binding enabled and `MainActivity` already converted, including the `binding` field. It contains no Firebase configuration or AI code. Connect it to **your own Firebase project** using the setup page; do not overwrite an existing yearly project with the ZIP.
+
+If you created your own Empty Views project, perform the shared conversion below first. If you downloaded the prepared ZIP or already use View Binding, read the explanation and **skip the conversion edits**. Keep your own package and SDK settings; `com.example.topic` and API 37 describe the downloadable example.
+
+{% include android/en/view-binding.md namespace="com.example.topic" compile_sdk=37 %}
+
+Both starting routes should now have `private ActivityMainBinding binding;` and use `binding.getRoot()` in `setContentView`. **Build and run**: the Hello World screen should still appear. Continue from this state.
+
 ## 1. One button and a scrollable label
-
-In **Gradle Scripts > build.gradle.kts (Module :app)**, enable View Binding inside the existing `android` block. If `buildFeatures` already exists, add only its `viewBinding` setting.
-
-```kotlin
-android {
-    // Keep the existing namespace, SDK levels, build types, etc.
-    buildFeatures {
-        viewBinding = true
-    }
-}
-```
 
 In **app > res > layout > activity_main.xml**, replace only the Hello World TextView with the following children. Keep the root ConstraintLayout and its `main` ID. The ScrollView lets longer answers remain readable.
 
@@ -83,7 +82,6 @@ In **app > kotlin+java > com.example.topic > MainActivity**, add these imports b
 
 ```java
 import androidx.core.content.ContextCompat;
-import com.example.topic.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
@@ -97,22 +95,6 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 ```
-
-Inside `onCreate`, change the existing layout references as shown; keep the insets listener's body unchanged:
-
-```diff
-         EdgeToEdge.enable(this);
-+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
-         setContentView(R.layout.activity_main);
-```
-
-{% code_diff %}
--        setContentView(R.layout.activity_main);
-+        setContentView(binding.getRoot());
--        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
-             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-{% endcode_diff %}
 
 After the insets listener's closing `});`, initialize Firebase, install the classroom App Check provider, and create the Java model wrapper:
 

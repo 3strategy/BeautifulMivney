@@ -16,18 +16,17 @@ tags: [Android, Java, Firebase, AI, callbacks]
 
 הקוד שלמטה מתחיל מ־**Empty Views Activity** בשפת **Java**. `com.example.topic` הוא שם החבילה בדוגמה: השתמשו בשם החבילה שלכם בניווט ב־Android Studio ובשורת ה־import של View Binding, ורשמו ב־Firebase את ה־`applicationId` האמיתי של האפליקציה. שומרים על זהות האפליקציה כשהפרויקט השנתי מתפתח. אם באפליקציה השנתית כבר יש מסך משלכם, בצעו תחילה את דוגמת הממשק הקטנה בתרגיל Empty Views, ואחר כך שלבו בה את הכפתור. אין צורך במאגר Git חדש, בטבלת נתונים, במחלקת מודל משלנו או במפענח JSON. משאירים את קוד התבנית והתלויות שאינם קשורים לשינוי. נדרשת רמת API של 24 ומעלה; אם בתבנית כבר מוגדר מינימום גבוה יותר, משאירים אותו.
 
+## נקודת ההתחלה: View Binding כבר מוכן
+
+[הורדת ZIP של תבנית הבסיס עם View Binding]({{ '/android/topics/firebase-ai-logic/downloads/baseline.zip' | relative_url }}). חלצו לתיקייה חדשה, פתחו את תיקיית **Topic3** ב־Android Studio והמתינו לסנכרון Gradle. זו תבנית Empty Views עם View Binding מופעל ועם `MainActivity` שכבר הוסב, כולל השדה `binding`. אין בה הגדרות Firebase או קוד AI. חברו אותה ל**פרויקט Firebase שלכם** לפי עמוד ההכנה; אין לדרוס פרויקט שנתי קיים באמצעות ה־ZIP.
+
+אם יצרתם פרויקט Empty Views משלכם, בצעו קודם את ההסבה המשותפת שלמטה. אם הורדתם את ה־ZIP המוכן או שכבר יש אצלכם View Binding, קראו את ההסבר ו**דלגו על שינויי ההסבה**. משאירים את שם החבילה ואת הגדרות ה־SDK שלכם; החבילה `com.example.topic` ו־API 37 מתארים את הדוגמה להורדה.
+
+{% include android/view-binding.md namespace="com.example.topic" compile_sdk=37 %}
+
+בשני מסלולי ההתחלה צריך להיות כעת השדה `private ActivityMainBinding binding;`, והקריאה ל־`setContentView` צריכה להשתמש ב־`binding.getRoot()`. **בנו והריצו**: מסך Hello World עדיין צריך להופיע. ממשיכים מהמצב הזה.
+
 ## 1. כפתור ותווית שאפשר לגלול
-
-ב־**Gradle Scripts**, בקובץ **build.gradle.kts (Module :app)**, הפעילו View Binding בתוך מקטע `android` הקיים. אם כבר יש `buildFeatures`, הוסיפו רק את ההגדרה `viewBinding`.
-
-```kotlin
-android {
-    // Keep the existing namespace, SDK levels, build types, etc.
-    buildFeatures {
-        viewBinding = true
-    }
-}
-```
 
 ב־**app > res > layout**, פתחו את **activity_main.xml** והחליפו רק את רכיב Hello World בפקדים הבאים. משאירים את ConstraintLayout הראשי ואת המזהה `main`. ה־ScrollView מאפשר לקרוא גם תשובה ארוכה.
 
@@ -77,7 +76,6 @@ View Binding ממירה את מזהי XML בשם `ask_llm` ו־`answer_label` ל
 
 ```java
 import androidx.core.content.ContextCompat;
-import com.example.topic.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
@@ -91,22 +89,6 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 ```
-
-בתוך `onCreate`, שנו את ההפניות לפריסה כפי שמוצג. גוף מאזין ה־insets נשאר כפי שהוא:
-
-```diff
-         EdgeToEdge.enable(this);
-+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
-         setContentView(R.layout.activity_main);
-```
-
-{% code_diff %}
--        setContentView(R.layout.activity_main);
-+        setContentView(binding.getRoot());
--        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
-             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-{% endcode_diff %}
 
 אחרי ה־`});` שסוגר את מאזין ה־insets, אתחלו את Firebase, הפעילו את ספק App Check של התרגול וצרו את מעטפת המודל ל־Java:
 
