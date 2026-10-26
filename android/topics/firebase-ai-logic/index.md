@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Ask an LLM — one button, one answer"
+title: "Firebase AI Logic — 2: one button, one answer"
 subtitle: "A small Java / View Binding example with Firebase AI Logic"
 permalink: /android/topics/firebase-ai-logic/
 lang: en
@@ -16,28 +16,25 @@ main {
 }
 </style>
 
-[Secure Google-side setup](setup/) · [עברית]({{ '/android/topics/firebase-ai-logic/he/' | relative_url }}?lang=he)
+[Required first: 1 — project setup](setup/) · [עברית]({{ '/android/topics/firebase-ai-logic/he/' | relative_url }}?lang=he)
 
-Press **Ask LLM**, see **Thinking...**, then see the generated answer in one label. Connect to **your own Firebase project for your yearly Android app**, on **Spark with no linked billing account**, as described on the [setup page](setup/).
+{: .box-warning}
+**Do not start this page before completing [part 1 — project setup](setup/).** That page creates/opens the Android project, links your own Firebase project, configures View Binding, downloads `google-services.json`, adds the Gradle plugin/libraries, and initializes Firebase and `model`. Return here only after its build checkpoint passes.
 
-The code below starts from a Java **Empty Views Activity**. `com.example.topic` is the example package: use your own package in Android Studio navigation and in the binding import, and register your app's actual `applicationId` with Firebase. Keep that identity as your yearly app grows. If your yearly app already has its own screen, follow this small UI example in an Empty Views exercise before integrating the button there. No new Git repository, data table, model class, or JSON parser is needed. Keep unrelated template code and dependencies. Use Android API 24 or higher; keep a higher template minimum if already set.
+{: .box-error}
+**Already built the UI, but Firebase imports are red?** Keep your UI. Complete [the setup page, especially the Gradle section](setup/#firebase-sdk), then return here. There is no need to restart the project or repeat the View Binding conversion. Add each initialization block only once.
 
-## Starting point: View Binding is ready
+Press **Ask LLM**, see **Thinking...**, then see the generated answer in one label. We continue in the **same app and your own Spark Firebase project** prepared in part 1. `com.example.topic` in the navigation is our example package; use your own package. No extra repository, data table or JSON parser is needed.
 
-[Download the View Binding baseline ZIP]({{ '/android/topics/firebase-ai-logic/downloads/baseline.zip' | relative_url }}). Extract it into a new folder, open its **Topic3** folder in Android Studio, and let Gradle sync. This is the Empty Views template with View Binding enabled and `MainActivity` already converted, including the `binding` field. It contains no Firebase configuration or AI code. Connect it to **your own Firebase project** using the setup page; do not overwrite an existing yearly project with the ZIP.
-
-If you created your own Empty Views project, perform the shared conversion below first. If you downloaded the prepared ZIP or already use View Binding, read the explanation and **skip the conversion edits**. Keep your own package and SDK settings; `com.example.topic` and API 37 describe the downloadable example.
-
-{% include android/en/view-binding.md namespace="com.example.topic" compile_sdk=37 %}
-
-Both starting routes should now have `private ActivityMainBinding binding;` and use `binding.getRoot()` in `setContentView`. **Build and run**: the Hello World screen should still appear. Continue from this state.
+{: .box-success}
+**Starting checkpoint:** your Activity already has the `binding` field and the local `model` variable inside `onCreate`, after the insets listener. Both compile. This page adds the UI and its request callback.
 
 ## 1. One button and a scrollable label
 
 In **app > res > layout > activity_main.xml**, replace only the Hello World TextView with the following children. Keep the root ConstraintLayout and its `main` ID. The ScrollView lets longer answers remain readable.
 
 ```diff
-android:layout_height="match_parent"
+     android:layout_height="match_parent"
      tools:context=".MainActivity">
 
 -    <TextView
@@ -76,43 +73,20 @@ android:layout_height="match_parent"
 
 View Binding turns XML IDs `ask_llm` and `answer_label` into the Java fields `askLlm` and `answerLabel`. The binding class is generated; do not write it yourself.
 
-## 2. Connect the screen and the prepared model
+## 2. Add the request imports and click action
 
-In **app > kotlin+java > com.example.topic > MainActivity**, add these imports below the existing imports:
+In **app > kotlin+java > your package > MainActivity**, add only these imports. Keep the Firebase initialization imports from part 1:
 
 ```java
 import androidx.core.content.ContextCompat;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
-import com.google.firebase.ai.FirebaseAI;
-import com.google.firebase.ai.GenerativeModel;
-import com.google.firebase.ai.java.GenerativeModelFutures;
 import com.google.firebase.ai.type.Content;
 import com.google.firebase.ai.type.GenerateContentResponse;
-import com.google.firebase.ai.type.GenerativeBackend;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 ```
 
-After the insets listener's closing `});`, initialize Firebase, install the classroom App Check provider, and create the Java model wrapper:
-
-```java
-FirebaseApp.initializeApp(this);
-// Use the classroom token registered on the setup page.
-FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
-        DebugAppCheckProviderFactory.getInstance());
-GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
-        .generativeModel("gemini-3.8-flash");
-GenerativeModelFutures model = GenerativeModelFutures.from(ai);
-```
-
-The model name is a dated example from the [supported-model list](https://firebase.google.com/docs/ai-logic/models), checked on 25 October 2026. It supports the no-billing Developer API path on that date. If it is retired later, choose a supported text model that still offers free-tier access; do not enable billing to follow the lesson. No Gemini API key is passed to this constructor.
-
-## 3. Add the click action
-
-Immediately after the model initialization, still inside `onCreate`, add:
+Immediately after the existing `GenerativeModelFutures model = GenerativeModelFutures.from(ai);`, still inside `onCreate`, add:
 
 ```java
 // Android calls this lambda when the user clicks ask_llm.
@@ -148,7 +122,23 @@ binding.askLlm.setOnClickListener(v -> {
 });
 ```
 
-**Build and run now.** If this is the first run with your debug App Check provider, register its private token as described on the setup page, then retry. Press Ask LLM: the label should change immediately, and the button should become available again after success or failure.
+{: .box-success}
+**Build and run now.** The label and button should be visible. Press Ask LLM: the label should change to Thinking immediately, and the button should become available again after success or failure.
+
+### First request: register your installation's App Check token
+{: #first-request}
+
+{: .box-warning}
+**The first request may fail until its debug token is registered.** This is a runtime authorization step; it does not cause red Java imports or a Gradle compilation error.
+
+1. After the first click, open **Logcat** and filter for **DebugAppCheckProvider**. Copy the generated debug token privately.
+2. In **your Firebase project > Security > App Check > Apps**, open your app's overflow menu and choose **Manage debug tokens**. Register that token.
+3. Press **Ask LLM** again. The returned text should now replace Thinking, provided the API and quota are available.
+
+Keep this token private for your test installation. Revoke it when unused or exposed. [Debug-provider instructions](https://firebase.google.com/docs/app-check/android/debug-provider).
+
+{: .box-error}
+**Still failing at runtime?** Check the actual label/Logcat error: App Check errors point to token registration; `API_KEY_SERVICE_BLOCKED` points to the API-key allowlist; `404` may indicate an unavailable model; `429` means quota/capacity limits. Wait/check quota for `429`; keep the no-billing setup. These failures are separate from unresolved Java classes.
 
 ```mermaid
 flowchart LR

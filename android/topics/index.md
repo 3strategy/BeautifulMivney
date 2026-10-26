@@ -18,7 +18,7 @@ tags: [Android, Java, topics]
 
 ## בקשת LLM קטנה עם Firebase AI Logic
 
-[כפתור אחד ותשובה אחת]({{ '/android/topics/firebase-ai-logic/he/' | relative_url }}) מדגים Java,‏ View Binding,‏ future ו־callbacks, בלי טבלת נתונים או מאגר אפליקציה חדש. [עמוד הכנה נפרד]({{ '/android/topics/firebase-ai-logic/he/setup/' | relative_url }}) מסביר הכנת פרויקט Firebase אישי לפרויקט השנתי במסלול Spark ללא קישור לחיוב, רישום אפליקציה, בחירת ספק, App Check עם טוקן פרטי לתרגול והגבלת מפתחות ומכסות, עם צילומי מסך שנחתכו להסרת פרטים מזהים. זמין גם ב־[English]({{ '/android/topics/firebase-ai-logic/' | relative_url }}?lang=en).
+מתחילים ב[חלק 1 — הכנת הפרויקט]({{ '/android/topics/firebase-ai-logic/he/setup/' | relative_url }}): יצירה או פתיחה של פרויקט Android, תבנית ZIP עם View Binding והסבר ההסבה המשותף, פרויקט Firebase אישי במסלול Spark, קובץ ההגדרות, תוסף ותלויות Gradle ואתחול המודל. רק אחרי סנכרון ובנייה מוצלחים ממשיכים ל[חלק 2 — כפתור אחד ותשובה אחת]({{ '/android/topics/firebase-ai-logic/he/' | relative_url }}), שמלמד Java,‏ future ו־callbacks ורושם את טוקן App Check בלחיצה הראשונה. גם באנגלית: [1 — Setup]({{ '/android/topics/firebase-ai-logic/setup/' | relative_url }}?lang=en), [2 — Request]({{ '/android/topics/firebase-ai-logic/' | relative_url }}?lang=en).
 
 ## איך לומדים מהקוד, לא רק מעתיקים אותו?
 

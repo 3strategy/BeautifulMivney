@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "שואלים LLM — כפתור אחד ותשובה אחת"
+title: "Firebase AI Logic — 2: כפתור אחד ותשובה אחת"
 subtitle: "דוגמת Java ו־View Binding קטנה עם Firebase AI Logic"
 permalink: /android/topics/firebase-ai-logic/he/
 lang: he
@@ -10,28 +10,25 @@ full-width: true
 tags: [Android, Java, Firebase, AI, callbacks]
 ---
 
-[הכנה מאובטחת בצד Google](setup/) · [English]({{ '/android/topics/firebase-ai-logic/' | relative_url }}?lang=en)
+[חובה קודם: 1 — הכנת הפרויקט](setup/) · [English]({{ '/android/topics/firebase-ai-logic/' | relative_url }}?lang=en)
 
-לוחצים **Ask LLM**, רואים **Thinking...**, ואז תשובה שנוצרה מוצגת בתווית אחת. מתחברים ל**פרויקט Firebase שלכם עבור האפליקציה השנתית**, במסלול **Spark ללא קישור לחשבון חיוב**, לפי [עמוד ההכנה](setup/).
+{: .box-warning}
+**אין להתחיל את העמוד הזה לפני השלמת [חלק 1 — הכנת הפרויקט](setup/).** שם יוצרים או פותחים את פרויקט Android, מחברים את פרויקט Firebase האישי, מגדירים View Binding, מורידים `google-services.json`, מוסיפים תוסף וספריות ל־Gradle ומאתחלים את Firebase ואת `model`. חוזרים לכאן רק אחרי בדיקת הבנייה שבסיום ההכנה.
 
-הקוד שלמטה מתחיל מ־**Empty Views Activity** בשפת **Java**. `com.example.topic` הוא שם החבילה בדוגמה: השתמשו בשם החבילה שלכם בניווט ב־Android Studio ובשורת ה־import של View Binding, ורשמו ב־Firebase את ה־`applicationId` האמיתי של האפליקציה. שומרים על זהות האפליקציה כשהפרויקט השנתי מתפתח. אם באפליקציה השנתית כבר יש מסך משלכם, בצעו תחילה את דוגמת הממשק הקטנה בתרגיל Empty Views, ואחר כך שלבו בה את הכפתור. אין צורך במאגר Git חדש, בטבלת נתונים, במחלקת מודל משלנו או במפענח JSON. משאירים את קוד התבנית והתלויות שאינם קשורים לשינוי. נדרשת רמת API של 24 ומעלה; אם בתבנית כבר מוגדר מינימום גבוה יותר, משאירים אותו.
+{: .box-error}
+**כבר בניתם את הממשק, אבל ה־imports של Firebase אדומים?** שמרו את הממשק שלכם. השלימו את [עמוד ההכנה, ובמיוחד את סעיף Gradle](setup/#firebase-sdk), ואז חזרו לכאן. אין צורך להתחיל מחדש או לחזור על הסבת View Binding. מוסיפים כל מקטע אתחול פעם אחת בלבד.
 
-## נקודת ההתחלה: View Binding כבר מוכן
+לוחצים **Ask LLM**, רואים **Thinking...**, ואז תשובה שנוצרה מוצגת בתווית אחת. ממשיכים ב**אותה אפליקציה ובפרויקט Firebase האישי שלכם במסלול Spark**, שהוכנו בחלק 1. `com.example.topic` הוא שם החבילה בדוגמה; בניווט השתמשו בחבילה שלכם. אין צורך במאגר נוסף, בטבלת נתונים או במפענח JSON.
 
-[הורדת ZIP של תבנית הבסיס עם View Binding]({{ '/android/topics/firebase-ai-logic/downloads/baseline.zip' | relative_url }}). חלצו לתיקייה חדשה, פתחו את תיקיית **Topic3** ב־Android Studio והמתינו לסנכרון Gradle. זו תבנית Empty Views עם View Binding מופעל ועם `MainActivity` שכבר הוסב, כולל השדה `binding`. אין בה הגדרות Firebase או קוד AI. חברו אותה ל**פרויקט Firebase שלכם** לפי עמוד ההכנה; אין לדרוס פרויקט שנתי קיים באמצעות ה־ZIP.
-
-אם יצרתם פרויקט Empty Views משלכם, בצעו קודם את ההסבה המשותפת שלמטה. אם הורדתם את ה־ZIP המוכן או שכבר יש אצלכם View Binding, קראו את ההסבר ו**דלגו על שינויי ההסבה**. משאירים את שם החבילה ואת הגדרות ה־SDK שלכם; החבילה `com.example.topic` ו־API 37 מתארים את הדוגמה להורדה.
-
-{% include android/view-binding.md namespace="com.example.topic" compile_sdk=37 %}
-
-בשני מסלולי ההתחלה צריך להיות כעת השדה `private ActivityMainBinding binding;`, והקריאה ל־`setContentView` צריכה להשתמש ב־`binding.getRoot()`. **בנו והריצו**: מסך Hello World עדיין צריך להופיע. ממשיכים מהמצב הזה.
+{: .box-success}
+**נקודת ההתחלה:** ב־Activity כבר יש שדה `binding` ומשתנה מקומי `model` בתוך `onCreate`, אחרי מאזין ה־insets. שניהם עוברים קומפילציה. בעמוד הזה נוסיף את הממשק ואת ה־callback של הבקשה.
 
 ## 1. כפתור ותווית שאפשר לגלול
 
 ב־**app > res > layout**, פתחו את **activity_main.xml** והחליפו רק את רכיב Hello World בפקדים הבאים. משאירים את ConstraintLayout הראשי ואת המזהה `main`. ה־ScrollView מאפשר לקרוא גם תשובה ארוכה.
 
 ```diff
-android:layout_height="match_parent"
+     android:layout_height="match_parent"
      tools:context=".MainActivity">
 
 -    <TextView
@@ -70,43 +67,20 @@ android:layout_height="match_parent"
 
 View Binding ממירה את מזהי XML בשם `ask_llm` ו־`answer_label` לשדות Java בשם `askLlm` ו־`answerLabel`. מחלקת ה־binding נוצרת אוטומטית; אין לכתוב אותה בעצמנו.
 
-## 2. מחברים את המסך ואת המודל שהוכן
+## 2. מוסיפים imports לבקשה ואת פעולת הלחיצה
 
-ב־**app > kotlin+java > com.example.topic**, פתחו את **MainActivity** והוסיפו את פקודות ה־import האלה מתחת לקיימות:
+ב־**app > kotlin+java > החבילה שלכם > MainActivity**, הוסיפו רק את ה־imports האלה. משאירים את ה־imports של אתחול Firebase מחלק 1:
 
 ```java
 import androidx.core.content.ContextCompat;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.debug.DebugAppCheckProviderFactory;
-import com.google.firebase.ai.FirebaseAI;
-import com.google.firebase.ai.GenerativeModel;
-import com.google.firebase.ai.java.GenerativeModelFutures;
 import com.google.firebase.ai.type.Content;
 import com.google.firebase.ai.type.GenerateContentResponse;
-import com.google.firebase.ai.type.GenerativeBackend;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 ```
 
-אחרי ה־`});` שסוגר את מאזין ה־insets, אתחלו את Firebase, הפעילו את ספק App Check של התרגול וצרו את מעטפת המודל ל־Java:
-
-```java
-FirebaseApp.initializeApp(this);
-// Use the classroom token registered on the setup page.
-FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
-        DebugAppCheckProviderFactory.getInstance());
-GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
-        .generativeModel("gemini-3.8-flash");
-GenerativeModelFutures model = GenerativeModelFutures.from(ai);
-```
-
-שם המודל נלקח מ[רשימת המודלים הנתמכים](https://firebase.google.com/docs/ai-logic/models), שנבדקה ב־25 באוקטובר 2026. בתאריך הזה הוא תומך במסלול Developer API ללא חיוב. אם ייצא משימוש בהמשך, בחרו מודל טקסט נתמך שעדיין מציע גישה במסלול ללא תשלום; אין להפעיל חיוב כדי לבצע את השיעור. אין להעביר מפתח Gemini API לבנאי הזה.
-
-## 3. מוסיפים את פעולת הלחיצה
-
-מיד אחרי אתחול המודל, עדיין בתוך `onCreate`, הוסיפו:
+מיד אחרי השורה הקיימת `GenerativeModelFutures model = GenerativeModelFutures.from(ai);`, עדיין בתוך `onCreate`, הוסיפו:
 
 ```java
 // Android calls this lambda when the user clicks ask_llm.
@@ -142,7 +116,23 @@ binding.askLlm.setOnClickListener(v -> {
 });
 ```
 
-**בצעו Build והריצו עכשיו.** אם זאת ההרצה הראשונה עם ספק ה־debug של App Check, רשמו את הטוקן הפרטי שלו כפי שמוסבר בעמוד ההכנה, ואז נסו שוב. לחצו Ask LLM: התווית אמורה להשתנות מיד, והכפתור יחזור להיות זמין אחרי הצלחה או כישלון.
+{: .box-success}
+**בנו והריצו עכשיו.** התווית והכפתור צריכים להופיע. לחצו Ask LLM: התווית אמורה להשתנות מיד ל־Thinking, והכפתור יחזור להיות זמין אחרי הצלחה או כישלון.
+
+### הבקשה הראשונה: רושמים את טוקן App Check של ההתקנה
+{: #first-request}
+
+{: .box-warning}
+**הבקשה הראשונה עשויה להיכשל עד לרישום טוקן ה־debug שלה.** זהו שלב הרשאה בזמן ריצה; הוא אינו גורם ל־imports אדומים ב־Java או לשגיאת קומפילציה ב־Gradle.
+
+1. אחרי הלחיצה הראשונה פתחו **Logcat** וסננו לפי **DebugAppCheckProvider**. העתיקו באופן פרטי את טוקן ה־debug שנוצר.
+2. ב**פרויקט Firebase שלכם > Security > App Check > Apps**, פתחו את תפריט שלוש הנקודות של האפליקציה ובחרו **Manage debug tokens**. רשמו את הטוקן.
+3. לחצו שוב **Ask LLM**. התשובה אמורה להחליף את Thinking, בתנאי שה־API זמין ויש מכסה.
+
+שמרו את הטוקן באופן פרטי עבור התקנת התרגול שלכם. בטלו אותו כשאינו בשימוש או אם נחשף. [הוראות ספק debug](https://firebase.google.com/docs/app-check/android/debug-provider).
+
+{: .box-error}
+**עדיין נכשל בזמן ריצה?** קראו את השגיאה בתווית וב־Logcat: שגיאות App Check מצביעות על רישום הטוקן; `API_KEY_SERVICE_BLOCKED` מצביע על רשימת ה־APIs המותרים למפתח; `404` עשוי להצביע על מודל שאינו זמין; `429` מציין מגבלות מכסה או קיבולת. במקרה של `429` בודקים מכסה וממתינים, ומשאירים את ההגדרה ללא חיוב. השגיאות האלה נפרדות ממחלקות Java שאינן מזוהות.
 
 ```mermaid
 flowchart LR
