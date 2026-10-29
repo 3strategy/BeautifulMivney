@@ -135,23 +135,20 @@ navbar-links:
     - תבניות, פעולות עזר גיא אלרם: mivney/8summary/PeulotEzerGuyElram.pdf
     
 
-  תמ"ע:
-
-
-  - 0 חזרה על עצמים:
+  0 חזרה על עצמים:
     - 0. חזרה על מחלקות: "/oop/00Chapter0"
     - מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11A-objects/index.html"
     - מצגת מני והרדי: "/oop/oop1Meni-Hardi.pptx"
     - באוניברסיטה העברית - עצמים: "/oop/chap2-Objects-CSharp.pdf"
     - באוניברסיטה העברית - מחלקות: "/oop/chap3-Classes-CSharp.pdf"
-  - 1. הורשה: 
+  1. הורשה:
     - 1.1 פתיחה: "/oop/01inheritance"
     - 1.2 הורשה המשך: "/oop/01inheritc"
     - 1.3 שרשור בנאים: "/oop/01inheritdconstructors"
     - 1.4 קריאות ל-base, this: "/oop/01inheritEbase"
     - 1.5 תרגול אינטרקטיבי: "oop/01questionnaire"
     - מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11C-abstract/index.html"
-  - 2. פולימורפיזם: 
+  2. פולימורפיזם:
     - 2.1 מצגת: "/oop/02-polymorphism-cs.pptx"
     - 2.2 פולימורפיזם: "/oop/02Polymorphism"
     # - 2.3a אינטרקטיבי לבגרות: "oop/02questionnairePolymCore"
@@ -175,7 +172,7 @@ navbar-links:
     - משחק לימוד OOP: "/oop/GeminiArtifacts/oop_learning_game.html"
 
 
-  - תרגול אינטרקטיבי:
+  תרגול ובגרויות:
     - אחוזים לחטיבת ביניים: "/interactive/percentages-middle-school"
     - אינטראקטיבי מעורב: "/interactive/02questionnairePolymCore"
     - ממוקד בגרות 2022/17: "/interactive/02questionnaire2022q17"
@@ -190,9 +187,9 @@ navbar-links:
     - אינטראקטיבי מתקדם: "/interactive/02questionnairePolymAdv"
     - אינטראקטיבי JAVA: "https://gemini.google.com/share/cc9b583ee06b"
 
-  - בגרויות תמ"ע: "/bagruyot/IndexQuestionsByTopicOOP/"
-  - בגרויות מבני נתונים: "/bagruyot/"
-  - בחינות מה"ט: "https://data.labor.gov.il/Mahat/mahat_tests_search.aspx"
+    - בגרויות תמ"ע: "/bagruyot/IndexQuestionsByTopicOOP/"
+    - בגרויות מבני נתונים: "/bagruyot/"
+    - בחינות מה"ט: "https://data.labor.gov.il/Mahat/mahat_tests_search.aspx"
 
   יסודות ועבודה עם סוכנים:
     - 00 Agentic Engineering פתיחה: "/agentic/00-opener"
@@ -338,7 +335,10 @@ navbar-menu-sets:
     label: יא תמע
     items:
       - פתיחת שנה
-      - תמ"ע
+      - 0 חזרה על עצמים
+      - 1. הורשה
+      - 2. פולימורפיזם
+      - תרגול ובגרויות
   android:
     label: אנדרואיד
     items:
