@@ -5,7 +5,9 @@
   </button>
 
   {%- if page.title -%}
-    <span class="navbar-page-title" dir="auto" title="{{ page.title | strip_html | escape }}" aria-hidden="true">{{ page.title | strip_html | escape }}</span>
+    <div class="navbar-page-title" aria-hidden="true">
+      <span dir="auto" title="{{ page.title | strip_html | escape }}">{{ page.title | strip_html | escape }}</span>
+    </div>
   {%- endif -%}
 
   {%- if site.title-img -%}

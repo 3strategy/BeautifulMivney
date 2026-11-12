@@ -275,49 +275,59 @@ body {
 }
 
 /* ================= RTL navbar dropdowns ================ */
-/* Keep the lesson context visible alongside navigation after scrolling. */
-.navbar-custom .navbar-page-title,
-.navbar-custom .nav-secondary-icon {
-    display: none;
-}
-
-.navbar-custom.top-nav-short .navbar-page-title {
-    display: block;
+/* Keep space for the title so its appearance cannot move the menu. */
+.navbar-custom .navbar-page-title {
+    display: flex;
     flex: 1 1 0;
     min-width: 0;
     padding-inline: 0.5rem;
-    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
     color: var(--navbar-text-col);
     font-size: 0.875rem;
     font-weight: 600;
     line-height: 1.3;
+}
+
+.navbar-custom .navbar-page-title span {
+    display: -webkit-box;
+    max-width: 100%;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     text-align: start;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+}
+
+.navbar-custom.show-navbar-page-title .navbar-page-title {
+    visibility: visible;
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .navbar-custom .navbar-page-title {
+        transition: opacity 150ms ease;
+    }
+}
+
+.navbar-custom .nav-secondary-icon {
+    display: none;
 }
 
 @media (min-width: 1200px) {
-    .navbar-custom.top-nav-short .navbar-page-title {
-        flex: 1 1 16rem;
+    .navbar-custom .navbar-brand {
+        order: -1;
+        margin-inline: 0;
     }
 
-    .navbar-custom.top-nav-short .navbar-collapse {
-        flex: 0 1 auto;
-        min-width: 0;
+    .navbar-custom .navbar-collapse {
+        flex: 0 0 auto;
     }
 
-    .navbar-custom.top-nav-short .navbar-nav {
+    .navbar-custom .navbar-nav {
         align-items: center;
-        min-width: 0;
-        width: 100%;
-    }
-
-    .navbar-custom.top-nav-short .navbar-nav > .nav-item {
-        min-width: 0;
-    }
-
-    .navbar-custom.top-nav-short .navbar-nav .nav-link {
-        padding-inline: 0.6rem;
+        /* Leave room for the course dropdowns nearest the left edge. */
+        padding-inline: 0 2.5rem;
     }
 
     /* These shared controls sit at the left edge; open panels into the viewport. */
@@ -331,11 +341,11 @@ body {
         right: auto;
     }
 
-    .navbar-custom.top-nav-short .nav-secondary-label {
+    .navbar-custom .nav-secondary-label {
         display: none;
     }
 
-    .navbar-custom.top-nav-short .nav-secondary-icon {
+    .navbar-custom .nav-secondary-icon {
         display: inline;
     }
 }
@@ -360,9 +370,14 @@ body {
 /* Desktop submenu positioning is handled by theme CSS using dropdown-menu-right
    For mobile, stack submenus under parent, indented to the right */
 @media (max-width: 1199px) {
-    /* Reset LTR padding */
+    .navbar-custom .nav-item.dropdown .dropdown-menu {
+        width: 100%;
+    }
+
     .navbar-custom .dropdown-menu .dropdown-item {
         padding-left: 0 !important;
+        white-space: normal;
+        overflow-wrap: anywhere;
     }
 
     /* Level 1: direct children in the first dropdown panel */

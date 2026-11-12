@@ -8,12 +8,15 @@ let BeautifulJekyllJS = {
   init : function() {
     setTimeout(BeautifulJekyllJS.initNavbar, 10);
 
-    // Shorten the navbar after scrolling a little bit down
-    const updateNavbarOnScroll = function() {
-      $(".navbar").toggleClass("top-nav-short", $(window).scrollTop() > 50);
-    };
-    $(window).on('scroll', updateNavbarOnScroll);
-    updateNavbarOnScroll();
+    BeautifulJekyllJS.initNavbarTitle();
+
+    if (document.querySelector(".navbar-custom .avatar-container")) {
+      const updateAvatar = function() {
+        $(".navbar-custom").toggleClass("top-nav-short", window.scrollY > 50);
+      };
+      window.addEventListener("scroll", updateAvatar, { passive: true });
+      updateAvatar();
+    }
 
     // On mobile, hide the avatar when expanding the navbar menu
     $('#main-navbar').on('show.bs.collapse', function () {
@@ -54,6 +57,33 @@ let BeautifulJekyllJS = {
     $('.navbar .dropdown').on('hidden.bs.dropdown', function () {
       $(this).find('.dropdown-menu .show').removeClass('show');
     });
+  },
+
+  initNavbarTitle : function() {
+    const navbar = document.querySelector(".navbar-custom");
+    if (!navbar?.querySelector(".navbar-page-title")) return;
+
+    const heading = document.querySelector(".intro-header h1");
+    if (!heading) {
+      navbar.classList.add("show-navbar-page-title");
+      return;
+    }
+
+    // Use the closed bar height so opening the mobile menu does not move the
+    // point at which the title appears.
+    let barHeight;
+    const updateTitle = function() {
+      navbar.classList.toggle("show-navbar-page-title", heading.getBoundingClientRect().bottom <= barHeight);
+    };
+    const measureBar = function() {
+      barHeight = parseFloat(getComputedStyle(navbar).minHeight);
+      updateTitle();
+    };
+    window.addEventListener("scroll", updateTitle, { passive: true });
+    window.addEventListener("resize", measureBar);
+    window.addEventListener("pageshow", measureBar);
+    new ResizeObserver(updateTitle).observe(heading);
+    measureBar();
   },
 
   initNavbar : function() {
