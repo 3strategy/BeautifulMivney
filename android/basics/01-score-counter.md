@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "מונה נקודות — אפליקציית Android ראשונה"
-subtitle: "מסך ב־XML, לחיצות וניקוד ב־Java"
+subtitle: "עיצוב המסך בגרירה או ב־XML, לחיצות וניקוד ב־Java"
 permalink: /android/basics/01-score-counter/
 menu_set: android
 lang: he
@@ -24,7 +24,7 @@ tags: [Android, Java, XML, View Binding, מתחילים]
 ### 1. פותחים ומריצים פרויקט
 
 1. ב־Android Studio בחרו **New Project**. אם כבר פתוח פרויקט, השתמשו ב־**File > New > New Project**.
-2. בקטגוריה **Phone and Tablet**, בחרו **Basic Views Activity** ולחצו **Next**.
+2. בקטגוריה **Phone and large screens** (או **Phone and Tablet**, לפי הגרסה), בחרו **Basic Views Activity** ולחצו **Next**.
 
    ![אריח התבנית Basic Views Activity באשף יצירת הפרויקט]({{ '/assets/img/android-basics/basic-views-activity.png' | relative_url }})
 
@@ -38,10 +38,56 @@ tags: [Android, Java, XML, View Binding, מתחילים]
 **האפליקציה המקורית לא עולה?** בדקו שבחרתם את האמולטור של המעבדה ושפתחתם את הפרויקט הנכון. אם מופיעה הודעה אדומה בחלון **Build**, קראו את השגיאה הראשונה עם המורה. ממשיכים לעריכת הקוד אחרי שהתבנית עולה.
 
 ### 2. מסדרים את המסך הראשון
+{: #layout-editor}
 
-בתצוגת **Android** פתחו **app > res > layout > fragment_first.xml**. בחרו **Split** כדי לראות את ה־XML ואת התצוגה המקדימה יחד. הקובץ מתאר את תוכן המסך הראשון. את ההתנהגות של המסך נערוך בהמשך ב־`FirstFragment.java`.
+בתצוגת **Android** פתחו **app > res > layout > fragment_first.xml**. הקובץ מתאר את תוכן המסך הראשון. את ההתנהגות שלו נערוך בהמשך ב־`FirstFragment.java`.
 
-המכל החיצוני, `NestedScrollView`, מאפשר למסך לגלול. בתוכו נשתמש ב־`LinearLayout` אנכי. הרכיבים יופיעו מלמעלה למטה לפי סדר הכתיבה שלהם. בתוך המכל יופיעו המספר ואז כפתור **Next** של התבנית. משאירים לכפתור את המזהה `button_first`, שהקוד הקיים משתמש בו כדי לעבור למסך השני.
+המכל החיצוני, `NestedScrollView`, מאפשר למסך לגלול. בתוכו נשתמש ב־`LinearLayout` אנכי. הרכיבים יופיעו מלמעלה למטה לפי הסדר בעץ הרכיבים. בשלב הזה יופיעו תווית המונה ואחריה כפתור **Next**. משאירים לכפתור את המזהה `button_first`, שהקוד הקיים משתמש בו כדי לעבור למסך השני.
+
+**בחרו דרך אחת לבניית המסך.** אפשר לגרור רכיבים ולשנות מאפיינים בעורך הגרפי, או לערוך את ה־XML ישירות. אחרי שסיימתם, המשיכו לשלב 3 המשותף.
+
+<details markdown="1">
+<summary>דרך א — גרירה ב־Layout Editor</summary>
+
+**פותחים את העורך.** בחרו **Design** בפינה הימנית העליונה של העורך. ב־**Palette** נמצאים הרכיבים שאפשר לגרור. **Component Tree** מציג מה נמצא בתוך כל מכל ובאיזה סדר. ב־**Attributes** משנים את המאפיינים של הרכיב המסומן. אם אחת החלוניות מקופלת, לחצו על הלשונית שלה.
+
+**מחליפים את המכל הפנימי.** ב־**Component Tree** לחצו לחיצה ימנית על `ConstraintLayout`, בחרו **Convert view…**, סמנו **LinearLayout** ולחצו **Apply**. ההמרה משאירה את הרכיבים הקיימים, כולל **Next**, בתוך המכל. ל־`NestedScrollView` יש מקום למכל אחד ישיר, וההמרה משתמשת במכל שכבר נמצא שם.
+
+![לחיצה ימנית על ConstraintLayout בעץ הרכיבים ובחירה ב־Convert view]({{ '/assets/img/android-basics/score-editor-convert-view.png' | relative_url }})
+
+![בחירת LinearLayout בחלון ההמרה ולחיצה על Apply]({{ '/assets/img/android-basics/score-editor-choose-linear-layout.png' | relative_url }})
+
+סמנו את ה־`LinearLayout`. חפשו ב־**Attributes** את `orientation` ובחרו `vertical`. השאירו את `layout_width` על `match_parent` ושנו את `layout_height` ל־`wrap_content`. חפשו `gravity`, פתחו את קבוצת האפשרויות בשם הזה וסמנו `center_horizontal` כדי למרכז את הרכיבים לרוחב.
+
+![הגדרת המאפיין orientation לערך vertical בחלונית Attributes]({{ '/assets/img/android-basics/score-editor-vertical-orientation.png' | relative_url }})
+
+**גוררים תווית לניקוד.** סמנו בעץ את `textview_first` שמציג את הטקסט לדוגמה, ומחקו אותו עם **Delete**. מתוך **Palette > Common** גררו **TextView** אל שורת ה־`LinearLayout` בעץ. אם התווית מופיעה אחרי `button_first`, גררו את שורת התווית בעץ אל קו ההכנסה שמעל הכפתור.
+
+סמנו את התווית החדשה וקבעו לה את המאפיינים הבאים. בשדה `id` הקלידו את השם בדיוק כפי שמופיע בטבלה, הקישו Enter ואשרו **Refactor** אם מופיע.
+
+| מאפיין ב־Attributes | ערך |
+|---:|---:|
+| `id` | `textview_score` |
+| `layout_width` | `wrap_content` |
+| `layout_height` | `wrap_content` |
+| `textSize` | `32sp` |
+| `text` | רוקנו את הטקסט לדוגמה והקישו Enter |
+
+{: .box-warning}
+התווית ריקה בשלב הזה. בשלב 3 קוד ה־Java יציג בה את ה־0.
+
+אפשר להוסיף מעט רווח לפני **Next**. סמנו את `button_first`, חפשו `layout_marginTop` וקבעו `16dp`. עם `wrap_content` רוחב הכפתור נקבע לפי התוכן שלו. חזו מה יקרה אם תשנו את `layout_width` ל־`match_parent`, בדקו בתצוגה והחזירו ל־`wrap_content`.
+
+**משנים את כותרת המסך.** פתחו **app > res > values > strings.xml** ולחצו **Open editor** כדי לפתוח את **Translations Editor**. בשורת `first_fragment_label` לחצו פעמיים על התא בעמודת **Default Value**, הקלידו **מונה נקודות** והקישו Enter.
+
+![הערך מונה נקודות בשורה first_fragment_label בעמודת Default Value]({{ '/assets/img/android-basics/score-editor-translations-editor.png' | relative_url }})
+
+</details>
+
+<details markdown="1">
+<summary>דרך ב — עריכה ב־XML</summary>
+
+בחרו **Split** כדי לראות את ה־XML ואת התצוגה המקדימה יחד.
 
 ערכו רק את המכל הפנימי לפי ההשוואה. שורות עם `+` הן שורות להוספה, ושורות עם `-` הן שורות להסרה. הסימנים עצמם שייכים להשוואה.
 
@@ -114,6 +160,8 @@ tags: [Android, Java, XML, View Binding, מתחילים]
      <string name="second_fragment_label">Second Fragment</string>
 {% endcode_diff %}
 
+</details>
+
 ### 3. מציגים את ערך הפתיחה מתוך Java
 {: #initial-score}
 
@@ -158,7 +206,7 @@ tags: [Android, Java, XML, View Binding, מתחילים]
 ```
 
 {: .box-error}
-**`textviewScore` מסומן באדום?** בדקו שב־`fragment_first.xml` כתבתם בדיוק `android:id="@+id/textview_score"`. שמרו את ה־XML ובדקו אם חלון **Build** מצביע על שגיאה בפריסה. לאחר התיקון הריצו שוב.
+**`textviewScore` מסומן באדום?** בדקו שב־`fragment_first.xml` המזהה של התווית הוא בדיוק `textview_score`. בעורך הגרפי בדקו את שדה `id` ב־**Attributes**. שמרו את הפריסה ובדקו אם חלון **Build** מצביע על שגיאה בפריסה. לאחר התיקון הריצו שוב.
 
 {: .box-success}
 **נקודת בדיקה.** לחצו **Run**. בסרגל העליון אמורה להופיע הכותרת **מונה נקודות**, ובגוף המסך יופיעו 0 ו־**Next**. עברו למסך השני וחזרו. זו נקודת עצירה טובה בין שני חלקי השיעור.
@@ -167,6 +215,26 @@ tags: [Android, Java, XML, View Binding, מתחילים]
 {: #part-b}
 
 ### 4. מחברים כפתור הוספה
+
+<details markdown="1">
+<summary>דרך א — גוררים כפתור הוספה</summary>
+
+1. ב־**Design** גררו **Button** מ־**Palette > Common** אל **קו ההכנסה** שבין `textview_score` ל־`button_first` ב־**Component Tree**. בדקו שהכפתור החדש מופיע בתוך ה־`LinearLayout`, לפני **Next**.
+2. סמנו את הכפתור החדש. ב־**Attributes** הגדירו `id` לערך `button_plus` ואת `layout_width` ו־`layout_height` ל־`wrap_content`.
+3. ליד המאפיין `text` לחצו על סמל בחירת המשאב. בחלון **Pick a Resource** לחצו **+ > String Value**.
+
+   ![בתיבת Pick a Resource פותחים את תפריט הפלוס ובוחרים String Value]({{ '/assets/img/android-basics/score-editor-add-string-value.png' | relative_url }})
+
+4. בשדה **Resource name** הקלידו `score_add`, ובשדה **Resource value** הקלידו **הוספת נקודה**. השאירו את `strings.xml` ואת `values` כפי שהם. לחצו **OK** כדי ליצור את המחרוזת, ואז **OK** בחלון הבחירה כדי לשייך אותה לכפתור.
+
+   ![יצירת משאב score_add עם הטקסט הוספת נקודה]({{ '/assets/img/android-basics/score-editor-score-add-resource.png' | relative_url }})
+
+המחרוזת נשמרת ב־`strings.xml` בשם `score_add`. הכפתור מפנה אליה, כך שאפשר לשנות את הכיתוב במקום אחד.
+
+</details>
+
+<details markdown="1">
+<summary>דרך ב — מוסיפים כפתור הוספה ב־XML</summary>
 
 ב־`strings.xml` הוסיפו את מחרוזת הכפתור לפני `</resources>`.
 
@@ -188,6 +256,8 @@ tags: [Android, Java, XML, View Binding, מתחילים]
              android:id="@+id/button_first"
 ```
 
+</details>
+
 ב־`FirstFragment.java` הוסיפו את מאזין הלחיצה בתוך `onViewCreated`, לפני המאזין הקיים של **Next**.
 
 ```diff
@@ -208,12 +278,21 @@ tags: [Android, Java, XML, View Binding, מתחילים]
 
 ### 5. מוסיפים כפתור הפחתה בעצמכם
 
-הוסיפו מחרוזת בשם `score_subtract` עם הטקסט **הפחתת נקודה**. הוסיפו כפתור עם המזהה `button_minus` אחרי כפתור ההוספה ולפני **Next**. ב־Java חברו את `binding.buttonMinus` למאזין שיוריד נקודה אחת ויעדכן את התצוגה. חזרו לדוגמה של כפתור ההוספה אם נתקעתם.
-
-לפני ההרצה, רשמו תחזית. מה יוצג אחרי שלוש לחיצות על הוספה וארבע על הפחתה, מפתיחה חדשה? מה יוצג אחרי לחיצה נוספת על הוספה?
+הוסיפו כפתור עם המזהה `button_minus` אחרי כפתור ההוספה ולפני **Next**. בחרו דרך והיעזרו בדוגמה של כפתור ההוספה.
 
 <details markdown="1">
-<summary>בדיקה ופתרון להפחתת נקודה</summary>
+<summary>דרך א — גוררים כפתור הפחתה</summary>
+
+גררו **Button** אל קו ההכנסה שבין `button_plus` ל־`button_first`. הגדירו `id` לערך `button_minus` ורוחב וגובה של `wrap_content`. דרך בורר המשאבים של `text` צרו ובחרו מחרוזת בשם `score_subtract` עם הטקסט **הפחתת נקודה**, כמו בשלב 4.
+
+בדקו את סדר הרכיבים בעץ. התווית, שני כפתורי הניקוד ו־**Next** נמצאים כולם באותה רמת הזחה בתוך ה־`LinearLayout`.
+
+![עץ הרכיבים לאחר הגרירה ובו textview_score, כפתורי ההוספה וההפחתה וכפתור Next]({{ '/assets/img/android-basics/score-editor-component-tree.png' | relative_url }})
+
+</details>
+
+<details markdown="1">
+<summary>דרך ב — מוסיפים כפתור הפחתה ב־XML</summary>
 
 ```diff
      <string name="score_add">הוספת נקודה</string>
@@ -232,6 +311,15 @@ tags: [Android, Java, XML, View Binding, מתחילים]
              android:id="@+id/button_first"
 ```
 
+</details>
+
+ב־Java חברו את `binding.buttonMinus` למאזין שיוריד נקודה אחת ויעדכן את התצוגה.
+
+לפני ההרצה, רשמו תחזית. מה יוצג אחרי שלוש לחיצות על הוספה וארבע על הפחתה, מפתיחה חדשה? מה יוצג אחרי לחיצה נוספת על הוספה?
+
+<details markdown="1">
+<summary>בדיקה ופתרון להפחתת נקודה ב־Java</summary>
+
 ```diff
 +        binding.buttonMinus.setOnClickListener(v -> {
 +            score--;
@@ -246,18 +334,25 @@ tags: [Android, Java, XML, View Binding, מתחילים]
 
 ## חלק ג — מפגש נוסף כשיש זמן
 
-**הוסיפו איפוס.** תכננו כפתור שמחזיר את `score` ל־0 ומציג את התוצאה. בנו אותו באותו סדר: מחרוזת, כפתור ב־XML, מאזין ב־Java. בדקו את האיפוס מניקוד חיובי ומניקוד שלילי. אחרי האיפוס לחצו שוב על הוספה ובדקו שמופיע 1.
+**הוסיפו איפוס.** תכננו כפתור שמחזיר את `score` ל־0 ומציג את התוצאה. צרו את הכפתור ואת המחרוזת בעורך הגרפי או ב־XML, ואז חברו מאזין ב־Java. בדקו את האיפוס מניקוד חיובי ומניקוד שלילי. אחרי האיפוס לחצו שוב על הוספה ובדקו שמופיע 1.
 
 <details markdown="1">
-<summary>פתרון לכפתור האיפוס</summary>
+<summary>דרך א — גוררים כפתור איפוס</summary>
 
-ב־`strings.xml` הוסיפו לפני `</resources>`:
+גררו **Button** בין `button_minus` ל־`button_first`, קבעו `id` לערך `button_reset` ורוחב וגובה של `wrap_content`. צרו ובחרו משאב טקסט בשם `score_reset` עם הערך **איפוס**.
+
+</details>
+
+<details markdown="1">
+<summary>דרך ב — מוסיפים כפתור איפוס ב־XML</summary>
+
+ב־`strings.xml` הוסיפו לפני `</resources>`.
 
 ```xml
 <string name="score_reset">איפוס</string>
 ```
 
-ב־`fragment_first.xml` הוסיפו את הכפתור אחרי כפתור ההפחתה ולפני **Next**:
+ב־`fragment_first.xml` הוסיפו את הכפתור אחרי כפתור ההפחתה ולפני **Next**.
 
 ```xml
 <Button
@@ -267,7 +362,12 @@ tags: [Android, Java, XML, View Binding, מתחילים]
     android:text="@string/score_reset" />
 ```
 
-ב־`onViewCreated` הוסיפו את המאזין לפני המאזין של **Next**:
+</details>
+
+<details markdown="1">
+<summary>פתרון למאזין האיפוס ב־Java</summary>
+
+ב־`onViewCreated` הוסיפו את המאזין לפני המאזין של **Next**.
 
 ```java
 binding.buttonReset.setOnClickListener(v -> {

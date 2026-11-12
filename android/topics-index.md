@@ -161,7 +161,7 @@ menu_set: android
 
 | נושא | עומק | איפה לומדים |
 |---:|---:|---:|
-| בניית מסך ב־Layout Editor | שיעור מעשי | [01a — CollectCircles — בניית המסך דרך ה־GUI](/android/CollectCircles/01a.collect-circles-layout-editor)<br>[018a — LoginActivity דרך ה־GUI](/android/projectSteps/018a.LoginActivityFromGui) |
+| בניית מסך ב־Layout Editor | שיעור מעשי | [שיעור ראשון — מונה נקודות בגרירה](/android/basics/01-score-counter/#layout-editor)<br>[01a — CollectCircles — בניית המסך דרך ה־GUI](/android/CollectCircles/01a.collect-circles-layout-editor)<br>[018a — LoginActivity דרך ה־GUI](/android/projectSteps/018a.LoginActivityFromGui) |
 | XML layouts, אילוצים, משקלים ומשאבי `strings.xml` | שיעור מעשי | [שיעור ראשון — LinearLayout ומשאבי טקסט](/android/basics/01-score-counter/#part-a)<br>[01 — מסך המשחק CollectCircles](/android/CollectCircles/01.collect-circles-drawing)<br>[018a — מסך Login](/android/projectSteps/018a.LoginActivityFromGui)<br>[04 — טבלת Requery](/android/sqlite/04.requery-recyclerview-delete) |
 | נגישות, מסך גמיש, לוקליזציה ו־RTL | שיעור מעשי | [02 — מדף קריאה בשתי שפות עם קורא מסך ורבים](/android/topics/02-accessibility-adaptive-localization/) |
 | מצבי UI: טעינה, ריק, שגיאה, הצלחה ו־Retry | שיעור מעשי עם מקור מדומה | [03 — מעבדת מצבי המסך](/android/topics/03-ui-states-retry/) |
