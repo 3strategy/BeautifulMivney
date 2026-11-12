@@ -9,7 +9,7 @@ menu_set: android
 ---
 
 {: .box-note}
-המפה עוזרת למצוא שיעור לפי **הרעיון שרוצים ללמוד**, ולא רק לפי שם הפרויקט. אם זו הפעם הראשונה שלכם באתר, התחילו באחד מחמשת מסלולי הלמידה; אם כבר יש לכם פרויקט, עברו ישירות לטבלת הנושא הדרוש.
+המפה עוזרת למצוא שיעור לפי **הרעיון שרוצים ללמוד**, ולא רק לפי שם הפרויקט. אם זו הפעם הראשונה שלכם ב־Android Studio, התחילו ב[שיעור מונה הנקודות](/android/basics/01-score-counter/); אם כבר יש לכם פרויקט, עברו ישירות לטבלת הנושא הדרוש.
 
 ## איך קוראים את המפה?
 
@@ -162,11 +162,11 @@ menu_set: android
 | נושא | עומק | איפה לומדים |
 |---:|---:|---:|
 | בניית מסך ב־Layout Editor | שיעור מעשי | [01a — CollectCircles — בניית המסך דרך ה־GUI](/android/CollectCircles/01a.collect-circles-layout-editor)<br>[018a — LoginActivity דרך ה־GUI](/android/projectSteps/018a.LoginActivityFromGui) |
-| XML layouts, אילוצים, משקלים ומשאבי `strings.xml` | שיעור מעשי | [01 — מסך המשחק CollectCircles](/android/CollectCircles/01.collect-circles-drawing)<br>[018a — מסך Login](/android/projectSteps/018a.LoginActivityFromGui)<br>[04 — טבלת Requery](/android/sqlite/04.requery-recyclerview-delete) |
+| XML layouts, אילוצים, משקלים ומשאבי `strings.xml` | שיעור מעשי | [שיעור ראשון — LinearLayout ומשאבי טקסט](/android/basics/01-score-counter/#part-a)<br>[01 — מסך המשחק CollectCircles](/android/CollectCircles/01.collect-circles-drawing)<br>[018a — מסך Login](/android/projectSteps/018a.LoginActivityFromGui)<br>[04 — טבלת Requery](/android/sqlite/04.requery-recyclerview-delete) |
 | נגישות, מסך גמיש, לוקליזציה ו־RTL | שיעור מעשי | [02 — מדף קריאה בשתי שפות עם קורא מסך ורבים](/android/topics/02-accessibility-adaptive-localization/) |
 | מצבי UI: טעינה, ריק, שגיאה, הצלחה ו־Retry | שיעור מעשי עם מקור מדומה | [03 — מעבדת מצבי המסך](/android/topics/03-ui-states-retry/) |
-| `View Binding` במקום `findViewById` | שיעור מעשי | [019a — מעבר הדרגתי והמרת כל הפניות ל־UI במסך Login](/android/projectSteps/019a.BindingInsteadOfFindByID#login-ui-references)<br>[019b — MainActivity: מקוד התבנית לאתחול binding עם insets](/android/projectSteps/019bBindingsForMainActivity)<br>[019c — Fragments ו־MenuActivity](/android/projectSteps/019c.BindingForFragmentsAndMenuActivity)<br>[01 — Requery בפרויקט חדש](/android/sqlite/01.requery-student)<br>[01 — פתיחת Hex](/android/hex5/01-board/)<br>[01 — פתיחת Connect4](/android/Connect4/01.connect4-board/)<br>[01 — פתיחת CollectCircles](/android/CollectCircles/01.collect-circles-drawing)<br>[01 — תשתית פרויקט topics](/android/topics/01-lifecycle-state/)
-| אירועי לחיצה ו־listeners | שיעור מעשי | [015b — חיבור לוח המשחק למודל](/android/projectSteps/015b.AddingTicTacToeToMainActivity)<br>[03 — הוספות למסד דרך דיאלוגים](/android/sqlite/03.requery-join-and-inserts) |
+| `View Binding` במקום `findViewById` | שיעור מעשי | [שיעור ראשון — שימוש ב־binding של התבנית](/android/basics/01-score-counter/#initial-score)<br>[019a — מעבר הדרגתי והמרת כל הפניות ל־UI במסך Login](/android/projectSteps/019a.BindingInsteadOfFindByID#login-ui-references)<br>[019b — MainActivity: מקוד התבנית לאתחול binding עם insets](/android/projectSteps/019bBindingsForMainActivity)<br>[019c — Fragments ו־MenuActivity](/android/projectSteps/019c.BindingForFragmentsAndMenuActivity)<br>[01 — Requery בפרויקט חדש](/android/sqlite/01.requery-student)<br>[01 — פתיחת Hex](/android/hex5/01-board/)<br>[01 — פתיחת Connect4](/android/Connect4/01.connect4-board/)<br>[01 — פתיחת CollectCircles](/android/CollectCircles/01.collect-circles-drawing)<br>[01 — תשתית פרויקט topics](/android/topics/01-lifecycle-state/)
+| אירועי לחיצה ו־listeners | שיעור מעשי | [שיעור ראשון — כפתורי הוספה והפחתה](/android/basics/01-score-counter/#part-b)<br>[015b — חיבור לוח המשחק למודל](/android/projectSteps/015b.AddingTicTacToeToMainActivity)<br>[03 — הוספות למסד דרך דיאלוגים](/android/sqlite/03.requery-join-and-inserts) |
 | `AlertDialog` ו־Material Dialog | שיעור מעשי | [03 — הודעת סיום משחק](/android/CollectCircles/03.collect-circles-finish)<br>[10 — חנות Pushers](/android/CollectCircles/10.collect-circles-pusher-shop)<br>[03 — טפסי הוספה למסד](/android/sqlite/03.requery-join-and-inserts) |
 | `Spinner` ו־`ArrayAdapter` | שיעור מעשי | [021a — בחירת חדר משחק ב־RTDB](/android/projectSteps/021a.TicTacToeRTDBRooms) |
 | `ListView` והעברת רשימה בין מסכים | תרגול משלים | [תרגיל ToDo List](/android/amjad/Ex3.ToDoList) |

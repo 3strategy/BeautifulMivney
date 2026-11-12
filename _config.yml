@@ -223,6 +223,7 @@ navbar-links:
     - לאן ממשיכים באנדרואיד?: "/android/"
     - מפת נושאים ועומק הלימוד: "/android/topics-index"
     - התחלה ב־Android Studio:
+        - שיעור ראשון — מונה נקודות: "/android/basics/01-score-counter/"
         - 02 היכרות עם אנדרואיד: "/android/alon/02.Intro.pdf"
         - 03 Layouts בסיסי: "/android/alon/03.Layouts.pdf"
         - 04 Activity: "/android/alon/04.Activity.pdf"

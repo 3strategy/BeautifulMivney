@@ -2,7 +2,7 @@
 menu_set: android
 layout: page
 title: "לומדים Android"
-subtitle: "בחרו מסלול פרויקט או מעבדה ממוקדת"
+subtitle: "שיעור ראשון, מסלולי פרויקט ומעבדות נושא"
 permalink: /android/
 lang: he
 full-width: true
@@ -10,6 +10,10 @@ tags: [Android, Java, roadmap]
 ---
 
 כאן מתחילים לפי **מה שרוצים לבנות**. במסלול פרויקט מתקדמים מפרק לפרק באותו יישום; במעבדת נושא מתרגלים רעיון אחד בפרויקט קטן ומשווים את ענף התוצאה לענף הבסיס שלו.
+
+## שיעור ראשון בכיתה י״א
+
+[מונה נקודות — אפליקציית Android ראשונה]({{ '/android/basics/01-score-counter/' | relative_url }}). מתחילים במחשבי המעבדה עם Basic Views Activity ב־Java, בונים מסך ומחברים כפתורים שמשנים את הניקוד.
 
 ## בוחרים מסלול פרויקט
 
@@ -30,4 +34,4 @@ tags: [Android, Java, roadmap]
 
 [אמולטור Android פועל אבל החלון לא מופיע]({{ '/android/tools/recover-android-emulator/' | relative_url }}) — הורדת סקריפט PowerShell שמאתר ועוצר את תהליכי ה־AVD התקוע כדי שאפשר יהיה להפעילו מחדש.
 
-אם זו הפעם הראשונה שלכם ב־Android Studio, התחילו ב[02 — היכרות עם Android]({{ '/android/alon/02.Intro.pdf' | relative_url }}), ב[03 — פריסות XML]({{ '/android/alon/03.Layouts.pdf' | relative_url }}) וב[011 — הוספת Activity]({{ '/android/projectSteps/011addingActivities' | relative_url }}). לאחר מכן בחרו מסלול או מעבדה לפי היישום שתרצו לבנות.
+חומרי עזר: [היכרות עם Android]({{ '/android/alon/02.Intro.pdf' | relative_url }}), [פריסות XML]({{ '/android/alon/03.Layouts.pdf' | relative_url }}) ו[הוספת Activity]({{ '/android/projectSteps/011addingActivities' | relative_url }}).
