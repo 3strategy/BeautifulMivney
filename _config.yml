@@ -224,6 +224,7 @@ navbar-links:
     - מפת נושאים ועומק הלימוד: "/android/topics-index"
     - התחלה ב־Android Studio:
         - שיעור ראשון — מונה נקודות: "/android/basics/01-score-counter/"
+        - שיעור שני — בונים את המסכים של Basic Views Activity: "/android/basics/02-from-empty-to-basic-views/"
         - 02 היכרות עם אנדרואיד: "/android/alon/02.Intro.pdf"
         - 03 Layouts בסיסי: "/android/alon/03.Layouts.pdf"
         - 04 Activity: "/android/alon/04.Activity.pdf"

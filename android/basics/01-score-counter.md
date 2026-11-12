@@ -295,4 +295,6 @@ binding.buttonReset.setOnClickListener(v -> {
 
 </details>
 
+[השיעור הבא — בונים את המסכים של Basic Views Activity]({{ '/android/basics/02-from-empty-to-basic-views/' | relative_url }}){: data-sequence-nav="next"}
+
 תרגיל המונה מבוסס על פרק התכנות הבסיסי של אסף אמיר, כפי שהוא מופיע ב[תקצירי AppSchool]({{ '/android/asaf/001asafAndroidChapters' | relative_url }}).

@@ -11,9 +11,10 @@ tags: [Android, Java, roadmap]
 
 כאן מתחילים לפי **מה שרוצים לבנות**. במסלול פרויקט מתקדמים מפרק לפרק באותו יישום; במעבדת נושא מתרגלים רעיון אחד בפרויקט קטן ומשווים את ענף התוצאה לענף הבסיס שלו.
 
-## שיעור ראשון בכיתה י״א
+## שיעורי פתיחה בכיתה י״א
 
-[מונה נקודות — אפליקציית Android ראשונה]({{ '/android/basics/01-score-counter/' | relative_url }}). מתחילים במחשבי המעבדה עם Basic Views Activity ב־Java, בונים מסך ומחברים כפתורים שמשנים את הניקוד.
+1. [מונה נקודות — אפליקציית Android ראשונה]({{ '/android/basics/01-score-counter/' | relative_url }}). מתחילים במחשבי המעבדה עם Basic Views Activity ב־Java, בונים מסך ומחברים כפתורים שמשנים את הניקוד.
+2. [בונים את המסכים של Basic Views Activity]({{ '/android/basics/02-from-empty-to-basic-views/' | relative_url }}). מתחילים ב־Empty Views Activity, מפעילים View Binding ומוסיפים סרגל כלים וניווט בין שני מסכים.
 
 ## בוחרים מסלול פרויקט
 
