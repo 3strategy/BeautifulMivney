@@ -327,7 +327,7 @@ body {
     .navbar-custom .navbar-nav {
         align-items: center;
         /* Leave room for the course dropdowns nearest the left edge. */
-        padding-inline: 0 2.5rem;
+        padding-inline: 0 3.625rem;
     }
 
     /* These shared controls sit at the left edge; open panels into the viewport. */
