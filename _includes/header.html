@@ -33,6 +33,13 @@
             {% endif %}
           {% endif %}
 
+          {% assign course = site.navbar-menu-sets[page.menu_set] %}
+          {% if course.url and course.url == page.url %}
+            <a class="course-submissions-link" href="https://codeclassroom.io/" aria-label="הגשת מטלות ב־CodeClassroom" title="הגשת מטלות ב־CodeClassroom">
+              <img src="{{ '/assets/img/codeclassroom.svg' | relative_url }}" alt="" width="24" height="24">
+            </a>
+          {% endif %}
+
           {% if page.credit %}
             <span class="{{ include.type }}-credit">{{ page.credit | strip_html }}</span>
           {% endif %}

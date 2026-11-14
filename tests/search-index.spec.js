@@ -49,6 +49,6 @@ test('the Android topic map search result selects the Android menu', () => {
   expect(results).toHaveLength(1);
   expect(results[0].url).toBe('/android/topics-index/?menu=android');
   expect(corpus).toContainEqual(expect.objectContaining({
-    url: '/agentic/02-git-github/',
+    url: '/agentic/02-git-github/?menu=agentic',
   }));
 });

@@ -311,13 +311,6 @@ navbar-links:
    
 
   הגדרות:
-
-    - בחירת תפריט:
-      - יא מבני נתונים: "javascript:setMenuSet('data-structures');"
-      - יא תמע: "javascript:setMenuSet('oop');"
-      - אנדרואיד: "javascript:setMenuSet('android');"
-      - מודלים חישוביים: "javascript:setMenuSet('modelim');"
-      - Agentic: "javascript:setMenuSet('agentic');"
     - החלפת רקע: "javascript:toggleTheme();"
     - החלפת גודל: "javascript:toggleSize();"
 
@@ -325,7 +318,8 @@ navbar-links:
 # are not listed here (such as חיצוני and הגדרות) remain shared.
 navbar-menu-sets:
   data-structures:
-    label: יא מבני נתונים
+    label: מבני נתונים
+    url: /mivney/
     items:
       - פתיחת שנה
       - רקורסיה ויעילות
@@ -335,7 +329,8 @@ navbar-menu-sets:
       - עץ בינארי
       - סיכום
   oop:
-    label: יא תמע
+    label: תמ״ע
+    url: /oop/
     items:
       - פתיחת שנה
       - 0 חזרה על עצמים
@@ -344,6 +339,7 @@ navbar-menu-sets:
       - תרגול ובגרויות
   android:
     label: אנדרואיד
+    url: /android/
     items:
       - מתחילים באנדרואיד
       - מסלולי פרויקט
@@ -351,6 +347,7 @@ navbar-menu-sets:
       - עזר ובגרות באנדרואיד
   modelim:
     label: מודלים חישוביים
+    url: /modelim/
     items:
       - 'אסד"מ'
       - 'אס"ד לא מלא'
@@ -360,6 +357,7 @@ navbar-menu-sets:
       - מכונת טיורינג
   agentic:
     label: Agentic
+    url: /agentic/00-opener/
     items:
       - יסודות ועבודה עם סוכנים
       - יישומים ופרסום
@@ -643,6 +641,42 @@ defaults:
       path: "interactive"
     values:
       full-width: true
+  - scope:
+      path: "mivney/"
+    values:
+      menu_set: data-structures
+  - scope:
+      path: "mivney/0minhalot/"
+    values:
+      menu_set: "" # Shared first-day and Campus pages keep the visitor's current menu.
+  - scope:
+      path: "oop/"
+    values:
+      menu_set: oop
+  - scope:
+      path: "interactive/02questionnaire"
+    values:
+      menu_set: oop
+  - scope:
+      path: "bagruyot/IndexQuestionsByTopicOOP.md"
+    values:
+      menu_set: oop
+  - scope:
+      path: "bagruyot/index.md"
+    values:
+      menu_set: data-structures
+  - scope:
+      path: "android/"
+    values:
+      menu_set: android
+  - scope:
+      path: "modelim/"
+    values:
+      menu_set: modelim
+  - scope:
+      path: "agentic/"
+    values:
+      menu_set: agentic
 
 # Exclude these files from production site
 exclude:

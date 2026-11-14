@@ -62,10 +62,15 @@ function applyMenuSet(menuSet) {
     item.hidden = !isVisible;
   });
 
-  document.querySelectorAll('a[href^="javascript:setMenuSet("]').forEach((choice) => {
-    const isSelected = choice.getAttribute("href").includes(`'${selectedMenuSet}'`);
-    choice.classList.toggle("active", isSelected);
-    choice.setAttribute("aria-current", isSelected ? "true" : "false");
+  const currentCourse = document.getElementById("current-course");
+  if (currentCourse) currentCourse.dataset.activeCourse = selectedMenuSet;
+  document.querySelectorAll("[data-course-menu]").forEach((link) => {
+    if (link.dataset.courseMenu === selectedMenuSet) {
+      link.setAttribute("aria-current", "true");
+      if (currentCourse) currentCourse.textContent = link.textContent;
+    } else {
+      link.removeAttribute("aria-current");
+    }
   });
 
   return selectedMenuSet;

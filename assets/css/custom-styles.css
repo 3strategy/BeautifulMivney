@@ -275,7 +275,15 @@ body {
 }
 
 /* ================= RTL navbar dropdowns ================ */
-/* Keep space for the title so its appearance cannot move the menu. */
+.navbar-custom .navbar-brand {
+    margin: 0;
+    margin-inline-end: 0.375rem;
+}
+
+.navbar-custom .navbar-toggler {
+    margin: 0;
+}
+
 .navbar-custom .navbar-page-title {
     display: flex;
     flex: 1 1 0;
@@ -314,20 +322,107 @@ body {
     display: none;
 }
 
-@media (min-width: 1200px) {
-    .navbar-custom .navbar-brand {
-        order: -1;
-        margin-inline: 0;
-    }
+.navbar-courses {
+    --course-bg: #4b254f;
+    --course-hover: #613165;
+    --course-text: #f0caf2;
+    flex: none;
+}
 
+.light-theme .navbar-courses {
+    --course-bg: #eeddf0;
+    --course-hover: #e5cce8;
+    --course-text: #552558;
+}
+
+.navbar-courses .course-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem;
+    vertical-align: middle;
+    width: 5.75rem;
+    height: 2.75rem;
+    padding: 0 0.4375rem;
+    border: 0;
+    border-radius: 0.25rem;
+    background: var(--course-bg);
+    color: var(--course-text);
+    font-size: 0.875rem;
+    font-weight: 800;
+    line-height: 1.15;
+    text-wrap: balance;
+}
+
+.navbar-courses .course-toggle span {
+    flex: 1;
+}
+
+.navbar-courses [data-active-course="data-structures"] {
+    max-inline-size: 3rem;
+    margin-inline: auto;
+}
+
+.navbar-courses .course-toggle::after {
+    flex: none;
+    margin: 0;
+}
+
+.navbar-courses .course-toggle:hover,
+.navbar-courses.show .course-toggle {
+    background: var(--course-hover);
+}
+
+.navbar-courses .dropdown-menu {
+    margin-top: 0.25rem;
+    border-color: var(--navbar-border-col);
+    background: var(--navbar-col);
+    text-align: start;
+}
+
+.navbar-courses .dropdown-item {
+    padding: 0.625rem 1rem;
+    color: var(--navbar-text-col);
+    font-size: 0.9375rem;
+}
+
+.navbar-courses .dropdown-item:hover,
+.navbar-courses .dropdown-item:focus,
+.navbar-courses [aria-current="true"] {
+    background: var(--course-bg);
+    color: var(--course-text);
+}
+
+.navbar-courses [aria-current="true"] {
+    font-weight: 700;
+}
+
+.navbar-custom .navbar-nav [data-menu-sets][hidden] {
+    display: none;
+}
+
+.course-submissions-link {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-top: 0.5rem;
+    border: 1px solid var(--navbar-border-col);
+    border-radius: 0.5rem;
+    background: var(--navbar-col);
+}
+
+.course-submissions-link:hover {
+    border-color: var(--link-col);
+}
+
+@media (min-width: 1200px) {
     .navbar-custom .navbar-collapse {
         flex: 0 0 auto;
     }
 
     .navbar-custom .navbar-nav {
         align-items: center;
-        /* Leave room for the course dropdowns nearest the left edge. */
-        padding-inline: 0 3.625rem;
     }
 
     /* These shared controls sit at the left edge; open panels into the viewport. */
@@ -404,29 +499,40 @@ body {
     background-color: var(--navbar-col);
 }
 
-/* --- Mobile navbar: make long menus scrollable --- */
-@media (max-width: 1199px) {
-  /* When the mobile menu is expanded, constrain the fixed navbar to viewport
-     height and allow scrolling so items off-screen become reachable */
-  .navbar-custom.top-nav-expanded {
-    max-height: 100vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+/* Keep the course selector in view while scrolling the mobile chapter menu. */
+@media (width < 1200px) {
+    .navbar.navbar-custom {
+        padding-inline: 0.5rem;
+    }
 
-  /* Also allow long dropdown panels to scroll within the viewport */
-  .navbar-custom .nav-item.dropdown .dropdown-menu {
-    max-height: calc(100vh - 4rem);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+    .navbar-custom .navbar-toggler {
+        margin-inline-start: auto;
+    }
+
+    .navbar-custom .navbar-collapse {
+        margin: 0 -0.5rem;
+        max-height: calc(100vh - var(--navbar-height));
+        max-height: calc(100dvh - var(--navbar-height));
+    }
+
+    .navbar-custom .navbar-collapse.show {
+        overflow-y: auto;
+    }
+
+    .navbar-custom .navbar-nav {
+        padding-inline: 0.75rem;
+    }
 }
 
 /* --- Desktop navbar: compact long menus without changing the breakpoint --- */
 @media (min-width: 1200px) {
   .navbar-custom .navbar-nav .nav-item {
-    font-size: 0.68rem;
+    font-size: clamp(0.75rem, 1vw, 0.875rem);
     letter-spacing: 0;
+  }
+
+  .navbar-custom .navbar-nav {
+    gap: clamp(0.5rem, calc(2.5vw - 1.375rem), 1rem);
   }
 
   .navbar-expand-xl .navbar-nav .nav-link {

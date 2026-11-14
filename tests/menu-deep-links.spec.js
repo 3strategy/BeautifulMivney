@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const http = require('node:http');
 const path = require('node:path');
 
-// Run this identical suite against each sibling's own built navigation.
+// Exercise either sibling's built navigation, including its active-menu marker.
 const site = path.join(__dirname, '..', '_site');
 let server, base, defaultMenu, alternateMenu;
 
@@ -14,7 +14,7 @@ test.beforeAll(async () => {
     if (!fs.existsSync(file) && !path.extname(file)) file += '.html';
     if (!fs.existsSync(file)) { res.writeHead(404).end(); return; }
     res.setHeader('Content-Type', file.endsWith('.js') ? 'application/javascript' :
-      file.endsWith('.css') ? 'text/css' : 'text/html');
+      file.endsWith('.css') ? 'text/css' : file.endsWith('.svg') ? 'image/svg+xml' : 'text/html');
     fs.createReadStream(file).pipe(res);
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -30,10 +30,14 @@ test.beforeEach(async ({ page }) => {
 });
 
 async function expectMenu(page, menu) {
-  await expect(page.locator('a.active[href^="javascript:setMenuSet("]'))
-    .toHaveAttribute('href', `javascript:setMenuSet('${menu}');`);
-  await expect(page.locator('a.active[href^="javascript:setMenuSet("]'))
-    .toHaveAttribute('aria-current', 'true');
+  if (defaultMenu === 'data-structures') {
+    const activeCourse = page.locator('[data-course-menu][aria-current="true"]');
+    await expect(activeCourse).toHaveAttribute('data-course-menu', menu);
+    await expect(page.locator('#course-selector')).toHaveText(await activeCourse.textContent());
+  } else {
+    await expect(page.locator('a.active[href^="javascript:setMenuSet("][aria-current="true"]'))
+      .toHaveAttribute('href', `javascript:setMenuSet('${menu}');`);
+  }
   expect(new URL(page.url()).searchParams.get('menu')).toBe(menu);
   const items = await page.locator('[data-menu-sets]').evaluateAll(items => items.map(item => ({
     menus: item.dataset.menuSets.split(/\s+/), hidden: item.hidden
@@ -73,12 +77,11 @@ test('menu follows an ordinary internal link and the destination stays shareable
   await expectMenu(page, alternateMenu);
 });
 
-test('manual menu selection changes a stale deep link without reloading', async ({ page }) => {
+test('changing the menu in place updates a stale deep link without reloading', async ({ page }) => {
   await page.goto(`${base}/?menu=${alternateMenu}&exercise=2#question`);
   await expectMenu(page, alternateMenu);
   await page.evaluate(() => { window.menuTestMarker = true; });
-  await page.locator(`a[href="javascript:setMenuSet('${defaultMenu}');"]`)
-    .evaluate(element => element.click());
+  await page.evaluate(menu => setMenuSet(menu), defaultMenu);
   await expectMenu(page, defaultMenu);
   expect(await page.evaluate(() => window.menuTestMarker)).toBe(true);
   const url = new URL(page.url());
@@ -189,8 +192,7 @@ test('a page tag overrides a conflicting URL but permits a manual change until r
   const tagged = taggedPage();
   await page.goto(`${base}${tagged.path}?menu=${defaultMenu}`);
   await expectMenu(page, tagged.menu);
-  await page.locator(`a[href="javascript:setMenuSet('${defaultMenu}');"]`)
-    .evaluate(element => element.click());
+  await page.evaluate(menu => setMenuSet(menu), defaultMenu);
   await expectMenu(page, defaultMenu);
   await page.reload();
   await expectMenu(page, tagged.menu);
@@ -214,4 +216,43 @@ test('an invalid page tag falls back to a valid incoming URL', async ({ page }) 
   });
   await page.goto(`${base}${tagged.path}?menu=${defaultMenu}`);
   await expectMenu(page, defaultMenu);
+});
+
+test('the course selector lists all five destinations and shows the current subject', async ({ page }) => {
+  test.skip(defaultMenu !== 'data-structures', 'Uses the Mivney course header.');
+  await page.goto(`${base}/android/CollectCircles/`);
+  await expectMenu(page, 'android');
+  const links = page.locator('#course-menu a');
+  const courses = [
+    ['מבני נתונים', '/mivney/', 'data-structures'],
+    ['תמ״ע', '/oop/', 'oop'],
+    ['אנדרואיד', '/android/', 'android'],
+    ['מודלים חישוביים', '/modelim/', 'modelim'],
+    ['Agentic', '/agentic/00-opener/', 'agentic'],
+  ];
+  await expect(links).toHaveText(courses.map(([label]) => label));
+  for (const [, url, menu] of courses) {
+    const link = links.and(page.locator(`[data-course-menu="${menu}"]`));
+    await expect(link).toHaveAttribute('href', url);
+    await link.evaluate(element => element.click());
+    await expect(page).toHaveURL(`${base}${url}?menu=${menu}`);
+    await expectMenu(page, menu);
+    const submission = page.getByRole('link', { name: 'הגשת מטלות ב־CodeClassroom' });
+    await expect(submission).toHaveAttribute('href', 'https://codeclassroom.io/');
+    await expect(submission.locator('img')).not.toHaveJSProperty('naturalWidth', 0);
+  }
+});
+
+test('course chapters and shared pages use the appropriate menu on direct arrival', async ({ page }) => {
+  test.skip(defaultMenu !== 'data-structures', 'Uses the Mivney course defaults.');
+  for (const [url, menu] of [
+    ['/agentic/02-git-github/', 'agentic'],
+    ['/modelim/02-reading-dfa/', 'modelim'],
+    ['/mivney/4stack/Chapter4/', 'data-structures'],
+    ['/interactive/02questionnairePolymCore/', 'oop'],
+    ['/mivney/0minhalot/0YearOpening/', 'oop'],
+  ]) {
+    await page.goto(base + url);
+    await expectMenu(page, menu);
+  }
 });

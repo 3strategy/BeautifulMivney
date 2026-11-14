@@ -1,14 +1,9 @@
-<nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}" data-page-menu-set="{{ page.menu_set | escape }}" data-default-menu-set="{{ site.navbar-default-menu-set | default: 'data-structures' }}">
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  {%- if page.title -%}
-    <div class="navbar-page-title" aria-hidden="true">
-      <span dir="auto" title="{{ page.title | strip_html | escape }}">{{ page.title | strip_html | escape }}</span>
-    </div>
-  {%- endif -%}
+{%- assign default_menu_set = site.navbar-default-menu-set -%}
+{%- assign initial_menu_set = default_menu_set -%}
+{%- if site.navbar-menu-sets[page.menu_set] -%}
+  {%- assign initial_menu_set = page.menu_set -%}
+{%- endif -%}
+<nav class="navbar navbar-expand-xl navbar-light fixed-top navbar-custom {% if page.nav-short %}top-nav-short-permanent{% else %}top-nav-regular{% endif %}" aria-label="ניווט באתר" data-page-menu-set="{{ page.menu_set | escape }}" data-default-menu-set="{{ default_menu_set }}">
 
   {%- if site.title-img -%}
     <a class="navbar-brand navbar-brand-logo" href="{{ '/' | absolute_url }}"><img alt="{{ site.title }} Logo" src="{{ site.title-img | relative_url}}"/></a>
@@ -16,8 +11,20 @@
     <a class="navbar-brand" href="{{ '/' | absolute_url }}">{{ site.title }}</a>
   {%- endif -%}
 
+  {% include course-nav.html current=initial_menu_set %}
+
+  {% if page.title %}
+    <div class="navbar-page-title" aria-hidden="true">
+      <span dir="auto" title="{{ page.title | strip_html | escape }}">{{ page.title | strip_html | escape }}</span>
+    </div>
+  {% endif %}
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="תפריט פרקים וכלים">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
   <div class="collapse navbar-collapse" id="main-navbar">
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav">
       {% include language-preference.html %}
       {% if site.post_search %}
         <li class="nav-item">
@@ -35,8 +42,12 @@
             {%- if menu_set[1].items contains top_text -%}{{ menu_set[0] }} {% endif -%}
           {%- endfor -%}
         {%- endcapture -%}
+        {%- assign menu_ids = top_menu_sets | split: ' ' -%}
+        {%- capture menu_attributes -%}
+          {%- if menu_ids.size > 0 %} data-menu-sets="{{ menu_ids | join: ' ' }}"{% unless menu_ids contains initial_menu_set %} hidden{% endunless %}{% endif -%}
+        {%- endcapture -%}
         {%- if top_item.first -%}
-          <li class="nav-item dropdown{% if top_text == 'חיצוני' or top_text == 'הגדרות' %} nav-secondary{% endif %}"{% if top_menu_sets != empty %} data-menu-sets="{{ top_menu_sets | strip }}"{% endif %}>
+          <li class="nav-item dropdown{% if top_text == 'חיצוני' or top_text == 'הגדרות' %} nav-secondary{% endif %}"{{ menu_attributes }}>
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-{{ forloop.index }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% if top_text == 'חיצוני' or top_text == 'הגדרות' %} aria-label="{{ top_text }}" title="{{ top_text }}"{% endif %}>
               {%- if top_text == 'חיצוני' or top_text == 'הגדרות' -%}
                 <span class="nav-secondary-label">{{ top_text }}</span>
@@ -70,7 +81,7 @@
             </div>
           </li>
         {%- else -%}
-          <li class="nav-item"{% if top_menu_sets != empty %} data-menu-sets="{{ top_menu_sets | strip }}"{% endif %}>
+          <li class="nav-item"{{ menu_attributes }}>
             <a class="nav-link" href="{% if top_item contains '://' or top_item contains 'javascript:' %}{{ top_item }}{% else %}{{ top_item | relative_url }}{% endif %}"{% if top_item contains '://' %} target="_blank" rel="noopener"{% endif %}>{{ top_text }}</a>
           </li>
         {%- endif -%}
