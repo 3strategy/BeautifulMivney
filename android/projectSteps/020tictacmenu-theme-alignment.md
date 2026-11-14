@@ -170,7 +170,7 @@ android:textColor="@color/board_cell_text"
 
 ## המשך
 
-- [021a - פרסום חדרי משחק ב־Firebase RTDB](/android/projectSteps/021a.TicTacToeRTDBRooms)
+- [021a - פרסום חדרי משחק ב־Firebase RTDB](/android/projectSteps/021a.TicTacToeRTDBRooms){: data-sequence-nav="next"}
 
 <!-- gemini-tutor-links:start -->
 <div markdown="1" class="hebrew">

@@ -98,10 +98,8 @@ navbar-links:
     - CodeClassroom: *codeclassroom_link
     - רקורסיה:
       - 1.1 רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"
-      - 1.2 מעקב ומטרת הפונקציה: "/mivney/1recursionAndComplexity/Chapter1ExTracking"
       - 1.3 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS02-recursion_new/index.html"
       - 1.4 המרת בסיסים ברקורסיה: "mivney/1recursionAndComplexity/Chapter1b.BaseConversions"
-      - 1.5 basic excercises (by anonymous): "https://chatgpt.com/canvas/shared/68bc38badd14819190331b8447918d4f"
       - 1.6 האוניברסיטה העברית: "mivney/1recursionAndComplexity/chap4-Recursion-CSharp.pdf"
 
     - יעילות:
@@ -115,20 +113,20 @@ navbar-links:
     - 3.3 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS05-intNode_new/index.html"
   #   - תרגול: "/mivney/3node/Links"
 
-  מחסנית:
-    - 4.1 מחסנית: "/mivney/4stack/Chapter4"
-    - 4.2 אנימציית מחסנית: "/mivney/4stack/StackAnimation.html"
-    - 4.3 האוניברסיטה העברית: "/mivney/5queue/chap8-Stack-CSharp.pdf"
-    - 4.4 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS04-stack_new/index.html"
-  #   - תרגול: "/mivney/4stack/Links"
-
   תור:
-    - 5.0 אנימציית תור: "/mivney/5queue/QueueAnimation.html"
-    - 5.1 תור: "/mivney/5queue/Chapter5"
-    - 5.2 מעקב רקורסיה בתורים: "/mivney/5queue/QueueRecurrsionTrackingHila.pdf"
-    - 5.3 האוניברסיטה העברית: "/mivney/5queue/chap8-Stack-CSharp.pdf"
-    - 5.4 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS03-queue/index.html"
+    - 4.0 אנימציית תור: "/mivney/5queue/QueueAnimation.html"
+    - 4.1 תור: "/mivney/5queue/Chapter5"
+    - 4.2 מעקב רקורסיה בתורים: "/mivney/5queue/QueueRecurrsionTrackingHila.pdf"
+    - 4.3 האוניברסיטה העברית: "/mivney/5queue/chap8-Stack-CSharp.pdf"
+    - 4.4 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS03-queue/index.html"
   #   - תרגול: "/mivney/5queue/Links"
+
+  מחסנית:
+    - 5.1 מחסנית: "/mivney/4stack/Chapter4"
+    - 5.2 אנימציית מחסנית: "/mivney/4stack/StackAnimation.html"
+    - 5.3 האוניברסיטה העברית: "/mivney/5queue/chap8-Stack-CSharp.pdf"
+    - 5.4 מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CS04-stack_new/index.html"
+  #   - תרגול: "/mivney/4stack/Links"
 
   עץ בינארי:
     - 6.1 עץ בינארי: "/mivney/6binnode/Chapter6"
@@ -139,6 +137,7 @@ navbar-links:
   #  - תרגול: "/mivney/6binnode/Links"
 
   סיכום:
+    - שאלות בגרות לפי נושא: "/bagruyot/"
     - סיכום פעולות: "mivney/8summary/unit4-methods"
     - תבניות, פעולות עזר גיא אלרם: mivney/8summary/PeulotEzerGuyElram.pdf
     
@@ -331,8 +330,8 @@ navbar-menu-sets:
       - פתיחת שנה
       - רקורסיה ויעילות
       - שרשרת חוליות
-      - מחסנית
       - תור
+      - מחסנית
       - עץ בינארי
       - סיכום
   oop:

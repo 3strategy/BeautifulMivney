@@ -13,6 +13,7 @@ tags: [Android, Java, TicTacMenu, roadmap]
 | תחנה | שיעור | מה מתקדם בפרויקט |
 |---:|---:|---:|
 | מסכים ותפריטים | [011 — הוספת Activities]({{ '/android/projectSteps/011addingActivities' | relative_url }}) | מוסיפים מסכים לפרויקט. |
+| כלי עבודה | [012 — קיצור לפירמוט קוד]({{ '/android/projectSteps/012androidCodeFormatting' | relative_url }}) | מגדירים ומתרגלים פירמוט ב־Android Studio. |
 | מסכים ותפריטים | [013 — תפריט ה־Overflow המקורי]({{ '/android/projectSteps/013addingActivityToMenu' | relative_url }}) | מוסיפים תפריט לכל Activity; זו תחנת מעבר לפתרון הבא. |
 | מסכים ותפריטים | [014a — יצירת תפריט Fragments]({{ '/android/projectSteps/014a.creatingFragmentsMenu' | relative_url }}) | יוצרים Activity מארח ומגירת ניווט. |
 | מסכים ותפריטים | [014b — הוספת Fragments למגירה]({{ '/android/projectSteps/014b.AddingFragmentsToMenu' | relative_url }}) | מוסיפים יעדים לאזור התוכן המתחלף. |
@@ -27,10 +28,11 @@ tags: [Android, Java, TicTacMenu, roadmap]
 | View Binding | [019a — החלפת `findViewById`]({{ '/android/projectSteps/019a.BindingInsteadOfFindByID' | relative_url }}) | מתחילים להשתמש ב־binding במסך הכניסה. |
 | View Binding | [019b — Binding ב־MainActivity]({{ '/android/projectSteps/019bBindingsForMainActivity' | relative_url }}) | מעבירים גם את המסך הראשי. |
 | View Binding | [019c — Binding ב־Fragments ובתפריט]({{ '/android/projectSteps/019c.BindingForFragmentsAndMenuActivity' | relative_url }}) | משלימים את המעבר במסכי התפריט. |
+| עיצוב | [020 — יישור עיצוב המסכים]({{ '/android/projectSteps/020tictacmenu-theme-alignment' | relative_url }}) | מאחדים את העיצוב של מסכי המשחק. |
 | משחק בזמן אמת | [021a — לובי וחדרים ב־RTDB]({{ '/android/projectSteps/021a.TicTacToeRTDBRooms' | relative_url }}) | שחקנים יוצרים חדרים ומצטרפים אליהם. |
 | משחק בזמן אמת | [021b — מצב משחק בזמן אמת]({{ '/android/projectSteps/021b.TicTacToeRTDBGame' | relative_url }}) | שני המסכים מאזינים לאותו מצב משחק. |
 
 {: .box-note}
-שיעור תפריט ה־Overflow מ־013 מתעד פתרון ישן שבו כל Activity יוצר תפריט משלו. הוא מופיע כאן כי שיעור 014a מתחיל מהמצב הזה ואז מחליף אותו בתפריט Fragments. אם התחלתם מפרויקט חדש או מתבנית אחרת, קראו תחילה את מצב הפתיחה של הפרק שבחרתם.
+אפשר להתחיל את 011 בפרויקט חדש. לשיעור 013 דרוש מצב הפתיחה של ה־Starter Project, עם `MasterActivity` שמרכז את הגדרת התפריטים. שיעור 014a ממשיך מתפריט ה־Overflow של 013 ומחליף אותו בתפריט מבוסס Fragments. אם התחלתם מתבנית אחרת, בדקו את דרישות הפתיחה של כל שיעור לפני המעבר אליו.
 
 למציאת נושא בלי לעבור על רצף הפרקים, השתמשו ב[מפת הנושאים]({{ '/android/topics-index' | relative_url }}). לתרגול מבודד עם דיפ ענפים, עברו ל[מעבדות הנושא]({{ '/android/topics/' | relative_url }}).

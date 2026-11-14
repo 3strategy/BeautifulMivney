@@ -1,11 +1,13 @@
 ---
 layout: page 
-title: "פרק 5 – מחלקת Queue⟨T⟩"
+title: "פרק 4 – מחלקת Queue⟨T⟩"
 subtitle: "תור, FIFO ותור מעגלי"
 tags: [Queue, תור, Insert , Remove, מחלקה גנרית, תור מעגלי, סרטוני תור]
 mathjax: true
 lang: he
 ---
+
+[הקודם — שרשרת חוליות]({{ '/mivney/3node/Chapter3/' | relative_url }}){: data-sequence-nav="prev"} · [הבא — מחסנית]({{ '/mivney/4stack/Chapter4/' | relative_url }}){: data-sequence-nav="next"}
 
 {: .box-note}
 תור (Queue) הוא מבנה נתונים שבו הפריט הראשון שנכנס הוא הראשון שיוצא – **First‑In‑First‑Out**. בפרק זה נלמד לממש תור גנרי ב‑#C, להבין מתי כדאי להשתמש בתור מעגלי וכיצד לשמור על יעילות הפעולות.
@@ -203,7 +205,7 @@ graph LR
 
 ## תרגול וקישורים
 
-תוכלו למצוא תרגילים במערכת ההגשות
+תרגילי תור זמינים ב־[CodeClassroom](https://codeclassroom.io/).
 
 ## פלייליסט
 

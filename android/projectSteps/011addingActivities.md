@@ -58,7 +58,7 @@ lang: he
 
 ## המשך
 
-- [012 - הגדרת קיצור לפירמוט קוד](/android/projectSteps/012androidCodeFormatting)
+- [012 - הגדרת קיצור לפירמוט קוד](/android/projectSteps/012androidCodeFormatting){: data-sequence-nav="next"}
 
 <!-- gemini-tutor-links:start -->
 <div markdown="1" class="hebrew">

@@ -8,6 +8,8 @@ mathjax: true
 lang: he
 ---
 
+[הבא — יעילות וסיבוכיות]({{ '/mivney/1recursionAndComplexity/Chapter2/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-note #idIntro}
 רקורסיה היא טכניקה מרכזית במדעי המחשב שבה פונקציה פותרת בעיה על ידי פירוקה לגרסה קטנה יותר של אותה בעיה. חשוב להבדיל בין **מקרה בסיסי** שבו הפונקציה עוצרת, לבין **מקרה רקורסיבי** שבו היא קוראת לעצמה. הבנת עקרונות אלו תלווה אתכם לאורך הקורס .
 
@@ -520,18 +522,10 @@ A -.->|תוצאה: cba| OUT(("StrReverse(abc) = cba"))
 
 ## תרגול וקישורים
 
-כדי לתרגל את הנושא נפתור **הרבה** שאלות רקורסיביות. תוכלו למצוא תרגילים במערכת ההגשות.
-<!-- 
-[⬅ עברו לתרגיל סכום ספרות במספר]({% link cst/1recursion/Ex1a.1recursion.misparitNBool.md %}#id1a1.2)
-
-[בנוסף, נסו לכתוב פונקציה שמחשבת עצרת באופן רקורסיבי. התנסו גם בפתרון איטרטיבי והשוו ביניהם. $$5! = 1·2·3·4·5$$]({% link cst/1recursion/Ex1a.1recursion.misparitNBool.md %}#id1a1.1) -->
-
-[קישור לתרגול בקמפוס](https://app.campus.gov.il/learning/course/course-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@sequential+block@544f0df2068641c6a70929278aa4b772/block-v1:MoE+EDU_Matric_ComputerScienceB_HE+2023_1+type@vertical+block@ee0013d1d833495bbe888bb2f693f803){:target="_blank"}
+כדי לתרגל רקורסיה, פתחו את המטלות ב־[CodeClassroom](https://codeclassroom.io/).
 
 ## סרטונים
 
 [פלייליסט רקורסיה בקמפוס](https://www.youtube.com/playlist?list=PLnVUJu2KuoA31IAsWsbeP81gYvWoj3jGM){:target="_blank"}
 
 [מעקב באמצעות עץ מעקב. **לא מומלץ**](https://youtu.be/VZYNNvX0tEU?si=YeQVuG8eRAw2eZQG){:target="_blank"}
-
-[מעקב בשיטת המלבנים](/mivney/1recursionAndComplexity/Chapter1ExTracking)

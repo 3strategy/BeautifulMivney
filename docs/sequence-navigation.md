@@ -2,16 +2,21 @@
 
 The shared `assets/js/sequence-navigation.js` is loaded by the footer and activates
 only when `main` contains tagged links. Enabled sequences are the numbered
-`modelim` lessons, TicTacMenu 013–020 (including lettered steps), CollectCircles, and Hex 01–08.
+`modelim` lessons, TicTacMenu 011–021b (including lettered steps), CollectCircles, Connect4, the two Android opening lessons, and Hex 01–09.
 The `modelim` course map and historical submissions remain outside its sequence.
+
+The Data Structures sequence follows the numbered menu from recursion (1),
+complexity (2), and linked lists (3) to queues (4), stacks (5), and binary
+trees (6), then ends at the data structures Bagrut question index.
 
 ## Android routes
 
-TicTacMenu follows 013 → 014a → 014b → 015a → 015b → 016 → 017 →
-018a → 018b → standard 018c → 018d → 019a → 019b → 019c → 020.
+TicTacMenu follows 011 → 012 → 013 → 014a → 014b → 015a → 015b → 016 → 017 →
+018a → 018b → standard 018c → 018d → 019a → 019b → 019c → 020 → 021a → 021b.
 The Hebrew/View Binding variant of 018c also supports previous/next, returning
 to 018b or continuing to 018d. Optional shortcut links remain ordinary links.
-013 is the swipe boundary; its existing manual link to 012 remains available.
+The core route begins at 011 and ends at 021b. The shortcut from 021a to 019c and
+the follow-up project links from 021b are ordinary links.
 
 CollectCircles follows 1 → 2 → 3 → 4 → 5 → 6 → 8 → 9 → 10 → 11 → 12 →
 13 → 14 → 15b. The student route skips teacher cloud setup (7), and the short
@@ -29,8 +34,8 @@ from the main route follow that route, not the previously visited side page.
 The teacher/development plan is not enabled.
 
 
-Hex follows 01 → 02 → 03 → 04 → 05 → 06 → 07 → 08. The route begins
-at 01 and ends at 08; the map link remains ordinary navigation.
+The published Hex route (`/android/hex5/`) follows 01 → 02 → 03 → 04 → 05 →
+06 → 07 → 08 → 09. Its map link is ordinary navigation.
 
 ## Tagging links
 

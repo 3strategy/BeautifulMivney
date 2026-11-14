@@ -1,6 +1,8 @@
 {
   "chains": {
     "tictacmenu": [
+      "/android/projectSteps/011addingActivities",
+      "/android/projectSteps/012androidCodeFormatting",
       "/android/projectSteps/013addingActivityToMenu",
       "/android/projectSteps/014a.creatingFragmentsMenu",
       "/android/projectSteps/014b.AddingFragmentsToMenu",
@@ -15,7 +17,9 @@
       "/android/projectSteps/019a.BindingInsteadOfFindByID",
       "/android/projectSteps/019bBindingsForMainActivity",
       "/android/projectSteps/019c.BindingForFragmentsAndMenuActivity",
-      "/android/projectSteps/020tictacmenu-theme-alignment"
+      "/android/projectSteps/020tictacmenu-theme-alignment",
+      "/android/projectSteps/021a.TicTacToeRTDBRooms",
+      "/android/projectSteps/021b.TicTacToeRTDBGame"
     ],
     "collectcircles": [
       "/android/CollectCircles/01.collect-circles-drawing",
@@ -34,20 +38,28 @@
       "/android/CollectCircles/15b.collect-circles-notification-only"
     ],
     "hex": [
-      "/android/hex/01-board/",
-      "/android/hex/02-moves-and-turns/",
-      "/android/hex/03-win-detection/",
-      "/android/hex/04-local-two-player/",
-      "/android/hex/05-model-preparation/",
-      "/android/hex/06-background-ai/",
-      "/android/hex/07-supplied-rl-models/",
-      "/android/hex/08-hint/",
-      "/android/hex/09-day-night-themes/"
+      "/android/hex5/01-board/",
+      "/android/hex5/02-moves-and-turns/",
+      "/android/hex5/03-win-detection/",
+      "/android/hex5/04-local-two-player/",
+      "/android/hex5/05-model-preparation/",
+      "/android/hex5/06-background-ai/",
+      "/android/hex5/07-supplied-rl-models/",
+      "/android/hex5/08-hint/",
+      "/android/hex5/09-day-night-themes/"
     ]
   },
   "pages": {
-    "/android/projectSteps/013addingActivityToMenu": {
+    "/android/projectSteps/011addingActivities": {
       "prev": null,
+      "next": "/android/projectSteps/012androidCodeFormatting"
+    },
+    "/android/projectSteps/012androidCodeFormatting": {
+      "prev": "/android/projectSteps/011addingActivities",
+      "next": "/android/projectSteps/013addingActivityToMenu"
+    },
+    "/android/projectSteps/013addingActivityToMenu": {
+      "prev": "/android/projectSteps/012androidCodeFormatting",
       "next": "/android/projectSteps/014a.creatingFragmentsMenu"
     },
     "/android/projectSteps/014a.creatingFragmentsMenu": {
@@ -104,6 +116,14 @@
     },
     "/android/projectSteps/020tictacmenu-theme-alignment": {
       "prev": "/android/projectSteps/019c.BindingForFragmentsAndMenuActivity",
+      "next": "/android/projectSteps/021a.TicTacToeRTDBRooms"
+    },
+    "/android/projectSteps/021a.TicTacToeRTDBRooms": {
+      "prev": "/android/projectSteps/020tictacmenu-theme-alignment",
+      "next": "/android/projectSteps/021b.TicTacToeRTDBGame"
+    },
+    "/android/projectSteps/021b.TicTacToeRTDBGame": {
+      "prev": "/android/projectSteps/021a.TicTacToeRTDBRooms",
       "next": null
     },
     "/android/CollectCircles/01.collect-circles-drawing": {
@@ -198,40 +218,40 @@
       "prev": "/android/CollectCircles/14.collect-circles-first-worker",
       "next": null
     },
-    "/android/hex/01-board/": {
+    "/android/hex5/01-board/": {
       "prev": null,
-      "next": "/android/hex/02-moves-and-turns/"
+      "next": "/android/hex5/02-moves-and-turns/"
     },
-    "/android/hex/02-moves-and-turns/": {
-      "prev": "/android/hex/01-board/",
-      "next": "/android/hex/03-win-detection/"
+    "/android/hex5/02-moves-and-turns/": {
+      "prev": "/android/hex5/01-board/",
+      "next": "/android/hex5/03-win-detection/"
     },
-    "/android/hex/03-win-detection/": {
-      "prev": "/android/hex/02-moves-and-turns/",
-      "next": "/android/hex/04-local-two-player/"
+    "/android/hex5/03-win-detection/": {
+      "prev": "/android/hex5/02-moves-and-turns/",
+      "next": "/android/hex5/04-local-two-player/"
     },
-    "/android/hex/04-local-two-player/": {
-      "prev": "/android/hex/03-win-detection/",
-      "next": "/android/hex/05-model-preparation/"
+    "/android/hex5/04-local-two-player/": {
+      "prev": "/android/hex5/03-win-detection/",
+      "next": "/android/hex5/05-model-preparation/"
     },
-    "/android/hex/05-model-preparation/": {
-      "prev": "/android/hex/04-local-two-player/",
-      "next": "/android/hex/06-background-ai/"
+    "/android/hex5/05-model-preparation/": {
+      "prev": "/android/hex5/04-local-two-player/",
+      "next": "/android/hex5/06-background-ai/"
     },
-    "/android/hex/06-background-ai/": {
-      "prev": "/android/hex/05-model-preparation/",
-      "next": "/android/hex/07-supplied-rl-models/"
+    "/android/hex5/06-background-ai/": {
+      "prev": "/android/hex5/05-model-preparation/",
+      "next": "/android/hex5/07-supplied-rl-models/"
     },
-    "/android/hex/07-supplied-rl-models/": {
-      "prev": "/android/hex/06-background-ai/",
-      "next": "/android/hex/08-hint/"
+    "/android/hex5/07-supplied-rl-models/": {
+      "prev": "/android/hex5/06-background-ai/",
+      "next": "/android/hex5/08-hint/"
     },
-    "/android/hex/08-hint/": {
-      "prev": "/android/hex/07-supplied-rl-models/",
-      "next": "/android/hex/09-day-night-themes/"
+    "/android/hex5/08-hint/": {
+      "prev": "/android/hex5/07-supplied-rl-models/",
+      "next": "/android/hex5/09-day-night-themes/"
     },
-    "/android/hex/09-day-night-themes/": {
-      "prev": "/android/hex/08-hint/",
+    "/android/hex5/09-day-night-themes/": {
+      "prev": "/android/hex5/08-hint/",
       "next": null
     }
   }

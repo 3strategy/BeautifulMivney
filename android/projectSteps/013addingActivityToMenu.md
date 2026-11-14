@@ -12,7 +12,7 @@ lang: he
 {: .box-warning}
 הפתרון המוצג כאן כבר אינו מומלץ. פתרון זה מתבסס על פרוייקט בו כל פעילות יורשת מ-MasterActivity וכך מריצה בעצמה את מערכת התפריטים.
 
-[חזרה ל־012: הגדרת קיצור לפירמוט קוד](/android/projectSteps/012androidCodeFormatting)
+[חזרה ל־012: הגדרת קיצור לפירמוט קוד](/android/projectSteps/012androidCodeFormatting){: data-sequence-nav="prev"}
 
 <details markdown="1"><summary>שלושה חלקים שונים מרכיבים את התפריט</summary>
 

@@ -6,6 +6,8 @@ tags: [מטריצה, coverage matrix מבני, שאלות לפי נושא מבנ
 lang: he
 ---
 
+[הקודם — עץ בינארי]({{ '/mivney/6binnode/Chapter6/' | relative_url }}){: data-sequence-nav="prev"}
+
 {: .box-note}
 טבלת שאלות בגרות לפי נושא במבני נתונים
 

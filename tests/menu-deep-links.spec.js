@@ -237,7 +237,7 @@ test('the course selector lists all five destinations and shows the current subj
     await link.evaluate(element => element.click());
     await expect(page).toHaveURL(`${base}${url}?menu=${menu}`);
     await expectMenu(page, menu);
-    const submission = page.getByRole('link', { name: 'הגשת מטלות ב־CodeClassroom' });
+    const submission = page.getByRole('link', { name: 'הגשת מטלות ב־CodeClassroom', exact: true });
     await expect(submission).toHaveAttribute('href', 'https://codeclassroom.io/');
     await expect(submission.locator('img')).not.toHaveJSProperty('naturalWidth', 0);
   }

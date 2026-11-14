@@ -6,7 +6,7 @@ tags: [אנדרואיד, Formatting, Ctrl K D]
 lang: he
 ---
 
-[חזרה ל־011: הוספת Activities](/android/projectSteps/011addingActivities)
+[חזרה ל־011: הוספת Activities](/android/projectSteps/011addingActivities){: data-sequence-nav="prev"}
 
 
 ## הסבר קצר על עדכון הקיצור לפירמוט קוד
@@ -48,4 +48,4 @@ lang: he
 פתחו קובץ Java, שנו בכוונה את ההזחה של כמה שורות והפעילו `Ctrl+K, D`. ודאו שהקוד מסתדר
 ושקיצור החלפת השפה במערכת ממשיך לעבוד.
 
-- [013 - הוספת Activities לתפריט](/android/projectSteps/013addingActivityToMenu)
+- [013 - הוספת Activities לתפריט](/android/projectSteps/013addingActivityToMenu){: data-sequence-nav="next"}

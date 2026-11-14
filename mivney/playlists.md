@@ -13,13 +13,13 @@ lang: he
 ## רשימת הפלייליסטים של סרטוני קמפוס
 
 - [פרק 3 – מחלקת Node⟨T⟩ – רשימות מקושרות](https://www.youtube.com/playlist?list=PLciwThuwUH6o)
-- [פרק 4 – מחלקת Stack⟨T⟩](https://www.youtube.com/playlist?list=PLLWyvuD48c6A)
-- [פרק 5 – מחלקת Queue⟨T⟩](https://www.youtube.com/playlist?list=PLemK5yN4m3YU)
+- [פרק 4 – מחלקת Queue⟨T⟩](https://www.youtube.com/playlist?list=PLemK5yN4m3YU)
+- [פרק 5 – מחלקת Stack⟨T⟩](https://www.youtube.com/playlist?list=PLLWyvuD48c6A)
 - [פרק 6 – מחלקת BinNode⟨T⟩ ועצים בינאריים](https://www.youtube.com/playlist?list=PLCvqGFEDirCU)
 
 ## קישורים לפרקים באתר נוספים
 
 - [פרק 3 – רשימות מקושרות]({% link mivney/3node/Chapter3.md %})
-- [פרק 4 – מחסנית]({% link mivney/4stack/Chapter4.md %})
-- [פרק 5 – תור]({% link mivney/5queue/Chapter5.md %})
+- [פרק 4 – תור]({% link mivney/5queue/Chapter5.md %})
+- [פרק 5 – מחסנית]({% link mivney/4stack/Chapter4.md %})
 - [פרק 6 – עצים בינאריים]({% link mivney/6binnode/Chapter6.md %})

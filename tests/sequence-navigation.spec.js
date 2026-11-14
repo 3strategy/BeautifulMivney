@@ -128,16 +128,37 @@ test('Android lessons and branches render consistent swipe links', async ({ page
     expect(response.status(), url).toBe(200);
     for (const [direction, destination] of Object.entries(navigation)) {
       const links = page.locator(`main a[data-sequence-nav="${direction}"]`);
+      const arrow = page.locator(`[data-navbar-sequence="${direction}"]`);
       if (destination) {
         await expect(links, `${url}: ${direction}`).not.toHaveCount(0);
         for (const link of await links.all()) await expect(link).toHaveAttribute('href', destination);
+        await expect(arrow).toHaveAttribute('href', base + destination);
         expect((await request.get(base + destination)).status(), destination).toBe(200);
-      } else await expect(links, `${url}: ${direction}`).toHaveCount(0);
+      } else {
+        await expect(links, `${url}: ${direction}`).toHaveCount(0);
+        await expect(arrow).not.toHaveAttribute('href');
+      }
     }
   }
 });
 
-for (const [name, index] of [['tictacmenu', 8], ['collectcircles', 5], ['collectcircles', 6], ['collectcircles', 12], ['hex', 3]]) {
+test('English CollectCircles follows the short route through 15b', async ({ page }) => {
+  const chain = androidSequences.chains.collectcircles.map(url => url.replace('/CollectCircles/', '/CollectCircles/en/'));
+  for (const [index, url] of chain.entries()) {
+    const response = await page.goto(base + url);
+    expect(response.status(), url).toBe(200);
+    const next = page.locator('[data-navbar-sequence="next"]');
+    const destination = chain[index + 1];
+    if (destination) {
+      await expect(next).toHaveAttribute('href', base + destination);
+    } else {
+      await expect(next).not.toHaveAttribute('href');
+      await expect(page.locator('main [data-sequence-nav="next"]')).toHaveCount(0);
+    }
+  }
+});
+
+for (const [name, index] of [['tictacmenu', 10], ['tictacmenu', 16], ['collectcircles', 5], ['collectcircles', 6], ['collectcircles', 12], ['hex', 3]]) {
   test(`${name} step ${index}: native swipes follow the chosen route both ways`, async ({ page }) => {
     const chain = androidSequences.chains[name];
     await page.goto(base + chain[index]);
@@ -164,8 +185,10 @@ test('CollectCircles 8: swiping its introduction advances to chapter 9', async (
   const current = '/android/CollectCircles/08.collect-circles-persistent-economy';
   const next = '/android/CollectCircles/09.collect-circles-autonomous-mode';
   await page.goto(base + current);
+  // Bootstrap is blocked in this suite. Keep the closed mobile menu off the reading surface.
+  await page.addStyleTag({ content: '#main-navbar.collapse:not(.show) { display: none; }' });
   const paragraph = page.locator('main p.box-note').first();
-  await paragraph.evaluate(el => el.scrollIntoView({ block: 'center' }));
+  await paragraph.evaluate(el => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
   const box = await paragraph.boundingBox();
   const y = box.y + box.height / 2;
   await swipe(page, [100, y], [285, y + 2]);

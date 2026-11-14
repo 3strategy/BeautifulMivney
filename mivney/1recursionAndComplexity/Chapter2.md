@@ -7,6 +7,8 @@ mathjax: true
 lang: he
 ---
 
+[הקודם — רקורסיה]({{ '/mivney/1recursionAndComplexity/Chapter1/' | relative_url }}){: data-sequence-nav="prev"} · [הבא — שרשרת חוליות]({{ '/mivney/3node/Chapter3/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-note}
 כאשר מנתחים מבני נתונים ואלגוריתמים חשוב לדעת לא רק מה הם עושים אלא גם כמה משאבים הם צורכים. בפרק זה נלמד להעריך את **יעילות** האלגוריתם (כמה זמן וזיכרון הוא צורך בפועל) ולמדוד את **סיבוכיותו** – תיאור אסימפטוטי של התלות בגודל הקלט.
 
@@ -416,11 +418,7 @@ $$
 
 ## תרגול וקישורים
 
-כדי לתרגל ניתוח סיבוכיות, נסו לדרג את הסיבוכיות של פונקציות שאתם כותבים בתרגולים הבאים. התרגולים יפתחו במערכת ההגשות:
-
-<!-- {: .leafify}
-- [⬅ עברו לתרגיל סיבוכיות פשוטה]({% link cst/2complexity/Ex2.1complexity.easy.md %}#id2a1.1)
-- [⬅ עברו לתרגיל סיבוכיות בינונית]({% link cst/2complexity/Ex2.2complexity.lessEasy.md %}#id2a2.2) -->
+כדי לתרגל ניתוח סיבוכיות, נתחו את זמן הריצה של הפונקציות שאתם כותבים במטלות ב־[CodeClassroom](https://codeclassroom.io/).
 
 <details markdown="1">
 <summary>אתגר</summary>
