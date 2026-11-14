@@ -51,9 +51,16 @@ navbar-links:
     - 14 חישוב והשוואת מודלים: "/modelim/14-computing-and-models"
 
   חיצוני:
-    - Code Classroom מערכת הגשות שלי: "https://codeclassroom.io"
-    - אתר יסודות שלי: "https://יסודות.שלי.com"
-    - אתר מתמטיקה: "https://מתמטיקה.com"
+    - CodeClassroom: &codeclassroom_link
+        url: "https://codeclassroom.io"
+        icon: "/assets/img/codeclassroom.svg"
+        wordmark: true
+    - אתר יסודות שלי:
+        url: "https://יסודות.שלי.com"
+        icon: "/assets/img/yesodot-favicon.png"
+    - אתר מתמטיקה:
+        url: "https://מתמטיקה.com"
+        icon: "/assets/img/math-favicon.png"
     - מצגות קמפוס: "/mivney/0minhalot/ChapterCampus"
     - מכתב 503 (מסמך קישורים): https://docs.google.com/document/d/1pzqtdzM2CrUpjx7KYljAHM5lbd1IGOhGfL5ju7XnJVY/edit?usp=sharing
     - קמפוס יסודות: "https://courses.campus.gov.il/courses/course-v1:MoE+EDU_Matric_ComputerScienceA_HE+2023_1/course/"
@@ -88,7 +95,7 @@ navbar-links:
     - 0.3 מערכת שעות: "/mivney/0minhalot/0YearOpening/#idschedule"
 
   רקורסיה ויעילות:
-    - מערכת הגשות: "https://codeclassroom.io"
+    - CodeClassroom: *codeclassroom_link
     - רקורסיה:
       - 1.1 רקורסיה: "/mivney/1recursionAndComplexity/Chapter1"
       - 1.2 מעקב ומטרת הפונקציה: "/mivney/1recursionAndComplexity/Chapter1ExTracking"

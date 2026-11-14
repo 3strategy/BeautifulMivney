@@ -75,7 +75,7 @@
                 {%- for linkparts in childlink -%}
                   {%- assign child_text = linkparts[0] -%}
                   {%- assign child_item = linkparts[1] -%}
-                  {%- if child_item.first -%}
+                  {%- if child_item.first and child_item.url == nil -%}
                     <div class="dropdown-submenu">
                       <a class="dropdown-item dropdown-toggle" href="#">{{ child_text }}</a>
                       <div class="dropdown-menu">
@@ -88,7 +88,19 @@
                       </div>
                     </div>
                   {%- else -%}
-                    <a class="dropdown-item" href="{% if child_item contains '://' or child_item contains 'javascript:' %}{{ child_item }}{% else %}{{ child_item | relative_url }}{% endif %}"{% if child_item contains '://' %} target="_blank" rel="noopener"{% endif %}>{{ child_text }}</a>
+                    {%- assign child_url = child_item.url | default: child_item -%}
+                    <a class="dropdown-item{% if child_item.icon %} nav-branded-link{% endif %}" href="{% if child_url contains '://' or child_url contains 'javascript:' %}{{ child_url }}{% else %}{{ child_url | relative_url }}{% endif %}"{% if child_url contains '://' %} target="_blank" rel="noopener"{% endif %}>
+                      {%- if child_item.icon -%}
+                        <img src="{{ child_item.icon | relative_url }}" alt="" width="24" height="24">
+                      {%- endif -%}
+                      {%- if child_item.wordmark -%}
+                        <span class="codeclassroom-wordmark" lang="en" dir="ltr">{{ child_text | escape }}</span>
+                      {%- elsif child_item.icon -%}
+                        <span>{{ child_text }}</span>
+                      {%- else -%}
+                        {{ child_text }}
+                      {%- endif -%}
+                    </a>
                   {%- endif -%}
                 {%- endfor -%}
               {%- endfor -%}
