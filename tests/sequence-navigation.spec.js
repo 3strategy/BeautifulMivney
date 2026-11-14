@@ -61,17 +61,55 @@ test('all 14 built lessons tag the correct neighbors, including boundaries', asy
     await page.goto(`${base}/modelim/${lessons[i]}`);
     for (const [direction, neighbor] of [['prev', i - 1], ['next', i + 1]]) {
       const links = page.locator(`main a[data-sequence-nav="${direction}"]`);
-      if (neighbor < 0 || neighbor >= lessons.length) await expect(links).toHaveCount(0);
-      else {
+      const arrow = page.locator(`[data-navbar-sequence="${direction}"]`);
+      if (neighbor < 0 || neighbor >= lessons.length) {
+        await expect(links).toHaveCount(0);
+        await expect(arrow).not.toHaveAttribute('href');
+      } else {
         await expect(links).toHaveCount(2);
+        const destination = `/modelim/${lessons[neighbor].replace('.html', '')}`;
         for (const link of await links.all()) {
-          await expect(link).toHaveAttribute('href', `/modelim/${lessons[neighbor].replace('.html', '')}`);
+          await expect(link).toHaveAttribute('href', destination);
         }
+        await expect(arrow).toHaveAttribute('href', base + destination);
       }
     }
     await expect(page.locator('script[src$="/assets/js/sequence-navigation.js"]')).toHaveCount(1);
   }
 });
+
+for (const [language, folder, nextLabel, previousLabel] of [
+  ['Hebrew', '', 'לשיעור הבא', 'לשיעור הקודם'],
+  ['English', 'en/', 'Next lesson', 'Previous lesson'],
+]) {
+  test(`CollectCircles ${language}: navbar arrows follow the lesson links after scrolling`, async ({ page }) => {
+    const course = `${base}/android/CollectCircles/${folder}`;
+    const chapter = `${course}02.collect-circles-game`;
+    const title = page.locator('.navbar-page-title');
+    const next = title.getByRole('link', { name: nextLabel });
+    const previous = title.getByRole('link', { name: previousLabel });
+    const scrollPastHeading = () => page.locator('main').evaluate(main => {
+      main.scrollIntoView({ block: 'start', behavior: 'instant' });
+    });
+
+    await page.goto(chapter);
+    await expect(title).toBeHidden();
+    await scrollPastHeading();
+    await expect(title).toBeVisible();
+    await expect(next).toBeVisible();
+    await expect(previous).toHaveAttribute('href', `${course}01.collect-circles-drawing`);
+    expect((await next.boundingBox()).x).toBeGreaterThan((await previous.boundingBox()).x);
+    await next.click();
+    await expect(page).toHaveURL(url => url.pathname.replace(/\/$/, '') === new URL(`${course}03.collect-circles-finish`).pathname);
+
+    await scrollPastHeading();
+    await expect(previous).toBeVisible();
+    await previous.evaluate(link => link.focus({ preventScroll: true }));
+    await expect(previous).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(url => url.pathname.replace(/\/$/, '') === new URL(chapter).pathname);
+  });
+}
 
 for (const [name, chain] of Object.entries(androidSequences.chains)) {
   test(`${name}: the main swipe route is reciprocal`, async () => {
@@ -212,6 +250,7 @@ test('boundaries and untagged pages do not navigate', async ({ page }) => {
   await page.goto(`${base}/modelim/index.html`);
   const url = page.url();
   await expect(page.locator('[data-sequence-nav]')).toHaveCount(0);
+  await expect(page.locator('[data-navbar-sequence][href]')).toHaveCount(0);
   await swipe(page, [100, 330], [285, 330]);
   expect(page.url()).toBe(url);
 });

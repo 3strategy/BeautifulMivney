@@ -275,6 +275,37 @@ body {
 }
 
 /* ================= RTL navbar dropdowns ================ */
+.navbar-custom {
+    --course-bg: #4b254f;
+    --course-hover: #613165;
+    --course-text: #f0caf2;
+    --course-accent: #de79e4;
+}
+
+.light-theme .navbar-custom {
+    --course-bg: #eeddf0;
+    --course-hover: #e5cce8;
+    --course-text: #552558;
+    --course-accent: #79307f;
+}
+
+.navbar-custom .dropdown-toggle::after,
+.navbar-custom .navbar-lesson-arrow::after {
+    content: "";
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    rotate: var(--chevron-angle, 45deg);
+}
+
+.navbar-custom .dropdown-toggle::after {
+    margin: 0;
+    margin-inline-start: 0.35rem;
+    vertical-align: 0.15em;
+}
+
 .navbar-custom .navbar-brand {
     margin: 0;
     margin-inline-end: 0.375rem;
@@ -286,6 +317,8 @@ body {
 
 .navbar-custom .navbar-page-title {
     display: flex;
+    align-items: center;
+    gap: 0.25rem;
     flex: 1 1 0;
     min-width: 0;
     padding-inline: 0.5rem;
@@ -299,7 +332,7 @@ body {
 
 .navbar-custom .navbar-page-title span {
     display: -webkit-box;
-    max-width: 100%;
+    min-width: 0;
     overflow: hidden;
     overflow-wrap: anywhere;
     -webkit-box-orient: vertical;
@@ -307,7 +340,39 @@ body {
     text-align: start;
 }
 
-.navbar-custom.show-navbar-page-title .navbar-page-title {
+.navbar-lesson-arrow:not([hidden]) {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 1.75rem;
+    height: 2.75rem;
+    border-radius: 0.25rem;
+    color: var(--course-accent);
+    text-decoration: none;
+}
+
+.navbar-lesson-arrow[data-navbar-sequence="next"] {
+    --chevron-angle: -45deg;
+}
+
+.navbar-lesson-arrow[data-navbar-sequence="prev"] {
+    --chevron-angle: 135deg;
+}
+
+.navbar-lesson-arrow:hover,
+.navbar-lesson-arrow:focus-visible {
+    background: var(--course-bg);
+    color: var(--course-accent);
+}
+
+@media (max-width: 360px) {
+    .navbar-custom .navbar-page-title {
+        gap: 0.125rem;
+        padding-inline: 0.25rem;
+    }
+}
+
+.navbar-custom.show-navbar-page-title .navbar-page-title,
+.navbar-custom .navbar-page-title:focus-within {
     visibility: visible;
     opacity: 1;
 }
@@ -323,16 +388,7 @@ body {
 }
 
 .navbar-courses {
-    --course-bg: #4b254f;
-    --course-hover: #613165;
-    --course-text: #f0caf2;
     flex: none;
-}
-
-.light-theme .navbar-courses {
-    --course-bg: #eeddf0;
-    --course-hover: #e5cce8;
-    --course-text: #552558;
 }
 
 .navbar-courses .course-toggle {
@@ -366,6 +422,7 @@ body {
 .navbar-courses .course-toggle::after {
     flex: none;
     margin: 0;
+    color: var(--course-accent);
 }
 
 .navbar-courses .course-toggle:hover,
@@ -453,13 +510,27 @@ body {
     text-align: right;
 }
 
-/* Submenu caret: point left and place on the left side */
-.navbar-custom .dropdown-submenu > a.dropdown-toggle { position: relative; }
+.navbar-custom .dropdown-submenu > a.dropdown-toggle {
+    position: relative;
+    padding-inline-end: 1.75rem !important;
+}
+
 .navbar-custom .dropdown-submenu > a.dropdown-toggle::after {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%) rotate(90deg);
-    margin-right: 0.5em;
+    inset-inline-end: 0.75rem;
+    translate: 0 -50%;
+    margin: 0;
+}
+
+@media (min-width: 1200px) {
+    .navbar-custom .dropdown-submenu > a.dropdown-toggle {
+        --chevron-angle: 135deg;
+    }
+
+    .navbar-custom .nav-secondary .dropdown-submenu > a.dropdown-toggle {
+        --chevron-angle: -45deg;
+    }
 }
 
 /* Desktop submenu positioning is handled by theme CSS using dropdown-menu-right

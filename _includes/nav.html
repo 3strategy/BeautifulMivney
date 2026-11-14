@@ -14,8 +14,22 @@
   {% include course-nav.html current=initial_menu_set %}
 
   {% if page.title %}
-    <div class="navbar-page-title" aria-hidden="true">
-      <span dir="auto" title="{{ page.title | strip_html | escape }}">{{ page.title | strip_html | escape }}</span>
+    {% assign lesson_language = page.lang | default: page.language | default: site.lang %}
+    {% case lesson_language %}
+      {% when 'en' %}
+        {% assign next_lesson = 'Next lesson' %}
+        {% assign previous_lesson = 'Previous lesson' %}
+      {% when 'ru' %}
+        {% assign next_lesson = 'Следующий урок' %}
+        {% assign previous_lesson = 'Предыдущий урок' %}
+      {% else %}
+        {% assign next_lesson = 'לשיעור הבא' %}
+        {% assign previous_lesson = 'לשיעור הקודם' %}
+    {% endcase %}
+    <div class="navbar-page-title">
+      <a class="navbar-lesson-arrow" data-navbar-sequence="next" rel="next" aria-label="{{ next_lesson }}" title="{{ next_lesson }}" hidden></a>
+      <span dir="auto" aria-hidden="true" title="{{ page.title | strip_html | escape }}">{{ page.title | strip_html | escape }}</span>
+      <a class="navbar-lesson-arrow" data-navbar-sequence="prev" rel="prev" aria-label="{{ previous_lesson }}" title="{{ previous_lesson }}" hidden></a>
     </div>
   {% endif %}
 

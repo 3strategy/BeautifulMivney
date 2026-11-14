@@ -1,4 +1,4 @@
-# Touch navigation for lesson sequences
+# Lesson sequence navigation
 
 The shared `assets/js/sequence-navigation.js` is loaded by the footer and activates
 only when `main` contains tagged links. Enabled sequences are the numbered
@@ -47,6 +47,12 @@ navigation may repeat those tags, but must agree. Omit the unavailable link at a
 sequence boundary; there is no wraparound or inferred destination. Ordinary links
 remain usable without JavaScript and with a keyboard or screen reader.
 
+On BeautifulMivney, the title in the top bar uses these same links. Once the
+page heading scrolls out of view, a right arrow opens the next lesson and a
+left arrow opens the previous lesson. The bar shows an arrow only when its
+destination is available. Translated lessons use the links in the displayed
+version.
+
 Moving a finger **right goes next**, **left goes previous**, independent of the
 document direction. This is the Hebrew course convention; a future LTR course
 may need an explicit direction option before adopting it.
@@ -89,6 +95,6 @@ normal vertical reading, wide tables, diagram interactions, pinch zoom, browser
 Back, and the first/last lessons. Start within the page, away from screen edges.
 Desktop emulation cannot fully reproduce phone OS gestures or Safari behavior.
 
-BeautifulYesodot now uses the identical shared script and enables its own Taba
-student sequence. Keep gesture fixes aligned across both repositories and run
+BeautifulYesodot uses the same gesture handling for its Taba student sequence.
+Keep gesture fixes aligned across both repositories and run
 both browser suites; course link targets and sequence fixtures remain site-local.

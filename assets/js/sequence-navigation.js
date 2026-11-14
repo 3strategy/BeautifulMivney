@@ -18,6 +18,13 @@
       (url.pathname !== location.pathname || url.search !== location.search) ? url.href : null;
   }
 
+  for (const arrow of document.querySelectorAll('[data-navbar-sequence]')) {
+    const url = destination(arrow.dataset.navbarSequence);
+    if (!url) continue;
+    arrow.href = url;
+    arrow.hidden = false;
+  }
+
   function ownsGesture(target) {
     if (!(target instanceof Element) || target.closest(excluded)) return true;
     for (let node = target; node && node !== main; node = node.parentElement) {

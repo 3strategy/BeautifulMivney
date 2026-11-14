@@ -237,10 +237,6 @@ img {
   left: auto;
   right: 100%;
 }
-.navbar-custom .dropdown-submenu > a.dropdown-toggle::after {
-  transform: rotate(-90deg);
-  float: right;
-}
 @media (max-width: 1199px) {
   /* On mobile, show nested submenus stacked and indented */
   .navbar-custom .dropdown-submenu > .dropdown-menu {
