@@ -7,7 +7,7 @@ mathjax: true
 lang: he
 ---
 
-
+[הקודם – הורשה]({{ '/oop/01inheritance/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – שרשור בנאים]({{ '/oop/01inheritdconstructors/' | relative_url }}){: data-sequence-nav="next"}
 
 ## 1. חזרה - מה זו הורשה?
 
@@ -612,7 +612,3 @@ public class Manager : Employee
 ## קישורים
 
 [Campus playlist](https://www.youtube.com/playlist?list=PLnVUJu2KuoA0CpYg4ga45Q0C5dGaSEYPH)
-
-[חזרה להתחלה](/oop/01inheritance)
-
-[המשך - הרחבה בנושא בנאים](/oop/01inheritdconstructors)

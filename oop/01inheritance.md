@@ -8,6 +8,8 @@ mathjax: true
 lang: he
 ---
 
+[הקודם – חזרה על מחלקות]({{ '/oop/00Chapter0/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – הרחבה על הורשה]({{ '/oop/01inheritc/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-note}
 **הורשה** היא מנגנון המאפשר לנו להגדיר מחלקה חדשה (יורשת) על בסיס מחלקה קיימת (בסיס). זוהי **אבן יסוד** בתכנות מונחה עצמים. במחלקה היורשת יהיו באופן אוטומטי כל התכונות והפעולות של מחלקת הבסיס. המחלקה היורשת יכולה להוסיף תכונות ופעולות, ואף להחליף פעולות מסויימות ממחלקת הבסיס. מומלץ לצפות ,תחילה ב- [youtube playlist](https://www.youtube.com/playlist?list=PLnVUJu2KuoA0CpYg4ga45Q0C5dGaSEYPH)
 
@@ -218,6 +220,7 @@ class Program
 * `is` בודק אם אובייקט שייך לטיפוס מסוים.
 * עם **pattern matching** (`obj is Dog d`) אפשר גם לבצע המרה בטוחה לאותו טיפוס.
 
+[בשיעור הפולימורפיזם]({{ '/oop/02Polymorphism/#declared-and-runtime-types' | relative_url }}) נחזור ל-`Animal a = new Dog();` ונראה מתי אפשר לקרוא לפעולה ישירות דרך `a`, ומתי צריך הפניה מטיפוס `Dog`.
 
 
 
@@ -240,8 +243,6 @@ class Program
 ---
 
 [Campus playlist - הורשה בלבד](https://www.youtube.com/playlist?list=PLnVUJu2KuoA0CpYg4ga45Q0C5dGaSEYPH)
-
-[המשך - הרחבת נושא הורשה](/oop/01inheritc)
 
 [המשך - הרחבה בנושא בנאים](/oop/01inheritdconstructors)
 

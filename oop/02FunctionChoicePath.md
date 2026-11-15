@@ -7,6 +7,8 @@ mathjax: true
 lang: he
 ---
 
+[הקודם – מפת שאלוני הקוד]({{ '/oop/02QuestionnaireLogicMap/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – סיכום שגיאות]({{ '/oop/02CompilationAndRunTimeErrorSummary/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-success}
 הכלל הקבוע הוא כזה: קודם בודקים מה הקומפיילר רואה, ורק אחר כך מה האובייקט באמת. במילים אחרות: קודם **טיפוס מוצהר**, ורק אם צריך אחר כך **טיפוס בזכרון**.
 

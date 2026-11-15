@@ -7,6 +7,8 @@ mathjax: true
 lang: he
 ---
 
+[הקודם – כל השיעורים]({{ '/oop/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – הורשה]({{ '/oop/01inheritance/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-note}
 חזרה קצרה על מושגי יסוד במחלקות בשפת #C לקראת המשך הקורס. הבנה של מושגים אלו תעזור לכם לעבוד עם מבני נתונים מורכבים בהמשך.
 

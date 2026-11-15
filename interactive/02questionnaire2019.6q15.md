@@ -10,6 +10,8 @@ lang: he
 
 <!-- interactive -->
 
+[הקודם – בגרות 2019, שאלה 16]({{ '/interactive/02questionnaire2019.6q16/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – בגרות 2018, שאלה 15]({{ '/interactive/02questionnaire2018.6q15/' | relative_url }}){: data-sequence-nav="next"}
+
 <style>
 #quiz-root .quiz-answers-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

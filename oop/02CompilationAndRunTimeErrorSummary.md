@@ -7,6 +7,8 @@ mathjax: true
 lang: he
 ---
 
+[הקודם – עץ החלטה]({{ '/oop/02FunctionChoicePath/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – שאלון פולימורפיזם לבגרות]({{ '/interactive/02questionnairePolymCore/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-success}
 זהו דף אבחון מהיר. בכל דוגמה קראו קודם את הקוד, אחר כך שאלו: האם הקומפיילר בכלל מרשה להמשיך, ואם כן, האם זמן הריצה יצליח.
 

@@ -7,6 +7,8 @@ mathjax: true
 lang: he
 ---
 
+[הקודם – הרחבה על הורשה]({{ '/oop/01inheritc/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – כללי base ו־this]({{ '/oop/01inheritEbase/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-note}
 כעת נלמד (שוב) לכתוב ולהבין שרשור בנאים (Constructor Chaining)
 

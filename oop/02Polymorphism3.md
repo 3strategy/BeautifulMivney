@@ -6,6 +6,8 @@ tags: [פולימורפיזם, Overloading, Overriding]
 lang: he
 ---
 
+[הקודם – ניתוח בגרות 2025]({{ '/oop/02Polymorphism2Bag25/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – ToString והסתרה]({{ '/oop/02Polymorphism4CwToString/' | relative_url }}){: data-sequence-nav="next"}
+
 ## למה נדרשת הבחנה חדה?
 
 בשיעור הקודם הכרנו דוגמאות מגוונות (כולל עץ החלטות). עם זאת, שתי נקודות עלולות להישאר מבלבלות:

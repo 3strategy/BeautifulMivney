@@ -10,6 +10,8 @@ lang: he
 
 <!-- interactive -->
 
+[הקודם – שאלון פולימורפיזם לבגרות]({{ '/interactive/02questionnairePolymCore/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – בגרות 2022, שאלה 16]({{ '/interactive/02questionnaire2022q16/' | relative_url }}){: data-sequence-nav="next"}
+
 <style>
 #quiz-root .quiz-answers-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

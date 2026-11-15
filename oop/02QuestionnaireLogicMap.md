@@ -7,6 +7,8 @@ mathjax: true
 lang: he
 ---
 
+[הקודם – ToString והסתרה]({{ '/oop/02Polymorphism4CwToString/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – עץ החלטה]({{ '/oop/02FunctionChoicePath/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-success}
 לאחר מעבר על שאלוני הקוד שב-`interactive/` חוזרות כמעט תמיד אותן תחנות החלטה. מי שפותר לפי סדר קבוע לא נופל בקלות במלכודות של `override`, `overload`, `new`, `cast`, ו-`protected`.
 

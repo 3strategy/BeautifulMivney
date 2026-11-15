@@ -8,6 +8,8 @@ lang: he
 
 <!-- interactive -->
 
+[הקודם – כללי base ו־this]({{ '/oop/01inheritEbase/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – מבוא לפולימורפיזם]({{ '/oop/02Polymorphism/' | relative_url }}){: data-sequence-nav="next"}
+
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>

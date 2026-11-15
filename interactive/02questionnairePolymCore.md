@@ -8,6 +8,8 @@ lang: he
 
 <!-- interactive -->
 
+[הקודם – סיכום שגיאות]({{ '/oop/02CompilationAndRunTimeErrorSummary/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – בגרות 2022, שאלה 17]({{ '/interactive/02questionnaire2022q17/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-note}
 השאלון הזה ממוקד ב**חומר לבגרות** בפולימורפיזם, בלי הנושאים שסומנו `לא בחומר` בשאלון המתקדם.
 הוא מבוסס בעיקר על [בגרות 2025 שאלה 10]({{ '/bagruyot/2025.6.271/q10.pdf' | relative_url }}), [בגרות 2024 שאלה 15]({{ '/bagruyot/2024.6.271/q15.pdf' | relative_url }}) ו-[בגרות 2024 שאלה 17]({{ '/bagruyot/2024.6.271/q17.pdf' | relative_url }}).

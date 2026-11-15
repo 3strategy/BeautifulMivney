@@ -7,6 +7,8 @@ mathjax: true
 lang: he
 ---
 
+[הקודם – העמסה מול דריסה]({{ '/oop/02Polymorphism3/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – מפת שאלוני הקוד]({{ '/oop/02QuestionnaireLogicMap/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-note}
 ניקח את הדוגמא הבאה: `Console.WriteLine(myInstance.ToString())` מדוע תופעל הפעולה מהמחלקה היורשת גם אם אין override?
 

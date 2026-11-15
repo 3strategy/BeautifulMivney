@@ -153,11 +153,12 @@ navbar-links:
     - 1.2 הורשה המשך: "/oop/01inheritc"
     - 1.3 שרשור בנאים: "/oop/01inheritdconstructors"
     - 1.4 קריאות ל-base, this: "/oop/01inheritEbase"
-    - 1.5 תרגול אינטרקטיבי: "oop/01questionnaire"
+    - 1.5 תרגול אינטראקטיבי: "/oop/01questionnaire"
     - מצגת קמפוס: "https://lomdot.education.gov.il/Qualitest/CSA11C-abstract/index.html"
   2. פולימורפיזם:
     - 2.1 מצגת: "/oop/02-polymorphism-cs.pptx"
     - 2.2 פולימורפיזם: "/oop/02Polymorphism"
+    - דף עזר להמרות ופולימורפיזם: "/oop/02CastingAndPolymorphismCheatSheet/"
     # - 2.3a אינטרקטיבי לבגרות: "oop/02questionnairePolymCore"
     # - 2.3b ממוקד בגרות 2022/17: "oop/02questionnaire2022q17"
     # - 2.3c אינטרקטיבי מתקדם: "oop/02questionnairePolymAdv"
@@ -173,9 +174,9 @@ navbar-links:
     - מקבץ מהט 25: "/oop/02qmahat_tests_search.aspx.pdf"
     - מעקב עצמים דיתה: "oop/ExByOthers/DitaOOPTrackingObjects.pdf"
     - מעקב אריאל על דיתה: "https://www.youtube.com/watch?v=gqc_WCIRO5I&list=PLNLf5_3sUeLzoAqJKLTKM_BgSqq-DaUS5&index=15"
-    - דף החלטה חדש 1: "/oop/02QuestionnaireLogicMap"
-    - דף החלטה חדש 2: "/oop/02CompilationAndRunTimeErrorSummary"
-    - דף החלטה חדש 3: "/oop/02FunctionChoicePath"
+    - מפת שאלוני הקוד: "/oop/02QuestionnaireLogicMap"
+    - עץ החלטה לבחירת פעולה: "/oop/02FunctionChoicePath"
+    - סיכום שגיאות קומפילציה וזמן ריצה: "/oop/02CompilationAndRunTimeErrorSummary"
     - משחק לימוד OOP: "/oop/GeminiArtifacts/oop_learning_game.html"
 
 

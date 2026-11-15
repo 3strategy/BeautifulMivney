@@ -10,6 +10,8 @@ lang: he
 
 <!-- interactive -->
 
+[הקודם – בגרות 2022, שאלה 17]({{ '/interactive/02questionnaire2022q17/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – בגרות קיץ 2021, שאלה 17]({{ '/interactive/02questionnaire2021.6q17/' | relative_url }}){: data-sequence-nav="next"}
+
 <style>
 #quiz-root .quiz-answers-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

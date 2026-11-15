@@ -8,6 +8,8 @@ lang: he
 
 <!-- interactive -->
 
+[הקודם – בגרות 2018, שאלה 15]({{ '/interactive/02questionnaire2018.6q15/' | relative_url }}){: data-sequence-nav="prev"} · [כל השיעורים]({{ '/oop/' | relative_url }})
+
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>

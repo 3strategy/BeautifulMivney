@@ -7,6 +7,8 @@ mathjax: true
 lang: he
 ---
 
+[הקודם – שרשור בנאים]({{ '/oop/01inheritdconstructors/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – שאלון הורשה ובנאים]({{ '/oop/01questionnaire/' | relative_url }}){: data-sequence-nav="next"}
+
 {: .box-note}
 כמה הבהרות לגבי הקריאות ל-`base` ל- `base:` ול- `this:`
 
