@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Firebase AI Logic — 2: one button, one answer"
+title: "Firebase AI Logic (LLM) — 2: one button, one answer"
 subtitle: "A small Java / View Binding example with Firebase AI Logic"
 permalink: /android/topics/firebase-ai-logic/
 lang: en

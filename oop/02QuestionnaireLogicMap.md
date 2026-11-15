@@ -9,17 +9,7 @@ lang: he
 
 [הקודם – ToString והסתרה]({{ '/oop/02Polymorphism4CwToString/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – עץ החלטה]({{ '/oop/02FunctionChoicePath/' | relative_url }}){: data-sequence-nav="next"}
 
-{: .box-success}
-לאחר מעבר על שאלוני הקוד שב-`interactive/` חוזרות כמעט תמיד אותן תחנות החלטה. מי שפותר לפי סדר קבוע לא נופל בקלות במלכודות של `override`, `overload`, `new`, `cast`, ו-`protected`.
-
-## שלושת החוקים שפותחים כל שאלה
-
-1. קודם מזהים את **הטיפוס המוצהר** של המשתנה שעליו קוראים לפעולה.
-2. אחר כך מזהים את **הטיפוס בזכרון** של האובייקט בפועל.
-3. רק אז מחליטים האם מדובר ב-`overload`, ב-`override`, ב-`hiding`, ב-`cast`, או בכלל בשגיאת קומפילציה עוד לפני זמן הריצה.
-
-{: .box-warning}
-הטעות הכי נפוצה היא לדלג ישר לטיפוס בזכרון. זה מותר רק אחרי שהקומפיילר כבר מצא חתימה חוקית על פי הטיפוס המוצהר.
+לניתוח קריאה לפי סדר הבדיקות בקומפילציה ובזמן הריצה, השתמשו ב[עץ ההחלטה לבחירת פעולה]({{ '/oop/02FunctionChoicePath/#decision-tree' | relative_url }}).
 
 ## הקטגוריות שחוזרות בשאלונים
 
@@ -156,17 +146,9 @@ lang: he
 </svg>
 </div>
 
-## סדר פתרון מומלץ בבחינה
+## צורת רישום
 
-1. סמנו ליד כל משתנה את **הטיפוס המוצהר** ואת **הטיפוס בזכרון**.
-2. אם יש `cast`, בדקו קודם אם הוא חוקי תחבירית, ואז האם הוא באמת יכול להצליח בזמן ריצה.
-3. חפשו רק פעולות שהטיפוס המוצהר מכיר: המחלקה של המשתנה והאבות שלה.
-4. בחרו חתימה מתאימה. זהו שלב של `overload`, ולכן הוא עדיין שלב קומפילציה.
-5. אם הפעולה שנבחרה היא `virtual`/`override`, עברו לטיפוס בזכרון כדי להחליט איזו גרסה תרוץ.
-6. אם הפעולה שנבחרה אינה וירטואלית, או שמדובר ב-`new`, הישארו עם הטיפוס המוצהר.
-7. רק בסוף חשבו על הפלט, על ערכי השדות, ועל שגיאות זמן ריצה אפשריות.
-
-### צורת רישום
+ברישום המעקב סמנו את הטיפוס המוצהר ליד שם המשתנה ואת טיפוס העצם בצד השני של החץ. ליד העצם רשמו את ערכי השדות שלו.
 
 <svg width="100%" viewBox="0 0 680 180" role="img" xmlns="http://www.w3.org/2000/svg">
   <title style="fill:rgb(0, 0, 0);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto">Variable to heap object memory diagram</title>
@@ -222,22 +204,4 @@ lang: he
   <text x="566" y="132" text-anchor="middle" dominant-baseline="central" style="fill:rgb(61, 61, 58);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:central">99</text>
 </svg>
 
-## מלכודות קלאסיות מן השאלונים
-
-{: .box-error}
-משפטים שגויים שתלמידים אומרים לעצמם:
-
-- "אם האובייקט בזכרון הוא `Beaver`, תמיד תרוץ פעולה של `Beaver`". לא נכון. קודם צריך שהחתימה תיבחר בכלל דרך הטיפוס המוצהר.
-- "`new` זה כמו `override`". לא נכון. `new` מסתיר; הוא לא ממשיך את שרשרת הדריסה.
-- "`cast` משנה את האובייקט בזכרון". לא נכון. `cast` משנה את מה שהקומפיילר והרץ מתייחסים אליו, אבל לא יוצר אובייקט חדש ולא מחליף טיפוס אמיתי.
-- "אם יש `override`, כבר לא צריך לבדוק חתימה". לא נכון. בחירת החתימה קודמת לדריסה.
-
-## משפט מפתח אחד שכדאי לזכור
-
-{: .box-success}
-`overload` נבחר לפי **טיפוס מוצהר**. `override` נבחר לפי **טיפוס בזכרון**. `new` נשאר לפי **טיפוס מוצהר**. `cast` נבדק גם בקומפילציה וגם בזמן ריצה.
-
-## דפי המשך
-
-- [סיכום שגיאות קומפילציה וזמן ריצה]({{ '/oop/02CompilationAndRunTimeErrorSummary' | relative_url }})
-- [עץ החלטה: איזו פעולה תרוץ או איזו שגיאה תתקבל]({{ '/oop/02FunctionChoicePath' | relative_url }})
+[סיכום שגיאות קומפילציה וזמן ריצה]({{ '/oop/02CompilationAndRunTimeErrorSummary/' | relative_url }})

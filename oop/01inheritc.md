@@ -267,14 +267,7 @@ public class GoldenRetriever : Dog
 
 ## 5. שרשור בנאים (Constructor Chaining)
 
-<div markdown=1 class="box-success" >
-
-**חשוב לזכור:**
-* כל בנאי בשרשרת מחויב להריץ קודם את הבנאי של מחלקת הבסיס שלו.
-* הסדר תמיד **מלמעלה למטה** (Base → Derived), ורק לאחר סיום כל הבנאים יש לנו אובייקט מוכן לעבודה. בחירת הבנאים היא **מלמטה למעלה**
-* פירוט נוסף [בתת פרק בנאים](/oop/01inheritdconstructors)
-
-</div>
+הקריאות לבנאים עולות מהמחלקה היורשת אל מחלקת הבסיס. גופי הבנאים מתבצעים בסדר ההפוך, מהבסיס ועד למחלקה היורשת.
 
 ### סדר הפעלת בנאים
 
@@ -316,114 +309,12 @@ block-beta
   style A0 fill:#e1f5fe,stroke:#0277bd
 </div>
 
-{: .box-note}
-**כלל חשוב:** הבנאים נקראים מהבן לאב, אך מבוצעים מהאב לבן!
-
-
-<details markdown=1><summary>דוגמאות קוד חסרות תועלת. נא להתעלם</summary>
-
-### דוגמת קוד מפורטת
-```csharp
-public class Vehicle
-{
-    private string manufacturer;
-    private int year;
-    
-    public Vehicle(string manufacturer, int year)
-    {
-        this.manufacturer = manufacturer;
-        this.year = year;
-        Console.WriteLine($"1. Vehicle constructor: {manufacturer}, {year}");
-    }
-    
-    public string GetManufacturer() { return manufacturer; }
-    public void SetManufacturer(string manufacturer) 
-    { 
-        this.manufacturer = manufacturer; 
-    }
-    
-    public int GetYear() { return year; }
-    public void SetYear(int year) 
-    { 
-        if (year > 1900 && year <= DateTime.Now.Year)
-            this.year = year; 
-    }
-}
-
-public class Car : Vehicle
-{
-    private int numberOfDoors;
-    private string model;
-    
-    // בנאי עם קריאה לבנאי האב
-    public Car(string manufacturer, string model, int year, int doors) 
-        : base(manufacturer, year)
-    {
-        this.model = model;
-        this.numberOfDoors = doors;
-        Console.WriteLine($"2. Car constructor: {model}, {doors} doors");
-    }
-    
-    // בנאי נוסף עם קריאה לבנאי אחר באותה מחלקה
-    public Car(string manufacturer, string model) 
-        : this(manufacturer, model, DateTime.Now.Year, 4)
-    {
-        Console.WriteLine("3. Car convenience constructor");
-    }
-    
-    public string GetModel() { return model; }
-    public void SetModel(string model) { this.model = model; }
-    
-    public int GetNumberOfDoors() { return numberOfDoors; }
-    public void SetNumberOfDoors(int doors) 
-    { 
-        if (doors > 0 && doors <= 6)
-            this.numberOfDoors = doors; 
-    }
-}
-
-public class SportsCar : Car
-{
-    private int topSpeed;
-    
-    public SportsCar(string manufacturer, string model, int year, int topSpeed)
-        : base(manufacturer, model, year, 2)  // מכונית ספורט - תמיד 2 דלתות
-    {
-        this.topSpeed = topSpeed;
-        Console.WriteLine($"3. SportsCar constructor: Top speed {topSpeed} km/h");
-    }
-    
-    public int GetTopSpeed() { return topSpeed; }
-    public void SetTopSpeed(int speed) 
-    { 
-        if (speed > 0 && speed < 400)
-            this.topSpeed = speed; 
-    }
-}
-```
-
-### הרצת הקוד והפלט
-```csharp
-class Program
-{
-    static void Main()
-    {
-        Console.WriteLine("Creating a SportsCar:");
-        SportsCar ferrari = new SportsCar("Ferrari", "F40", 1987, 324);
-        
-        /* פלט:
-        Creating a SportsCar:
-        1. Vehicle constructor: Ferrari, 1987
-        2. Car constructor: F40, 2 doors
-        3. SportsCar constructor: Top speed 324 km/h
-        */
-    }
-}
-```
+[דוגמה להרצה ולהשוואת הפלט בשיעור הבנאים]({{ '/oop/01inheritdconstructors/#constructor-order-example' | relative_url }})
 
 ---
 
-## 6x. הרחבה מעשית - מערכת ניהול עובדים
+<details markdown="1">
+<summary>הרחבה מעשית – מערכת ניהול עובדים</summary>
 
 ```csharp
 public class Person

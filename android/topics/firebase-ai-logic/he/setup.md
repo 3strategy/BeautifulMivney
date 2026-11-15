@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Firebase AI Logic — 1: הכנת הפרויקט לפני הקוד"
+title: "Firebase AI Logic (LLM) — 1: הכנת הפרויקט לפני הקוד"
 subtitle: "Android,‏ View Binding,‏ Firebase ו־Gradle — משלימים לפני שיעור הבקשה"
 permalink: /android/topics/firebase-ai-logic/he/setup/
 lang: he

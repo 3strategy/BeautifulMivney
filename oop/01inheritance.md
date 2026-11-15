@@ -86,12 +86,7 @@ classDiagram
 {% include oop/01inheritance-example-1.md %}
 
 
-<div class="box-success" markdown=1>
-
-**סדר פעולות ביצירת עצם ממחלקה יורשת:**
-- אם לא מצוין `(...)base` בבנאי של מחלקה יורשת, ייקרא אוטומטית **בנאי ברירת מחדל** של מחלקת הבסיס (**אם קיים**).  
-- סדר היצירה של אובייקט יורש הוא: קודם בנאי הבסיס, אחריו בנאי המחלקה הנגזרת.
-</div>
+בדוגמה זו `Dog` מעביר ל-`Mammal` את הערך `true` עבור `hasFur`. [דוגמת הרצה בשיעור הבנאים]({{ '/oop/01inheritdconstructors/#constructor-order-example' | relative_url }}) מראה את סדר ביצוע גופי הבנאים בשרשרת כזו.
 
 ---
 

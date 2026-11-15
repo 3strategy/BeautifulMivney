@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Firebase AI Logic — 1: required project setup"
+title: "Firebase AI Logic (LLM) — 1: required project setup"
 subtitle: "Android, View Binding, Firebase and Gradle — complete before the request lesson"
 permalink: /android/topics/firebase-ai-logic/setup/
 lang: en
