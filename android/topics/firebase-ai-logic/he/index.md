@@ -12,6 +12,8 @@ tags: [Android, Java, Firebase, AI, callbacks]
 
 [חובה קודם: 1 — הכנת הפרויקט](setup/) · [English]({{ '/android/topics/firebase-ai-logic/' | relative_url }}?lang=en)
 
+לתרגול שליחת בקשת HTTP וקריאת JSON, ראו את [מדריך Gemini Interactions API]({{ '/android/unsorted/LLM-using-google-interactions-api/' | relative_url }}?lang=he).
+
 {: .box-warning}
 **אין להתחיל את העמוד הזה לפני השלמת [חלק 1 — הכנת הפרויקט](setup/).** שם יוצרים או פותחים את פרויקט Android, מחברים את פרויקט Firebase האישי, מגדירים View Binding, מורידים `google-services.json`, מוסיפים תוסף וספריות ל־Gradle ומאתחלים את Firebase ואת `model`. חוזרים לכאן רק אחרי בדיקת הבנייה שבסיום ההכנה.
 

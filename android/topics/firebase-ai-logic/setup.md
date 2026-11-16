@@ -18,6 +18,8 @@ main {
 
 [Next: 2 — button and request](../) · [עברית]({{ '/android/topics/firebase-ai-logic/he/setup/' | relative_url }}?lang=he)
 
+To practice sending an HTTP request and parsing JSON, see the [Gemini Interactions API lesson (Hebrew)]({{ '/android/unsorted/LLM-using-google-interactions-api/' | relative_url }}?lang=he).
+
 {: .box-warning}
 **Start here. This is part 1, required before writing the Firebase code in part 2.** Complete the Android project, View Binding, your Firebase/Cloud project, the configuration file, Gradle dependencies and initialization below. At the end, the app must build and open its existing screen with **no unresolved Firebase imports**. The two consoles manage your backend; Android Studio contains the app that connects to it.
 

@@ -14,6 +14,7 @@ tags: [java, viewbinding, gemini, interactions-api, llm]
 הגדרות חשבון ב-Google Developer Console, ניהול מפתחות API ומימוש Cloud Functions מסיבות אבטחה מפורטים **במדריך נפרד**.
 
 
+**רוצים לשלב Gemini באמצעות ה־SDK של Firebase?** התחילו ב[מדריך Firebase AI Logic — הכנת הפרויקט]({{ '/android/topics/firebase-ai-logic/he/setup/' | relative_url }}). שם מגדירים Firebase ו־App Check ושולחים בקשה מ־Java. המדריך הזה מתאים לתרגול בקשת HTTP וקריאת JSON מול Interactions API.
 
 ## שלב 1: עדכון קובץ ה-Layout (`activity_main.xml`)
 
@@ -100,6 +101,7 @@ tags: [java, viewbinding, gemini, interactions-api, llm]
 + import android.os.Looper;
   import androidx.appcompat.app.AppCompatActivity;
   import com.example.myaiapp.databinding.ActivityMainBinding;
++ import org.json.JSONArray;
 + import org.json.JSONObject;
 + import java.io.BufferedReader;
 + import java.io.InputStreamReader;
@@ -175,9 +177,8 @@ tags: [java, viewbinding, gemini, interactions-api, llm]
 +                         while ((responseLine = br.readLine()) != null) {
 +                             response.append(responseLine.trim());
 +                         }
-+                         // חילוץ תשובת המודל מתוך השדה output_text
 +                         JSONObject jsonResponse = new JSONObject(response.toString());
-+                         resultText = jsonResponse.optString("output_text", "לא התקבלה תשובה.");
++                         resultText = readModelReply(jsonResponse);
 +                     }
 +                 } else {
 +                     resultText = "שגיאת שרת: " + responseCode;
@@ -194,9 +195,49 @@ tags: [java, viewbinding, gemini, interactions-api, llm]
 +             });
 +         });
 +     }
++
++     /**
++      * מחברת את קטעי הטקסט של תשובת המודל לפי סדר הופעתם.
++      *
++      * @param interaction תגובת ה־JSON שהתקבלה מהשרת
++      * @return תשובת המודל, או הודעה אם אין טקסט להצגה
++      */
++     private String readModelReply(JSONObject interaction) {
++         JSONArray steps = interaction.optJSONArray("steps");
++         StringBuilder reply = new StringBuilder();
++
++         if (steps != null) {
++             for (int i = 0; i < steps.length(); i++) {
++                 JSONObject step = steps.optJSONObject(i);
++                 if (step == null || !"model_output".equals(step.optString("type"))) {
++                     continue;
++                 }
++
++                 JSONArray content = step.optJSONArray("content");
++                 if (content == null) {
++                     continue;
++                 }
++
++                 for (int j = 0; j < content.length(); j++) {
++                     JSONObject part = content.optJSONObject(j);
++                     if (part != null && "text".equals(part.optString("type"))) {
++                         reply.append(part.optString("text"));
++                     }
++                 }
++             }
++         }
++
++         String text = reply.toString();
++         return text.trim().isEmpty() ? "לא התקבלה תשובה." : text;
++     }
   }
 
 ```
+
+תגובת ה־REST מכילה מערך `steps`. המתודה `readModelReply` עוברת על שלבים מסוג `model_output`, ובכל שלב מחברת את קטעי ה־`text` ממערך `content` לפי הסדר. שלבים אחרים, כמו שלבי חשיבה או הפעלת כלים, אינם חלק מהתשובה שמוצגת במסך. לפרטים ראו את [מבנה תגובת ה־REST בתיעוד של Google](https://ai.google.dev/gemini-api/docs/interactions-breaking-changes-may-2026).
+
+{: .box-success}
+**בדיקה:** הריצו את האפליקציה ושלחו שאלה קצרה, למשל ״מהי עיר הבירה של יוון?״. אחרי ההמתנה אמורה להופיע תשובת המודל, וכפתור השליחה אמור לחזור לפעול.
 
 ---
 

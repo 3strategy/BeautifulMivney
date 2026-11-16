@@ -12,6 +12,8 @@ tags: [Android, Java, Firebase, AI, security]
 
 [הבא: 2 — כפתור ובקשה](../) · [English]({{ '/android/topics/firebase-ai-logic/setup/' | relative_url }}?lang=en)
 
+לתרגול שליחת בקשת HTTP וקריאת JSON, ראו את [מדריך Gemini Interactions API]({{ '/android/unsorted/LLM-using-google-interactions-api/' | relative_url }}?lang=he).
+
 {: .box-warning}
 **מתחילים כאן. זהו חלק 1, חובה לפני כתיבת קוד Firebase בחלק 2.** משלימים כאן את פרויקט Android,‏ View Binding, פרויקט Firebase/Cloud האישי, קובץ ההגדרות, תלויות Gradle והאתחול. בסיום האפליקציה חייבת להיבנות ולפתוח את המסך הקיים, **בלי imports של Firebase שאינם מזוהים**. שני המסופים מנהלים את תשתית הענן שלכם; ב־Android Studio נמצאת האפליקציה שמתחברת אליה.
 

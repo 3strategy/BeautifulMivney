@@ -18,6 +18,8 @@ main {
 
 [Required first: 1 — project setup](setup/) · [עברית]({{ '/android/topics/firebase-ai-logic/he/' | relative_url }}?lang=he)
 
+To practice sending an HTTP request and parsing JSON, see the [Gemini Interactions API lesson (Hebrew)]({{ '/android/unsorted/LLM-using-google-interactions-api/' | relative_url }}?lang=he).
+
 {: .box-warning}
 **Do not start this page before completing [part 1 — project setup](setup/).** That page creates/opens the Android project, links your own Firebase project, configures View Binding, downloads `google-services.json`, adds the Gradle plugin/libraries, and initializes Firebase and `model`. Return here only after its build checkpoint passes.
 
