@@ -10,7 +10,75 @@ lang: he
 [הקודם – עץ החלטה]({{ '/oop/02FunctionChoicePath/' | relative_url }}){: data-sequence-nav="prev"} · [הבא – שאלון פולימורפיזם לבגרות]({{ '/interactive/02questionnairePolymCore/' | relative_url }}){: data-sequence-nav="next"}
 
 {: .box-success}
-זהו דף אבחון מהיר. בכל דוגמה קראו קודם את הקוד, אחר כך שאלו: האם הקומפיילר בכלל מרשה להמשיך, ואם כן, האם זמן הריצה יצליח.
+בכל דוגמה בדקו תחילה מה הקומפיילר יודע לפי הטיפוסים בקוד. אם הקוד מתקמפל, עקבו אחרי האובייקטים שנוצרו בפועל ובדקו מה קורה בהפעלה.
+
+## קוד הבסיס לדוגמאות 1–6
+
+`Mammal` (יונק) היא מחלקת הבסיס. `Antelope` (אנטילופה) ו-`Beaver` (בונה) יורשות ממנה. כל בנאי מקבל משקל ומעביר אותו לבנאי של `Mammal`, ששומר אותו בשדה `weight`. הפעולה הציבורית `GetWeight()` זמינה בשתי המחלקות היורשות.
+
+ההיררכיה מעובדת מתוך [שאלה 17 בבגרות קיץ 2022]({{ '/interactive/02questionnaire2022q17/' | relative_url }}). כדי לבדוק דוגמה בפרויקט Console, העתיקו את הקוד הבא ל-`Program.cs` והכניסו בכל פעם דוגמה אחת לתוך `Main`. בבדיקת תיקון השאירו את הכרזות המשתנים והחליפו את השורה הבעייתית בקטע המתוקן. לדוגמאות 7–8 יש קוד משלהן.
+
+```csharp
+using System;
+
+public class Mammal
+{
+    protected int weight;
+
+    public Mammal(int weight)
+    {
+        this.weight = weight;
+    }
+
+    public int GetWeight()
+    {
+        return weight;
+    }
+
+    public virtual bool IsSame(Mammal other)
+    {
+        Console.WriteLine("In Mammal");
+        return ReferenceEquals(this, other);
+    }
+}
+
+public class Antelope : Mammal
+{
+    public Antelope(int weight) : base(weight) { }
+
+    public bool IsSame(Antelope other)
+    {
+        Console.WriteLine("In Antelope");
+        return other != null && weight == other.weight;
+    }
+}
+
+public class Beaver : Mammal
+{
+    public Beaver(int weight) : base(weight) { }
+
+    public override bool IsSame(Mammal other)
+    {
+        Console.WriteLine("In Beaver");
+        return other is Beaver beaver && weight == beaver.weight;
+    }
+}
+
+public class Program
+{
+    public static void Main()
+    {
+        // Paste one example here.
+    }
+}
+```
+
+- `Mammal.IsSame(Mammal)` בודקת אם שתי ההפניות מצביעות על אותו אובייקט.
+- `Antelope.IsSame(Antelope)` מוסיפה חתימה (`overload`) ומשווה משקלים. `Antelope` יורשת גם את `IsSame(Mammal)`.
+- `Beaver.IsSame(Mammal)` דורסת (`override`) את המימוש של `Mammal` ובודקת אם הארגומנט הוא `Beaver` בעל אותו משקל.
+
+{: .box-note}
+בשורה `Object a2 = new Antelope(10);` הטיפוס המוצהר של `a2` הוא `Object`, והאובייקט שנוצר הוא `Antelope`. הקומפיילר בוחר חתימה לפי הטיפוסים של הביטויים בקוד. בזמן ריצה, המרה מפורשת נבדקת מול האובייקט בפועל, ואם החתימה שנבחרה היא וירטואלית, טיפוס האובייקט שמקבל את הקריאה קובע איזה מימוש יופעל.
 
 ## שגיאות קומפילציה
 
@@ -25,14 +93,14 @@ a2.IsSame(a2);
 **שגיאת קומפילציה.** הטיפוס המוצהר הוא `Object`, ול-`Object` אין פעולה בשם `IsSame`. לכן הקוד נעצר עוד לפני זמן ריצה.
 
 {: .box-success}
-**תיקון מינימלי אם ידוע שהעצם בזכרון הוא יונק:**
+**תיקון כשהאובייקט הוא `Mammal` או שייך למחלקה יורשת**
 
 ```csharp
-((Mammal)a2).IsSame((Mammal)a2);
+Console.WriteLine(((Mammal)a2).IsSame((Mammal)a2));
 ```
 
 {: .box-warning}
-ה-`cast` כאן לא משנה את האובייקט בזכרון. הוא רק מאפשר לקומפיילר לראות את הפעולה דרך טיפוס מתאים יותר.
+שתי ההמרות נותנות לביטויים את הטיפוס `Mammal` ומחזירות הפניה לאותו אובייקט. לכן מופעלת `Mammal.IsSame(Mammal)` ומודפס `In Mammal` ואחריו `True`.
 
 ### 2. אין `overload` מתאים לארגומנט הנתון
 
@@ -43,18 +111,18 @@ a1.IsSame(a2);
 ```
 
 {: .box-error}
-**שגיאת קומפילציה.** השם `IsSame` קיים, אבל אין חתימה מתאימה עבור ארגומנט מטיפוס מוצהר `Object`. זו לא שגיאת זמן ריצה, כי אפילו לא נבחרה פעולה חוקית.
+**שגיאת קומפילציה.** עבור `a1` יש שתי חתימות זמינות, `IsSame(Antelope)` ו-`IsSame(Mammal)`. הטיפוס המוצהר של `a2` הוא `Object`, ואין המרה אוטומטית ממנו לטיפוס פרמטר של אף אחת מהחתימות.
 
 {: .box-success}
-**תיקוני `cast` אפשריים, לפי הפעולה שרוצים להפעיל:**
+**שתי המרות אפשריות של הארגומנט**
 
 ```csharp
-a1.IsSame((Antelope)a2);
-a1.IsSame((Mammal)a2);
+Console.WriteLine(a1.IsSame((Antelope)a2));
+Console.WriteLine(a1.IsSame((Mammal)a2));
 ```
 
-{: .box-warning}
-שני התיקונים אינם שקולים. ה-`cast` ל-`Antelope` יכול לבחור `overload` אחד, וה-`cast` ל-`Mammal` יכול לבחור `overload` או מימוש אחר.
+- ההמרה ל-`Antelope` בוחרת `IsSame(Antelope)`. יודפס `In Antelope` ואחריו `True` כי לשני האובייקטים משקל 10.
+- ההמרה ל-`Mammal` בוחרת `IsSame(Mammal)`. `Antelope` יורשת את המימוש של `Mammal`, ולכן יודפס `In Mammal` ואחריו `False`. כל קריאה ל-`new Antelope(10)` יצרה אובייקט נפרד.
 
 ### 3. גישה לחבר שאינו נגיש
 
@@ -64,7 +132,7 @@ Console.WriteLine(a1.weight);
 ```
 
 {: .box-error}
-**שגיאת קומפילציה.** השדה `weight` הוא `protected`, ולכן קוד חיצוני שאינו מחלקת בן אינו רשאי לגשת אליו ישירות.
+**שגיאת קומפילציה.** השדה `weight` מוגדר כ-`protected` בתוך `Mammal`. המחלקה `Program`, שבה נמצאת הדוגמה, נמצאת מחוץ להיררכיית הירושה ולכן אין לה גישה ישירה לשדה.
 
 {: .box-success}
 **תיקון טיפוסי:** להשתמש בפעולה ציבורית מתאימה, למשל:
@@ -94,7 +162,7 @@ Beaver b = (Beaver)obj;
 ```
 
 {: .box-warning}
-אחרי שהוספתם `cast`, השגיאה יכולה לעבור מזמן קומפילציה לזמן ריצה. אם האובייקט בזכרון אינו `Beaver`, תתקבל `InvalidCastException`.
+כאן ההמרה תצליח כי `obj` מפנה ל-`Beaver`. אם `obj` יפנה ל-`Antelope`, אותה המרה תתקמפל ותיזרק `InvalidCastException` בזמן ריצה.
 
 ## שגיאות זמן ריצה
 
@@ -143,6 +211,8 @@ if (b != null)
 
 ### 7. מערך נראה חוקי, אבל סוג האיברים האמיתי לא מתאים
 
+את הקטע הזה אפשר לבדוק בתוך `Main` גם בפרויקט שאין בו את מחלקות היונקים.
+
 ```csharp
 object[] arr = new string[1];
 arr[0] = new object();
@@ -171,7 +241,11 @@ arr[0] = "hello";
 
 ### 8. `new` גורם להפעלה מפתיעה, אבל לא לשגיאה
 
+לדוגמה הזו אפשר להעתיק את הקוד הבא כקובץ `Program.cs` שלם.
+
 ```csharp
+using System;
+
 class A
 {
     public void F() { Console.Write("A"); }
@@ -182,15 +256,21 @@ class B : A
     public new void F() { Console.Write("B"); }
 }
 
-A x = new B();
-x.F();
+class Program
+{
+    static void Main()
+    {
+        A x = new B();
+        x.F();
+    }
+}
 ```
 
 {: .box-warning}
 **אין כאן שגיאה בכלל.** יודפס `A`, כי `F` אינה חלק משרשרת `override`. המתודה של `B` רק מסתירה את זו של `A`, והקריאה דרך הטיפוס המוצהר `A` נשארת עם `A.F()`.
 
 {: .box-success}
-**אם רוצים פולימורפיזם אמיתי, צריך `virtual` ו-`override`:**
+**כדי שאותה קריאה ב-`Main` תדפיס `B`, החליפו את המחלקות `A` ו-`B` בגרסאות הבאות.**
 
 ```csharp
 class A
@@ -204,7 +284,7 @@ class B : A
 }
 ```
 
-## משפט סיכום
+## איך לאבחן דוגמה חדשה
 
-{: .box-success}
-אם אין חתימה חוקית, זו **שגיאת קומפילציה**. אם יש חתימה חוקית אבל האובייקט בפועל לא מתאים, זו **שגיאת זמן ריצה**. ברוב שאלות הפולימורפיזם, ההבדל הזה הוא כל השאלה.
+1. **בקומפילציה** בודקים אם ההשמה או ההמרה מותרת, אם הפעולה או השדה נגישים, ואם יש חתימה שמתאימה לטיפוסי הארגומנטים.
+2. **בהרצה** בודקים אם ההמרה מצליחה מול טיפוס האובייקט בפועל ואם יש אובייקט שאפשר לקרוא דרכו לפעולה. בקריאה לפעולה וירטואלית, עוקבים אחרי ה-`override` לפי הטיפוס בפועל של מקבל הקריאה.
