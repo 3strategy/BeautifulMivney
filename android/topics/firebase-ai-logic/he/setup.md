@@ -56,13 +56,15 @@ tags: [Android, Java, Firebase, AI, security]
 {: .box-warning}
 הדוגמה הקטנה שולחת prompt ישיר ואינה כוללת התחברות באמצעות Firebase Authentication. אין להפעיל עבורה **template-only mode** או **authenticated-users mode**. אם הפרויקט השנתי הקיים כבר אוכף אחד מהם, בקשו מהמורה להתאים את הדוגמה; אין לכבות הגנות קיימות. המצבים האלה דוחים את הדוגמה עם `403` או `401`, בהתאמה. [דרישות המצבים](https://firebase.google.com/docs/ai-logic/security-checklist).
 
-## 3. בודקים את ה־APIs ומבחינים בין שני סוגי מפתחות
+## 3. בודקים את ה־APIs ומבינים איך הבקשות מקבלות הרשאה
 
 ב[מסוף Google Cloud](https://console.cloud.google.com/apis/dashboard), בחרו את **אותו פרויקט** ופתחו **APIs & Services**. תהליך ההגדרה המודרך אמור להפעיל את השירותים הדרושים. ב־**Library** בדקו את **Firebase AI Logic API**, ששמו הטכני `firebasevertexai.googleapis.com`, ואת **Gemini API** של הספק הנבחר (`generativelanguage.googleapis.com`). כפתור Enable פירושו שהשירות עדיין אינו מופעל בפרויקט הנבחר. השלימו את ההפעלה באמצעות תהליך ההגדרה של Firebase.
 
 ![פרטי Firebase AI Logic API במסוף Cloud לפני הפעלה, עם שם השירות הטכני]({{ "/android/topics/firebase-ai-logic/images/cloud-api-details.jpg" | relative_url }})
 
-מפתח ספק Gemini שנוצר בתהליך Firebase נשאר בצד השרת: **אין לשים באפליקציה מפתח Gemini API או קובץ service-account JSON**. מפתח Firebase שב־`google-services.json` הוא מזהה פרויקט ואפליקציה, ולא הוכחה שהבקשה מורשית. ב־**APIs & Services > Credentials** הגבילו את מפתח Firebase שבו משתמשת האפליקציה ל־**Android apps**, עם שם החבילה וטביעת SHA-1 של תעודת החתימה, ובחרו רק את ה־APIs הדרושים לאפליקציה, ובהם Firebase AI Logic API. את SHA-1 של ההתקנה הכיתתית מקבלים במשימת Gradle בשם `signingReport`. אם אתם בונים את האפליקציה שלכם במחשב נוסף, הוסיפו גם את SHA-1 של תעודת ה־debug שלו. שמרו על ההגבלות שנדרשות לאפליקציות נוספות שרשמתם בעצמכם. [הנחיות הגבלת מפתחות ו־App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
+כשמשתמשים ב־Gemini Developer API דרך Firebase AI Logic, ‏Firebase יוצר אוטומטית בפרויקט חשבון שירות שמנוהל על ידי Google, ומשתמש בו כדי לאשר בקשות ל־Gemini. **אין צורך ליצור מפתח Gemini API או להוסיף אותו לאפליקציה. גם קובץ service-account JSON לא מוסיפים לאפליקציה.** [איך Firebase מאשר בקשות ל־Gemini](https://firebase.google.com/docs/ai-logic/faq-and-troubleshooting#api-key)
+
+מפתח Firebase שב־`google-services.json` הוא מזהה פרויקט ואפליקציה, ולא הוכחה שהבקשה מורשית. ב־**APIs & Services > Credentials** הגבילו את מפתח Firebase שבו משתמשת האפליקציה ל־**Android apps**, עם שם החבילה וטביעת SHA-1 של תעודת החתימה, ובחרו רק את ה־APIs הדרושים לאפליקציה, ובהם Firebase AI Logic API. את SHA-1 של ההתקנה הכיתתית מקבלים במשימת Gradle בשם `signingReport`. אם אתם בונים את האפליקציה שלכם במחשב נוסף, הוסיפו גם את SHA-1 של תעודת ה־debug שלו. שמרו על ההגבלות שנדרשות לאפליקציות נוספות שרשמתם בעצמכם. [הנחיות הגבלת מפתחות ו־App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
 
 ## 4. מוסיפים תוסף וספריות ומסנכרנים Gradle
 {: #firebase-sdk}

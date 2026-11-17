@@ -62,13 +62,15 @@ If your existing yearly-project backend is already on Blaze, pause and ask the t
 {: .box-warning}
 This small example sends a direct prompt and has no Firebase Authentication sign-in. Do not enable **template-only mode** or **authenticated-users mode** for this exercise. If your existing yearly project already enforces either, ask the teacher how to adapt the example; do not turn off existing protections. Those modes reject this example with `403` or `401`, respectively. [Mode requirements](https://firebase.google.com/docs/ai-logic/security-checklist).
 
-## 3. Verify the APIs; keep the two key types distinct
+## 3. Verify the APIs and understand how requests are authorized
 
 In the [Google Cloud console](https://console.cloud.google.com/apis/dashboard), select the **same project**, then open **APIs & Services**. Guided setup should enable the required services; use **Library** to verify **Firebase AI Logic API**, service name `firebasevertexai.googleapis.com`, and the chosen provider's **Gemini API** (`generativelanguage.googleapis.com`). Seeing Enable means that service is not yet enabled in the selected project. Use the Firebase setup flow to complete activation.
 
 ![Google Cloud details for Firebase AI Logic API before activation; service name visible]({{ "/android/topics/firebase-ai-logic/images/cloud-api-details.jpg" | relative_url }})
 
-The Gemini provider key created by the Firebase workflow stays on the backend: **never put a Gemini API key or service-account JSON in your app**. The Firebase API key in `google-services.json` is a project/app identifier, not proof that a request is authorized. In **APIs & Services > Credentials**, restrict the Firebase key used by this app to **Android apps** (its package name and SHA-1 signing fingerprint) and allow only the Firebase APIs the app needs, including Firebase AI Logic API. Obtain the SHA-1 for the classroom installation with the Gradle `signingReport` task. If you build your app on another computer, add that computer's debug-signing SHA-1 too. Keep any restrictions needed by your own other registered apps. [Key restrictions and App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
+When you use the Gemini Developer API through Firebase AI Logic, Firebase automatically provisions a Google-managed service account in your Firebase project and uses it to authorize requests to Gemini. **You don’t need to create a Gemini API key or put one in the app. Do not add a service-account JSON file to the app either.** [How Firebase authorizes Gemini requests](https://firebase.google.com/docs/ai-logic/faq-and-troubleshooting#api-key)
+
+The Firebase API key in `google-services.json` is a project/app identifier, not proof that a request is authorized. In **APIs & Services > Credentials**, restrict the Firebase key used by this app to **Android apps** (its package name and SHA-1 signing fingerprint) and allow only the Firebase APIs the app needs, including Firebase AI Logic API. Obtain the SHA-1 for the classroom installation with the Gradle `signingReport` task. If you build your app on another computer, add that computer's debug-signing SHA-1 too. Keep any restrictions needed by your own other registered apps. [Key restrictions and App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
 
 ## 4. Add the plugin and libraries, then sync Gradle
 {: #firebase-sdk}
