@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he">
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Queue Animation</title>
   <link href="https://fonts.googleapis.com/css?family=Varela+Round&display=swap" rel="stylesheet">
   <!-- Varela Round font -->
@@ -41,6 +42,7 @@
       direction: ltr;
       /* Specify direction for the queue */
       width: 16em;
+      max-width: 100%;
       margin-left: auto;
       /* Center the container */
       margin-right: auto;
@@ -77,11 +79,8 @@
     }
 
     .btn {
-      line-height: 0.8;
+      line-height: 1.25;
     }
-.btn-sm {
-  font-size: 0.5em;
-}
     /* Center the buttons within their container */
     .button-container {
       text-align: center;
@@ -113,13 +112,14 @@
       }
     }
   </style>
-
+  <link rel="stylesheet" href="../../assets/css/collection-animation.css">
+  <script src="../../assets/js/collection-animation.js"></script>
 </head>
 
 <body>
 
   <div class="button-container">
-    <button id="btn1" class="btn btn-sm btn-outline-light" onclick="resetQueue()">איתחול</button>
+    <button id="btn1" class="btn btn-outline-secondary" onclick="resetQueue()">איתחול</button>
     <button id="btn2" class="btn btn-outline-success" onclick="emptyQueue()">הוצאה מהתור</button>
     <button id="btn3" class="btn btn-outline-success" onclick="emptyIntoTempQueue()">העברה לתור זמני</button>
     <button id="btn4" class="btn btn-outline-success" onclick="rotateQueue()">גלגול</button>
@@ -141,7 +141,7 @@
     <div id="tempQueue" class="btn-group, temp-queue-container"></div>
   </div>
 
-  <div class="button-container">
+  <div class="button-container" data-standalone-only>
     <a id="link8" class="btn btn-outline-light"
       href="file:///C:/Users/3stra/OneDrive/Documents/OrtCSharp/MergedBagrutAlon.pdf">שאלה</a>
     <a id="link9" class="btn btn-outline-light"
@@ -152,9 +152,7 @@
     let tempQueue = []; // Temporary queue
     const queueContainer = document.getElementById('queue');
     const tempQueueContainer = document.getElementById('tempQueue');
-
-    // Define an array of colors
-    const colors = ['red', 'green', 'blue', 'orange', 'purple'];
+    const animation = createCollectionAnimation();
 
     function displayQueue() {
       queueContainer.innerHTML = ''; // Clear the queue container
@@ -179,6 +177,7 @@
     }
 
     function resetQueueSimilar() {
+      animation.cancel();
       queue = [4, 6, 5, 7];
       tempQueue = [5, 7, 4, 6];
       displayQueue();
@@ -188,6 +187,7 @@
     }
 
     function resetQueue() {
+      animation.cancel();
       queue = [1, 2, 3, 4];
       tempQueue = [];
       displayQueue();
@@ -197,89 +197,76 @@
     }
 
     function emptyQueue() {
-      //function removeElementOneByOne() {
-      //  if (queue.length > 0) {
-          queue.shift(); // Remove the first element
-          displayQueue();
-      //    setTimeout(removeElementOneByOne, 500); // Wait for 500ms before removing the next element
-      //  }
-      //}
-      //removeElementOneByOne();
+      queue.shift();
+      displayQueue();
     }
 
-    let isQueueEmptying = false; // Global flag to track the emptying process.
-
     function emptyIntoTempQueue() {
-      isQueueEmptying = true; // Indicate the process is starting.
-      let count = queue.length; // Assuming we start with 4 elements.
+      if (queue.length === 0) return;
+      document.getElementById("temp_dup").innerText = "תור זמני";
 
       function moveItemToTemp() {
-        if (queue.length > 0) {
-          let item = queue.shift();
-          tempQueue.push(item);
-          displayQueue();
-          displayTempQueue();
+        tempQueue.push(queue.shift());
+        displayQueue();
+        displayTempQueue();
 
-          setTimeout(moveItemToTemp, 700); // Continue moving items with a delay.
+        if (queue.length > 0) {
+          animation.after(700, moveItemToTemp);
         } else {
-          isQueueEmptying = false; // Indicate the process has completed.
+          animation.cancel();
         }
       }
 
       moveItemToTemp();
     }
 
-    function rotateQueue(times = 4, current = 0) {
-      if (current < times && queue.length > 0) {
-        // Start the rotation process
-        const itemToMove = queue.shift(); // Remove the first element
-        displayQueue(); // Immediately reflect this removal in the UI
+    function rotateQueue(times = queue.length) {
+      if (times <= 0 || queue.length === 0) return;
+      const itemToMove = queue.shift();
+      displayQueue();
 
-        setTimeout(() => {
-          queue.push(itemToMove); // Complete the rotation by reinserting the element
-          displayQueue(); // Reflect the insertion in the UI
-
-          if (current + 1 < times) {
-            // If there are more rotations to perform, wait until this one is visually complete
-            setTimeout(() => rotateQueue(times, current + 1), 500);
-          }
-        }, 500); // Delay for both removal and reinsertion visibility
-      }
+      animation.after(500, () => {
+        queue.push(itemToMove);
+        displayQueue();
+        if (times > 1) {
+          animation.after(500, () => rotateQueue(times - 1));
+        } else {
+          animation.cancel();
+        }
+      });
     }
 
     function startDuplicationCycle() {
+      let remaining = queue.length;
+      tempQueue = [];
+      displayTempQueue();
+      document.getElementById("q1").innerText = "תור מקורי";
       document.getElementById("temp_dup").innerText = "תור משוכפל";
+      if (remaining === 0) return;
 
-      let stepsCompleted = 0;
-
-      //Function to move items from the original queue to the temporary queue, one by one.
       function moveToTempQueue() {
-        if (queue.length > 0) {
-          const item = queue.shift(); // Remove the first item from the original queue.
-          tempQueue.push(item); // Add it to the temporary queue.
-          displayQueue(); // Update the display of the original queue.
-          displayTempQueue(); // Update the display of the temporary queue.
-          setTimeout(moveToTempQueue, 500); // Continue moving the next item after a delay.
-        } else if (stepsCompleted < 4) {
-          setTimeout(duplicateItems, 500); // Start duplicating items after the last item is moved.
-        }
+        tempQueue.push(queue.shift());
+        displayQueue();
+        displayTempQueue();
+        animation.after(500, queue.length > 0 ? moveToTempQueue : duplicateItems);
       }
 
-      // Function to duplicate items: move each item from the tempQueue back to the original queue and also into itself.
+      // Rotating through each item once leaves both queues in the original order.
       function duplicateItems() {
-        //if (stepsCompleted < 4 && tempQueue.length > 0) {
-        const item = tempQueue.shift(); // Take the first item from the temporary queue.
-        queue.push(item); // Add it back to the original queue.
-        tempQueue.push(item); // Also add it to the end of the temporary queue to duplicate.
-        displayQueue(); // Update the display of the original queue.
-        displayTempQueue(); // Update the display of the temporary queue.
-        stepsCompleted++;
-        if (stepsCompleted < 4) {
-          setTimeout(duplicateItems, 700); // Move back to temp if more cycles are needed.
+        const item = tempQueue.shift();
+        queue.push(item);
+        tempQueue.push(item);
+        displayQueue();
+        displayTempQueue();
+        remaining--;
+        if (remaining > 0) {
+          animation.after(700, duplicateItems);
+        } else {
+          animation.cancel();
         }
       }
 
-      moveToTempQueue(); // Initiate the process by starting to move items to the temporary queue.
+      moveToTempQueue();
     }
 
 
@@ -299,79 +286,7 @@
       return colors[value] || '#FFFFFF'; // Default to white if no specific color is defined
     }
 
-    // ==================================     mouse handling area  ===================
-    // ===============================================================================
-    // List of element IDs to cycle through
-    const elementIds = ['btn1', 'btn2', 'btn3', 'btn4', 'btn5', 'btn6', 'btn7'];
-    let currentIndex = 0; // Track the current index of the focused element.
-    let lastCycledElement = null; // Track the last element cycled through.
-
-    function switchFocus(direction) {
-      // Adjust the current index based on the direction of the mouse wheel.
-      if (direction === 'down') {
-        currentIndex = Math.max(0, currentIndex - 1);
-      } else if (direction === 'up') {
-        currentIndex = (currentIndex + 1) % elementIds.length;
-      }
-
-      // Focus the current element.
-      const currentElement = document.getElementById(elementIds[currentIndex]);
-      currentElement.focus();
-      lastCycledElement = currentElement; // Update the last cycled element reference.
-
-      // Remove the hover-effect class from the previously focused element if it exists.
-      if (lastFocusedElement && lastFocusedElement !== currentElement) {
-        lastFocusedElement.classList.remove('hover-effect');
-      }
-
-      // // Add the hover-effect class to the newly focused element.
-      // currentElement.classList.add('hover-effect');
-
-      // Update the reference to the last focused element.
-      lastFocusedElement = currentElement;
-    }
-
-    // Add an event listener for the mouse wheel.
-    document.addEventListener('wheel', function (event) {
-      // Determine the direction of the mouse wheel scroll.
-      const direction = event.deltaY < 0 ? 'down' : 'up';
-      switchFocus(direction);
-      event.preventDefault(); // Prevent the default scrolling behavior.
-    });
-
-    let lastFocusedElement = null; // Track the last focused element to remove the hover effect.
-
-    document.addEventListener('contextmenu', function (event) {
-      event.preventDefault(); // Prevent the default context menu from showing.
-
-      if (lastCycledElement && elementIds.includes(lastCycledElement.id)) {
-        lastCycledElement.click(); // Programmatically click the last cycled element.
-        lastCycledElement.focus(); // Set focus to show focus styles.
-
-        // Remove hover-effect class from the previously focused element if it exists
-        if (lastFocusedElement) {
-          lastFocusedElement.classList.remove('hover-effect');
-        }
-
-        // Add hover-effect class to the currently focused element
-        if (lastCycledElement.id != 'btn1')
-          lastCycledElement.classList.add('hover-effect');
-
-        // Update the reference to the last focused element
-        lastFocusedElement = lastCycledElement;
-      }
-    });
-
-    elementIds.forEach(id => {
-      const element = document.getElementById(id);
-      element.addEventListener('mouseover', () => {
-        if (lastFocusedElement) {
-          lastFocusedElement.classList.remove('hover-effect');
-          lastFocusedElement = null;
-        }
-      });
-    });
-    // ========================= end of mouse handling region.
+    enablePresentationControls();
 
     // Initial display
     displayQueue();

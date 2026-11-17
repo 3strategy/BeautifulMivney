@@ -1,0 +1,48 @@
+.collection-animation-frame {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  border: 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 1px #d7ded9;
+}
+
+html.embedded-animation {
+  font-size: 1rem;
+  color-scheme: light;
+}
+
+.embedded-animation body {
+  display: flow-root;
+  margin: 0;
+  background: white;
+  color: #212529;
+}
+
+.embedded-animation .button-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding-bottom: 0.55rem;
+}
+
+.embedded-animation .btn {
+  padding: 0.3rem 0.55rem;
+  line-height: 1.25;
+}
+
+.embedded-animation .container {
+  box-sizing: border-box;
+  min-height: 4rem;
+  margin-inline: auto;
+}
+
+.embedded-animation h4 {
+  font-size: 1rem;
+  margin: 0.35em 0 0.5em;
+}
+
+.embedded-animation [data-standalone-only] {
+  display: none;
+}

@@ -1,0 +1,9 @@
+<link rel="stylesheet" href="{{ '/assets/css/collection-animation.css' | relative_url }}">
+<iframe
+  class="collection-animation-frame"
+  data-collection-animation
+  src="{{ include.path | relative_url }}"
+  title="{{ include.title }}"
+  height="360"
+  loading="lazy"></iframe>
+<script src="{{ '/assets/js/collection-animation.js' | relative_url }}" defer></script>

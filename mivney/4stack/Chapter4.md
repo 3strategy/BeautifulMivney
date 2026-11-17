@@ -19,14 +19,16 @@ lang: he
 
 ## מהי מחסנית?
 
-[אנימציה](/mivney/4stack/StackAnimation.html)
-
 <details open markdown="1">
 <summary>הגדרה ותיאור</summary>
 
 מחסנית היא רשימה ליניארית שבה כל ההוספות והמחיקות מתבצעות בקצה אחד בלבד הנקרא **Top**. הפעולה הבסיסית של המחסנית היא `Push` (דחיפה) – הוספת פריט לראש המחסנית – ו‑`Pop` (שליפה) – הסרת הפריט האחרון שהוכנס. ניתן גם להציץ בפריט בראש המחסנית באמצעות `Top` מבלי להסיר אותו.
 
 </details>
+
+{% include collection-animation.html path="/mivney/4stack/StackAnimation.html" title="אנימציה אינטראקטיבית של מחסנית" %}
+
+[פתיחת אנימציית המחסנית בדף נפרד]({{ '/mivney/4stack/StackAnimation.html' | relative_url }})
 
 ## מימוש מחסנית ב‑C#
 

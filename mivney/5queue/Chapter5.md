@@ -26,7 +26,9 @@ lang: he
 
 </details>
 
+{% include collection-animation.html path="/mivney/5queue/QueueAnimation.html" title="אנימציה אינטראקטיבית של תור" %}
 
+[פתיחת אנימציית התור בדף נפרד]({{ '/mivney/5queue/QueueAnimation.html' | relative_url }})
 
 ## Unit4.dll
 
