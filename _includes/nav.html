@@ -27,9 +27,9 @@
         {% assign previous_lesson = 'לשיעור הקודם' %}
     {% endcase %}
     <div class="navbar-page-title">
-      <a class="navbar-lesson-arrow" data-navbar-sequence="next" rel="next" aria-label="{{ next_lesson }}" title="{{ next_lesson }}" hidden></a>
-      <span dir="auto" aria-hidden="true" title="{{ page.title | strip_html | escape }}">{{ page.title | strip_html | escape }}</span>
       <a class="navbar-lesson-arrow" data-navbar-sequence="prev" rel="prev" aria-label="{{ previous_lesson }}" title="{{ previous_lesson }}" hidden></a>
+      <span dir="auto" aria-hidden="true" title="{{ page.title | strip_html | escape }}">{{ page.title | strip_html | escape }}</span>
+      <a class="navbar-lesson-arrow" data-navbar-sequence="next" rel="next" aria-label="{{ next_lesson }}" title="{{ next_lesson }}" hidden></a>
     </div>
   {% endif %}
 

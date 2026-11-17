@@ -53,8 +53,8 @@ sequence boundary; there is no wraparound or inferred destination. Ordinary link
 remain usable without JavaScript and with a keyboard or screen reader.
 
 On BeautifulMivney, the title in the top bar uses these same links. Once the
-page heading scrolls out of view, a right arrow opens the next lesson and a
-left arrow opens the previous lesson. The bar shows an arrow only when its
+page heading scrolls out of view, a left arrow opens the next lesson and a
+right arrow opens the previous lesson. The bar shows an arrow only when its
 destination is available. Translated lessons use the links in the displayed
 version.
 

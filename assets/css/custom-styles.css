@@ -361,11 +361,11 @@ body {
 }
 
 .navbar-lesson-arrow[data-navbar-sequence="next"] {
-    --chevron-angle: -45deg;
+    --chevron-angle: 135deg;
 }
 
 .navbar-lesson-arrow[data-navbar-sequence="prev"] {
-    --chevron-angle: 135deg;
+    --chevron-angle: -45deg;
 }
 
 .navbar-lesson-arrow:hover,

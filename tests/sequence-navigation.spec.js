@@ -98,7 +98,7 @@ for (const [language, folder, nextLabel, previousLabel] of [
     await expect(title).toBeVisible();
     await expect(next).toBeVisible();
     await expect(previous).toHaveAttribute('href', `${course}01.collect-circles-drawing`);
-    expect((await next.boundingBox()).x).toBeGreaterThan((await previous.boundingBox()).x);
+    expect((await next.boundingBox()).x).toBeLessThan((await previous.boundingBox()).x);
     await next.click();
     await expect(page).toHaveURL(url => url.pathname.replace(/\/$/, '') === new URL(`${course}03.collect-circles-finish`).pathname);
 
