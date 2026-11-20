@@ -69,7 +69,26 @@ tags: [Android, Java, Firebase, AI, callbacks]
 
 View Binding ממירה את מזהי XML בשם `ask_llm` ו־`answer_label` לשדות Java בשם `askLlm` ו־`answerLabel`. מחלקת ה־binding נוצרת אוטומטית; אין לכתוב אותה בעצמנו.
 
-## 2. מוסיפים imports לבקשה ואת פעולת הלחיצה
+## 2. מוסיפים את Guava ואת פעולת הלחיצה
+
+ה־callback שנוסיף משתמש במחלקות `Futures` ו־`FutureCallback` מספריית Guava. ב־**Gradle Scripts > libs.versions.toml**, הוסיפו את השורה הראשונה למקטע `[versions]` הקיים ואת השורה השנייה למקטע `[libraries]` הקיים.
+
+```toml
+guava = "31.0.1-android"
+```
+
+```toml
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+```
+
+ב־**Gradle Scripts > build.gradle.kts (Module :app)**, הוסיפו למקטע `dependencies` הקיים:
+
+```kotlin
+implementation(libs.guava)
+```
+
+{: .box-success}
+**בדיקת ביניים — הרצה אחרי הוספת Guava.** סנכרנו את Gradle ולחצו **Run**. ודאו שהכפתור **Ask LLM** והטקסט ההתחלתי **The answer will appear here.** מופיעים. את פעולת הלחיצה תוסיפו בהמשך. אם הסנכרון או פתיחת האפליקציה נכשלים, תקנו את השגיאה לפני שתוסיפו את ה־imports ואת המאזין.
 
 ב־**app > kotlin+java > החבילה שלכם > MainActivity**, הוסיפו רק את ה־imports האלה. משאירים את ה־imports של אתחול Firebase מחלק 1:
 
@@ -128,13 +147,59 @@ binding.askLlm.setOnClickListener(v -> {
 **הבקשה הראשונה עשויה להיכשל עד לרישום טוקן ה־debug שלה.** זהו שלב הרשאה בזמן ריצה; הוא אינו גורם ל־imports אדומים ב־Java או לשגיאת קומפילציה ב־Gradle.
 
 1. אחרי הלחיצה הראשונה פתחו **Logcat** וסננו לפי **DebugAppCheckProvider**. העתיקו באופן פרטי את טוקן ה־debug שנוצר.
-2. ב**פרויקט Firebase שלכם > Security > App Check > Apps**, פתחו את תפריט שלוש הנקודות של האפליקציה ובחרו **Manage debug tokens**. רשמו את הטוקן.
+2. ב**פרויקט Firebase שלכם > Security > App Check > Apps**, פתחו את תפריט שלוש הנקודות של האפליקציה ובחרו **Manage debug tokens**. רשמו שם את הטוקן, או השתמשו בהוראות של Firebase CLI שבהמשך.
 3. לחצו שוב **Ask LLM**. התשובה אמורה להחליף את Thinking, בתנאי שה־API זמין ויש מכסה.
+
+<details markdown="1">
+<summary>אפשרות נוספת — מתקינים Firebase CLI ורושמים את הטוקן דרך שורת הפקודה</summary>
+
+Firebase CLI מאפשר לעבוד עם פרויקט Firebase משורת הפקודה. בהמשך תוכלו להשתמש בו גם בעבודה עם סוכן תכנות על הפרויקט.
+
+**מתקינים את ה־CLI ב־Windows.** אם Node.js ו־npm כבר מותקנים, דלגו על פקודת WinGet. אחרת התקינו Node.js LTS ב־**Command Prompt** ופתחו חלון Command Prompt חדש בסיום ההתקנה.
+
+```bat
+winget install --id OpenJS.NodeJS.LTS --exact
+```
+
+התקינו או עדכנו את Firebase CLI ובדקו שהוא מזהה את הפקודה של App Check.
+
+```bat
+npm install -g firebase-tools@latest
+firebase --version
+firebase appcheck:debugtokens:create --help
+```
+
+הפקודה נוספה בגרסה **15.25.0** של Firebase CLI. אם גם אחרי העדכון הפקודה אינה מזוהה, הריצו `where firebase` ב־Command Prompt כדי לראות באיזו התקנה Windows משתמש. [מדריך ההתקנה הרשמי](https://firebase.google.com/docs/cli/) · [הערות הגרסה של ה־CLI](https://firebase.google.com/support/release-notes/cli)
+
+**מתחברים עם החשבון של פרויקט Firebase.** בהתחברות הראשונה הריצו `firebase login`. אם ה־CLI כבר מחובר לחשבון Google אחר, הריצו `firebase login:add` והוסיפו את החשבון שאיתו אתם פותחים את הפרויקט במסוף Firebase. אפשר לבדוק אילו חשבונות מחוברים בעזרת `firebase login:list`.
+
+**רושמים את הטוקן מ־Logcat.** בסינון לפי **DebugAppCheckProvider**, חפשו את השורה שמתחילה ב־`firebase appcheck:debugtokens:create`. העתיקו את כל הפקודה בלי התחילית של Logcat והדביקו אותה ישירות ב־**Command Prompt**. הפקודה הבאה מציגה ערכים לדוגמה. הריצו את הפקודה שהאפליקציה שלכם הדפיסה.
+
+```bat
+firebase appcheck:debugtokens:create 805-02c4-46f1-b77-8267de --project yearlygs --app 1:31032263:android:c792213f393939922
+```
+
+אם מחוברים כמה חשבונות, הוסיפו בסוף הפקודה `--account student@example.com` והחליפו את כתובת הדוגמה בכתובת החשבון של הפרויקט. אם מתקבלת שגיאת HTTP `403`, בדקו שהחשבון שבחרתם יכול לפתוח את הפרויקט המדויק שמופיע ב־`--project` ושיש לו הרשאה לנהל בו טוקני debug של App Check.
+
+חפשו ב־Command Prompt את ההודעה **Successfully registered App Check debug token**. בצילום מופיעים ערכים לדוגמה.
+
+![פלט לדוגמה של Firebase CLI שמאשר רישום מוצלח של טוקן debug ל־App Check]({{ "/android/topics/firebase-ai-logic/images/firebase-cli-debug-token-success-example.png" | relative_url }})
+
+אחרי שהרישום מצליח, חזרו לאפליקציה ולחצו שוב **Ask LLM**. שמרו על פרטיות הטוקן האמיתי והפקודה שמכילה אותו, גם כשאתם נעזרים בסוכן תכנות.
+
+</details>
 
 שמרו את הטוקן באופן פרטי עבור התקנת התרגול שלכם. בטלו אותו כשאינו בשימוש או אם נחשף. [הוראות ספק debug](https://firebase.google.com/docs/app-check/android/debug-provider).
 
+כשהבקשה מצליחה, האפליקציה מציגה את התשובה והכפתור **Ask LLM** חוזר להיות זמין.
+
+![הרצה באמולטור עם תשובה אמיתית וכפתור Ask LLM זמין]({{ "/android/topics/firebase-ai-logic/images/firebase-ai-live-response.png" | relative_url }})
+
 {: .box-error}
-**עדיין נכשל בזמן ריצה?** קראו את השגיאה בתווית וב־Logcat: שגיאות App Check מצביעות על רישום הטוקן; `API_KEY_SERVICE_BLOCKED` מצביע על רשימת ה־APIs המותרים למפתח; `404` עשוי להצביע על מודל שאינו זמין; `429` מציין מגבלות מכסה או קיבולת. במקרה של `429` בודקים מכסה וממתינים, ומשאירים את ההגדרה ללא חיוב. השגיאות האלה נפרדות ממחלקות Java שאינן מזוהות.
+**עדיין נכשל בזמן ריצה?** קראו את השגיאה בתווית וב־Logcat: אם Logcat מציג `Failed to exchange debug token` אחרי הרישום, בדקו תחילה שהאמולטור או המכשיר מחובר לאינטרנט. אם כיביתם Wi-Fi לצורך בדיקה, הפעילו אותו מחדש, פתחו מחדש את האפליקציה ולחצו שוב **Ask LLM**. אם השגיאה חוזרת, ודאו שרשמתם את הטוקן ואת מזהה האפליקציה שמופיעים בפקודה הנוכחית ב־Logcat.
+
+{: .box-error}
+שגיאות נוספות: `API_KEY_SERVICE_BLOCKED` מצביע על רשימת ה־APIs המותרים למפתח; `404` עשוי להצביע על מודל שאינו זמין; `429` מציין מגבלות מכסה או קיבולת. במקרה של `429` בודקים מכסה וממתינים, ומשאירים את ההגדרה ללא חיוב. השגיאות האלה נפרדות ממחלקות Java שאינן מזוהות.
 
 ```mermaid
 flowchart LR

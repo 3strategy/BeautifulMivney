@@ -75,7 +75,26 @@ In **app > res > layout > activity_main.xml**, replace only the Hello World Text
 
 View Binding turns XML IDs `ask_llm` and `answer_label` into the Java fields `askLlm` and `answerLabel`. The binding class is generated; do not write it yourself.
 
-## 2. Add the request imports and click action
+## 2. Add Guava and the click action
+
+The callback uses Guava's `Futures` and `FutureCallback` classes. In **Gradle Scripts > libs.versions.toml**, add the first line to the existing `[versions]` section and the second to the existing `[libraries]` section.
+
+```toml
+guava = "31.0.1-android"
+```
+
+```toml
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+```
+
+In **Gradle Scripts > build.gradle.kts (Module :app)**, add this line to the existing `dependencies` block:
+
+```kotlin
+implementation(libs.guava)
+```
+
+{: .box-success}
+**Checkpoint — run after adding Guava.** Sync Gradle and click **Run**. Confirm that the **Ask LLM** button and the initial text **The answer will appear here.** are visible. The click action comes next. If sync or startup fails, fix the error before adding the imports and listener.
 
 In **app > kotlin+java > your package > MainActivity**, add only these imports. Keep the Firebase initialization imports from part 1:
 
@@ -134,13 +153,59 @@ binding.askLlm.setOnClickListener(v -> {
 **The first request may fail until its debug token is registered.** This is a runtime authorization step; it does not cause red Java imports or a Gradle compilation error.
 
 1. After the first click, open **Logcat** and filter for **DebugAppCheckProvider**. Copy the generated debug token privately.
-2. In **your Firebase project > Security > App Check > Apps**, open your app's overflow menu and choose **Manage debug tokens**. Register that token.
+2. In **your Firebase project > Security > App Check > Apps**, open your app's overflow menu and choose **Manage debug tokens**. Register that token there, or use the Firebase CLI instructions below.
 3. Press **Ask LLM** again. The returned text should now replace Thinking, provided the API and quota are available.
+
+<details markdown="1">
+<summary>Optional — install Firebase CLI and register the token from Command Prompt</summary>
+
+Firebase CLI lets you work with your Firebase project from the terminal. You'll also be able to use it with a coding agent on later project tasks.
+
+**Install the CLI on Windows.** If Node.js and npm are already installed, skip the WinGet command. Otherwise, install Node.js LTS in **Command Prompt** and open a new Command Prompt when it finishes.
+
+```bat
+winget install --id OpenJS.NodeJS.LTS --exact
+```
+
+Install or update Firebase CLI and check that it recognizes the App Check command.
+
+```bat
+npm install -g firebase-tools@latest
+firebase --version
+firebase appcheck:debugtokens:create --help
+```
+
+The command was added in Firebase CLI **15.25.0**. If the CLI still reports an unknown command after updating, run `where firebase` in Command Prompt to see which installation Windows uses. [Official installation guide](https://firebase.google.com/docs/cli/) · [CLI release notes](https://firebase.google.com/support/release-notes/cli)
+
+**Sign in with the account you use for this Firebase project.** Run `firebase login` for your first sign-in. If the CLI is already signed in to another Google account, run `firebase login:add` and add the account you use to open the project in Firebase Console. Check the accounts with `firebase login:list`.
+
+**Register the token from Logcat.** Under **DebugAppCheckProvider**, find the line that starts with `firebase appcheck:debugtokens:create`. Copy the full command without the Logcat prefix and paste it directly into **Command Prompt**. The format below uses sample values. Use the command emitted by your own app.
+
+```bat
+firebase appcheck:debugtokens:create 805-02c4-46f1-b77-8267de --project yearlygs --app 1:31032263:android:c792213f393939922
+```
+
+If several accounts are signed in, append `--account student@example.com`, replacing the example email with the account you use for the project. If you get HTTP `403`, verify that the selected account can open the exact project named by `--project` and has permission to manage its App Check debug tokens.
+
+Look for **Successfully registered App Check debug token** in Command Prompt. The screenshot shows sample values.
+
+![Firebase CLI example output confirming successful registration of an App Check debug token]({{ "/android/topics/firebase-ai-logic/images/firebase-cli-debug-token-success-example.png" | relative_url }})
+
+Once registration succeeds, return to the app and press **Ask LLM** again. Keep the real token and the command containing it private, including when working with a coding agent.
+
+</details>
 
 Keep this token private for your test installation. Revoke it when unused or exposed. [Debug-provider instructions](https://firebase.google.com/docs/app-check/android/debug-provider).
 
+After a successful request, the app displays the generated answer and re-enables **Ask LLM**.
+
+![Live emulator run showing the generated answer and the enabled Ask LLM button]({{ "/android/topics/firebase-ai-logic/images/firebase-ai-live-response.png" | relative_url }})
+
 {: .box-error}
-**Still failing at runtime?** Check the actual label/Logcat error: App Check errors point to token registration; `API_KEY_SERVICE_BLOCKED` points to the API-key allowlist; `404` may indicate an unavailable model; `429` means quota/capacity limits. Wait/check quota for `429`; keep the no-billing setup. These failures are separate from unresolved Java classes.
+**Still failing at runtime?** Check the actual label/Logcat error: if Logcat says `Failed to exchange debug token` after registration, first check that the emulator or device is online. Turn Wi-Fi back on if you disabled it for testing, relaunch the app, and try **Ask LLM** again. If the error persists, check that you registered the exact token and app ID shown in the current Logcat command.
+
+{: .box-error}
+Other errors: `API_KEY_SERVICE_BLOCKED` points to the API-key allowlist; `404` may indicate an unavailable model; `429` means quota/capacity limits. Wait/check quota for `429`; keep the no-billing setup. These failures are separate from unresolved Java classes.
 
 ```mermaid
 flowchart LR

@@ -17,7 +17,7 @@ tags: [Android, Java, Firebase, AI, security]
 {: .box-warning}
 **מתחילים כאן. זהו חלק 1, חובה לפני כתיבת קוד Firebase בחלק 2.** משלימים כאן את פרויקט Android,‏ View Binding, פרויקט Firebase/Cloud האישי, קובץ ההגדרות, תלויות Gradle והאתחול. בסיום האפליקציה חייבת להיבנות ולפתוח את המסך הקיים, **בלי imports של Firebase שאינם מזוהים**. שני המסופים מנהלים את תשתית הענן שלכם; ב־Android Studio נמצאת האפליקציה שמתחברת אליה.
 
-השתמשו ב**חשבון Google שלכם ובפרויקט Firebase משלכם**, רצוי הפרויקט של אפליקציית הגמר השנתית. כל תלמיד מנהל את קובץ ההגדרות, המפתחות וטוקני App Check שלו. שומרים את הפרויקט הזה להמשך השנה, כשהאפליקציה מתפתחת. התמונות צולמו בפרויקט קיים של המורה ב־24 באוקטובר 2026, לפני הפעלת AI Logic ו־App Check. חתכנו את התמונות כך שפרטי חשבון, מזהי פרויקט, מידע חיוב ופרטי גישה לא יופיעו בהן. הן מדגימות היכן פועלים, ואינן מעידות שפרויקט הדוגמה כבר מוגן. לא שינינו הגדרות בפרויקט לצורך הצילום.
+השתמשו ב**חשבון Google שלכם ובפרויקט Firebase משלכם**, רצוי הפרויקט של אפליקציית הגמר השנתית. כל תלמיד מנהל את קובץ ההגדרות, המפתחות וטוקני App Check שלו. שומרים את הפרויקט הזה להמשך השנה, כשהאפליקציה מתפתחת. צילומי המסך של המסופים מציגים את מסכי ההגדרה ואת נקודות הבדיקה שתחפשו בפרויקט שלכם.
 
 ## 0. יוצרים או פותחים פרויקט Android ומכינים View Binding
 
@@ -44,13 +44,24 @@ tags: [Android, Java, Firebase, AI, security]
 ## 2. רושמים אפליקציית Android ובוחרים ספק
 
 1. ב[מסוף Firebase](https://console.firebase.google.com/), בחרו את הפרויקט שלכם. פתחו את **Project settings**, עברו ל־**General**, ובאזור **Your apps** בדקו אם אפליקציית Android כבר רשומה עם שם החבילה של האפליקציה שלכם. אם כן, השתמשו ברישום הקיים; אחרת בחרו **Add app > Android** ורשמו את ה־`applicationId` המדויק מקובץ Gradle של המודול. `com.example.topic` הוא רק שם החבילה בדוגמת הקוד; משאירים את שם החבילה של האפליקציה השנתית שלכם.
-2. הורידו את **google-services.json** של אפליקציית Android הזאת אל **שורש מודול app**, לצד קובץ Gradle שלו. אין צורך להדביק את תוכנו במדריך או בקוד Java. הקובץ מזהה את אפליקציית Firebase; הוא אינו קובץ הרשאות של service account.
-3. פתחו **AI services > AI Logic > Get started**, בחרו **Gemini Developer API** והשלימו את ההפעלה המודרכת. בדוגמה נשתמש במודל הטקסט `gemini-3.8-flash`; בדקו את [רשימת המודלים העדכנית](https://firebase.google.com/docs/ai-logic/models). בחרו במסלול Developer API ללא תשלום. אין לבחור ספק או מודל שדורשים חיוב; אם התהליך מבקש תשלום, עצרו ובדקו את הספק והמודל שנבחרו.
+2. **בודקים את טביעת SHA-256 של חתימת ה־debug.** פתחו ב־Windows את **Command Prompt (cmd.exe)** במחשב שבו אתם בונים את האפליקציה והריצו את הפקודה:
+
+   ```bat
+   "C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe" -list -v -keystore "%USERPROFILE%\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+   ```
+
+   העתיקו את הערך שמופיע ליד **SHA256**. ב־**Project settings > General > Your apps**, בחרו את אפליקציית Android שתואמת ל־`applicationId` שלכם וחפשו את **SHA certificate fingerprints**. אם הטביעה המדויקת חסרה, לחצו **Add fingerprint**, הדביקו אותה ושמרו. אם הפרויקט משתמש במפתח חתימה אחר או שקובץ ה־debug keystore חסר, בנו את גרסת ה־debug והריצו את משימת Gradle בשם `signingReport` כדי למצוא את ה־SHA-256 של הגרסה שאתם מריצים. ספק App Check לתרגול משתמש בטוקן נפרד שאותו רושמים בחלק 2.
+3. הורידו את **google-services.json** של אפליקציית Android הזאת אל **שורש מודול app**, לצד קובץ Gradle שלו. אין צורך להדביק את תוכנו במדריך או בקוד Java. הקובץ מזהה את אפליקציית Firebase; הוא אינו קובץ הרשאות של service account.
+4. פתחו **AI services > AI Logic > Get started**, בחרו **Gemini Developer API** והשלימו את ההפעלה המודרכת. בדוגמה נשתמש במודל הטקסט `gemini-3.5-flash-lite`; בדקו את [רשימת המודלים העדכנית](https://firebase.google.com/docs/ai-logic/models). בחרו במסלול Developer API ללא תשלום. אין לבחור ספק או מודל שדורשים חיוב; אם התהליך מבקש תשלום, עצרו ובדקו את הספק והמודל שנבחרו.
 
 ![בחירת ספק ב־Firebase AI Logic, עם האפשרות Gemini Developer API]({{ "/android/topics/firebase-ai-logic/images/provider-choice.jpg" | relative_url }})
 
+**בדיקת הפעלת ה־APIs.** חפשו את הודעת **APIs enabled** במהלך ההגדרה המודרכת, ואז השלימו את האשף.
+
+![אשף ההגדרה של Firebase AI Logic עם הודעת APIs enabled]({{ "/android/topics/firebase-ai-logic/images/firebase-ai-logic-apis-enabled.png" | relative_url }})
+
 {: .box-success}
-**בדיקת המסלול ללא תשלום:** Spark, ללא קישור ל־Cloud Billing, עם Gemini Developer API ומודל טקסט נתמך שאינו דורש חיוב. נבדק ב־**25 באוקטובר 2026**: המודל `gemini-3.8-flash` תומך במסלול הזה. השימוש ללא תשלום מוגבל במודלים ובמכסות ועשוי להשתנות; בדקו את [רשימת המודלים](https://firebase.google.com/docs/ai-logic/models) ואת [התמחור](https://firebase.google.com/docs/ai-logic/pricing) לפני ההוראה. מסלול שדורש חיוב, כגון Vertex AI / Agent Platform, אינו חלק מהשיעור.
+**בדיקת המסלול ללא תשלום:** Spark, ללא קישור ל־Cloud Billing, עם Gemini Developer API ומודל טקסט נתמך שאינו דורש חיוב. נבדק ב־**20 בנובמבר 2026**: המודל `gemini-3.5-flash-lite` תומך במסלול הזה. השימוש ללא תשלום מוגבל במודלים ובמכסות ועשוי להשתנות; בדקו את [רשימת המודלים](https://firebase.google.com/docs/ai-logic/models) ואת [התמחור](https://firebase.google.com/docs/ai-logic/pricing) לפני ההוראה. מסלול שדורש חיוב, כגון Vertex AI / Agent Platform, אינו חלק מהשיעור.
 
 
 {: .box-warning}
@@ -64,71 +75,55 @@ tags: [Android, Java, Firebase, AI, security]
 
 כשמשתמשים ב־Gemini Developer API דרך Firebase AI Logic, ‏Firebase יוצר אוטומטית בפרויקט חשבון שירות שמנוהל על ידי Google, ומשתמש בו כדי לאשר בקשות ל־Gemini. **אין צורך ליצור מפתח Gemini API או להוסיף אותו לאפליקציה. גם קובץ service-account JSON לא מוסיפים לאפליקציה.** [איך Firebase מאשר בקשות ל־Gemini](https://firebase.google.com/docs/ai-logic/faq-and-troubleshooting#api-key)
 
-מפתח Firebase שב־`google-services.json` הוא מזהה פרויקט ואפליקציה, ולא הוכחה שהבקשה מורשית. ב־**APIs & Services > Credentials** הגבילו את מפתח Firebase שבו משתמשת האפליקציה ל־**Android apps**, עם שם החבילה וטביעת SHA-1 של תעודת החתימה, ובחרו רק את ה־APIs הדרושים לאפליקציה, ובהם Firebase AI Logic API. את SHA-1 של ההתקנה הכיתתית מקבלים במשימת Gradle בשם `signingReport`. אם אתם בונים את האפליקציה שלכם במחשב נוסף, הוסיפו גם את SHA-1 של תעודת ה־debug שלו. שמרו על ההגבלות שנדרשות לאפליקציות נוספות שרשמתם בעצמכם. [הנחיות הגבלת מפתחות ו־App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
+מפתח Firebase שב־`google-services.json` הוא מזהה פרויקט ואפליקציה, ולא הוכחה שהבקשה מורשית. ב־**APIs & Services > Credentials** הגבילו את מפתח Firebase שבו משתמשת האפליקציה ל־**Android apps**, עם שם החבילה וטביעת SHA-1 של תעודת החתימה, ובחרו רק את ה־APIs הדרושים לאפליקציה, ובהם **Firebase AI Logic API** ו־**Firebase App Check API**. השתמשו בשורת **SHA1** בפלט של `keytool` מסעיף 2, או בחתימה של הגרסה המתאימה בפלט של משימת Gradle בשם `signingReport`. אם אתם בונים את האפליקציה שלכם במחשב נוסף, הוסיפו גם את SHA-1 של תעודת ה־debug שלו. שמרו על ההגבלות שנדרשות לאפליקציות נוספות שרשמתם בעצמכם. [הנחיות הגבלת מפתחות ו־App Check](https://firebase.google.com/docs/ai-logic/security-checklist).
 
-## 4. מוסיפים תוסף וספריות ומסנכרנים Gradle
+## 4. מוסיפים את Firebase AI Logic בעזרת Firebase Assistant
 {: #firebase-sdk}
 
-{: .box-warning}
-**יצירת פרויקט Firebase אינה מוסיפה ספריות Java ל־Android Studio.** משלימים את שלוש העריכות הבאות לפני הדבקת imports של Firebase. במדריך משתמשים בשמות התלויות ישירות, ולכן **אין צורך לשנות את `libs.versions.toml`**. משאירים את ה־aliases הקיימים של התבנית. אין ליצור מקטע `plugins`,‏ `android` או `dependencies` נוסף; עורכים את המקטעים הקיימים. הקטעים מציגים רק את האזור הרלוונטי.
+1. ב־Android Studio פתחו **Tools > Firebase**. בחלונית **Firebase Assistant** הרחיבו את **Firebase AI Logic** ופתחו את מדריך ההגדרה שלו.
+2. ודאו שהמודול `app` מחובר לפרויקט Firebase שבחרתם בסעיף 2. אם העוזר מבקש לבחור פרויקט, בחרו את הפרויקט הקיים שלכם.
+3. לחצו **Add the Firebase AI Logic SDK to your app** ואשרו את שינויי Gradle שהעוזר מציג.
 
-### א. הכרזת התוסף ברמת הפרויקט
+![הכפתור Add the Firebase AI Logic SDK to your app בחלונית Firebase Assistant]({{ "/android/topics/firebase-ai-logic/images/firebase-assistant-add-ai-sdk.png" | relative_url }})
 
-פתחו **Gradle Scripts > build.gradle.kts (Project)** והוסיפו שורה אחת:
+בפרויקט המשתמש בקטלוג גרסאות, העוזר מוסיף ל־`libs.versions.toml` רשומות עבור התוסף Google Services והספרייה Firebase AI Logic. הוא מצהיר על התוסף בקובץ Gradle של הפרויקט ומפעיל אותו במודול `app`, שבו הוא מוסיף גם את `implementation(libs.firebase.ai)`. התוסף קורא את `google-services.json` של המודול. אם התוסף והספרייה כבר מוגדרים אצלכם, עוברים ישר לסנכרון. [הוראות Firebase Assistant](https://firebase.google.com/docs/android/setup#assistant).
 
-```diff
- plugins {
-     alias(libs.plugins.android.application) apply false
-+    id("com.google.gms.google-services") version "4.5.0" apply false
- }
-```
-
-### ב. הפעלת התוסף במודול האפליקציה
-
-פתחו **Gradle Scripts > build.gradle.kts (Module :app)**. בתוך מקטע `plugins` הקיים:
-
-```diff
- plugins {
-     alias(libs.plugins.android.application)
-+    id("com.google.gms.google-services")
- }
-```
-
-### ג. תלויות במודול האפליקציה
-
-ב**אותו קובץ של המודול**, הוסיפו את השורות הבאות בתחילת מקטע `dependencies` הקיים. משאירים את שאר תלויות התבנית ואת כל מקטע `android`:
-
-```diff
- dependencies {
-+    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
-+    implementation("com.google.firebase:firebase-ai")
-+    implementation("com.google.firebase:firebase-appcheck-debug")
-+    implementation("com.google.guava:guava:31.0.1-android")
-     implementation(libs.activity.ktx)
-     implementation(libs.appcompat)
-     implementation(libs.constraintlayout)
-```
-
-ה־Firebase BoM בוחר גרסאות תואמות לספריות Firebase. הספרייה `firebase-ai` מספקת את מחלקות המודל, `firebase-appcheck-debug` מספקת את ספק האימות לתרגול, ו־Guava מספקת futures ו־callbacks ב־Java. תוסף Google Services קורא את **קובץ ההגדרות שלכם**, `app/google-services.json`; הוא אינו מחליף את תלויות הספריות.
-
-ב־**app > manifests > AndroidManifest.xml**, הוסיפו מיד מעל `<application>`:
-
-```xml
-<uses-permission android:name="android.permission.INTERNET" />
-```
-
-כעת בצעו **Sync Project with Gradle Files** והמתינו לסיום מוצלח. אחר כך בנו את האפליקציה, לפני שממשיכים.
+{: .box-success}
+**בדיקת ביניים — הרצה אחרי הוספת ה־SDK.** המתינו לסיום סנכרון Gradle, או בחרו **Sync Project with Gradle Files** אם הסנכרון לא התחיל. לחצו **Run** ב־Android Studio. ודאו שבאמולטור או במכשיר נפתח מסך Hello World או המסך הקיים שלכם. זו נקודת בדיקה נוחה כי האפליקציה הקיימת אמורה לעלות עם הגדרות Gradle החדשות, עוד לפני שתוסיפו את קוד ה־Java של Firebase. כשהמסך נפתח, המשיכו להגדרת App Check.
 
 {: .box-error}
-**עוצרים כאן אם Gradle נכשל.** שגיאת קובץ `google-services.json` חסר פירושה שסעיף 2 לא הושלם; אי־התאמה בשם החבילה פירושה שרישום Android אינו תואם ל־`applicationId`. אם תוסף או ספרייה אינם נפתרים, בדקו את שני קובצי Gradle, את החיבור לרשת ואת השגיאה הראשונה של Gradle. אין לנסות לתקן ספריות חסרות באמצעות שינוי imports ב־Java.
+**אם הבנייה נכשלת, בדקו את השגיאה הראשונה של Gradle.** אם `google-services.json` חסר או שהחבילה אינה תואמת, חזרו לסעיף 2 ובדקו שהקובץ נמצא במודול `app` ושנרשם ה־`applicationId` הנכון.
 
 ## 5. מגינים על הבקשה באמצעות App Check
 
-פתחו **Security > App Check > Get started** ובחרו את אפליקציית Android שרשמתם. במדריך הזה יש **הגדרה אחת לאפליקציה שלכם**, עם **ספק App Check debug** באמולטור או במכשיר התרגול. כל התקנה רושמת טוקן פרטי; Firebase מקבל אותו במקום לדרוש אימות של המכשיר. זה אינו תהליך התחברות של משתמש. בתהליך ההגדרה העדכני של AI Logic, האכיפה מופעלת אוטומטית. בפרויקט ישן צריך לבדוק את **App Check > APIs > Firebase AI Logic** ולהפעיל אכיפה במפורש. אין לעקוף בדיקה שנכשלה באמצעות כיבוי האכיפה. [שלבי App Check הרשמיים](https://firebase.google.com/docs/ai-logic/app-check).
+במסוף Firebase פתחו **Security > App Check > APIs** וחפשו את השורה **Firebase AI Logic**. ודאו שהסטטוס הוא **Basic – Enforced**. בנובמבר 2026 הפעילה Firebase אכיפת App Check באופן אוטומטי עבור AI Logic. אם אצלכם מופיע **Unenforced**, פעלו לפי ההוראות הרשמיות להפעלת האכיפה הבסיסית. [שלבי App Check הרשמיים](https://firebase.google.com/docs/ai-logic/app-check).
 
-![מסך הפתיחה של Firebase App Check, לפני רישום]({{ "/android/topics/firebase-ai-logic/images/app-check-start.jpg" | relative_url }})
+![לשונית APIs ב־App Check עם הסטטוס Basic – Enforced בשורה של Firebase AI Logic]({{ "/android/topics/firebase-ai-logic/images/firebase-ai-logic-app-check-enforced.png" | relative_url }})
 
-נכון למועד הבדיקה של המדריך, Google מציינת שאכיפת App Check תהיה חובה עבור AI Logic החל מ־**2 בנובמבר 2026**. נכין אותה כבר עכשיו. [רשימת בדיקות האבטחה](https://firebase.google.com/docs/ai-logic/security-checklist).
+**לתרגול משתמשים בספק ה־debug.** משאירים את אפליקציית Android רשומה ב־Firebase כפי שעשיתם בסעיף 2. בלשונית **App Check > Apps** אפשר להשאיר את סטטוס ספק האימות על **Unregistered** ולדלג על **Play Integrity** ועל **Fraud Defense**. בחלק 2 תרשמו את טוקן ה־debug הפרטי של ההתקנה דרך **Manage debug tokens** או בעזרת Firebase CLI. האכיפה נשארת פעילה בזמן התרגול.
+
+### מוסיפים את ספריית App Check לתרגול
+
+ב־**Gradle Scripts > libs.versions.toml**, הוסיפו את השורה הראשונה למקטע `[versions]` הקיים ואת השורה השנייה למקטע `[libraries]` הקיים.
+
+```toml
+firebaseAppcheckDebug = "20.1.0"
+```
+
+```toml
+firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug", version.ref = "firebaseAppcheckDebug" }
+```
+
+ב־**Gradle Scripts > build.gradle.kts (Module :app)**, הוסיפו למקטע `dependencies` הקיים:
+
+```kotlin
+implementation(libs.firebase.appcheck.debug)
+```
+
+{: .box-success}
+**בדיקת ביניים — הרצה אחרי הוספת App Check.** סנכרנו את Gradle ולחצו **Run**. ודאו שאותו מסך נפתח. אם הסנכרון או פתיחת האפליקציה נכשלים, תקנו את השגיאה לפני שתוסיפו את ה־imports ואת קוד האתחול של Firebase שמופיעים בהמשך.
+
+ספק ה־debug מיועד להרצת תרגול פרטית.
 
 ### מאתחלים את Firebase ואת המודל ב־MainActivity
 
@@ -152,27 +147,33 @@ FirebaseApp.initializeApp(this);
 FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
         DebugAppCheckProviderFactory.getInstance());
 GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
-        .generativeModel("gemini-3.8-flash");
+        .generativeModel("gemini-3.5-flash-lite");
 GenerativeModelFutures model = GenerativeModelFutures.from(ai);
 ```
 
 הקוד מכין את המשתנה `model` שבו נשתמש בשיעור הבא. הוא **עדיין אינו שולח בקשה ל־LLM**. משאירים אותו בתוך `onCreate`; מאזין הכפתור יתווסף אחריו.
 
 {: .box-error}
-**שמות Firebase עדיין אדומים?** חזרו ל[סעיף 4 — תוסף, תלויות ו־Sync](#firebase-sdk). הקוד דורש את `firebase-ai` ואת `firebase-appcheck-debug`; כתיבת import אינה מורידה את הספרייה. אם דווקא `ActivityMainBinding` אדום, בדקו את סעיף 0, שגיאות XML ויצירת מחלקת View Binding.
+**שמות Firebase עדיין אדומים?** חזרו ל[סעיף 4 — Firebase Assistant](#firebase-sdk) ובדקו גם שתלות App Check debug מסעיף 5 נוספה. הקוד דורש את `firebase-ai` ואת `firebase-appcheck-debug`; כתיבת import אינה מורידה את הספרייה. אם דווקא `ActivityMainBinding` אדום, בדקו את סעיף 0, שגיאות XML ויצירת מחלקת View Binding.
 
 {: .box-warning}
 **ייתכן שעדיין אין טוקן debug, וזה תקין.** הבקשה המוגנת הראשונה בחלק 2 תיצור אותו. הוראות הרישום נמצאות שם, ליד הלחיצה הראשונה; רישום הטוקן אינו תנאי לסיום העמוד הזה.
 
-שם המודל נלקח מ[רשימת המודלים הנתמכים](https://firebase.google.com/docs/ai-logic/models), שנבדקה ב־25 באוקטובר 2026. אם ייצא משימוש בהמשך, בחרו מודל טקסט נתמך שאינו דורש חיוב.
+שם המודל נלקח מ[רשימת המודלים הנתמכים](https://firebase.google.com/docs/ai-logic/models), שנבדקה ב־20 בנובמבר 2026. אם ייצא משימוש בהמשך, בחרו מודל טקסט נתמך שאינו דורש חיוב.
 
 ## 6. נשארים במסלול ללא תשלום ובודקים מוכנות
 
-בדקו את המכסה בפועל של המודל שנבחר ב**פרויקט שלכם**; אין מכסה מספרית קבועה שמובטחת לכל תלמיד. שלחו בקשות קצרות, אחת בכל פעם. אם מתקבלת שגיאת `429`, בדקו את המכסה ואת מועד האיפוס והמתינו; אין להפעיל חיוב או להוסיף ניסיונות חוזרים אוטומטיים כדי לעבור את המגבלה. [מגבלות שימוש](https://firebase.google.com/docs/ai-logic/quotas).
+לפני המעבר לחלק 2, בדקו את המכסה של המודל שבחרתם ב**פרויקט שלכם**. המכסה יכולה להשתנות לפי הפרויקט והמודל. את הבקשה הראשונה תשלחו ב[חלק 2](../). [מגבלות שימוש](https://firebase.google.com/docs/ai-logic/quotas).
 
 מסלול ללא תשלום מאפשר שימוש מוגבל, ולא בקשות ללא הגבלה. השארת הפרויקט ללא קישור ל־Cloud Billing שומרת על ההגדרה ללא אמצעי תשלום. התראת תקציב אינה תחליף להישארות ב־Spark. [דרישות החיוב](https://firebase.google.com/docs/ai-logic/pricing).
 
 {: .box-success}
 **ההכנה הושלמה — ממשיכים רק אחרי שהבדיקות האלה עברו:** סנכרון Gradle והבנייה מצליחים; ה־imports של Firebase מזוהים; האפליקציה פותחת את מסך Hello World (או את הממשק שכבר השלמתם). מזהה פרויקט Firebase/Cloud ושם חבילת Android תואמים לקובץ ההגדרות, והתשתית נשארת במסלול Spark ללא קישור לחיוב. זאת בדיקת הכנת האפליקציה; את התשובה החיה הראשונה בודקים בחלק 2.
+
+{: .box-success}
+**איך ההגדרה מגינה על מכסת Gemini שלכם.** בקובץ ה־APK שלנו אין מפתח Gemini API. האפליקציה שולחת בקשות ל־Firebase AI Logic, ו־Firebase פונה ל־Gemini מהשרת שלו באמצעות חשבון שירות שמנוהל על ידי Google. ‏App Check מוסיף בדיקה נפרדת לבקשות מהאפליקציה. בחלק 2 תרשמו **טוקן debug** פרטי להתקנת התרגול שלכם. Firebase מחליף אותו ב**טוקן App Check** קצר־תוקף שהאפליקציה שולחת עם הבקשות. שמרו על פרטיות טוקן ה־debug וגרסת התרגול.
+
+{: .box-success}
+**לפני הפצה ב־Google Play**, מסירים מגרסת ההפצה את ספק ה־debug ואת טוקן ה־debug. ב־Firebase App Check רושמים את האפליקציה עם [Play Integrity](https://firebase.google.com/docs/app-check/android/play-integrity-provider) ומוסיפים את טביעת ה־SHA-256 של התעודה שחותמת את ה־APK שמופץ דרך Google Play. מגדירים את גרסת ההפצה להשתמש בספק הזה. Firebase משתמש באימות של Play Integrity כדי להנפיק לגרסת ההפצה טוקן App Check. מבטלים את טוקן ה־debug כשמסיימים להשתמש בו.
 
 [ממשיכים לחלק 2 — כפתור אחד ובקשה אחת](../){: data-sequence-nav="next"}
