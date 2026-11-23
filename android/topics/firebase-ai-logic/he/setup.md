@@ -31,10 +31,10 @@ tags: [Android, Java, Firebase, AI, security]
 ## 3. מוסיפים את טביעת ה־SHA-256 של חתימת ה־debug
 {: #sha-256}
 
-ב־**Windows** פתחו **Command Prompt** בתיקיית הפרויקט **Topic** (התיקייה שבה נמצא `gradlew.bat`) והריצו את הפקודה.
+ב־**Windows** פתחו **Command Prompt (cmd.exe)** והריצו את הפקודה. העתיקו את הערך שמופיע ליד **SHA256**.
 
-```powershell
-.\gradlew.bat :app:signingReport
+```bat
+"C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe" -list -v -keystore "%USERPROFILE%\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
 ```
 
 <details markdown="1">
@@ -46,9 +46,11 @@ tags: [Android, Java, Firebase, AI, security]
 ./gradlew :app:signingReport
 ```
 
+העתיקו את ערך **SHA-256** עבור **Variant: debug**.
+
 </details>
 
-העתיקו את ערך **SHA-256** עבור **Variant: debug**. אם הדוח מציין שקובץ החתימה של debug חסר, בנו APK בגרסת debug ב־Android Studio והריצו שוב את הפקודה. ב־**Firebase console > Project settings > General > Your apps**, בחרו באפליקציית Android שתואמת ל־`applicationId` שלכם, לחצו **Add fingerprint** ושמרו את הערך.
+אם קובץ החתימה של debug חסר, בנו APK בגרסת debug ב־Android Studio והריצו שוב את הפקודה. ב־**Firebase console > Project settings > General > Your apps**, בחרו באפליקציית Android שתואמת ל־`applicationId` שלכם, לחצו **Add fingerprint** ושמרו את הערך.
 
 ## 4. מוסיפים את ה־SDK של Firebase AI Logic
 {: #firebase-sdk}
@@ -66,7 +68,7 @@ tags: [Android, Java, Firebase, AI, security]
 <details markdown="1">
 <summary>הגבלות מפתח API והגדרות בפרויקט קיים</summary>
 
-Firebase פונה ל־Gemini מהשרת שלו. במסוף Google Cloud בחרו את אותו **Project ID** ופתחו **APIs & Services > Credentials**. הגבילו את מפתח Firebase של האפליקציה ל־**Android apps** באמצעות שם החבילה וטביעת **SHA-1** מאותו דוח חתימה. אפשרו את ה־APIs שהאפליקציה צריכה, ובהם **Firebase AI Logic API** ו־**Firebase App Check API**.
+Firebase פונה ל־Gemini מהשרת שלו. במסוף Google Cloud בחרו את אותו **Project ID** ופתחו **APIs & Services > Credentials**. הגבילו את מפתח Firebase של האפליקציה ל־**Android apps** באמצעות שם החבילה וטביעת **SHA-1** מהפלט של אותה פקודה. אפשרו את ה־APIs שהאפליקציה צריכה, ובהם **Firebase AI Logic API** ו־**Firebase App Check API**.
 
 אם הפרויקט השנתי כבר במסלול Blaze, או שכבר מופעל בו מצב **template-only** או **authenticated-users**, בדקו עם המורה איך להמשיך. שמרו על ההגנות הקיימות. [הנחיות האבטחה של Firebase AI Logic](https://firebase.google.com/docs/ai-logic/security-checklist).
 

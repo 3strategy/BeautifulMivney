@@ -37,10 +37,10 @@ For a shorter copy-and-paste route, enable View Binding in Gradle, then use the 
 ## 3. Add the debug SHA-256 fingerprint
 {: #sha-256}
 
-On **Windows**, open **Command Prompt** in the **Topic** project folder (the folder containing `gradlew.bat`) and run:
+On **Windows**, open **Command Prompt (cmd.exe)** and run this command. Copy the value next to **SHA256**.
 
-```powershell
-.\gradlew.bat :app:signingReport
+```bat
+"C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe" -list -v -keystore "%USERPROFILE%\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
 ```
 
 <details markdown="1">
@@ -52,9 +52,11 @@ Open **Terminal** in the **Topic** project folder (the folder containing `gradle
 ./gradlew :app:signingReport
 ```
 
+Copy the **SHA-256** value for **Variant: debug**.
+
 </details>
 
-Copy the **SHA-256** value for **Variant: debug**. If the report says the debug keystore is missing, build the debug APK in Android Studio and repeat the command. In the **Firebase console > Project settings > General > Your apps**, select the Android app matching your `applicationId`, click **Add fingerprint**, and save the value.
+If the debug keystore is missing, build the debug APK in Android Studio and repeat the command. In the **Firebase console > Project settings > General > Your apps**, select the Android app matching your `applicationId`, click **Add fingerprint**, and save the value.
 
 ## 4. Add the Firebase AI Logic SDK
 {: #firebase-sdk}
@@ -72,7 +74,7 @@ In the **Firebase console**, open **AI services > AI Logic > Get started**. Choo
 <details markdown="1">
 <summary>API key restrictions and existing projects</summary>
 
-Firebase calls Gemini from its backend. In the Google Cloud console, select the same **Project ID** and go to **APIs & Services > Credentials**. Restrict the app's Firebase API key to **Android apps** using the package name and the **SHA-1** from the same signing report. Allow the APIs the app uses, including **Firebase AI Logic API** and **Firebase App Check API**.
+Firebase calls Gemini from its backend. In the Google Cloud console, select the same **Project ID** and go to **APIs & Services > Credentials**. Restrict the app's Firebase API key to **Android apps** using the package name and the **SHA-1** from the same command output. Allow the APIs the app uses, including **Firebase AI Logic API** and **Firebase App Check API**.
 
 If your existing yearly project uses Blaze or already enforces **template-only** or **authenticated-users** mode, check with your teacher before proceeding. Keep existing protections in place. [Firebase AI Logic security checklist](https://firebase.google.com/docs/ai-logic/security-checklist).
 
