@@ -152,42 +152,20 @@ binding.askLlm.setOnClickListener(v -> {
 {: .box-warning}
 **The first request may fail until its debug token is registered.** This is a runtime authorization step; it does not cause red Java imports or a Gradle compilation error.
 
-1. After the first click, open **Logcat** and filter for **DebugAppCheckProvider**. Copy the generated debug token privately.
-2. In **your Firebase project > Security > App Check > Apps**, open your app's overflow menu and choose **Manage debug tokens**. Register that token there, or use the Firebase CLI instructions below.
-3. Press **Ask LLM** again. The returned text should now replace Thinking, provided the API and quota are available.
+After the first click, open **Logcat** and filter for **DebugAppCheckProvider**. Use the command logged by your app to register its token.
 
-<details markdown="1">
-<summary>Optional — install Firebase CLI and register the token from Command Prompt</summary>
+<details open markdown="1">
+<summary>Register the debug token with Firebase CLI</summary>
 
-Firebase CLI lets you work with your Firebase project from the terminal. You'll also be able to use it with a coding agent on later project tasks.
+Use the CLI you [installed and signed in to in Lesson 1](setup/#firebase-cli). Copy the entire line starting with `firebase appcheck:debugtokens:create`, without the Logcat prefix, into **Command Prompt** (Windows) or **Terminal** (macOS). Use the values printed by your app.
 
-**Install the CLI on Windows.** If Node.js and npm are already installed, skip the WinGet command. Otherwise, install Node.js LTS in **Command Prompt** and open a new Command Prompt when it finishes.
-
-```bat
-winget install --id OpenJS.NodeJS.LTS --exact
+```bash
+firebase appcheck:debugtokens:create DEBUG_TOKEN --project PROJECT_ID --app FIREBASE_APP_ID
 ```
 
-Install or update Firebase CLI and check that it recognizes the App Check command.
+If you need to add another Google account, run `firebase login:add`. To select a signed-in account, append `--account student@example.com`, replacing the example email with the account you use for the project. If you get HTTP `403`, verify that the selected account can open the exact project named by `--project` and has permission to manage its App Check debug tokens.
 
-```bat
-npm install -g firebase-tools@latest
-firebase --version
-firebase appcheck:debugtokens:create --help
-```
-
-The command was added in Firebase CLI **15.25.0**. If the CLI still reports an unknown command after updating, run `where firebase` in Command Prompt to see which installation Windows uses. [Official installation guide](https://firebase.google.com/docs/cli/) · [CLI release notes](https://firebase.google.com/support/release-notes/cli)
-
-**Sign in with the account you use for this Firebase project.** Run `firebase login` for your first sign-in. If the CLI is already signed in to another Google account, run `firebase login:add` and add the account you use to open the project in Firebase Console. Check the accounts with `firebase login:list`.
-
-**Register the token from Logcat.** Under **DebugAppCheckProvider**, find the line that starts with `firebase appcheck:debugtokens:create`. Copy the full command without the Logcat prefix and paste it directly into **Command Prompt**. The format below uses sample values. Use the command emitted by your own app.
-
-```bat
-firebase appcheck:debugtokens:create 805-02c4-46f1-b77-8267de --project yearlygs --app 1:31032263:android:c792213f393939922
-```
-
-If several accounts are signed in, append `--account student@example.com`, replacing the example email with the account you use for the project. If you get HTTP `403`, verify that the selected account can open the exact project named by `--project` and has permission to manage its App Check debug tokens.
-
-Look for **Successfully registered App Check debug token** in Command Prompt. The screenshot shows sample values.
+Look for **Successfully registered App Check debug token** in the terminal. The screenshot shows sample values.
 
 ![Firebase CLI example output confirming successful registration of an App Check debug token]({{ "/android/topics/firebase-ai-logic/images/firebase-cli-debug-token-success-example.png" | relative_url }})
 
@@ -195,7 +173,7 @@ Once registration succeeds, return to the app and press **Ask LLM** again. Keep 
 
 </details>
 
-Keep this token private for your test installation. Revoke it when unused or exposed. [Debug-provider instructions](https://firebase.google.com/docs/app-check/android/debug-provider).
+You can also register the token in **Firebase Console > Security > App Check > Apps > Manage debug tokens**. Revoke the token when unused or exposed. [Debug-provider instructions](https://firebase.google.com/docs/app-check/android/debug-provider).
 
 After a successful request, the app displays the generated answer and re-enables **Ask LLM**.
 

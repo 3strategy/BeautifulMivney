@@ -146,42 +146,20 @@ binding.askLlm.setOnClickListener(v -> {
 {: .box-warning}
 **הבקשה הראשונה עשויה להיכשל עד לרישום טוקן ה־debug שלה.** זהו שלב הרשאה בזמן ריצה; הוא אינו גורם ל־imports אדומים ב־Java או לשגיאת קומפילציה ב־Gradle.
 
-1. אחרי הלחיצה הראשונה פתחו **Logcat** וסננו לפי **DebugAppCheckProvider**. העתיקו באופן פרטי את טוקן ה־debug שנוצר.
-2. ב**פרויקט Firebase שלכם > Security > App Check > Apps**, פתחו את תפריט שלוש הנקודות של האפליקציה ובחרו **Manage debug tokens**. רשמו שם את הטוקן, או השתמשו בהוראות של Firebase CLI שבהמשך.
-3. לחצו שוב **Ask LLM**. התשובה אמורה להחליף את Thinking, בתנאי שה־API זמין ויש מכסה.
+אחרי הלחיצה הראשונה פתחו **Logcat** וסננו לפי **DebugAppCheckProvider**. השתמשו בפקודה שהאפליקציה הדפיסה כדי לרשום את הטוקן שלה.
 
-<details markdown="1">
-<summary>אפשרות נוספת — מתקינים Firebase CLI ורושמים את הטוקן דרך שורת הפקודה</summary>
+<details open markdown="1">
+<summary>רישום טוקן debug באמצעות Firebase CLI</summary>
 
-Firebase CLI מאפשר לעבוד עם פרויקט Firebase משורת הפקודה. בהמשך תוכלו להשתמש בו גם בעבודה עם סוכן תכנות על הפרויקט.
+השתמשו ב־CLI ש[התקנתם והתחברתם אליו בחלק 1](setup/#firebase-cli). העתיקו את כל השורה שמתחילה ב־`firebase appcheck:debugtokens:create`, בלי התחילית של Logcat, אל **Command Prompt** ב־Windows או **Terminal** ב־macOS. השתמשו בערכים שהאפליקציה שלכם הדפיסה.
 
-**מתקינים את ה־CLI ב־Windows.** אם Node.js ו־npm כבר מותקנים, דלגו על פקודת WinGet. אחרת התקינו Node.js LTS ב־**Command Prompt** ופתחו חלון Command Prompt חדש בסיום ההתקנה.
-
-```bat
-winget install --id OpenJS.NodeJS.LTS --exact
+```bash
+firebase appcheck:debugtokens:create DEBUG_TOKEN --project PROJECT_ID --app FIREBASE_APP_ID
 ```
 
-התקינו או עדכנו את Firebase CLI ובדקו שהוא מזהה את הפקודה של App Check.
+כדי להוסיף חשבון Google נוסף, הריצו `firebase login:add`. כדי לבחור חשבון שכבר מחובר, הוסיפו בסוף הפקודה `--account student@example.com` והחליפו את כתובת הדוגמה בכתובת החשבון של הפרויקט. אם מתקבלת שגיאת HTTP `403`, בדקו שהחשבון שבחרתם יכול לפתוח את הפרויקט המדויק שמופיע ב־`--project` ושיש לו הרשאה לנהל בו טוקני debug של App Check.
 
-```bat
-npm install -g firebase-tools@latest
-firebase --version
-firebase appcheck:debugtokens:create --help
-```
-
-הפקודה נוספה בגרסה **15.25.0** של Firebase CLI. אם גם אחרי העדכון הפקודה אינה מזוהה, הריצו `where firebase` ב־Command Prompt כדי לראות באיזו התקנה Windows משתמש. [מדריך ההתקנה הרשמי](https://firebase.google.com/docs/cli/) · [הערות הגרסה של ה־CLI](https://firebase.google.com/support/release-notes/cli)
-
-**מתחברים עם החשבון של פרויקט Firebase.** בהתחברות הראשונה הריצו `firebase login`. אם ה־CLI כבר מחובר לחשבון Google אחר, הריצו `firebase login:add` והוסיפו את החשבון שאיתו אתם פותחים את הפרויקט במסוף Firebase. אפשר לבדוק אילו חשבונות מחוברים בעזרת `firebase login:list`.
-
-**רושמים את הטוקן מ־Logcat.** בסינון לפי **DebugAppCheckProvider**, חפשו את השורה שמתחילה ב־`firebase appcheck:debugtokens:create`. העתיקו את כל הפקודה בלי התחילית של Logcat והדביקו אותה ישירות ב־**Command Prompt**. הפקודה הבאה מציגה ערכים לדוגמה. הריצו את הפקודה שהאפליקציה שלכם הדפיסה.
-
-```bat
-firebase appcheck:debugtokens:create 805-02c4-46f1-b77-8267de --project yearlygs --app 1:31032263:android:c792213f393939922
-```
-
-אם מחוברים כמה חשבונות, הוסיפו בסוף הפקודה `--account student@example.com` והחליפו את כתובת הדוגמה בכתובת החשבון של הפרויקט. אם מתקבלת שגיאת HTTP `403`, בדקו שהחשבון שבחרתם יכול לפתוח את הפרויקט המדויק שמופיע ב־`--project` ושיש לו הרשאה לנהל בו טוקני debug של App Check.
-
-חפשו ב־Command Prompt את ההודעה **Successfully registered App Check debug token**. בצילום מופיעים ערכים לדוגמה.
+חפשו בטרמינל את ההודעה **Successfully registered App Check debug token**. בצילום מופיעים ערכים לדוגמה.
 
 ![פלט לדוגמה של Firebase CLI שמאשר רישום מוצלח של טוקן debug ל־App Check]({{ "/android/topics/firebase-ai-logic/images/firebase-cli-debug-token-success-example.png" | relative_url }})
 
@@ -189,7 +167,7 @@ firebase appcheck:debugtokens:create 805-02c4-46f1-b77-8267de --project yearlygs
 
 </details>
 
-שמרו את הטוקן באופן פרטי עבור התקנת התרגול שלכם. בטלו אותו כשאינו בשימוש או אם נחשף. [הוראות ספק debug](https://firebase.google.com/docs/app-check/android/debug-provider).
+אפשר לרשום את הטוקן גם דרך **Firebase Console > Security > App Check > Apps > Manage debug tokens**. בטלו אותו כשאינו בשימוש או אם נחשף. [הוראות ספק debug](https://firebase.google.com/docs/app-check/android/debug-provider).
 
 כשהבקשה מצליחה, האפליקציה מציגה את התשובה והכפתור **Ask LLM** חוזר להיות זמין.
 
