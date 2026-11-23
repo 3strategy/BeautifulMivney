@@ -30,9 +30,10 @@ For a shorter copy-and-paste route, enable View Binding in Gradle, then use the 
 
 ## 2. Connect Firebase in Android Studio
 
-1. Open **Tools > Firebase**. In the **Firebase Assistant** pane on the right, expand **AI Logic** (shown as **Firebase AI Logic** in some versions) and open the Gemini setup guide.
-2. Click **Connect to Firebase**. In the browser, choose your Firebase project or create one on **Spark**. Confirm the connection and accept the changes. The wizard registers the Android app with its `applicationId` and adds `google-services.json` to the `app` module. [Firebase Assistant instructions](https://firebase.google.com/docs/android/setup#assistant).
-3. Back in Android Studio, choose **Sync Project with Gradle Files**.
+1. Open **Tools > Firebase**. In the **Firebase Assistant** pane on the right, expand **AI Logic** (shown as **Firebase AI Logic** in some versions).
+2. Click **Get started with Firebase AI Logic [Java]**.
+3. Click **Connect to Firebase**. In the browser, choose your Firebase project or create one on **Spark**. Confirm the connection and accept the changes. The wizard registers the Android app with its `applicationId` and adds `google-services.json` to the `app` module. [Firebase Assistant instructions](https://firebase.google.com/docs/android/setup#assistant).
+4. Back in Android Studio, choose **Sync Project with Gradle Files**.
 
 ## 3. Add the debug SHA-256 fingerprint
 {: #sha-256}
@@ -56,7 +57,13 @@ Copy the **SHA-256** value for **Variant: debug**.
 
 </details>
 
-If the debug keystore is missing, build the debug APK in Android Studio and repeat the command. In the **Firebase console > Project settings > General > Your apps**, select the Android app matching your `applicationId`, click **Add fingerprint**, and save the value.
+If the debug keystore is missing, build the debug APK in Android Studio and repeat the command.
+
+In the browser, open the [Firebase console](https://console.firebase.google.com/) and select the project you connected in step 2.
+
+1. Click the gear next to **Project Overview** and choose **Project settings**.
+2. On the **General** tab, scroll to **Your apps** and select the Android app whose package name matches your `applicationId`.
+3. Under **SHA certificate fingerprints**, click **Add fingerprint**. Paste the copied SHA-256 value into the field and click **Save**. Check that it appears in the list as **SHA-256**.
 
 ## 4. Add the Firebase AI Logic SDK
 {: #firebase-sdk}

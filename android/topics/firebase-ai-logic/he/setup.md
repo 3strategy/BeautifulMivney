@@ -24,9 +24,10 @@ tags: [Android, Java, Firebase, AI, security]
 
 ## 2. מחברים את Firebase מתוך Android Studio
 
-1. פתחו **Tools > Firebase**. בחלונית **Firebase Assistant** מימין הרחיבו את **AI Logic** (בחלק מהגרסאות **Firebase AI Logic**) ופתחו את מדריך ההגדרה של Gemini.
-2. לחצו **Connect to Firebase**. בדפדפן בחרו בפרויקט Firebase שלכם או צרו פרויקט במסלול **Spark**. אשרו את החיבור ואת השינויים. האשף רושם את האפליקציה לפי ה־`applicationId` ומוסיף את `google-services.json` למודול `app`. [הוראות Firebase Assistant](https://firebase.google.com/docs/android/setup#assistant).
-3. חזרו ל־Android Studio ובחרו **Sync Project with Gradle Files**.
+1. פתחו **Tools > Firebase**. בחלונית **Firebase Assistant** מימין הרחיבו את **AI Logic** (בחלק מהגרסאות **Firebase AI Logic**).
+2. לחצו **Get started with Firebase AI Logic [Java]**.
+3. לחצו **Connect to Firebase**. בדפדפן בחרו בפרויקט Firebase שלכם או צרו פרויקט במסלול **Spark**. אשרו את החיבור ואת השינויים. האשף רושם את האפליקציה לפי ה־`applicationId` ומוסיף את `google-services.json` למודול `app`. [הוראות Firebase Assistant](https://firebase.google.com/docs/android/setup#assistant).
+4. חזרו ל־Android Studio ובחרו **Sync Project with Gradle Files**.
 
 ## 3. מוסיפים את טביעת ה־SHA-256 של חתימת ה־debug
 {: #sha-256}
@@ -50,7 +51,13 @@ tags: [Android, Java, Firebase, AI, security]
 
 </details>
 
-אם קובץ החתימה של debug חסר, בנו APK בגרסת debug ב־Android Studio והריצו שוב את הפקודה. ב־**Firebase console > Project settings > General > Your apps**, בחרו באפליקציית Android שתואמת ל־`applicationId` שלכם, לחצו **Add fingerprint** ושמרו את הערך.
+אם קובץ החתימה של debug חסר, בנו APK בגרסת debug ב־Android Studio והריצו שוב את הפקודה.
+
+בדפדפן פתחו את [מסוף Firebase](https://console.firebase.google.com/) ובחרו בפרויקט שחיברתם בשלב 2.
+
+1. לחצו על גלגל השיניים ליד **Project Overview** ובחרו **Project settings**.
+2. בלשונית **General**, גללו אל **Your apps** ובחרו באפליקציית Android ששם החבילה שלה תואם ל־`applicationId` שלכם.
+3. תחת **SHA certificate fingerprints**, לחצו **Add fingerprint**. הדביקו את ערך ה־SHA-256 שהעתקתם בשדה שנפתח ולחצו **Save**. ודאו שהטביעה מופיעה ברשימה כ־**SHA-256**.
 
 ## 4. מוסיפים את ה־SDK של Firebase AI Logic
 {: #firebase-sdk}
