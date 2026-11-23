@@ -28,7 +28,63 @@ View Binding יוצר מחלקה עם הפניות ישירות ל־Views שבק
 
 ### שלב 2 — המרת `MainActivity` לשימוש ב־Binding
 
-עִרְכוּ את `MainActivity.java`:
+פתחו את `MainActivity.java`. הוסיפו את ה־import הבא ליד שאר ה־imports:
+
+```java
+import {{ include.namespace }}.databinding.ActivityMainBinding;
+```
+
+הוסיפו את השדה `binding` בגוף המחלקה, **מעל `@Override` ומחוץ ל־`onCreate`**. השוו את תחילת `onCreate` בעמודות: החליפו את השורות האדומות בשורות הירוקות שבאותו מקום. אם יש קוד אחרי `});`, השאירו אותו במקומו.
+
+<div class="two-columns before-after binding-start-comparison" dir="rtl">
+<div markdown="1" class="column">
+
+#### לפני
+
+    {% highlight diff mark_lines="2 4" %}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+-        setContentView(R.layout.activity_main);
+-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    {% endhighlight %}
+
+</div>
+<div markdown="1" class="column">
+
+#### אחרי
+
+    {% highlight diff mark_lines="4 6" %}
++    private ActivityMainBinding binding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+
++        binding = ActivityMainBinding.inflate(getLayoutInflater());
++        setContentView(binding.getRoot());
++        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    {% endhighlight %}
+
+</div>
+</div>
+
+השורה עם `inflate` טוענת את ה־Views מתוך `activity_main.xml`, ו־`setContentView(binding.getRoot())` מציגה את המסך. `binding.main` נותן גישה ישירה ל־View שמזההו `@+id/main`, שעליו מחילים את הריווח.
+
+<details markdown="1">
+<summary>השוואה מפורטת של אותם שינויים ב־onCreate</summary>
+
+בהשוואה הזאת מודגשים השינויים בתוך השורות של `onCreate`.
 
 {% code_diff %}
  @Override
@@ -47,11 +103,10 @@ View Binding יוצר מחלקה עם הפניות ישירות ל־Views שבק
  }
 {% endcode_diff %}
 
-השדה `binding` מופיע באדום. בצעו right-click > ShowContextActions ובחרו Create Field:
-![תפריט הפעולות של Android Studio עם האפשרות Create field 'binding' in 'MainActivity']({{ '/assets/img/hex5/make-binding-a-field-context-menu.png' | relative_url }})
-זה יוסיף את השדה וגם יוסיף את ה-import שחסר לנו.
+אם ערכתם קודם את `onCreate`, אפשר ליצור את השדה דרך Android Studio. לחצו לחיצה ימנית על `binding`, בחרו **Show Context Actions** ואז **Create field**. בדקו שהשדה וה־import תואמים לדוגמאות למעלה.
 
-**הסבר קצר:** `binding.getRoot()` הוא ה־View הראשי של הפריסה. ב־`binding.main` ניגשים ל־View עם `android:id="@+id/main"`; לכן אין עוד צורך ב־`findViewById`. קוד ה־insets והריווח נשאר ללא שינוי.
+![תפריט הפעולות של Android Studio עם האפשרות Create field]({{ '/assets/img/hex5/make-binding-a-field-context-menu.png' | relative_url }})
 
+</details>
 
 </details>

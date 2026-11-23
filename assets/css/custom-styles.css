@@ -1100,6 +1100,12 @@ pre code span.c1 {
   flex-direction: row-reverse;
 }
 
+.binding-start-comparison pre,
+.binding-start-comparison code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 768px) {
   .two-columns.before-after {
     flex-direction: column;

@@ -26,5 +26,7 @@ Use it for a Java Empty Views Activity with `build.gradle.kts`, `MainActivity`,
 template's EdgeToEdge and window-insets listener. Other Activity/layout names or
 template structures need a different example.
 
-Set `full-width: true` in the consuming page's front matter for the side-by-side
-`code_diff` comparison.
+The main `onCreate` walkthrough shows the before and after code with the field
+placement and generated import. The word-level `code_diff` is inside a nested,
+collapsed section. Set `full-width: true` in the consuming page's front matter
+to give both comparisons more room.

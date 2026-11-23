@@ -7,14 +7,6 @@ lang: he
 full-width: true
 ---
 
-<style>
-.binding-start-comparison pre,
-.binding-start-comparison code {
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-</style>
-
 [חזרה ל־019a: הפעלת View Binding והמרת המסך הראשון](/android/projectSteps/019a.BindingInsteadOfFindByID){: data-sequence-nav="prev"}
 
 בשלב הקודם הפעלנו את `View Binding` והמרנו מסך פשוט. כאן מתחילים בשינוי קטן ב־`MainActivity` שאפשר לחזור עליו בפרויקטים חדשים: טוענים את המסך דרך שדה `binding`, מחליפים את `findViewById(R.id.main)` ב־`binding.main`, ומעדכנים את הריווח בקצוות המסך. אחר כך נשתמש ב־binding כדי להמיר את מסך משחק האיקס־עיגול.
