@@ -14,7 +14,8 @@ tags: [Android, Java, roadmap]
 ## שיעורי פתיחה בכיתה י״א
 
 1. [מונה נקודות — אפליקציית Android ראשונה]({{ '/android/basics/01-score-counter/' | relative_url }}). מתחילים במחשבי המעבדה עם Basic Views Activity ב־Java, בונים מסך ומחברים כפתורים שמשנים את הניקוד.
-2. [בונים את המסכים של Basic Views Activity]({{ '/android/basics/02-from-empty-to-basic-views/' | relative_url }}). מתחילים ב־Empty Views Activity, מפעילים View Binding ומוסיפים סרגל כלים וניווט בין שני מסכים.
+2. [בונים את המסכים של Basic Views Activity]({{ '/android/basics/02-from-empty-to-basic-views/' | relative_url }}). מתחילים ב־Empty Views Activity, מפעילים View Binding ומריצים מונה מתוך Activity. בהרחבה בונים סרגל כלים וניווט בין שני מסכים.
+3. [היכרות עם Android Studio דרך המונה]({{ '/android/basics/android-studio-intro/' | relative_url }}). עוקבים אחרי כפתור מהפריסה והמשאבים עד למאזין ב־Java, ואז ממשיכים לפריסות ול־Activity.
 
 ## בוחרים מסלול פרויקט
 

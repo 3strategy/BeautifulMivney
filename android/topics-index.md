@@ -120,7 +120,7 @@ menu_set: android
 |---:|---:|---:|
 | יצירת `Activity` דרך Android Studio | שיעור מעשי | [011 — הוספת Activities](/android/projectSteps/011addingActivities)<br>[018a — יצירת LoginActivity מן ה־GUI](/android/projectSteps/018a.LoginActivityFromGui) |
 | `AndroidManifest`,‏ Launcher ורישום מסכים | שיעור מעשי | [014a — תפריט Fragments והגדרת Launcher](/android/projectSteps/014a.creatingFragmentsMenu)<br>[017 — שכפול ורישום Activity](/android/projectSteps/017DuplicateAndAddActivityToMenu)<br>[018a — LoginActivity כ־Launcher יחיד](/android/projectSteps/018a.LoginActivityFromGui) |
-| ניווט בתצוגת **Android** ומיקום קבצים | שיעור מעשי | [01a — Layout Editor](/android/CollectCircles/01a.collect-circles-layout-editor)<br>[01 — Requery — הכנת Gradle וה־Entity הראשון](/android/sqlite/01.requery-student) |
+| ניווט בתצוגת **Android** ומיקום קבצים | שיעור מעשי | [היכרות עם Android Studio דרך המונה](/android/basics/android-studio-intro/)<br>[01a — Layout Editor](/android/CollectCircles/01a.collect-circles-layout-editor)<br>[01 — Requery — הכנת Gradle וה־Entity הראשון](/android/sqlite/01.requery-student) |
 | Gradle,‏ `build.gradle.kts` ו־Version Catalog | שיעור מעשי | [01 — Requery — הוספת ספרייה ומעבד annotations](/android/sqlite/01.requery-student)<br>[06 — FCM — תלויות וערכים מקומיים](/android/CollectCircles/06.collect-circles-fcm-invitations)<br>[192 — תמיכה ב־Jetpack Compose](/android/projectSteps/192supportJetPackCompose) |
 | טיפול בהתנגשות גרסאות, AGP ו־SDK | שיעור מעשי | [027 — תיקון בעיית גרסאות](/android/projectSteps/027versionUpdates) |
 | פירמוט קוד וקיצור מקשים ב־IDE | משלים | [012 — הגדרת Ctrl+K,D לפירמוט](/android/projectSteps/012androidCodeFormatting) |

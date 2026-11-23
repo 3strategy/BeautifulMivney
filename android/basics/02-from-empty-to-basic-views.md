@@ -12,26 +12,26 @@ tags: [Android, Java, XML, View Binding, Fragments, Navigation, מתחילים]
 [לשיעור הראשון — מונה נקודות]({{ '/android/basics/01-score-counter/' | relative_url }}){: data-sequence-nav="prev"}
 
 {: .box-success}
-נבנה מחדש את מונה הנקודות בפרויקט Java חדש. בסוף תוכלו לספור, לעבור למסך הוראות ולחזור לאותו מונה. בדרך תראו איפה מפעילים View Binding, מי מחזיק את סרגל הכלים ואיך היישום יודע איזה מסך להציג.
+בשיעור הראשון בניתם מונה בתוך פרויקט שבו התבנית כבר יצרה את ה־View Binding ואת שני המסכים. הפעם תפתחו פרויקט Java נפרד, תפעילו בו את ה־View Binding בעצמכם ותחברו את כפתורי המונה ל־`MainActivity`. בסוף שלב 3 תוכלו להריץ את המונה ולהסביר איך לחיצה משנה את המספר על המסך.
 
 | זמן מוצע | תוצר שרץ בסוף |
 |---:|---:|
-| 45 דקות ראשונות | View Binding פעיל, ומונה ההוספה וההפחתה פועל מתוך `MainActivity` |
-| 45 דקות נוספות | סרגל כלים מופיע, והמונה פועל מתוך `FirstFragment` |
-| 45 דקות נוספות | מסך הוראות נפתח, הכותרת משתנה, ואפשר לחזור למונה בשלוש דרכים |
+| כ־45 דקות | View Binding פעיל, ומונה ההוספה וההפחתה פועל מתוך `MainActivity` |
+| הרחבה במפגש נוסף | סרגל כלים מופיע, והמונה פועל מתוך `FirstFragment` |
+| המשך ההרחבה | מסך הוראות נפתח, הכותרת משתנה, ואפשר לחזור למונה בשלוש דרכים |
 
-אם יש לכם שני חלקים של 45 דקות, עצרו אחרי שהמונה פועל מתוך `FirstFragment` והמשיכו מאותו פרויקט במפגש הבא. אחרי הניווט אפשר להשלים גם את הכפתור הצף והתפריט של התבנית.
+בכיתה אפשר לעבור אחרי חלק א ל[היכרות עם Android Studio]({{ '/android/basics/android-studio-intro/' | relative_url }}). חלקים ב ו־ג מיועדים למפגש שבו תרצו לפרק ולבנות מחדש את הניווט של התבנית. אפשר לחזור אליהם אחרי פריסות ו־Activity, מאותו פרויקט.
 
 ## חלק א — מפעילים View Binding ומריצים את המונה
 {: #view-binding}
 
 ### 1. מתחילים מ־Empty Views Activity
 
-במחשב המעבדה צרו **New Project**. בחרו **Empty Views Activity**, תנו לפרויקט את השם `ScoreCounter`, בחרו **Java** והשאירו **Kotlin DSL** בשדה של שפת הגדרות הבנייה. שדה **Package name** בדוגמה הוא `com.example.scorecounter`. אם בחרתם חבילה אחרת, השתמשו בה בשורות `package`, בייבואי ה־binding ובשמות המחלקות שבגרף הניווט. הריצו פעם אחת ובדקו שאתם רואים **Hello World!**.
+במחשב המעבדה צרו **New Project**. בחרו **Empty Views Activity**, תנו לפרויקט את השם `ScoreCounterLab`, בחרו **Java** והשאירו **Kotlin DSL** בשדה של שפת הגדרות הבנייה. השתמשו בתיקייה חדשה ובשם חבילה שונה מזה של המונה הראשון, כך ששתי האפליקציות יוכלו להיות מותקנות במקביל. שם החבילה בדוגמאות הוא `com.example.scorecounterlab`. אם בחרתם חבילה אחרת, השתמשו בה בשורות `package`, בייבואי ה־binding ובשמות המחלקות שבגרף הניווט. הריצו פעם אחת ובדקו שאתם רואים **Hello World!**.
 
 ### 2. מחברים את הפריסה לקוד
 
-{% include android/view-binding.md namespace="com.example.scorecounter" compile_sdk=37 %}
+{% include android/view-binding.md namespace="com.example.scorecounterlab" compile_sdk=37 %}
 
 `ActivityMainBinding` נוצרת עבור `activity_main.xml`. אחרי ההסבה `binding.getRoot()` נותנת ל־Activity את עץ הפקדים שנוצר מאותו XML. הריצו שוב. אם `ActivityMainBinding` עדיין מסומנת באדום, בדקו שביצעתם **Sync**, שהפרויקט נבנה, וש־Android Studio ייבאה את המחלקה מתוך תיקיית `databinding` של החבילה שלכם.
 
@@ -40,11 +40,11 @@ tags: [Android, Java, XML, View Binding, Fragments, Navigation, מתחילים]
 
 ### 3. מחזירים את המונה למסך
 
-ב־**app > res > values > strings.xml** הוסיפו את הטקסטים של המונה. הכותרת של היישום תשמש אותנו גם כשנוסיף סרגל כלים.
+ב־**app > res > values > strings.xml** הוסיפו את הטקסטים של המונה ושנו את הערך הקיים של `app_name`. הכותרת תשמש אותנו גם כשנוסיף סרגל כלים.
 
 ```diff
  <resources>
--    <string name="app_name">ScoreCounter</string>
+-    <string name="app_name">ScoreCounterLab</string>
 +    <string name="app_name">מונה נקודות</string>
 +    <string name="score_add">הוספת נקודה</string>
 +    <string name="score_subtract">הפחתת נקודה</string>
@@ -94,7 +94,7 @@ tags: [Android, Java, XML, View Binding, Fragments, Navigation, מתחילים]
  </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-ב־**app > kotlin+java > com.example.scorecounter > MainActivity** הוסיפו את שדה הניקוד, את שני המאזינים ואת `showScore()`. כאן המאזינים נרשמים ב־`onCreate` אחרי שה־Activity כבר קיבלה את הפריסה. מזהה `button_plus` מופיע בקוד בתור `binding.buttonPlus`.
+ב־**app > kotlin+java > com.example.scorecounterlab > MainActivity** הוסיפו את שדה הניקוד, את שני המאזינים ואת `showScore()`. כאן המאזינים נרשמים ב־`onCreate` אחרי שה־Activity כבר קיבלה את הפריסה. מזהה `button_plus` מופיע בקוד בתור `binding.buttonPlus`.
 
 ```diff
 
@@ -129,8 +129,14 @@ tags: [Android, Java, XML, View Binding, Fragments, Navigation, מתחילים]
 {: .box-success}
 הריצו מפתיחה חדשה. לחצו פעמיים על הוספה ופעם על הפחתה. התצוגה אמורה לעבור מ־0 ל־1, ל־2 ואז לחזור ל־1.
 
-## חלק ב — סרגל כלים ומסך בתוך Fragment
+בדקו שאתם יכולים להצביע על `button_plus` בפריסה, על `binding.buttonPlus` ב־Java ועל הקריאה ל־`showScore()`. בשיעור הראשון מצאתם את המאזין ב־`FirstFragment`. כאן הצגתם את אותו מונה ישירות מתוך `MainActivity`, המחלקה שמערכת Android מפעילה כשפותחים את האפליקציה.
+
+[המשך המסלול — היכרות עם Android Studio דרך המונה]({{ '/android/basics/android-studio-intro/' | relative_url }}){: data-sequence-nav="next"}
+
+## חלק ב — הרחבה: סרגל כלים ומסך בתוך Fragment
 {: #first-fragment}
+
+התחילו מנקודת הבדיקה של חלק א, כשהמונה עובד ב־`MainActivity`. תחילה נוסיף סרגל כלים. לאחר מכן נעביר את המונה ל־Fragment, חלק ממשק עם פריסה והתנהגות משלו שמתארח בתוך ה־Activity. בחלק ג נוסיף Fragment שני ונעבור ביניהם דרך אותו מארח.
 
 ### 4. מוסיפים סרגל כלים
 
@@ -254,10 +260,10 @@ flowchart LR
 </androidx.core.widget.NestedScrollView>
 ```
 
-ב־**app > kotlin+java > com.example.scorecounter** צרו מחלקת Java בשם `FirstFragment`. ה־Fragment יוצרת את הפריסה שלה ב־`onCreateView`, מחברת את הפקדים כשהם מוכנים ב־`onViewCreated`, ומשחררת את ההפניות אליהם ב־`onDestroyView`. שימו לב ששם ה־binding נגזר מהקובץ `fragment_first.xml`.
+ב־**app > kotlin+java > com.example.scorecounterlab** צרו מחלקת Java בשם `FirstFragment`. ה־Fragment יוצרת את הפריסה שלה ב־`onCreateView`, מחברת את הפקדים כשהם מוכנים ב־`onViewCreated`, ומשחררת את ההפניות אליהם ב־`onDestroyView`. שימו לב ששם ה־binding נגזר מהקובץ `fragment_first.xml`.
 
 ```java
-package com.example.scorecounter;
+package com.example.scorecounterlab;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -267,7 +273,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.scorecounter.databinding.FragmentFirstBinding;
+import com.example.scorecounterlab.databinding.FragmentFirstBinding;
 
 public class FirstFragment extends Fragment {
 
@@ -325,7 +331,7 @@ public class FirstFragment extends Fragment {
 
     <fragment
         android:id="@+id/firstFragment"
-        android:name="com.example.scorecounter.FirstFragment"
+        android:name="com.example.scorecounterlab.FirstFragment"
         android:label="@string/app_name" />
 </navigation>
 ```
@@ -356,7 +362,7 @@ public class FirstFragment extends Fragment {
 +import androidx.navigation.ui.AppBarConfiguration;
 +import androidx.navigation.ui.NavigationUI;
 
- import com.example.scorecounter.databinding.ActivityMainBinding;
+ import com.example.scorecounterlab.databinding.ActivityMainBinding;
 ```
 
 ```diff
@@ -403,7 +409,7 @@ public class FirstFragment extends Fragment {
 {: .box-success}
 הריצו שוב. סרגל הכלים והמונה אמורים לפעול בדיוק כמו בנקודת הבדיקה הקודמת. הפעם `FirstFragment` מחזיקה את הניקוד ואת כפתורי ההוספה וההפחתה. זו נקודת עצירה טובה.
 
-## חלק ג — מסך שני, מעבר וחזרה
+## חלק ג — המשך ההרחבה: מסך שני, מעבר וחזרה
 {: #navigation}
 
 ### 6. יוצרים את מסך ההוראות
@@ -445,7 +451,7 @@ public class FirstFragment extends Fragment {
 ```
 
 ```java
-package com.example.scorecounter;
+package com.example.scorecounterlab;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -456,7 +462,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.scorecounter.databinding.FragmentSecondBinding;
+import com.example.scorecounterlab.databinding.FragmentSecondBinding;
 
 public class SecondFragment extends Fragment {
 
@@ -493,7 +499,7 @@ public class SecondFragment extends Fragment {
 
 ```diff
          android:id="@+id/firstFragment"
-         android:name="com.example.scorecounter.FirstFragment"
+         android:name="com.example.scorecounterlab.FirstFragment"
 -        android:label="@string/app_name" />
 +        android:label="@string/app_name">
 +        <action
@@ -503,7 +509,7 @@ public class SecondFragment extends Fragment {
 +
 +    <fragment
 +        android:id="@+id/secondFragment"
-+        android:name="com.example.scorecounter.SecondFragment"
++        android:name="com.example.scorecounterlab.SecondFragment"
 +        android:label="@string/rules_title" />
  </navigation>
 ```
@@ -529,7 +535,7 @@ public class SecondFragment extends Fragment {
  import androidx.fragment.app.Fragment;
 +import androidx.navigation.fragment.NavHostFragment;
 
- import com.example.scorecounter.databinding.FragmentFirstBinding;
+ import com.example.scorecounterlab.databinding.FragmentFirstBinding;
 ```
 
 ```diff
@@ -624,7 +630,7 @@ public class SecondFragment extends Fragment {
 
 ```diff
 
- import com.example.scorecounter.databinding.ActivityMainBinding;
+ import com.example.scorecounterlab.databinding.ActivityMainBinding;
 +import com.google.android.material.snackbar.Snackbar;
  public class MainActivity extends AppCompatActivity {
 
@@ -665,3 +671,5 @@ public class SecondFragment extends Fragment {
 **בדיקה בהרצה.** לחצו על הכפתור הצף ובדקו שמופיעה שורת העזרה. פתחו את תפריט שלוש הנקודות ובחרו **אודות**. נסו את שתי הפעולות גם במסך ההוראות.
 
 להעמקה קראו על [View Binding בתיעוד Android](https://developer.android.com/topic/libraries/view-binding) ועל [החיבור בין סרגל הכלים לגרף הניווט](https://developer.android.com/guide/navigation/integrations/ui).
+
+[חזרה למסלול הכיתה — היכרות עם Android Studio]({{ '/android/basics/android-studio-intro/' | relative_url }})
