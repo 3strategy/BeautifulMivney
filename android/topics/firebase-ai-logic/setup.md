@@ -59,11 +59,11 @@ Copy the **SHA-256** value for **Variant: debug**.
 
 If the debug keystore is missing, build the debug APK in Android Studio and repeat the command.
 
-In the browser, open the [Firebase console](https://console.firebase.google.com/) and select the project you connected in step 2.
+In the browser, open the [Firebase homepage](https://firebase.google.com/), click **Go to console**, and select the project you connected in step 2.
 
 1. Click the gear next to **Project Overview** and choose **Project settings**.
 2. On the **General** tab, scroll to **Your apps** and select the Android app whose package name matches your `applicationId`.
-3. Under **SHA certificate fingerprints**, click **Add fingerprint**. Paste the copied SHA-256 value into the field and click **Save**. Check that it appears in the list as **SHA-256**.
+3. Under **SHA certificate fingerprints**, click **+ Add fingerprint**. Paste the copied SHA-256 value into the field and click **Save**. Check that it appears in the list as **SHA-256**.
 
 ## 4. Add the Firebase AI Logic SDK
 {: #firebase-sdk}
@@ -72,22 +72,7 @@ In the same right-hand pane, click **Add the Firebase AI Logic SDK to your app**
 
 ![The Add the Firebase AI Logic SDK to your app button in the right-hand Firebase Assistant pane]({{ "/android/topics/firebase-ai-logic/images/firebase-assistant-add-ai-sdk.png" | relative_url }})
 
-## 5. Enable Gemini Developer API
-
-In the **Firebase console**, open **AI services > AI Logic > Get started**. Choose **Gemini Developer API** and click **Enable**. If the hourglass keeps spinning, refresh the AI Logic page and continue once the console confirms **APIs enabled**. This lesson uses `gemini-3.5-flash-lite` on Spark. [Supported models](https://firebase.google.com/docs/ai-logic/models) · [Pricing](https://firebase.google.com/docs/ai-logic/pricing).
-
-![Firebase AI Logic setup showing the APIs enabled confirmation]({{ "/android/topics/firebase-ai-logic/images/firebase-ai-logic-apis-enabled.png" | relative_url }})
-
-<details markdown="1">
-<summary>API key restrictions and existing projects</summary>
-
-Firebase calls Gemini from its backend. In the Google Cloud console, select the same **Project ID** and go to **APIs & Services > Credentials**. Restrict the app's Firebase API key to **Android apps** using the package name and the **SHA-1** from the same command output. Allow the APIs the app uses, including **Firebase AI Logic API** and **Firebase App Check API**.
-
-If your existing yearly project uses Blaze or already enforces **template-only** or **authenticated-users** mode, check with your teacher before proceeding. Keep existing protections in place. [Firebase AI Logic security checklist](https://firebase.google.com/docs/ai-logic/security-checklist).
-
-</details>
-
-## 6. Install Firebase CLI before the first run
+### Install Firebase CLI before the first run
 {: #firebase-cli}
 
 You'll use the CLI to register your App Check debug token in Lesson 2. On **Windows**, open **Command Prompt**. If Node.js and npm are missing, install Node.js LTS and open a new Command Prompt.
@@ -107,15 +92,28 @@ firebase appcheck:debugtokens:create --help
 
 Sign in with the Google account that owns or manages your Firebase project. The last command should display help for registering a token. [Firebase CLI installation guide](https://firebase.google.com/docs/cli/).
 
-**First run.** After signing in, click **Run** in Android Studio and confirm that the app opens its existing screen. If you use Git for the Android project, you can commit and optionally push this checkpoint.
+### Run and save the SDK checkpoint
 
-## 7. Protect the request with App Check
+Click **Run** in Android Studio and confirm that the app opens its existing screen. Review the new Firebase configuration (`google-services.json`) and the wizard’s Gradle and version catalog changes. **Commit and push** this working checkpoint before enabling Gemini.
 
-In the Firebase console, open **Security > App Check > APIs**. Check that **Firebase AI Logic** shows **Basic – Enforced**. If needed, [enable App Check enforcement](https://firebase.google.com/docs/ai-logic/app-check).
+## 5. Enable Gemini Developer API
 
-![Firebase AI Logic with Basic – Enforced status on the App Check APIs tab]({{ "/android/topics/firebase-ai-logic/images/firebase-ai-logic-app-check-enforced.png" | relative_url }})
+In the **Firebase console**, open **AI services > AI Logic > Get started**. Choose **Gemini Developer API** and click **Enable**. The hourglass can keep spinning after the APIs are enabled. If it does, continue to App Check. The first request in Lesson 2 will confirm that Gemini is working. This lesson uses `gemini-3.5-flash-lite` on Spark. [Supported models](https://firebase.google.com/docs/ai-logic/models) · [Pricing](https://firebase.google.com/docs/ai-logic/pricing).
 
-For this private debug build, leave the production provider unregistered. In part 2, you’ll use Firebase CLI to register the debug token from Logcat while enforcement stays on.
+![Firebase AI Logic setup showing the APIs enabled confirmation]({{ "/android/topics/firebase-ai-logic/images/firebase-ai-logic-apis-enabled.png" | relative_url }})
+
+<details markdown="1">
+<summary>API key restrictions and existing projects</summary>
+
+Firebase calls Gemini from its backend. In the Google Cloud console, select the same **Project ID** and go to **APIs & Services > Credentials**. Restrict the app's Firebase API key to **Android apps** using the package name and the **SHA-1** from the same command output. Allow the APIs the app uses, including **Firebase AI Logic API** and **Firebase App Check API**.
+
+If your existing yearly project uses Blaze or already enforces **template-only** or **authenticated-users** mode, check with your teacher before proceeding. Keep existing protections in place. [Firebase AI Logic security checklist](https://firebase.google.com/docs/ai-logic/security-checklist).
+
+</details>
+
+## 6. Protect the request with App Check
+
+Firebase enforces App Check automatically when you enable AI Logic. Set up the debug provider for local testing.
 
 ### Add the App Check library for development
 
@@ -134,6 +132,8 @@ In **Gradle Scripts > build.gradle.kts (Module :app)**, add this line to the exi
 ```kotlin
 implementation(libs.firebase.appcheck.debug)
 ```
+
+**Sync Gradle.** Choose **Sync Project with Gradle Files** in Android Studio and wait for the sync to finish before editing `MainActivity`.
 
 ### Initialize Firebase and the model in MainActivity
 
@@ -161,7 +161,7 @@ GenerativeModel ai = FirebaseAI.getInstance(GenerativeBackend.googleAI())
 GenerativeModelFutures model = GenerativeModelFutures.from(ai);
 ```
 
-Sync Gradle and run the app. Check that the Firebase imports resolve and the app opens its existing screen. Commit the working setup in your Android project if you’re using Git.
+**Run the app.** After adding the Java code, click **Run** in Android Studio. Check that the Firebase imports resolve and the app opens its existing screen. Commit the working setup in your Android project if you’re using Git.
 
 The first request and debug token registration happen in Lesson 2. Here’s the result you’ll see after a successful request.
 

@@ -150,7 +150,7 @@ binding.askLlm.setOnClickListener(v -> {
 {: #first-request}
 
 {: .box-warning}
-**The first request may fail until its debug token is registered.** This is a runtime authorization step; it does not cause red Java imports or a Gradle compilation error.
+**On a fresh installation, the first request fails because its App Check debug token is unregistered.** Run the Firebase CLI command below to register the token, then try again.
 
 After the first click, open **Logcat** and filter for **DebugAppCheckProvider**. Use the command logged by your app to register its token.
 
