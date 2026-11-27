@@ -201,6 +201,7 @@ navbar-links:
 
   יסודות ועבודה עם סוכנים:
     - 00 Agentic Engineering פתיחה: "/agentic/00-opener"
+    - Students who have it all: "/agentic/students-who-have-it-all.html"
     - 01 Online מול Agentic: "/agentic/01-online-vs-agentic"
     - 02 Git ו-GitHub:
         - 02 Git ו-GitHub: "/agentic/02-git-github"
@@ -225,6 +226,7 @@ navbar-links:
     - 10 שאלון עירנות כבר היה לנו: "/agentic/10-workshop-quiz"
     - 11 Simple Agentic - UnitTests: "/agentic/11-beginners-solving-and-unit-testing"
     - Agentic workflows: "/agentic/agentic-workflows-and-harness-engineering-he"
+    - הבגרות החדשה - hackathon: "/android/unsorted/habagrut/"
 
   מתחילים באנדרואיד:
     - לאן ממשיכים באנדרואיד?: "/android/"

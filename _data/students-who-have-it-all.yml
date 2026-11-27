@@ -1,0 +1,38 @@
+en:
+  eyebrow: "AGENTIC-ERA CS TEACHING"
+  wish_title: "The wish"
+  wish: "Every corner at 100%, all at once: 400% in total."
+  reality_title: "The reality"
+  reality: "One point, fixed hours. A step toward one corner is a step away from the other three."
+  trades:
+    - title: "Agents vs. fundamentals"
+      text: "Agents write the code, so students hand-practice less of it."
+    - title: "Project scale vs. architecture"
+      text: "Students gain experience integrating larger systems, with less time to study the design decisions behind them."
+    - title: "Project scale vs. theory"
+      text: "Students can build projects 80 times as large, leaving fewer hours for theory and the rest of the curriculum in the same semester."
+  corners:
+    - "Agent orchestration"
+    - "System architecture"
+    - "Industry projects (80× larger)"
+    - "Theory & curriculum"
+  total: "Σ of the four weights = 100%"
+he:
+  eyebrow: "הוראת מדעי המחשב בעידן הסוכנים"
+  wish_title: "השאיפה"
+  wish: "כל קודקוד ב־100% בו־זמנית: 400% בסך הכול."
+  reality_title: "המציאות"
+  reality: "נקודה אחת ומספר שעות קבוע. כל צעד לעבר קודקוד אחד מרחיק אותנו משלושת הקודקודים האחרים."
+  trades:
+    - title: "סוכנים מול יסודות"
+      text: "כשהסוכנים כותבים את הקוד, התלמידים מתרגלים פחות כתיבת קוד בעצמם."
+    - title: "היקף הפרויקט מול ארכיטקטורה"
+      text: "ככל שהפרויקטים לשימוש בפועל גדולים יותר, נותר פחות זמן ללמוד לעומק את התכנון של כל אחד מהם."
+    - title: "היקף הפרויקט מול תאוריה"
+      text: "פרויקטים גדולים פי 80 ולימוד מעמיק של תוכנית הלימודים מתחרים על אותן שעות בסמסטר."
+  corners:
+    - "תזמור סוכנים"
+    - "ארכיטקטורת מערכת"
+    - "פרויקטים מהתעשייה (גדולים פי 80)"
+    - "תאוריה ותוכנית לימודים"
+  total: "סכום ארבעת המשקלים = 100%"

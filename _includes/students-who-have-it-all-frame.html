@@ -1,0 +1,9 @@
+{% include language-versions.html %}
+{% assign copy = site.data['students-who-have-it-all'][page.lang] %}
+{% capture animation %}{% include students-who-have-it-all.html %}{% endcapture %}
+<iframe
+  title="{{ page.title | escape }}"
+  sandbox="allow-scripts"
+  srcdoc="{{ animation | escape }}"
+  style="display: block; width: 100%; aspect-ratio: 16 / 9; border: 0;">
+</iframe>
